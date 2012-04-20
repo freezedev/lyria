@@ -1,4 +1,5 @@
 Lyria.js
+========
 Lightweight prototyping javascript game framework based on jQuery (and optionally HTML5 Canvas)
 If you are looking for a full-fledged framework take a look at Charybdis
 
