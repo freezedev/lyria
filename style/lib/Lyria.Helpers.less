@@ -1,0 +1,12 @@
+@import "Lyria.Constants.less";
+@import "Lyria.Mixins.less";
+
+.sprite(@filename) {
+  @imgFilename: ~"@{filename}";
+  @pathFallback: ~"@{pathImages}";
+  //@filePath: `(Lyria) ? Lyria.Resource.name("@{imgFilename}", "image") : "@{pathFallback}/@{imgFilename}"`;
+  @filePath: "@{pathFallback}/@{imgFilename}";
+  
+  background-image: url("@{filePath}");
+  .background-position(0px, 0px);
+}

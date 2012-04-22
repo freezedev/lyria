@@ -1,157 +1,25 @@
-.transition(@property: all, @time: 300ms, @ease: linear, @delay: 0ms) {
-  transition: @property @time @ease @delay;
-  -webkit-transition: @property @time @ease @delay;
-  -moz-transition: @property @time @ease @delay;
-  -o-transition: @property @time @ease @delay;
-  -ms-transition: @property @time @ease @delay;
-}
-
-
-.transform(@property) {
-  transform: @property;
-  -webkit-transform: @property;
-  -moz-transform: @property;
-  -o-transform: @property;
-  -ms-transform: @property;
-}
-
-.transform-origin(@x, @y) {
-  transform-origin: @x @y;
-  -webkit-transform-origin: @x @y;
-  -moz-transform-origin: @x @y;
-  -o-transform-origin: @x @y;
-  -ms-transform-origin: @x @y;
-}
-
-// Colors HAVE to be 6-digit hex in order to work correctly for all browsers
-.linearVertGradient(@startColor: #ffffff, @endColor: #000000) {
-  background-color: @startColor + @endColor / 2; // Fallback
-
-  background-image: linear-gradient(top, @startColor, @endColor); // for future browsers
-  background-image: -webkit-linear-gradient(top, @startColor, @endColor); // Webkit nightly
-  background-image: -webkit-gradient(linear, left top, left bottom, from(@startColor), to(@endColor)); // for webkit browsers
-  background-image: -moz-linear-gradient(top, @startColor, @endColor); // for firefox 3.6+
-  background-image: -o-linear-gradient(top, @startColor, @endColor); // for Opera
-  background-image: -ms-linear-gradient(top, @startColor, @endColor); // IE 10
-
-  // IE6 & 7
-  filter: e(%("progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=%d,endColorstr=%d)", @startColor, @endColor));
-  // IE8 & 9
-  -ms-filter: %("progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=%d, endColorstr=%d)", @startColor, @endColor);
-
-}
-
-// Colors HAVE to be 6-digit hex in order to work correctly for all browsers
-.linearHorzGradient(@startColor: #ffffff, @endColor: #000000) {
-  background-color: @startColor + @endColor / 2; // Fallback
-
-  background-image: linear-gradient(left, @startColor, @endColor); // for future browsers
-  background-image: -webkit-linear-gradient(left, @startColor, @endColor); // Webkit nightly
-  background-image: -webkit-gradient(linear, left top, right top, from(@startColor), to(@endColor)); // for webkit browsers
-  background-image: -moz-linear-gradient(left, @startColor, @endColor); // for firefox 3.6+
-  background-image: -o-linear-gradient(left, @startColor, @endColor); // for Opera
-  background-image: -ms-linear-gradient(left, @startColor, @endColor); // IE 10
-
-  // IE6 & 7
-  filter: e(%("progid:DXImageTransform.Microsoft.gradient(GradientType=1,startColorstr=%d,endColorstr=%d)", @startColor, @endColor));
-  // IE8 & 9
-  -ms-filter: %("progid:DXImageTransform.Microsoft.gradient(GradientType=1,startColorstr=%d, endColorstr=%d)", @startColor, @endColor);
-}
-
-.border-radius(@strength: 4px) {
-  border-radius: @strength @strength @strength @strength;
-  -moz-border-radius: @strength;
-  -webkit-border-radius: @strength;
-}
-
-
-.box-shadow(@x: 0px, @y: 0px, @blur: 8px, @color: #000) {
-  -moz-box-shadow: @x @y @blur @color;
-  -webkit-box-shadow: @x @y @blur @color;
-  -o-box-shadow: @x @y @blur @color;
-  -ms-box-shadow: @x @y @blur @color;
-  box-shadow: @x @y @blur @color;
-}
-
-
-.box-shadow-inset(@x: 0px, @y: 0px, @blur: 8px, @color: #000) {
-  -moz-box-shadow: inset @x @y @blur @color;
-  -webkit-box-shadow: inset @x @y @blur @color;
-  -o-box-shadow: inset @x @y @blur @color;
-  -ms-box-shadow: inset @x @y @blur @color;
-  box-shadow: inset @x @y @blur @color;
-}
-
-.multiple-box-shadow(@shadows) {
-  -moz-box-shadow: "@{shadows}";
-  -webkit-box-shadow: "@{shadows}";
-  -o-box-shadow: "@{shadows}";
-  -ms-box-shadow: "@{shadows}";
-  box-shadow: "@{shadows}";
-}
-
-.opacity(@alpha: 0.5)
-{
-  opacity: @alpha;
-  -moz-opacity: @alpha;
-  -webkit-opacity: @alpha;
-  -khtml-opacity: @alpha;
-  
-  // IE6 & 7
-  filter: e(%("alpha(opacity=%d)", @alpha * 100));
-  // IE8
-  -ms-filter: %("alpha(opacity=%d)", @alpha * 100);
-}
-
-.user-select(@property: text)
-{
-  -moz-user-select: @property;
-  -webkit-user-select: @property;
-  -o-user-select: @property;
-  -khtml-user-select: @property;
-  user-select: @property;
-}
-
-
-.user-modify(@property: read-only)
-{
-  -moz-user-modify: @property;
-  -webkit-user-modify: @property;
-  user-modify: @property;
-}
-
-.align(@x: 50%, @y: 50%, @width: 100px, @height: 100px)
-{
-  position: absolute;
-
-  left: @x;
-  top: @y;
-  
-  width: @width;
-  height: @height;
-  
-  margin-left: @width * (-0.5);
-  margin-top: @height * (-0.5);
-}
-
-.background-position(@x, @y)
-{
-  background-position-x: @x;
-  background-position-y: @y;
-  background-position: @x @y;
-}
-
-
-
-.square(@size) {
-  width: @size;
-  height: @size;
-}
+@import "Lyria.Constants.less";
+@import "Lyria.Mixins.less";
 
 .absolute {
   position: absolute;
 }
 
+.pointer {
+  cursor: pointer;
+}
+
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
+}
+
+.hidden {
+  display: none;
+}
 
 /*
 * © 2010 Alan Hogan (http://alanhogan.com/contact)
@@ -175,9 +43,7 @@
   // Appearance
   background: #000 none;
   border: (@width / 8.8) solid #fff;
-  -moz-border-radius: @width;
-  -webkit-border-radius: @width;
-  border-radius: @width;
+  .border-radius(@width);
   @lo: @width / 6; //large shadow offset
   @so: @width / 22; //small shadow offset
   box-shadow: 0 0 @lo #000,
@@ -203,10 +69,8 @@
   color: #fff;
   
   // Behavior cues
-  cursor: pointer;
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  user-select: none;
+  .pointer;
+  .user-select(none);
 }
 
 .close-btn-before(@btn_width: 36px) {
@@ -214,7 +78,9 @@
   display: block;
   text-align: center;
   width: @btn_width;
-  position: absolute; top: -0.1 * @btn_width; left: 0;
+  .absolute; 
+  top: -0.1 * @btn_width; 
+  left: 0;
   font-size: @btn_width;
   line-height: @btn_width;
   font-family: "Helvetica Neue", Consolas, Verdana, Tahoma, Calibri, Helvetica, Menlo, "Droid Sans", sans-serif;

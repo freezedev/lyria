@@ -1,20 +1,9 @@
-function() {
+function(sender, localization) {
 	
-	function init() {
-		
-	}
-	
-	function render() {
-		
-	}
-	
-	function update() {
-		
-	}
+	console.log(sender);
+	console.log(localizaion);
 	
 	return {
-		init: init,
-		render: render,
-		update: update
+		test: "Hallo"
 	}
 }

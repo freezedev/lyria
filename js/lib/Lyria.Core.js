@@ -1,11 +1,22 @@
+/**
+ * @namespace Lyria
+ * Lyria namespace decleration
+ */
 var Lyria = Lyria || {};
 
+// Debug settings
 Lyria.Debug = true;
 
+// General constants
 Lyria.Constants = {
 	animSpeed: 300
 };
 
+
+/**
+ * @class Lyria.Platform
+ * Gets information about the current platform
+ */
 Lyria.Platform = {
 	Browser: {
 		get: function() {
@@ -94,7 +105,7 @@ Lyria.Platform = {
 	},
 
 	getLanguage: function() {
-		return navigator.language;
+		return navigator.language.split('-')[0];
 	}
 };
 
@@ -150,3 +161,7 @@ Lyria.Console = {
 		
 	}
 };
+
+// Fallback language
+Lyria.DefaultLanguage = "en"; 
+Lyria.Language = Lyria.Platform.getLanguage() || Lyria.DefaultLanguage;
