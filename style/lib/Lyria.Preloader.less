@@ -1,0 +1,20 @@
+@import "Lyria.Constants.less";
+@import "Lyria.Mixins.less";
+
+.loading-bar {
+  @barWidth: 256px;
+  @barHeight: 32px;
+  
+  @barColor: #244866;
+  
+  .align(50%, 50%, @barWidth, @barHeight);
+  .border-radius(@barHeight / 2);
+  
+  border: 1px solid darken(@barColor, 25%);
+  .linearVertGradient(@barColor, lighten(@barColor, 10%));
+  
+  .inner {
+    
+  }
+  
+}

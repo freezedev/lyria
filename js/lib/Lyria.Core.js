@@ -12,12 +12,67 @@ Lyria.Constants = {
 	animSpeed: 300
 };
 
+/**
+ *
+ */
+Lyria.Base = {
+	extend: function(extendedObject) {
+		var newObject = $.extend(true, {}, Lyria.Base, extendedObject);
+		
+		if (newObject.init && (typeof newObject.init === "function")) {
+			newObject.init();
+		}
+		
+		return newObject;
+	},
+	log: function(message) {
+		Lyria.Console.log(message);
+	},
+	name: 'Base',
+	id: 0,
+	init: function() {
+	},
+	has: function(key) {
+		if( typeof key === "string") {
+			return ( typeof this[key] === "undefined") ? false : true;
+		}
+
+		return false;
+	},
+	attr: function(key, value) {
+		if( typeof value === "undefined") {
+			// Getter
+			return (this.has(key)) ? this[key] : null;
+		} else {
+			// Setter
+			this[key] = value;
+		}
+	},
+	toJSON: function() {
+		function delFunctionInObject(object) {
+			$.each(object, function(key, value) {
+				if( typeof value === "function") {
+					delete object[key];
+				} else {
+					if( typeof value === "object") {
+						delFunctionInObject(key);
+					}
+				}
+			});
+		}
+
+		var JSONObject = Lyria.Utils.cloneObject(this);
+		delFunctionInObject(JSONObject);
+
+		return JSONObject;
+	}
+}
 
 /**
  * @class Lyria.Platform
  * Gets information about the current platform
  */
-Lyria.Platform = {
+Lyria.Platform = Lyria.Base.extend({
 	Browser: {
 		get: function() {
 			return navigator.userAgent;
@@ -107,61 +162,106 @@ Lyria.Platform = {
 	getLanguage: function() {
 		return navigator.language.split('-')[0];
 	}
-};
+});
 
 DisplayOrientation = {
 	Portrait: 0,
 	Landscape: 1
 };
 
-Lyria.Console = {
+Lyria.Console = Lyria.Base.extend({
 	/**
-	 * 
+	 *
 	 */
 	init: function() {
-		$('body').append('<div id="console"><div class="message-container"></div><div class="close-btn-24"></div></div>');
 		
+		$('body').append('<div id="console"><div class="message-container"></div><div class="close-btn-24"></div></div>');
 
 		$('#console').on('click', '.close-btn-24', function(event) {
 			Lyria.Console.hide();
 		});
 	},
 	/**
-	 * 
- 	 * @param {string} msg
+	 *
+	 * @param {string} msg
 	 */
 	log: function(msg, className) {
-		if ($('#console').length === 0) {
+		if($('#console').length === 0) {
 			Lyria.Console.init();
 		}
-		
-		if (!$('#console').is(':visible')) {
+
+		if(!$('#console').is(':visible')) {
 			Lyria.Console.show();
 		}
-		
-		if (!className) {
+
+		if(!className) {
 			className = "";
 		}
-		
+
 		$('#console .message-container').append('<span class="message">' + msg + ' ' + className + '</span>');
 	},
 	/**
-	 * 
+	 *
 	 */
 	show: function() {
 		$('#console').fadeIn(Lyria.Constants.animSpeed);
 	},
 	/**
-	 * 
+	 *
 	 */
 	hide: function() {
 		$('#console').fadeOut(Lyria.Constants.animSpeed);
-	},
-	attr: function(prop, value) {
-		
 	}
-};
+});
 
 // Fallback language
-Lyria.DefaultLanguage = "en"; 
+Lyria.DefaultLanguage = "en";
 Lyria.Language = Lyria.Platform.getLanguage() || Lyria.DefaultLanguage;
+
+
+// jQuery transform plugin
+(function($) {
+	var vendorPrefix = ['webkit', 'o', 'ms', 'moz'];
+	
+	$.fn.vendorProperty = function(property, argument) {
+		
+		var self = this;
+		
+		self.css(property, argument);
+		$.each(vendorPrefix, function(index, value) {
+			self.css('-' + value + '-' + property, argument);
+		});
+		
+	}
+	
+	$.fn.transform = function(transformArgument) {
+		if (typeof transformArgument === "undefined") {
+			return;
+		}
+		
+		this.vendorProperty('transform', transformArgument);
+	}
+	
+	$.fn.transformOrigin = function(originX, originY) {
+		
+		var originArgument = originX + ' ' + originY;
+		
+		this.vendorProperty('transform-origin', originArgument);
+	}
+	
+	$.fn.scale = function(scaleX, scaleY) {
+		if (typeof scaleY === "undefined") {
+			scaleY = scaleX;
+		}
+		
+		this.transform('scale(' + scaleX + ', ' + scaleY + ')');
+	}
+	
+	$.fn.rotate = function(angle) {
+		if (typeof angle !== "number") {
+			return;
+		}
+		
+		this.transform('rotate(' + angle + 'deg)');
+	}
+})(jQuery);

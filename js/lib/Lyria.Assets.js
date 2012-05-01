@@ -8,7 +8,7 @@ var Lyria = Lyria || {};
  * @class Lyria.Resource
  * Resource
  */
-Lyria.Resource = {
+Lyria.Resource = Lyria.Base.extend({
 	path: {
 		assets: "assets",
 		audio: "audio",
@@ -42,15 +42,17 @@ Lyria.Resource = {
 			return [assetPath, filename].join('/');
 		}
 	}
-}
+});
 
 /**
  * @class Lyria.Assets
  * Asset class
  */
-Lyria.Assets = {
+Lyria.Assets = Lyria.Base.extend({
 	audio: function(filename) {
-
+		myAudio = new Lyria.Audio();
+		myAudio.loadFromFile(filename);
+		return myAudio;
 	},
 	image: function(filename) {
 
@@ -61,4 +63,4 @@ Lyria.Assets = {
 	video: function(filename) {
 
 	}
-}
+});

@@ -4,7 +4,7 @@
  */
 var Lyria = Lyria || {};
 
-Lyria.SceneManager = {
+Lyria.SceneManager = Lyria.Base.extend({
 	sceneClassName: 'scene',
 	sceneList: {},
 	currentScene: null,
@@ -72,4 +72,4 @@ Lyria.SceneManager = {
 			Lyria.SceneManager.currentScene.update(dt);
 		}
 	}
-};
+});

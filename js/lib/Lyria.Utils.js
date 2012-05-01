@@ -53,3 +53,7 @@ Lyria.Utils.isFile = function(filename) {
 		return false;
 	}
 }
+
+Lyria.Utils.cloneObject = function(anyObject) {
+	return $.extend(true, {}, anyObject);
+}

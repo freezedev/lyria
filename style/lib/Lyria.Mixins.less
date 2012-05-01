@@ -23,6 +23,10 @@
   -ms-transform-origin: @x @y;
 }
 
+.scale(@scaleFactor) {
+  .transform(scale(@scaleFactor, @scaleFactor));
+}
+
 // Colors HAVE to be 6-digit hex in order to work correctly for all browsers
 .linearVertGradient(@startColor: #ffffff, @endColor: #000000) {
   background-color: @startColor + @endColor / 2; // Fallback
@@ -148,5 +152,10 @@
 .square(@size) {
   width: @size;
   height: @size;
+}
+
+.rounded-square(@size, @radius) {
+  .square(@size);
+  .border-radius(@radius);
 }
 

@@ -10,7 +10,7 @@ Lyria.Scene = function(sceneName, options) {
 	}
 
 	var defaultOptions = {
-		target: $('#' + sceneName),
+		target: '#' + sceneName,
 		template: sceneName + '.html',
 		data: sceneName + '.js',
 		partials: {},
@@ -26,6 +26,8 @@ Lyria.Scene = function(sceneName, options) {
 		render: function() {
 		},
 		update: function(dt) {
+		},
+		resize: function(width, height) {
 		}
 	};
 	options = $.extend(true, defaultOptions, options);
@@ -40,7 +42,14 @@ Lyria.Scene = function(sceneName, options) {
 	var targetObj = null;
 	var eventsObj = {};
 
-	function buildTemplateObject(inputObject, evaluateInput, argObject) {
+	function buildTemplateObject(inputObject, options) {
+		var defaultOptions = {
+			evaluateInput: false,
+			argObject: {},
+			dataType: 'json'
+		}
+		options = $.extend(true, defaultOptions, options);
+
 		var outputObject = {};
 
 		Lyria.Utils.isObjectOrString(inputObject, function(arg) {
@@ -51,10 +60,11 @@ Lyria.Scene = function(sceneName, options) {
 						// Needs to synchronous as we don't really know when the different files are
 						// ready for us
 						async: false,
+						dataType: options.dataType,
 						success: function(data) {
-							if(evaluateInput) {
-								argObject = argObject || {};
-								outputObject[key.split('.')[0]] = (new Function('return (' + data + ')("' + sceneName + '",' + JSON.stringify(argObject) + ')'))();
+							if(options.evaluateInput) {
+								options.argObject = options.argObject || {};
+								outputObject[key.split('.')[0]] = (new Function('return (' + data + ')("' + sceneName + '",' + JSON.stringify(options.argObject) + ')'))();
 							} else {
 								outputObject[key.split('.')[0]] = data;
 							}
@@ -71,10 +81,11 @@ Lyria.Scene = function(sceneName, options) {
 					// Needs to synchronous as we don't really know when the different files are
 					// ready for us
 					async: false,
+					dataType: options.dataType,
 					success: function(data) {
-						if(evaluateInput) {
-							argObject = argObject || {};
-							outputObject = (new Function('return (' + data + ')("' + sceneName + '",' + JSON.stringify(argObject) + ')'))();
+						if(options.evaluateInput) {
+							options.argObject = options.argObject || {};
+							outputObject = (new Function('return (' + data + ')("' + sceneName + '",' + JSON.stringify(options.argObject) + ')'))();
 						} else {
 							outputObject = data;
 						}
@@ -91,50 +102,101 @@ Lyria.Scene = function(sceneName, options) {
 
 	// Check for localization
 	localizationObj = Lyria.Localization(Lyria.Resource.name(options.localization, scenePath)).get();
+
+	dataObj = buildTemplateObject(options.data, {
+		evaluateInput: true,
+		argObject: localizationObj,
+		dataType: 'text'
+	});
+
+	// Transfer init, resize, render and update functions
+	if (dataObj.init && (typeof dataObj.init === "function")) {
+		options.init = dataObj.init;
+		delete dataObj.init;
+	}
 	
-	dataObj = buildTemplateObject(options.data, true, localizationObj);
+	if (dataObj.render && (typeof dataObj.render === "function")) {
+		options.render = dataObj.render;
+		delete dataObj.render;
+	}
+	
+	if (dataObj.update && (typeof dataObj.update === "function")) {
+		options.update = dataObj.update;
+		delete dataObj.update;
+	}
+	
+	if (dataObj.resize && (typeof dataObj.resize === "function")) {
+		options.resize = dataObj.resize;
+		delete dataObj.resize;
+	}
 
 
 	// Get markup
-	// Ok, let's do this synchronously for now. I don't like it that way, but it
-	// would require
-	// too much testing at the moment to get it working asynchronously
 	if(Lyria.Utils.isFile(options.template)) {
 		$.ajax({
 			url: Lyria.Resource.name(options.template, scenePath),
 			dataType: 'text',
-			async: false,
 			success: function(data) {
 				templateMarkup = data;
+
+				// Put 'em all together
+				var template = Handlebars.compile(templateMarkup);
+
+				var templateOptions = {};
+				if(!$.isEmptyObject(helperObj)) {
+					templateOptions['helpers'] = helperObj;
+				}
+				if(!$.isEmptyObject(partialObj)) {
+					templateOptions['partials'] = partialObj;
+				}
+
+				// Extract events
+				if (dataObj.events) {
+					eventsObj = dataObj.events;
+					delete dataObj.events;
+				}
+
+				generatedMarkup = template(dataObj, templateOptions);
+
+				if(options.target) {
+					targetObj = (options.target instanceof jQuery) ? options.target : $(options.target);
+					targetObj.html(generatedMarkup);
+				}
+
+				// Bind events
+				if(eventsObj) {
+					eventsObj.delegate = (options.target) ? options.target : 'body';
+
+					$.each(eventsObj, function(key, value) {
+						if(( typeof value === "object") && (key !== "delegate")) {
+							$(eventsObj.delegate).on(value, key);
+						}
+					});
+				}
+
+				// Call init procedure
+				options.init();
+				
+				// Add resize event
+				$(window).resize(function() {
+					options.resize($(window).width(), $(window).height());
+				});
+
+				return {
+					view: generatedMarkup,
+					name: sceneName,
+					route: options.route,
+					transition: options.transition,
+					init: options.init,
+					render: options.render,
+					update: options.update
+				}
 			}
 		});
 
-		// Put 'em all together
-		var template = Handlebars.compile(templateMarkup);
-
-		var templateOptions = {};
-		if(!$.isEmptyObject(helperObj)) {
-			templateOptions['helpers'] = helperObj;
-		}
-		if(!$.isEmptyObject(partialObj)) {
-			templateOptions['partials'] = partialObj;
-		}
-
-		generatedMarkup = template(dataObj, templateOptions);
-
-
-		if(options.target) {
-			targetObj = (options.target instanceof jQuery) ? options.target : $(options.target);
-			targetObj.html(generatedMarkup);
-		}
-
 	}
 
-	// Call init procedure
-	options.init();
-
 	return {
-		view: generatedMarkup,
 		name: sceneName,
 		route: options.route,
 		transition: options.transition,
@@ -142,4 +204,5 @@ Lyria.Scene = function(sceneName, options) {
 		render: options.render,
 		update: options.update
 	}
+
 }

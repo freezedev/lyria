@@ -5,7 +5,7 @@
   @imgFilename: ~"@{filename}";
   @pathFallback: ~"@{pathImages}";
   //@filePath: `(Lyria) ? Lyria.Resource.name("@{imgFilename}", "image") : "@{pathFallback}/@{imgFilename}"`;
-  @filePath: "@{pathFallback}/@{imgFilename}";
+  @filePath: "@{prePath}/@{pathFallback}/@{imgFilename}";
   
   background-image: url("@{filePath}");
   .background-position(0px, 0px);

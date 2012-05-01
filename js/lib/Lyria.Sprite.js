@@ -4,6 +4,19 @@
  */
 var Lyria = Lyria || {};
 
-Lyria.Sprite = {
+Lyria.Sprite = function(element, options) {
+	
+	return {
+		attr: attr
+	}
+}
 
-};
+Lyria.CanvasSprite = function(element, options) {
+	var defaultOptions = {
+		
+	};
+	options = $.extend(true, defaultOptions, options);
+	
+	
+	
+}
