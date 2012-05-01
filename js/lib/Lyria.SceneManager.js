@@ -25,6 +25,8 @@ Lyria.SceneManager = Lyria.Base.extend({
 			} else {
 				$('.' + Lyria.SceneManager.sceneClassName).hide();
 			}
+			
+			if (Lyria.SceneManager.currentScene.onSceneDeactivated) { Lyria.SceneManager.currentScene.onSceneDeactivated(); }
 
 		}
 
@@ -37,6 +39,7 @@ Lyria.SceneManager = Lyria.Base.extend({
 					$('#' + scene).show();
 				}
 				Lyria.SceneManager.currentScene = value;
+				if (Lyria.SceneManager.currentScene.onSceneActive) { Lyria.SceneManager.currentScene.onSceneActive(); }
 				return false;
 			}
 		});

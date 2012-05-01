@@ -28,6 +28,12 @@ Lyria.Scene = function(sceneName, options) {
 		update: function(dt) {
 		},
 		resize: function(width, height) {
+		},
+		onSceneActive: function() {
+			
+		},
+		onSceneDeactivated: function() {
+			
 		}
 	};
 	options = $.extend(true, defaultOptions, options);
@@ -129,6 +135,16 @@ Lyria.Scene = function(sceneName, options) {
 		options.resize = dataObj.resize;
 		delete dataObj.resize;
 	}
+	
+	if (dataObj.onSceneActive && (typeof dataObj.onSceneActive === "function")) {
+		options.onSceneActive = dataObj.onSceneActive;
+		delete dataObj.onSceneActive;
+	}
+	
+	if (dataObj.onSceneDeactivated && (typeof dataObj.onSceneDeactivated === "function")) {
+		options.onSceneDeactivated = dataObj.onSceneDeactivated;
+		delete dataObj.onSceneDeactivated;
+	}
 
 
 	// Get markup
@@ -189,7 +205,10 @@ Lyria.Scene = function(sceneName, options) {
 					transition: options.transition,
 					init: options.init,
 					render: options.render,
-					update: options.update
+					update: options.update,
+					resize: options.resize,
+					onSceneActive: options.onSceneActive,
+					onSceneDeactivated: options.onSceneDeactivated
 				}
 			}
 		});
@@ -202,7 +221,10 @@ Lyria.Scene = function(sceneName, options) {
 		transition: options.transition,
 		init: options.init,
 		render: options.render,
-		update: options.update
+		update: options.update,
+		resize: options.resize,
+		onSceneActive: options.onSceneActive,
+		onSceneDeactivated: options.onSceneDeactivated
 	}
 
 }
