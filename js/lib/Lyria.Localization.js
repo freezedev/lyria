@@ -4,6 +4,11 @@
  */
 var Lyria = Lyria || {};
 
+/**
+ * 
+ * @param {Object} localization
+ * @param {Object} options
+ */
 Lyria.Localization = function(localization, options) {
 	if(!localization) {
 		return;
@@ -15,7 +20,7 @@ Lyria.Localization = function(localization, options) {
 	options = $.extend(true, defaultOptions, options);
 
 	var localizeObject = {};
-
+	
 	Lyria.Utils.isObjectOrString(localization, function(arg) {
 		// Object
 		localizeObject = arg;
@@ -38,6 +43,11 @@ Lyria.Localization = function(localization, options) {
 		localizeLangObject = localizeObject[Lyria.DefaultLanguage];
 	}
 
+	/**
+	 * 
+ 	 * @param {Object} name
+     * @param {Object} fallback
+	 */
 	function get(name, fallback) {
 		if(localizeLangObject) {
 			if(localizeLangObject[name]) {
@@ -68,3 +78,5 @@ Lyria.Localization = function(localization, options) {
 		get: get
 	}
 }
+
+Lyria.GlobalLocalization = Lyria.Localization(Lyria.Resource.name("i18n.json"));

@@ -5,11 +5,16 @@
 var Lyria = Lyria || {};
 
 /**
- * @class Lyria.Utils
- * Utils class
+ * @class Lyria.UI
+ * User interface class
  */
 Lyria.UI = {};
 
+/**
+ * 
+ * @param {Object} element
+ * @param {Object} options
+ */
 Lyria.UI.Button = function(element, options) {
 	if(!element)
 		return;

@@ -75,20 +75,20 @@ Lyria.Achievements = function() {
 
 		if(!array[text]["active"]) {
 			if(( typeof (array[text].icon) != "undefined") && (array[text].icon != ""))
-				$('#achievement_box').css("background-image", "url(" + array[text].icon + ")");
+				$('.status.achievement').css("background-image", "url(" + array[text].icon + ")");
 
-			$('#ach_text').html(text);
-			$('#achievement_box').css({
+			$('.achievement .text').html(text);
+			$('.status.achievement').css({
 				opacity: 0.0
 			});
 
-			$('#achievement_box').animate({
+			$('.status.achievement').animate({
 				opacity: 1.0,
 				bottom: '8px'
 			}, 750);
 
 			setTimeout(function() {
-				$('#achievement_box').animate({
+				$('.status.achievement').animate({
 					opacity: 0.0,
 					bottom: '-80px'
 				}, 750);

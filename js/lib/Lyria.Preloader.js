@@ -4,6 +4,9 @@
  */
 var Lyria = Lyria || {};
 
+/**
+ * 
+ */
 Lyria.Preloader = {
 	maxAssets: 0,
 	assetsLoaded: 0,
@@ -20,6 +23,9 @@ Lyria.Preloader = {
 		function loadingProgress() {
 
 			Lyria.Preloader.percentLoaded = Lyria.Preloader.assetsLoaded / Lyria.Preloader.maxAssets;
+			if (Lyria.Preloader.onProgressChange) {
+				Lyria.Preloader.onProgressChange(Lyria.Preloader.percentLoaded);
+			}
 
 			if (options.showLoadingScreen) {
 				
@@ -62,6 +68,15 @@ Lyria.Preloader = {
 			});
 		}
 	},
+	/**
+	 * 
+	 */
+	onProgressChange: function(value) {
+		
+	},
+	/**
+	 * 
+	 */
 	complete: function() {
 
 	}

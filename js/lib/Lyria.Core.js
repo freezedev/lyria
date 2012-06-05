@@ -16,14 +16,30 @@ Lyria.Constants = {
  *
  */
 Lyria.Base = {
-	extend: function(extendedObject) {
+	extend: function(extendedObject, options) {
+		var defaultOptions = {
+			initParameter: null,
+			createFunction: false
+		};
+		options = $.extend(true, defaultOptions, options);
+		
 		var newObject = $.extend(true, {}, Lyria.Base, extendedObject);
 		
-		if (newObject.init && (typeof newObject.init === "function")) {
-			newObject.init();
-		}
+		if (!options.createFunction) {
+			if (newObject.init && (typeof newObject.init === "function")) {
+				newObject.init(options.initParameter);
+			}
 		
-		return newObject;
+			return newObject;
+		} else {
+			return function(parameter) { 
+				if (newObject.init && (typeof newObject.init === "function")) {
+					newObject.init.apply(this, arguments);
+				}
+				
+				return newObject; 
+			};
+		}
 	},
 	log: function(message) {
 		Lyria.Console.log(message);
@@ -55,7 +71,7 @@ Lyria.Base = {
 					delete object[key];
 				} else {
 					if( typeof value === "object") {
-						delFunctionInObject(key);
+						delFunctionInObject(value);
 					}
 				}
 			});
@@ -65,6 +81,15 @@ Lyria.Base = {
 		delFunctionInObject(JSONObject);
 
 		return JSONObject;
+	},
+	each: function(callback) {
+		
+	},
+	save: function(name) {
+		
+	},
+	load: function(name) {
+		
 	}
 }
 
@@ -118,7 +143,7 @@ Lyria.Platform = Lyria.Base.extend({
 				break;
 
 			case 'ios':
-				return (is('iphone') || is('ipod') || is('ipad'));
+				return (Lyria.Platform.is('iphone') || Lyria.Platform.is('ipod') || Lyria.Platform.is('ipad'));
 				break;
 
 			case 'iphone':
@@ -144,23 +169,29 @@ Lyria.Platform = Lyria.Base.extend({
 			case 'webos':
 				return navigator.userAgent.match(/webOS/i);
 				break;
+				
+			case 'wp7':
+				return navigator.userAgent.match(/Windows Phone OS/i);
+				break;
 
 			case 'mobile':
-				return (is('android') || is('bada') || is('webos') || is('ios'));
+				return (Lyria.Platform.is('android') || Lyria.Platform.is('bada') || Lyria.Platform.is('webos') || Lyria.Platform.is('ios'));
 				break;
 
 			case 'desktop':
-				return !(is('mobile'));
+				return !(Lyria.Platform.is('mobile'));
 				break;
 		}
 	},
 
 	isMobile: function() {
-		return is('mobile');
+		return Lyria.Platform.is('mobile');
 	},
 
 	getLanguage: function() {
-		return navigator.language.split('-')[0];
+		var language = navigator.language || navigator.systemLanguage;
+		
+		return language.split('-')[0];
 	}
 });
 
@@ -217,6 +248,22 @@ Lyria.Console = Lyria.Base.extend({
 // Fallback language
 Lyria.DefaultLanguage = "en";
 Lyria.Language = Lyria.Platform.getLanguage() || Lyria.DefaultLanguage;
+
+
+// shim layer with setTimeout fallback
+// http://paulirish.com/2011/requestanimationframe-for-smart-animating/
+if (!window.requestAnimFrame) {
+	window.requestAnimFrame = (function(){
+	  return  window.requestAnimationFrame       || 
+	          window.webkitRequestAnimationFrame || 
+	          window.mozRequestAnimationFrame    || 
+	          window.oRequestAnimationFrame      || 
+	          window.msRequestAnimationFrame     || 
+	          function( callback ){
+	            window.setTimeout(callback, 1000 / 60);
+	          };
+	})();
+}
 
 
 // jQuery transform plugin

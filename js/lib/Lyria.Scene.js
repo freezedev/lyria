@@ -4,6 +4,11 @@
  */
 var Lyria = Lyria || {};
 
+/**
+ * 
+ * @param {Object} sceneName
+ * @param {Object} options
+ */
 Lyria.Scene = function(sceneName, options) {
 	if(!sceneName) {
 		return;
@@ -152,6 +157,9 @@ Lyria.Scene = function(sceneName, options) {
 		$.ajax({
 			url: Lyria.Resource.name(options.template, scenePath),
 			dataType: 'text',
+			error: function(err) {
+				
+			},
 			success: function(data) {
 				templateMarkup = data;
 
@@ -185,6 +193,21 @@ Lyria.Scene = function(sceneName, options) {
 
 					$.each(eventsObj, function(key, value) {
 						if(( typeof value === "object") && (key !== "delegate")) {
+							
+							// Check global event map and re-bind events
+							$.each(value, function(eventKey, eventValue) {
+							  if (Lyria.EventMap && Lyria.EventMap[eventKey] && (typeof Lyria.EventMap[eventKey] === "object")) {
+							  	
+							  	console.log(Lyria.EventMap[eventKey]);
+							  	
+							  	$.each(Lyria.EventMap[eventKey], function(eventMapKey, eventMapValue) {
+									console.log(eventMapKey);
+									console.log(eventMapValue);
+								  });
+							  }
+							  
+							});
+							
 							$(eventsObj.delegate).on(value, key);
 						}
 					});

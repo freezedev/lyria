@@ -4,6 +4,9 @@
  */
 var Lyria = Lyria || {};
 
+/**
+ * 
+ */
 Lyria.SceneManager = Lyria.Base.extend({
 	sceneClassName: 'scene',
 	sceneList: {},
@@ -66,13 +69,15 @@ Lyria.SceneManager = Lyria.Base.extend({
 		}
 	},
 	render: function() {
-		if(Lyria.SceneManager.currentScene.render) {
-			Lyria.SceneManager.currentScene.render();
+		if(!Lyria.SceneManager.currentScene.render) {
+			return;
 		}
+		Lyria.SceneManager.currentScene.render();
 	},
 	update: function(dt) {
-		if(Lyria.SceneManager.currentScene.update) {
-			Lyria.SceneManager.currentScene.update(dt);
+		if(!Lyria.SceneManager.currentScene.update) {
+			return;
 		}
+		Lyria.SceneManager.currentScene.update(dt);
 	}
 });

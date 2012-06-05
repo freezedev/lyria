@@ -10,6 +10,10 @@ var Lyria = Lyria || {};
  */
 Lyria.Utils = {};
 
+/**
+ * 
+ * @param {Object} object
+ */
 Lyria.Utils.isArray = function(object) {
 	if(Object.prototype.toString.call(object) === '[object Array]') {
 		return true;
@@ -18,6 +22,12 @@ Lyria.Utils.isArray = function(object) {
 	}
 }
 
+/**
+ * 
+ * @param {Object} type
+ * @param {Object} callbackObject
+ * @param {Object} callbackString
+ */
 Lyria.Utils.isObjectOrString = function(type, callbackObject, callbackString) {
 	callbackObject = callbackObject ||
 	function(type) {
@@ -37,6 +47,12 @@ Lyria.Utils.isObjectOrString = function(type, callbackObject, callbackString) {
 	}
 }
 
+/**
+ * 
+ * @param {Object} filename
+ * 
+ * @returns {Boolean}
+ */
 Lyria.Utils.isFile = function(filename) {
 	var sepPos = filename.indexOf('.');
 	if (sepPos === -1) {
@@ -54,6 +70,12 @@ Lyria.Utils.isFile = function(filename) {
 	}
 }
 
+/**
+ * 
+ * @param {Object} anyObject
+ * 
+ * @returns {Object}
+ */
 Lyria.Utils.cloneObject = function(anyObject) {
 	return $.extend(true, {}, anyObject);
 }

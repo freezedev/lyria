@@ -9,13 +9,17 @@ var Lyria = Lyria || {};
  * Resource
  */
 Lyria.Resource = Lyria.Base.extend({
+	/**
+	 * 
+	 */
 	path: {
 		assets: "assets",
 		audio: "audio",
 		data: "data",
 		image: "images",
 		scene: "scenes",
-		video: "video"
+		video: "video",
+		prefab: "prefabs"
 	},
 
 	/**
@@ -49,17 +53,34 @@ Lyria.Resource = Lyria.Base.extend({
  * Asset class
  */
 Lyria.Assets = Lyria.Base.extend({
+	
+	/**
+	 * 
+     * @param {Object} filename
+	 */
 	audio: function(filename) {
 		myAudio = new Lyria.Audio();
 		myAudio.loadFromFile(filename);
 		return myAudio;
 	},
+	/**
+	 * 
+ 	 * @param {Object} filename
+	 */
 	image: function(filename) {
 
 	},
+	/**
+	 * 
+ 	 * @param {Object} filename
+	 */
 	data: function(filename) {
 
 	},
+	/**
+	 * 
+ 	 * @param {Object} filename
+	 */
 	video: function(filename) {
 
 	}
