@@ -4,6 +4,8 @@
  */
 var Lyria = Lyria || {};
 
+
+
 /**
  * @class Lyria.UI
  * User interface class
@@ -35,6 +37,7 @@ Lyria.UI.Button = function(element, options) {
 
 	elementObj.addClass(options.buttonClass);
 	if(options.caption) {
+		
 		elementObj.html('<span>' + options.caption + '</span>');
 	}
 	

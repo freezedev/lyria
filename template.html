@@ -11,7 +11,7 @@
 		<meta name="description" content="" />
 		<meta name="author" content="Johannes Stein" />
 
-		<meta name="viewport" content="width=device-width; initial-scale=1.0" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
 		<!-- Replace favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
 		<link rel="shortcut icon" href="/favicon.ico" />
@@ -27,31 +27,31 @@
 		<link rel="stylesheet/less" type="text/css" href="style/lib/Lyria.UI.less" />
 		<link rel="stylesheet/less" type="text/css" href="style/main.less" />
 
-		<script src="js/lib/deps/jquery-1.7.2.min.js"></script>
-		<script src="js/lib/deps/less-1.3.0.min.js"></script>
-		<script src="js/lib/deps/modernizr-2.5.3.min.js"></script>
-		<script src="js/lib/deps/handlebars.js"></script>
-		<script src="js/lib/deps/sammy.js"></script>
-
-		<script src="js/lib/Lyria.Core.js"></script>
-		<script src="js/lib/Lyria.Achievements.js"></script>
-		<script src="js/lib/Lyria.Assets.js"></script>
-		<script src="js/lib/Lyria.Audio.js"></script>
-		<script src="js/lib/Lyria.Localization.js"></script>
-		<script src="js/lib/Lyria.Preloader.js"></script>
-		<script src="js/lib/Lyria.Scene.js"></script>
-		<script src="js/lib/Lyria.SceneManager.js"></script>
-		<script src="js/lib/Lyria.Sprite.js"></script>
-		<script src="js/lib/Lyria.UI.js"></script>
-		<script src="js/lib/Lyria.Utils.js"></script>
-		<script src="js/lib/Lyria.Video.js"></script>
+		<script src="js/lib/deps/LAB.min.js"></script>
+		
 		<script>
-			
-			
+			$LAB
+			// Load dependencies
+			.script('js/lib/deps/jquery-1.7.2.min.js')
+			.script('js/lib/deps/less-1.3.0.min.js')
+			.script('js/lib/deps/modernizr-2.5.3.min.js')
+			.script('js/lib/deps/handlebars.js').wait()
+			// Load libraries
+			.script('js/lib/Lyria.Core.js')
+			.script('js/lib/Lyria.Utils.js').wait()
+			.script('js/lib/Lyria.Achievements.js')
+			.script('js/lib/Lyria.Assets.js')
+			.script('js/lib/Lyria.Audio.js')
+			.script('js/lib/Lyria.Localization.js')
+			.script('js/lib/Lyria.Preloader.js')
+			.script('js/lib/Lyria.Scene.js')
+			.script('js/lib/Lyria.SceneDirector.js')
+			.script('js/lib/Lyria.UI.js')
+			.script('js/lib/Lyria.Video.js').wait()
+			// Load application
+			.script('js/template.js');
 		</script>
 	</head>
-
 	<body>
-		
 	</body>
 </html>

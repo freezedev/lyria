@@ -2,12 +2,14 @@
  * @namespace Lyria
  * Lyria namespace decleration
  */
-var Lyria = Lyria || {};
+;(function(Lyria, undefined) {
 
-Lyria.Event = {
-	Map: {
-		'click': {
-			'mobile': 'touchend'
+	Lyria.Event = {
+		Map: {
+			'click': {
+				'mobile': 'touchend'
+			}
 		}
-	}
-};
+	};
+	
+})(window.Lyria = window.Lyria || {});

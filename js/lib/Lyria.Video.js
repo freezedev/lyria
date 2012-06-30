@@ -2,36 +2,38 @@
  * @namespace Lyria
  * Lyria namespace decleration
  */
-var Lyria = Lyria || {};
+;(function(Lyria, undefined) {
 
-/**
- * @class Lyria.Video
- * This class creates an HTML5 video element
- */
-Lyria.Video = function()
-{
-	var
-	loadFromFile = function()
+	/**
+	 * @class Lyria.Video
+	 * This class creates an HTML5 video element
+	 */
+	Lyria.Video = function()
 	{
+		var
+		loadFromFile = function()
+		{
+			
+		},
 		
-	},
-	
-	play = function()
-	{
+		play = function()
+		{
+			
+		},
 		
-	},
-	
-	pause = function()
-	{
+		pause = function()
+		{
+			
+		},
 		
-	},
-	
-	stop = function()
-	{
+		stop = function()
+		{
+			
+		};
 		
+		return {
+			
+		};
 	};
 	
-	return {
-		
-	};
-};
+})(window.Lyria = window.Lyria || {});
