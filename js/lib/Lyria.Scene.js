@@ -64,6 +64,17 @@
 			templateOptions = $.extend(true, templateDefaultOptions, templateOptions);
 	
 			var outputObject = {};
+			
+			
+			var senderObject = {
+				target: options.target,
+				template: options.template,
+				data: options.data,
+				parent: options.parent,
+				localization: options.localization,
+				route: options.route,
+				name: options.name
+			};
 	
 			Lyria.Utils.isObjectOrString(inputObject, function(arg) {
 				$.each(arg, function(key, value) {
@@ -80,7 +91,7 @@
 									
 									var functionData = 'return ' + data;
 									
-									outputObject[key.split('.')[0]] = (new Function('sender', 'localization', functionData))(options, templateOptions.argObject);
+									outputObject[key.split('.')[0]] = (new Function('sender', 'localization', functionData))(senderObject, templateOptions.argObject);
 								} else {
 									outputObject[key.split('.')[0]] = data;
 								}
@@ -104,7 +115,7 @@
 								
 								var functionData = 'return ' + data;
 								
-								outputObject = (new Function('sender', 'localization', functionData))(options, templateOptions.argObject);
+								outputObject = (new Function('sender', 'localization', functionData))(senderObject, templateOptions.argObject);
 							} else {
 								outputObject = data;
 							}
