@@ -1,4 +1,8 @@
 {
-	"en": {},
-	"de": {}
+	"en": {
+		"title": "This is "
+	},
+	"de": {
+		"title": "Das ist "
+	}
 }
