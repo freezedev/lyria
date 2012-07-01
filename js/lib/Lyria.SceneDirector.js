@@ -4,13 +4,24 @@
  */
 ;(function(Lyria, undefined) {
 
+
+	/**
+	 * The scene director is the manager for all scenes
+	 *  
+	 */
 	Lyria.SceneDirector = (function() {
 		
-		function SceneDirector(container) {
+		function SceneDirector(container, parent) {
 			this.containerObj = null;
 						
-			if (container) {			
-				$('body').append($(document.createElement('div')).attr('id', container));
+			if (container) {
+				var createdElement = $(document.createElement('div')).attr('id', container);
+				
+				if (parent) {
+					$(parent).append(createdElement);
+				} else {
+					$('body').append(createdElement);
+				}
 				
 				this.containerObj = $('#' + container);
 			}
@@ -96,87 +107,5 @@
 		return SceneDirector;
 		
 	})();
-
-	/**
-	 *
-	 */
-	/*Lyria.SceneDirector = Lyria.Base.extend({
-		sceneClassName: 'scene',
-		sceneList: {},
-		currentScene: null,
-		add: function(scene) {
-			Lyria.SceneDirector.sceneList[scene.name] = scene;
-		},
-		show: function(scene) {
-			// More than one scene visible at the same time
-			if ($('.' + Lyria.SceneDirector.sceneClassName + ':visible')) {
-				$('.' + Lyria.SceneDirector.sceneClassName).hide();
-			}
-
-			if (Lyria.SceneDirector.currentScene) {
-				if (Lyria.SceneDirector.currentScene.transition && Lyria.SceneDirector.currentScene.length) {
-					$('#' + Lyria.SceneDirector.currentScene).hide(Lyria.SceneDirector.currentScene.transition.length, function() {
-						$('.' + Lyria.SceneDirector.sceneClassName).hide();
-					});
-				} else {
-					$('.' + Lyria.SceneDirector.sceneClassName).hide();
-				}
-
-				if (Lyria.SceneDirector.currentScene.onSceneDeactivated) {
-					Lyria.SceneDirector.currentScene.onSceneDeactivated();
-				}
-
-			}
-
-			$.each(Lyria.SceneDirector.sceneList, function(key, value) {
-				if (key === scene) {
-
-					if (scene.transition && scene.transition.length) {
-						$('#' + scene).show(scene.transition.length);
-					} else {
-						$('#' + scene).show();
-					}
-					Lyria.SceneDirector.currentScene = value;
-					if (Lyria.SceneDirector.currentScene.onSceneActive) {
-						Lyria.SceneDirector.currentScene.onSceneActive();
-					}
-					return false;
-				}
-			});
-		},
-		connectRoutes: function(startScene) {
-			if ($.sammy) {
-
-				var app = $.sammy(function() {
-
-					var sammyContext = this;
-
-					$.each(Lyria.SceneDirector.sceneList, function(key, value) {
-						if (value.route) {
-							sammyContext.get(value.route, function() {
-								Lyria.SceneDirector.show(key);
-							});
-						}
-					});
-
-				});
-
-				app.run('/' + startScene);
-
-			}
-		},
-		render: function() {
-			if (!Lyria.SceneDirector.currentScene.render) {
-				return;
-			}
-			Lyria.SceneDirector.currentScene.render();
-		},
-		update: function(dt) {
-			if (!Lyria.SceneDirector.currentScene.update) {
-				return;
-			}
-			Lyria.SceneDirector.currentScene.update(dt);
-		}
-	});*/
 
 })(window.Lyria = window.Lyria || {});
