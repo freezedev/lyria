@@ -7,83 +7,137 @@
 	/**
 	 * @class Lyria.Audio
 	 * This class creates an HTML5 audio element
+	 * 
+	 * @example
+	 * 	var sound = new Lyria.Audio();
+	 *	sound.addAudioElement('carousel', {
+	 *	     filepath : 'assets/audio/444143_Carousel.mp3',
+	 *		 loop : false,
+	 *		 play : false
+	 *	});
+	 *	sound.addAudioElement('wind', {
+	 *		 filepath : 'assets/audio/wind.wav',
+	 *		 playAfter : 'carousel',
+	 *		 loop : true,
+	 *		 play : true
+	 *	});
 	 */
 	Lyria.Audio = function() {
-		// Private audio element ID
-		var audioElement,
+		
+		/**
+		 * Private audio elements 
+		 * 
+		 * @example : {
+		 * 	filepath : 'assets/audio/example.ogg',
+		 *  playAfter : 'example2',
+		 *  loop : false,
+		 *  play : false
+		 * }
+		 */
+		var audioElements = {},
 		/**
 		 * Loads one or multiple audio files
-		 *
-		 * @param {string} or {array} filename
+		 * @param {strin} 
+		 * 		id			identifier of this sound (has to be unique!)
+		 * @param {object}
+		 * 		filepath	filepath of the sound
+		 * 		playAfter	should sth be played after this sound has ended
+		 * 		loop		loop this sound
+		 * 		play		should this sound be played immediatelly?
 		 */
-		loadFromFile = function(filename) {
-			if( typeof (filename) === "undefined")
+		addAudioElement = function(id, fileObj) {
+			if (!fileObj || typeof (fileObj) != 'object')
 				return;
-	
-			audioElement = document.createElement('audio');
-	
-			if( typeof (filename) === "object") {
-				for(var i; i < filename.length; i++)
-					$(audioElement).append('<source src="' + filename[i] + '" />');
-			} else if( typeof (filename) === "string")
-				audioElement.setAttribute('src', filename);
-	
-			audioElement.setAttribute('preload', 'auto');
-	
+			var audioElement = document.createElement('audio');
+			audioElements[id] = fileObj;
+			$(audioElement).attr('id', id);
+			$(audioElement).attr('preload', 'auto');
+			$(audioElement).append('<source src="' + fileObj.filepath + '" />');
+			
+			$('body').append(audioElement);
+			if (fileObj.play) {
+				this.play(id);
+			}
 		},
 		/**
-		 * Plays the audio file(s)
+		 * Plays the audio file 
 		 *
-		 * @param {boolean} infinite (optional)
+		 * @param {string} element idenfifier
 		 */
-		play = function(infinite) {
-			audioElement.addEventListener('ended', function() {
-				if(infinite)
-					this.currentTime = 0;
-			}, false);
-	
-			audioElement.play();
+		play = function(elem) {
+			var sound = audioElements[elem];
+			$('#'+elem).off();
+			$('#'+elem).on('ended', {audioManager: this}, function(event) {
+				if (window.chrome) $(this).load()
+				else $(this).currentTime = 0;
+				
+				var id = $(this).attr('id');
+				var sound = event.data.audioManager.getSound(id);
+				if (sound.playAfter) {
+					event.data.audioManager.play(sound.playAfter)
+				}
+				if (sound.loop) {
+					event.data.audioManager.play($(this).attr('id'));
+				}
+			});
+			$('#'+elem)[0].play();
 		},
+		/**
+		 * Get the audio file object
+		 *
+		 * @param {string} element idenfifier
+		 */
+		getSound = function(elem) {
+			return audioElements[elem];
+		}
 		/**
 		 * Pauses the audio file
+		 * 
+		 * @param {string} element idenfifier
 		 */
-		pause = function() {
-			audioElement.pause();
+		pause = function(elem) {
+			$('#'+elem)[0].pause();
 		},
 		/**
 		 * Stops playing the audio file
+		 * 
+		 * @param {string} element idenfifier
 		 */
-		stop = function() {
-			audioElement.pause();
-			audioElement.currentTime = 0;
+		stop = function(elem) {
+			$('#'+elem)[0].pause();
+			$('#'+elem)[0].currentTime = 0;
 		},
 		/**
 		 * Get the length of the sound file
+		 * 
+		 * @param {string} element idenfifier
 		 */
-		getLength = function() {
-			return audioElement.duration;
+		getLength = function(elem) {
+			return $('#'+elem)[0].duration;
 		},
 		/**
 		 * Sets or gets the volume of the audio file
 		 *
+		 * @param {string} element idenfifier
 		 * @param {number} value
 		 */
-		volume = function(value) {
+		volume = function(elem, value) {
 			if( typeof (value) === "number")
-				audioElement.volume = value;
+				$('#'+elem)[0].volume = value;
 			else
-				return audioElement.volume;
+				return $('#'+elem)[0].volume;
 		},
 		/**
 		 * Sets or gets the position of the audio file
 		 *
+		 * @param {string} element idenfifier
 		 * @param {number} value
 		 */
-		pos = function(value) {
+		pos = function(elem, value) {
 			if( typeof (value) === "number")
-				audioElement.currentTime = value;
+				$('#'+elem)[0].currentTime = value;
 			else
-				return audioElement.currentTime;
+				return $('#'+elem)[0].currentTime;
 		},
 		/**
 		 * Sets or gets properties of the audio object
@@ -123,8 +177,9 @@
 		};
 	
 		return {
-			loadFromFile: loadFromFile,
+			addAudioElement: addAudioElement,
 			play: play,
+			getSound: getSound,
 			pause: pause,
 			stop: stop,
 	
