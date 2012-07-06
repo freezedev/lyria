@@ -251,24 +251,6 @@
 })(window.Lyria = window.Lyria || {});
 
 
-;(function(window, undefined) {
-	// shim layer with setTimeout fallback
-	// http://paulirish.com/2011/requestanimationframe-for-smart-animating/
-	if (!window.requestAnimFrame) {
-		window.requestAnimFrame = (function(){
-		  return  window.requestAnimationFrame       || 
-		          window.webkitRequestAnimationFrame || 
-		          window.mozRequestAnimationFrame    || 
-		          window.oRequestAnimationFrame      || 
-		          window.msRequestAnimationFrame     || 
-		          function( callback ){
-		            window.setTimeout(callback, 1000 / 60);
-		          };
-		})();
-	}
-})(window);
-
-
 // jQuery transform plugin
 ;(function($) {
 	var vendorPrefix = ['webkit', 'o', 'ms', 'moz'];
