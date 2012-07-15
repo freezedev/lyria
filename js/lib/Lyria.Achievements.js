@@ -3,6 +3,7 @@
  * Lyria namespace decleration
  */
 ;(function(Lyria, undefined) {
+	'use strict';
 	
 	// Achievement "Singleton": Revealing module pattern
 	Lyria.Achievements = function() {
@@ -32,7 +33,7 @@
 			for(var i in array)
 			count++;
 			return count;
-		}
+		},
 		/**
 		 * Gets the number of how many achievements have been unlocked
 		 *
@@ -45,7 +46,7 @@
 					count++;
 			}
 			return count;
-		}
+		},
 		/**
 		 * Lists all achievements in a list of <div>s
 		 *
@@ -62,7 +63,7 @@
 			}
 	
 			return result;
-		}
+		},
 		/**
 		 * Displays an achievement if it hasn't been displayed yet
 		 *

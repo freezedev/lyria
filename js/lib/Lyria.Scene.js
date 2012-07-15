@@ -3,6 +3,7 @@
  * Lyria namespace decleration
  */
 ;(function(Lyria, undefined) {
+	'use strict';
 
 	/**
 	 * 
@@ -18,6 +19,7 @@
 			target: '#' + sceneName,
 			template: 'scene.html',
 			data: 'scene.js',
+			path: 'scene',
 			partials: {},
 			helpers: {},
 			localization: 'localization.json',
@@ -45,7 +47,7 @@
 		};
 		options = $.extend(true, defaultOptions, options);
 	
-		var scenePath = Lyria.Resource.path['scene'] + '.' + sceneName;
+		var scenePath = Lyria.Resource.path[options.path] + '.' + sceneName;
 		var templateMarkup = "";
 		var generatedMarkup = "";
 		var dataObj = {};
@@ -73,7 +75,22 @@
 				parent: options.parent,
 				localization: options.localization,
 				route: options.route,
-				name: options.name
+				name: options.name,
+				asObject: $('#' + options.name),
+				getData: function(assetName, options) {
+					var defaultOptions = {
+						async: false,
+						dataType: 'json',
+						success: function() {}
+					}
+					
+					options = $.extend(defaultOptions, options);
+					
+					
+				},
+				get model() {
+					
+				}
 			};
 	
 			Lyria.Utils.isObjectOrString(inputObject, function(arg) {
@@ -200,12 +217,14 @@
 						eventsObj = dataObj.events;
 						delete dataObj.events;
 					}
-	
+					
 					generatedMarkup = template(dataObj, templateOptions);
 	
 					if(options.target) {
 						targetObj = (options.target instanceof jQuery) ? options.target : $(options.target);
 						targetObj.html(generatedMarkup);
+					} else {
+						return generatedMarkup;
 					}
 	
 					// Bind events
@@ -219,7 +238,7 @@
 								$.each(value, function(eventKey, eventValue) {
 								  if (Lyria.EventMap && Lyria.EventMap[eventKey] && (typeof Lyria.EventMap[eventKey] === "object")) {
 								  	
-								  	console.log(Lyria.EventMap[eventKey]);
+								  	//console.log(Lyria.EventMap[eventKey]);
 								  	
 								  	$.each(Lyria.EventMap[eventKey], function(eventMapKey, eventMapValue) {
 										console.log(eventMapKey);
@@ -242,8 +261,8 @@
 						options.resize($(window).width(), $(window).height());
 					});
 	
+
 					return {
-						view: generatedMarkup,
 						name: sceneName,
 						route: options.route,
 						transition: options.transition,
@@ -254,23 +273,26 @@
 						onSceneActive: options.onSceneActive,
 						onSceneDeactivated: options.onSceneDeactivated
 					}
+	
 				}
 			});
 	
+		} 
+		
+		if (options.path !== "prefab") {
+			return {
+				name: sceneName,
+				route: options.route,
+				transition: options.transition,
+				init: options.init,
+				render: options.render,
+				update: options.update,
+				resize: options.resize,
+				onSceneActive: options.onSceneActive,
+				onSceneDeactivated: options.onSceneDeactivated
+			}			
 		}
-	
-		return {
-			name: sceneName,
-			route: options.route,
-			transition: options.transition,
-			init: options.init,
-			render: options.render,
-			update: options.update,
-			resize: options.resize,
-			onSceneActive: options.onSceneActive,
-			onSceneDeactivated: options.onSceneDeactivated
-		}
-	
+		
 	}
 	
 })(window.Lyria = window.Lyria || {});

@@ -3,6 +3,7 @@
  * Lyria namespace decleration
  */
 ;(function(Lyria, undefined) {
+	'use strict';
 
 	/**
 	 * @class Lyria.Resource

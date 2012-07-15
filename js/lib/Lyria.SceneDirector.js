@@ -3,7 +3,7 @@
  * Lyria namespace decleration
  */
 ;(function(Lyria, undefined) {
-
+	'use strict';
 
 	/**
 	 * The scene director is the manager for all scenes

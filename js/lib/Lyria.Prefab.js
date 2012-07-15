@@ -2,13 +2,22 @@
  * @namespace Lyria
  * Lyria namespace decleration
  */
-var Lyria = Lyria || {};
+;(function(Lyria, undefined) {
+	'use strict';
 
-Lyria.Prefab = function(prefabName, options) {
-	
-	if (!prefabName) {
-		return;
+	Lyria.Prefab = function(prefabName, options) {
+		
+		var defaultOptions = {
+			target: null,
+			template: 'prefab.html',
+			data: 'prefab.js',
+			path: 'prefab'
+		};
+		
+		options = $.extend(true, defaultOptions, options);
+		
+		return Lyria.Scene(prefabName, options);
+		
 	}
-	
-	
-}
+
+})(window.Lyria = window.Lyria || {});

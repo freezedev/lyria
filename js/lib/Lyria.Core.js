@@ -3,6 +3,7 @@
  * Lyria namespace decleration
  */
 ;(function(Lyria, undefined) {
+	'use strict';
 	
 	// Debug settings
 	Lyria.Debug = true;
@@ -195,7 +196,7 @@
 		}
 	});
 	
-	DisplayOrientation = {
+	Lyria.DisplayOrientation = {
 		Portrait: 0,
 		Landscape: 1
 	};
