@@ -67,8 +67,8 @@
 					$('.' + SceneDirector.prototype.sceneClassName).hide();
 				}
 
-				if (SceneDirector.prototype.currentScene.onSceneDeactivated) {
-					SceneDirector.prototype.currentScene.onSceneDeactivated();
+				if (SceneDirector.prototype.currentScene.onDeactivated) {
+					SceneDirector.prototype.currentScene.onDeactivated();
 				}
 
 			}
@@ -82,8 +82,8 @@
 						$('#' + scene).show();
 					}
 					SceneDirector.prototype.currentScene = value;
-					if (SceneDirector.prototype.currentScene.onSceneActive) {
-						SceneDirector.prototype.currentScene.onSceneActive();
+					if (SceneDirector.prototype.currentScene.onActive) {
+						SceneDirector.prototype.currentScene.onActive();
 					}
 					return false;
 				}

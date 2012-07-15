@@ -38,10 +38,10 @@
 			},
 			resize: function(width, height) {
 			},
-			onSceneActive: function() {
+			onActive: function() {
 				
 			},
-			onSceneDeactivated: function() {
+			onDeactivated: function() {
 				
 			}
 		};
@@ -178,14 +178,14 @@
 				delete dataObj.resize;
 			}
 			
-			if (dataObj.onSceneActive && (typeof dataObj.onSceneActive === "function")) {
-				options.onSceneActive = dataObj.onSceneActive;
-				delete dataObj.onSceneActive;
+			if (dataObj.onActive && (typeof dataObj.onActive === "function")) {
+				options.onActive = dataObj.onActive;
+				delete dataObj.onActive;
 			}
 			
-			if (dataObj.onSceneDeactivated && (typeof dataObj.onSceneDeactivated === "function")) {
-				options.onSceneDeactivated = dataObj.onSceneDeactivated;
-				delete dataObj.onSceneDeactivated;
+			if (dataObj.onDeactivated && (typeof dataObj.onDeactivated === "function")) {
+				options.onDeactivated = dataObj.onDeactivated;
+				delete dataObj.onDeactivated;
 			}
 		}
 	
@@ -270,8 +270,8 @@
 						render: options.render,
 						update: options.update,
 						resize: options.resize,
-						onSceneActive: options.onSceneActive,
-						onSceneDeactivated: options.onSceneDeactivated
+						onActive: options.onActive,
+						onDeactivated: options.onDeactivated
 					}
 	
 				}
@@ -288,8 +288,8 @@
 				render: options.render,
 				update: options.update,
 				resize: options.resize,
-				onSceneActive: options.onSceneActive,
-				onSceneDeactivated: options.onSceneDeactivated
+				onActive: options.onActive,
+				onDeactivated: options.onDeactivated
 			}			
 		}
 		
