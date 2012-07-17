@@ -46,9 +46,11 @@
 			SceneDirector.prototype.sceneList[newScene.name] = newScene;
 			
 			if (this.containerObj) {
-				this.containerObj.append($(document.createElement('div'))
-										 .attr('id', newScene.name)
-										 .attr('class', SceneDirector.prototype.sceneClassName));
+				if ($('#' + newScene.name).length === 0) { 
+					this.containerObj.append($(document.createElement('div'))
+											 .attr('id', newScene.name)
+											 .attr('class', SceneDirector.prototype.sceneClassName));
+				}
 			}
 		};
 		
