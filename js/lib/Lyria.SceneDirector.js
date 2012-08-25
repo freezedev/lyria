@@ -15,15 +15,20 @@
 			this.containerObj = null;
 						
 			if (container) {
-				var createdElement = $(document.createElement('div')).attr('id', container);
 				
-				if (parent) {
-					$(parent).append(createdElement);
+				if ($('#' + container).length > 0) {
+					this.containerObj = $('#' + container);
 				} else {
-					$('body').append(createdElement);
+					var createdElement = $(document.createElement('div')).attr('id', container);
+					
+					if (parent) {
+						$(parent).prepend(createdElement);
+					} else {
+						$('body').prepend(createdElement);
+					}
+					
+					this.containerObj = $('#' + container);
 				}
-				
-				this.containerObj = $('#' + container);
 			}
 			
 		};
@@ -32,6 +37,7 @@
 		SceneDirector.prototype.sceneClassName = 'scene';
 		SceneDirector.prototype.sceneList = {};
 		SceneDirector.prototype.currentScene = null;
+		SceneDirector.prototype.onSceneChange = function(scene) {};
 		
 		// Methods
 		SceneDirector.prototype.add = function(scene, options) {
@@ -47,14 +53,19 @@
 			
 			if (this.containerObj) {
 				if ($('#' + newScene.name).length === 0) { 
-					this.containerObj.append($(document.createElement('div'))
+					this.containerObj.prepend($(document.createElement('div'))
 											 .attr('id', newScene.name)
 											 .attr('class', SceneDirector.prototype.sceneClassName));
 				}
 			}
 		};
 		
-		SceneDirector.prototype.show = function(scene) {
+		SceneDirector.prototype.show = function(scene, options, callback) {
+			
+			if (SceneDirector.prototype.onSceneChange) {
+				SceneDirector.prototype.onSceneChange(scene);
+			}
+			
 			// More than one scene visible at the same time
 			if ($('.' + SceneDirector.prototype.sceneClassName + ':visible')) {
 				$('.' + SceneDirector.prototype.sceneClassName).hide();
@@ -70,7 +81,7 @@
 				}
 
 				if (SceneDirector.prototype.currentScene.onDeactivated) {
-					SceneDirector.prototype.currentScene.onDeactivated();
+					SceneDirector.prototype.currentScene.onDeactivated(options);
 				}
 
 			}
@@ -85,8 +96,12 @@
 					}
 					SceneDirector.prototype.currentScene = value;
 					if (SceneDirector.prototype.currentScene.onActive) {
-						SceneDirector.prototype.currentScene.onActive();
+						SceneDirector.prototype.currentScene.onActive(options);
 					}
+					
+					if (callback)
+						callback(scene);
+					
 					return false;
 				}
 			});
