@@ -37,4 +37,4 @@
 		};
 	};
 	
-})(window.Lyria = window.Lyria || {});
+})(this.Lyria = this.Lyria || {});

@@ -2,7 +2,7 @@
  * @namespace Lyria
  * Lyria namespace decleration
  */
-;(function(Lyria, undefined) {
+;(function(Lyria, $, undefined) {
 	'use strict';
 
 	/**
@@ -58,6 +58,8 @@
 											 .attr('class', SceneDirector.prototype.sceneClassName));
 				}
 			}
+			
+			return this;
 		};
 		
 		SceneDirector.prototype.show = function(scene, options, callback) {
@@ -125,4 +127,4 @@
 		
 	})();
 
-})(window.Lyria = window.Lyria || {});
+})(this.Lyria = this.Lyria || {}, this.jQuery);

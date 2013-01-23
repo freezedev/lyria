@@ -2,7 +2,7 @@
  * @namespace Lyria
  * Lyria namespace decleration
  */
-;(function(Lyria, undefined) {
+;(function(Lyria, $, undefined) {
 	'use strict';
 
 	/**
@@ -126,4 +126,4 @@
 	    return str;
 	}
 	
-})(window.Lyria = window.Lyria || {});
+})(this.Lyria = this.Lyria || {}, this.jQuery);

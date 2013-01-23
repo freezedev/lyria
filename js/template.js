@@ -1,4 +1,4 @@
-;(function(window, undefined) {
+;(function(global, Lyria, undefined) {
 	
 	var director = new Lyria.SceneDirector('viewport');
 	director.add('scene1');
@@ -6,4 +6,4 @@
 	
 	director.show('scene1');
 	
-})(window);
+})(this, Lyria);
