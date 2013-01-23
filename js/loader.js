@@ -24,6 +24,9 @@
       .script('js/lyria/scenedirector.js')
       .script('js/lyria/ui.js')
       .script('js/lyria/video.js').wait()
+      // Game-specific elements
+      .script('js/lyria/component.js')
+      .script('js/lyria/entity.js').wait()
       // Load application 
       .script('js/template.js');
   
