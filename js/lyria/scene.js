@@ -5,6 +5,35 @@
 ;(function(Lyria, $, undefined) {
 	'use strict';
 
+  Lyria.SceneNew = function(sceneName, sceneFunction, options) {
+    if (!sceneName) {
+      return;
+    }
+    
+    var defaultOptions = {
+      target: '#' + sceneName,
+      template: 'scene.html',
+      path: 'scene',
+      partials: {},
+      helpers: {},
+      localization: 'localization.json',
+      parent: null,
+      route: '/' + sceneName,
+      name: sceneName
+    };
+    
+    options = $.extend(true, defaultOptions, options);
+    
+    var deferTemplate = $.Deferred(function(defer) {
+      
+    });
+    
+    var deferLoc = $.Deferred(function(defer) {
+      
+    });
+    
+  }
+
 	/**
 	 * 
 	 * @param {Object} sceneName
