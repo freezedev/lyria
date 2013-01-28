@@ -11,7 +11,8 @@
 			target: null,
 			template: 'prefab.html',
 			data: 'prefab.js',
-			path: 'prefab'
+			path: 'prefab',
+			isPrefab: true
 		};
 		
 		options = $.extend(true, defaultOptions, options);

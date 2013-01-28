@@ -19,6 +19,7 @@
       localization: 'localization.json',
       parent: null,
       route: '/' + sceneName,
+      isPrefab: false,
       name: sceneName
     };
     
@@ -258,7 +259,11 @@
 	
 					// Bind events
 					if(eventsObj) {
-						eventsObj.delegate = (options.target) ? options.target : 'body';
+					  if (options.isPrefab) {
+  						eventsObj.delegate = (options.target) ? options.target : 'body';					    
+					  } else {
+					    eventsObj.delegate = '#' + sceneName;
+					  }
 	
 						$.each(eventsObj, function(key, value) {
 							if(( typeof value === "object") && (key !== "delegate")) {
@@ -301,7 +306,7 @@
 						resize: options.resize,
 						onActive: options.onActive,
 						onDeactivated: options.onDeactivated
-					}
+					};
 	
 				}
 			});
@@ -319,7 +324,7 @@
 				resize: options.resize,
 				onActive: options.onActive,
 				onDeactivated: options.onDeactivated
-			}			
+			};			
 		}
 		
 	}

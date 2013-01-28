@@ -76,9 +76,10 @@
 		
 		var addTask = function(taskName, taskFunction) {
 			
-			taskList[taskName] = {};
-			taskList[taskName].paused = false;
-			taskList[taskName].value = taskFunction;
+			taskList[taskName] = {
+				'paused' : false,
+				'value' : taskFunction
+			};
 		};
 		
 		var pauseTask = function(taskName) {

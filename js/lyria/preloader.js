@@ -58,13 +58,23 @@
 						}
 	
 					}, function(arg) {
-						var img = new Image();
-						img.onload = function() {
-							Lyria.Preloader.assetsLoaded++;
-							
-							loadingProgress();
-						};
-						img.src = Lyria.Resource.name(arg, 'image');
+					  if (arg.contains(Lyria.Resource.path.image)) {
+					    var img = new Image();
+              img.onload = function() {
+                Lyria.Preloader.assetsLoaded++;
+                
+                loadingProgress();
+              };
+              img.src = arg;
+					  } else {
+					    $.ajax({url: arg, dataType: 'text'}).done(function() {
+					      Lyria.Preloader.assetsLoaded++;
+                
+                loadingProgress();
+					    });
+					  }
+					  
+						
 					});
 				});
 			}
