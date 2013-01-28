@@ -10,7 +10,7 @@ All libraries are included in the repository, so you don't need to worry about b
 * [LESS](http://lesscss.org/) 1.3 or higher
 * [Modernizr](http://modernizr.com/)
 * [Handlebars.js](http://handlebarsjs.com/)
-* [Sammy.js](http://sammyjs.org/) (optional)
+* [Routie](http://projects.jga.me/routie/) (optional)
 
 
 What does it look like?
@@ -99,7 +99,7 @@ Can I use this to build websites?
 ---------------------------------
 
 While Lyria.js is designed for games in mind, you definitely can use it to build traditional websites as the structure Lyria.js is very open and you can use only the stuff you want.  
-It is recommended to use routing for scenes (with the use of Sammy.js) if you are using Lyria.js to build a website.
+It is recommended to use routing for scenes (with the use of Routie) if you are using Lyria.js to build a website.
 
 
 What does Lyria mean?
