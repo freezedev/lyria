@@ -25,7 +25,7 @@ So in Lyria.js a scene is that as well, but seperated in a markup file, a data f
 
 Our scene called myScene might look this:  
 
-1) **myScene.html** -> The markup of the scene  
+1) **scene.html** -> The markup of the scene  
 
 	{{#someText}}
 		<span>{{someText}}</span>
@@ -35,7 +35,7 @@ Our scene called myScene might look this:
 		<div id="{{id}}">{{caption}}</div>
 	{{/buttons}}
 
-2) **myScene.js** -> The data section of a scene. You can use it to prepare data you want to display, calculate stuff or directly set the variables you want to show in the template.
+2) **scene.js** -> The data section of a scene. You can use it to prepare data you want to display, calculate stuff or directly set the variables you want to show in the template.
 
 	function(sender, localization) {
 		
