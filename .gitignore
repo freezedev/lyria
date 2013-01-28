@@ -23,9 +23,24 @@
 ehthumbs.db
 Thumbs.db
 
-# Additional stuff #
-####################
-*.lock
-*.swp
-*.out
+# Backup #
+##########
+backup
+__history
+*.bak
+*~
+*.old
+
+# Eclipse/Aptana files #
+########################
 .project
+
+# Node.js #
+###########
+node_modules
+npm-debug.log
+
+# Sublime #
+###########
+*.sublime-project
+*.sublime-workspace
