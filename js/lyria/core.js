@@ -1,9 +1,118 @@
+;(function(window, undefined) {
+  // frameRate is only used if requestAnimFrame is not available
+  window.frameRate = 60;
+  
+  // shim layer with setTimeout fallback
+  // http://paulirish.com/2011/requestanimationframe-for-smart-animating/
+  // http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
+  
+  http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
+  
+  var vendors = ['ms', 'moz', 'webkit', 'o'];
+    for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+        window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
+        window.cancelRequestAnimationFrame = window[vendors[x]+
+          'CancelRequestAnimationFrame'];
+    }
+    
+    if (!window.requestAnimFrame) {
+      window.requestAnimFrame = function( callback ){
+          window.setTimeout(callback, ~~(1000 / window.frameRate));
+        };
+    }
+    
+    if (!window.cancelAnimationFrame) {
+        window.cancelAnimationFrame = function(id) {
+            clearTimeout(id);
+        };
+    } 
+})(this);
+
+(function(window) {
+
+  window.is = window.check = function(variable) {
+    "use strict";
+
+    var checkType, result, stringedVar, typeName, types;
+    stringedVar = {}.toString.call(variable);
+    typeName = stringedVar.slice(8, stringedVar.length - 1).toLowerCase();
+    checkType = function(typeString, cb, inverse) {
+      if (inverse) {
+        if (typeName !== typeString) {
+          if (typeof cb === "function") {
+            cb(variable);
+          }
+        }
+      } else {
+        if (typeName === typeString) {
+          if (typeof cb === "function") {
+            cb(variable);
+          }
+        }
+      }
+      /*
+            Else is a reserved keyword, while CoffeeScript interpolates it correctly,
+            it can only be written as check(...).['else']...
+            check(...).otherwise(...) is a better choice, if using plain JavaScript
+      */
+
+      result["else"] = result.otherwise = function(cb) {
+        return checkType(typeString, cb, !inverse);
+      };
+      return result;
+    };
+    types = function(inverse) {
+      return {
+        valid: function(cb) {
+          if (inverse) {
+            if (variable == null) {
+              cb(variable);
+            }
+          } else {
+            if (variable != null) {
+              cb(variable);
+            }
+          }
+          return this;
+        },
+        undefined: function(cb) {
+          return checkType("undefined", cb, inverse);
+        },
+        "null": function(cb) {
+          return checkType("null", cb, inverse);
+        },
+        string: function(cb) {
+          return checkType("string", cb, inverse);
+        },
+        number: function(cb) {
+          return checkType("number", cb, inverse);
+        },
+        object: function(cb) {
+          return checkType("object", cb, inverse);
+        },
+        array: function(cb) {
+          return checkType("array", cb, inverse);
+        },
+        "function": function(cb) {
+          return checkType("function", cb, inverse);
+        }
+      };
+    };
+    result = types(false);
+    result.not = types(true);
+    return result;
+  };
+
+})(this);
+
 /**
  * @namespace Lyria
  * Lyria namespace decleration
  */
-;(function(Lyria, undefined) {
+;(function(global, Lyria, undefined) {
 	'use strict';
+	
+	
 	
 	/**
 	 * @class Lyria.Platform
@@ -115,4 +224,5 @@
 	// Fallback language
 	Lyria.defaultLanguage = "en";
 	Lyria.Language = Lyria.Platform.language || Lyria.defaultLanguage;
-})(window.Lyria = window.Lyria || {});
+	
+})(this, this.Lyria = this.Lyria || {});
