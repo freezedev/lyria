@@ -2,7 +2,7 @@
  * @namespace Lyria
  * Lyria namespace decleration
  */
-;(function(Lyria, $, undefined) {
+;(function(global, Lyria, $, undefined) {
 	'use strict';
 
 	/**
@@ -58,6 +58,7 @@
 						}
 	
 					}, function(arg) {
+					  
 					  if (arg.contains(Lyria.Resource.path.image)) {
 					    var img = new Image();
               img.onload = function() {
@@ -65,12 +66,17 @@
                 
                 loadingProgress();
               };
+              img.onerror = function(err) {
+                global.Log.e('Error while loading ' + arg);
+              }
               img.src = arg;
 					  } else {
-					    $.ajax({url: arg, dataType: 'text'}).done(function() {
+					    $.ajax({url: arg, dataType: 'text'}).always(function() {
 					      Lyria.Preloader.assetsLoaded++;
                 
                 loadingProgress();
+					    }).error(function(err) {
+					      global.Log.e('Error while loading ' + arg + ': ' + err);
 					    });
 					  }
 					  
@@ -93,4 +99,4 @@
 		}
 	};
 	
-})(this.Lyria = this.Lyria || {}, this.jQuery);
+})(this, this.Lyria = this.Lyria || {}, this.jQuery);
