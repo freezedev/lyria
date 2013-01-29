@@ -13,6 +13,7 @@
       .script('js/lyria/base.js')
       .script('js/lyria/core.js')
       .script('js/lyria/console.js')
+      .script('js/lyria/logger.js')
       .script('js/lyria/utils.js').wait()
       .script('js/lyria/loop.js')
       .script('js/lyria/achievements.js')
