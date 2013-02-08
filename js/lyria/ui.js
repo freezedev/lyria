@@ -32,9 +32,10 @@
 		};
 		options = $.extend(true, defaultOptions, options);
 	
-		elementObj = (options.element instanceof jQuery) ? options.element : $(element);
+		var elementObj = (options.element instanceof $) ? options.element : $(element);
 	
 		elementObj.addClass(options.buttonClass);
+		
 		if(options.caption) {
 			
 			elementObj.html('<span>' + options.caption + '</span>');
@@ -45,16 +46,16 @@
 		
 		// Bind the events
 		//element.on
-	}
+	};
 	
 	Lyria.UI.Overlay = {
 	
-	}
+	};
 	
 	
 	
 	Lyria.UI.Dialog = {
 		
-	}
+	};
 	
 })(this.Lyria = this.Lyria || {}, this.jQuery);
