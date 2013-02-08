@@ -23,6 +23,7 @@
       .script('js/lyria/preloader.js')
       .script('js/lyria/scene.js')
       .script('js/lyria/scenedirector.js')
+      .script('js/lyria/prefab.js')
       .script('js/lyria/ui.js')
       .script('js/lyria/video.js').wait()
       // Game-specific elements
