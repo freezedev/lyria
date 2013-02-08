@@ -19,6 +19,6 @@
 		
 		return Lyria.Scene(prefabName, options);
 		
-	}
+	};
 
 })(this.Lyria = this.Lyria || {}, this.jQuery);

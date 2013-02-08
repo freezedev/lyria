@@ -2,11 +2,12 @@
   // frameRate is only used if requestAnimFrame is not available
   window.frameRate = 60;
   
-  // shim layer with setTimeout fallback
-  // http://paulirish.com/2011/requestanimationframe-for-smart-animating/
-  // http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
+  /* shim layer with setTimeout fallback
+    http://paulirish.com/2011/requestanimationframe-for-smart-animating/
+    http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
   
-  http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
+   http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
+  */
   
   var vendors = ['ms', 'moz', 'webkit', 'o'];
     for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
@@ -121,18 +122,18 @@
 	Lyria.Platform = Lyria.Base.extend({
 		Browser: {
 			get: function() {
-				return navigator.userAgent;
+				return global.navigator.userAgent;
 			},
 			get name() {
-				return navigator.appName;
+				return global.navigator.appName;
 			},
 			get version() {
-				return navigator.appVersion;
+				return global.navigator.appVersion;
 			}
 		},
 	
 		get name() {
-			return navigator.platform;
+			return global.navigator.platform;
 		},
 	
 		is: function(value) {
@@ -142,13 +143,11 @@
 			switch (value.toLowerCase()) {
 				case '32bit':
 				case '32-bit':
-					return !(is('64bit'));
-					break;
+					return !(Lyria.Platform.is('64bit'));
 	
 				case '64bit':
 				case '64-bit':
-					return (navigator.platform.match(/x86_64/i));
-					break;
+					return (global.navigator.platform.match(/x86_64/i));
 	
 				case 'win':
 				case 'windows':
@@ -165,43 +164,33 @@
 	
 				case 'ios':
 					return (Lyria.Platform.is('iphone') || Lyria.Platform.is('ipod') || Lyria.Platform.is('ipad'));
-					break;
 	
 				case 'iphone':
-					return navigator.userAgent.match(/iPhone/i);
-					break;
+					return global.navigator.userAgent.match(/iPhone/i);
 	
 				case 'ipod':
-					return navigator.userAgent.match(/iPod/i);
-					break;
+					return global.navigator.userAgent.match(/iPod/i);
 	
 				case 'ipad':
-					return navigator.userAgent.match(/iPad/i);
-					break;
+					return global.navigator.userAgent.match(/iPad/i);
 	
 				case 'android':
-					return navigator.userAgent.match(/Android/i);
-					break;
+					return global.navigator.userAgent.match(/Android/i);
 	
 				case 'bada':
-					return navigator.userAgent.match(/Bada/i);
-					break;
+					return global.navigator.userAgent.match(/Bada/i);
 	
 				case 'webos':
-					return navigator.userAgent.match(/webOS/i);
-					break;
+					return global.navigator.userAgent.match(/webOS/i);
 					
 				case 'wp7':
-					return navigator.userAgent.match(/Windows Phone OS/i);
-					break;
+					return global.navigator.userAgent.match(/Windows Phone OS/i);
 	
 				case 'mobile':
 					return (Lyria.Platform.is('android') || Lyria.Platform.is('bada') || Lyria.Platform.is('webos') || Lyria.Platform.is('ios'));
-					break;
 	
 				case 'desktop':
 					return !(Lyria.Platform.is('mobile'));
-					break;
 			}
 		},
 	
@@ -210,7 +199,7 @@
 		},
 	
 		get language() {
-			var language = navigator.language || navigator.systemLanguage;
+			var language = global.navigator.language || global.navigator.systemLanguage;
 			
 			return language.split('-')[0];
 		}

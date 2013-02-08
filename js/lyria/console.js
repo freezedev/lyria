@@ -45,4 +45,4 @@
     }
   });
   
-})(this.Lyria = this.Lyria || {}, this.jQuery)
+})(this.Lyria = this.Lyria || {}, this.jQuery);

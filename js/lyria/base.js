@@ -79,6 +79,6 @@
     load: function(name) {
       
     }
-  }
+  };
   
 })(this, this.Lyria = this.Lyria || {}, this.jQuery);
