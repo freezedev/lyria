@@ -13,5 +13,5 @@
 		},
 		btnSwitchToNextScene: "Switch to next scene",
 		test: "Hallo"
-	}
+	};
 })(sender, localization);

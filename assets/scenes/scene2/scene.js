@@ -5,5 +5,5 @@
 	
 	return {
 		test: "Hallo"
-	}
+	};
 })(sender, localization);

@@ -26,7 +26,7 @@ var walkFiles = function(dir, action, done) {
   };
 
   var checkSuccess = function() {
-    if (!dead && pending == 0) {
+    if (!dead && pending === 0) {
       done();
     }
   };

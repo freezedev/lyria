@@ -77,7 +77,7 @@
         register(text);
   
       if(!array[text]["active"]) {
-        if(( typeof (array[text].icon) != "undefined") && (array[text].icon != ""))
+        if(!array[text].icon)
           $('.status.achievement').css("background-image", "url(" + array[text].icon + ")");
   
         $('.achievement .text').html(text);
