@@ -59,7 +59,7 @@
 	
 					}, function(arg) {
 					  
-					  if (arg.contains(Lyria.Resource.path.image)) {
+					  if (arg.contains('/' + Lyria.Resource.path.image + '/')) {
 					    var img = new Image();
               img.onload = function() {
                 Lyria.Preloader.assetsLoaded++;
