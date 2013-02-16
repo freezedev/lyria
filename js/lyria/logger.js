@@ -2,9 +2,9 @@
  * @namespace Lyria
  * Lyria namespace decleration
  */
-;(function(global, undefined) {'use strict';
+;(function(global, Lyria, undefined) {'use strict';
 
-  global.Log = (function() {
+  Lyria.Log = (function() {
 
     var Log = {};
 
@@ -73,4 +73,4 @@
   // Map shorthand functions to Log.i
   global.log = global.out = global.Log.i;
 
-})(this);
+})(this, this.Lyria = this.Lyria || {});
