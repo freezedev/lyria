@@ -12,6 +12,7 @@
       .script('js/lyria/constants.js')
       .script('js/lyria/base.js')
       .script('js/lyria/core.js')
+      .script('js/lyria/events.js')
       .script('js/lyria/console.js')
       .script('js/lyria/logger.js')
       .script('js/lyria/utils.js').wait()
