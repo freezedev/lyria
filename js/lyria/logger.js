@@ -71,6 +71,6 @@
   })();
 
   // Map shorthand functions to Log.i
-  global.log = global.out = global.Log.i;
+  global.log = global.out = Lyria.Log.i;
 
 })(this, this.Lyria = this.Lyria || {});
