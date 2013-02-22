@@ -17,7 +17,11 @@
     };
     
     GameObject.prototype.execute = function(functionBody) {
-      functionBody.call(this);
+      (function(gameObject) { functionBody; }).call(this);
+    };
+    
+    GameObject.prototype.log = function() {
+      
     };
     
     return GameObject;
