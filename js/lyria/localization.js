@@ -2,84 +2,98 @@
  * @namespace Lyria
  * Lyria namespace decleration
  */
-;(function(Lyria, $, undefined) {
-  'use strict';
-  
-  /**
-   * 
-   * @param {Object} localization
-   * @param {Object} options
-   */
-  Lyria.Localization = function(localization, options) {
-    if(!localization) {
-      return;
-    }
-  
-    var defaultOptions = {
-      language: Lyria.Language
-    };
-    options = $.extend(true, defaultOptions, options);
-  
+;(function(Lyria, $, undefined) {'use strict';
+
+  Lyria.Localization = (function() {
+
     var localizeObject = {};
-    
-    Lyria.Utils.isObjectOrString(localization, function(arg) {
-      // Object
-      localizeObject = arg;
-    }, function(arg) {
-      // String: AJAX request to file
-      $.ajax({
-        url: arg,
-        async: false,
-        dataType: 'json',
-        success: function(data) {
-          localizeObject = data;
-        }
-      });
-    });
-  
-    var localizeLangObject = localizeObject[options.language];
-  
-    // Language not found, switch to default language if available
-    if(!localizeLangObject) {
-      localizeLangObject = localizeObject[Lyria.DefaultLanguage];
-    }
-  
+    var localizeLangObject = null;
+
     /**
-     * 
-     * @param {Object} name
-       * @param {Object} fallback
+     *
+     * @param {Object} localization
+     * @param {Object} options
      */
-    function get(name, fallback) {
-      if(localizeLangObject) {
-        if(localizeLangObject[name]) {
+    var Localization = function(localization, options) {
+      if (!localization) {
+        return;
+      }
+
+      var defaultOptions = {
+        language: Lyria.Language
+      };
+
+      options = $.extend(true, defaultOptions, options);
+
+      localizeObject = {};
+      
+      check(localization).string(function(value) {
+        localizeObject = $.Deferred(function(defer) {
+          defer.resolve(value);
+        }).promise();
+      }).object(function() {
+        
+      });
+
+      Lyria.Utils.isObjectOrString(localization, function(arg) {
+        // Object
+        localizeObject = arg;
+      }, function(arg) {
+        // String: AJAX request to file
+        // TODO: Promise object
+        $.ajax({
+          url: arg,
+          async: false,
+          dataType: 'json',
+          success: function(data) {
+            localizeObject = data;
+          }
+        });
+      });
+
+      var localizeLangObject = localizeObject[options.language];
+
+      // Language not found, switch to default language if available
+      if (!localizeLangObject) {
+        localizeLangObject = localizeObject[Lyria.DefaultLanguage];
+      }
+    }
+    
+    /**
+     *
+     * @param {Object} name
+     * @param {Object} fallback
+     */
+    Localization.prototype.get = function(name, fallback) {
+      if (localizeLangObject) {
+        if (localizeLangObject[name]) {
           return localizeLangObject[name];
         }
-  
+
       }
-  
-      if((!name) && (!fallback)) {
+
+      if ((!name) && (!fallback)) {
         return localizeLangObject;
       } else {
-        if(!name) {
+        if (!name) {
           return fallback;
         } else {
-  
-          if(fallback) {
+
+          if (fallback) {
             return fallback;
           } else {
             return name;
           }
-  
+
         }
       }
-  
-    }
-  
-    return {
-      get: get
+
     };
-  };
-  
-  Lyria.GlobalLocalization = Lyria.Localization(Lyria.Resource.name("i18n.json"));
+
+    return Localization;
+
+  })();
+
+  Lyria.GlobalLocalization = new Lyria.Localization(Lyria.Resource.name("i18n.json"));
 
 })(this.Lyria = this.Lyria || {}, this.jQuery);

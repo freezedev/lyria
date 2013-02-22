@@ -178,7 +178,7 @@
     helperObj = buildTemplateObject(options.helpers);
   
     // Check for localization
-    localizationObj = Lyria.Localization(Lyria.Resource.name(options.localization, scenePath)).get();
+    localizationObj = new Lyria.Localization(Lyria.Resource.name(options.localization, scenePath)).get();
   
     dataObj = buildTemplateObject(options.data, {
       evaluateInput: true,
