@@ -30,7 +30,7 @@
       }
     },
     log: function(message) {
-      Lyria.Console.log(message);
+      Lyria.Log.i(message);
     },
     name: 'Base',
     id: 0,
