@@ -1,0 +1,27 @@
+/**
+ * @namespace Lyria
+ * Lyria namespace decleration
+ */
+;(function(window, Lyria, undefined) {
+  'use strict';
+  
+  Lyria.GameObject = (function() {
+    
+    // Constructor
+    var GameObject = function() {
+      
+    }
+    
+    GameObject.prototype.add = function(component) {
+      
+    };
+    
+    GameObject.prototype.execute = function(functionBody) {
+      functionBody.call(this);
+    };
+    
+    return GameObject;
+    
+  })();
+  
+})(this, this.Lyria = this.Lyria || {});
