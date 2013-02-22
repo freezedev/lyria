@@ -18,7 +18,7 @@
   
       // Loads achievements from local storage if any
       if(window.localStorage) {
-        if(!window.localStorage[_localStorageKey]) {
+        if(window.localStorage[_localStorageKey]) {
           array = JSON.parse(window.localStorage[_localStorageKey]);                  
         }
       }
@@ -31,10 +31,7 @@
       if( typeof (icon) !== "undefined")
         array[text]["icon"] = icon;
     }, getCount = function() {
-      var count = 0;
-      for(var i in array)
-      count++;
-      return count;
+      return Object.keys(array).length;
     },
     /**
      * Gets the number of how many achievements have been unlocked
@@ -83,19 +80,13 @@
         $('.achievement .text').html(text);
         $('.status.achievement').css({
           opacity: 0.0
-        });
-  
-        $('.status.achievement').animate({
+        }).animate({
           opacity: 1.0,
           bottom: '8px'
+        }, 750).delay(2500).animate({
+          opacity: 0.0,
+          bottom: '-80px'
         }, 750);
-  
-        window.setTimeout(function() {
-          $('.status.achievement').animate({
-            opacity: 0.0,
-            bottom: '-80px'
-          }, 750);
-        }, 2500);
   
         array[text].active = true;
       }
