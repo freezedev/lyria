@@ -6,8 +6,7 @@
 
   Lyria.Localization = (function() {
 
-    var localizeObject = {};
-    var localizeLangObject = null;
+    var localizeLangObject = {};
 
     /**
      *
@@ -25,16 +24,8 @@
 
       options = $.extend(true, defaultOptions, options);
 
-      localizeObject = {};
+      var localizeObject = {};
       
-      check(localization).string(function(value) {
-        localizeObject = $.Deferred(function(defer) {
-          defer.resolve(value);
-        }).promise();
-      }).object(function() {
-        
-      });
-
       Lyria.Utils.isObjectOrString(localization, function(arg) {
         // Object
         localizeObject = arg;
@@ -51,7 +42,7 @@
         });
       });
 
-      var localizeLangObject = localizeObject[options.language];
+      localizeLangObject = localizeObject[options.language];
 
       // Language not found, switch to default language if available
       if (!localizeLangObject) {
@@ -64,7 +55,7 @@
      * @param {Object} name
      * @param {Object} fallback
      */
-    Localization.prototype.get = function(name, fallback) {
+    Localization.prototype.get = function(name, fallback) {   
       if (localizeLangObject) {
         if (localizeLangObject[name]) {
           return localizeLangObject[name];
