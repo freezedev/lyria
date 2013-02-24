@@ -4,10 +4,7 @@
  */
 ;(function(Lyria, $, undefined) {'use strict';
 
-  Lyria.Localization = (function() {
-
-    var localizeLangObject = {};
-
+  Lyria.Localization = function(localization, options) {
     /**
      *
      * @param {Object} localization
@@ -17,7 +14,7 @@
       if (!localization) {
         return;
       }
-
+      var localizeLangObject = {};
       var defaultOptions = {
         language: Lyria.Language
       };
@@ -48,23 +45,27 @@
       if (!localizeLangObject) {
         localizeLangObject = localizeObject[Lyria.DefaultLanguage];
       }
-    }
+      
+      return localizeLangObject;
+    };
+    
+    this.localizeLangObject = Localization(localization, options);
     
     /**
      *
      * @param {Object} name
      * @param {Object} fallback
      */
-    Localization.prototype.get = function(name, fallback) {   
-      if (localizeLangObject) {
-        if (localizeLangObject[name]) {
-          return localizeLangObject[name];
+    this.get = function(name, fallback) {   
+      if (this.localizeLangObject) {
+        if (this.localizeLangObject[name]) {
+          return this.localizeLangObject[name];
         }
 
       }
 
       if ((!name) && (!fallback)) {
-        return localizeLangObject;
+        return this.localizeLangObject;
       } else {
         if (!name) {
           return fallback;
@@ -80,10 +81,7 @@
       }
 
     };
-
-    return Localization;
-
-  })();
+  };
 
   Lyria.GlobalLocalization = new Lyria.Localization(Lyria.Resource.name("i18n.json"));
 
