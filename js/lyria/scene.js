@@ -37,6 +37,8 @@
     
   };
 
+  var sceneCache = {};
+
   /**
    * 
    * @param {Object} sceneName
