@@ -6,6 +6,7 @@
       .script('js/lib/jquery.js')
       .script('js/lib/less.js')
       .script('js/lib/detectr.js')
+      .script('js/lib/check.js')
       .script('js/lib/modernizr.js')
       .script('js/lib/handlebars.js').wait()
       // Load libraries
