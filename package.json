@@ -2,7 +2,13 @@
   "name": "lyria",
   "version": "0.0.1",
   "private": true,
+  "preferGlobal": true,
   "dependencies": {
-    "es6-shim": "*"
+    "es6-shim": "*",
+    "less": "1.3.3",
+    "handlebars": "1.0.10",
+    "commander": "1.1.1",
+    "serve": "*",
+    "hound": "*"
   }
 }
