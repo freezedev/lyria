@@ -58,7 +58,6 @@
       helpers: {},
       localization: 'localization.json',
       parent: null,
-      route: '/' + sceneName,
       name: sceneName,
       transition: {
         effect: '',
@@ -109,7 +108,6 @@
         data: options.data,
         parent: options.parent,
         localization: options.localization,
-        route: options.route,
         name: options.name,
         asObject: $('#' + options.name),
         getData: function(assetName, options) {
@@ -125,51 +123,62 @@
         }
       };
   
-      Lyria.Utils.isObjectOrString(inputObject, function(arg) {
-        $.each(arg, function(key, value) {
-          if(Lyria.Utils.isFile(value)) {
+      window.check(inputObject, {
+        object: function(arg) {
+          $.each(arg, function(key, value) {
+            if(Lyria.Utils.isFile(value)) {
+              $.ajax({
+                url: Lyria.Resource.name(value, scenePath),
+                // Needs to synchronous as we don't really know when the different files are
+                // ready for us
+                async: false,
+                dataType: templateOptions.dataType,
+                success: function(data) {
+                  if(templateOptions.evaluateInput) {
+                    templateOptions.argObject = options.argObject || {};
+                    
+                    var functionData = 'return ' + data;
+                    
+                    try {
+                      outputObject[key.split('.')[0]] = (new Function('sender', 'localization', functionData))(senderObject, templateOptions.argObject);                      
+                    } catch (err) {
+                      console.log('Error while evaluating scene ' + sceneName + ': ' + err);
+                    }
+                  } else {
+                    outputObject[key.split('.')[0]] = data;
+                  }
+                }
+              });
+            } else {
+              outputObject[key] = value;
+            }
+          });
+        },
+        string: function(arg) {
+          if(Lyria.Utils.isFile(arg)) {
             $.ajax({
-              url: Lyria.Resource.name(value, scenePath),
+              url: Lyria.Resource.name(arg, scenePath),
               // Needs to synchronous as we don't really know when the different files are
               // ready for us
               async: false,
               dataType: templateOptions.dataType,
               success: function(data) {
                 if(templateOptions.evaluateInput) {
-                  templateOptions.argObject = options.argObject || {};
+                  templateOptions.argObject = templateOptions.argObject || {};
                   
                   var functionData = 'return ' + data;
                   
-                  outputObject[key.split('.')[0]] = (new Function('sender', 'localization', functionData))(senderObject, templateOptions.argObject);
+                  try {
+                    outputObject = (new Function('sender', 'localization', functionData))(senderObject, templateOptions.argObject);
+                  } catch (err) {
+                    console.log('Error while evaluating scene ' + sceneName + ': ' + err);
+                  }
                 } else {
-                  outputObject[key.split('.')[0]] = data;
+                  outputObject = data;
                 }
               }
             });
-          } else {
-            outputObject[key] = value;
           }
-        });
-      }, function(arg) {
-        if(Lyria.Utils.isFile(arg)) {
-          $.ajax({
-            url: Lyria.Resource.name(arg, scenePath),
-            // Needs to synchronous as we don't really know when the different files are
-            // ready for us
-            async: false,
-            dataType: templateOptions.dataType,
-            success: function(data) {
-              if(templateOptions.evaluateInput) {
-                templateOptions.argObject = templateOptions.argObject || {};
-                
-                var functionData = 'return ' + data;
-                
-                outputObject = (new Function('sender', 'localization', functionData))(senderObject, templateOptions.argObject);
-              } else {
-                outputObject = data;
-              }
-            }
-          });
         }
       });
   

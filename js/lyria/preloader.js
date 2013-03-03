@@ -49,41 +49,35 @@
         Lyria.Preloader.maxAssets = assetArray.length;
   
         $.each(assetArray, function(key, value) {
-          Lyria.Utils.isObjectOrString(value, function(arg) {
-            /*if(value.src && value.type) {
-              switch (value.type) {
-                default:
-                  break;
-              }
-            }*/
-  
-          }, function(arg) {
-            
-            if (arg.contains('/' + Lyria.Resource.path.image + '/')) {
-              var img = new global.Image();
-              img.onload = function() {
-                Lyria.Preloader.assetsLoaded++;
+          
+          global.check(value, {
+            object: function() {},
+            string: function(arg) {
+              if (arg.contains('/' + Lyria.Resource.path.image + '/')) {
+                var img = new global.Image();
+                img.onload = function() {
+                  Lyria.Preloader.assetsLoaded++;
+                  
+                  loadingProgress();
+                };
                 
-                loadingProgress();
-              };
-              
-              img.onerror = function(err) {
-                global.Log.e('Error while loading ' + arg);
-              };
-              
-              img.src = arg;
-            } else {
-              $.ajax({url: arg, dataType: 'text'}).always(function() {
-                Lyria.Preloader.assetsLoaded++;
+                img.onerror = function(err) {
+                  global.Log.e('Error while loading ' + arg);
+                };
                 
-                loadingProgress();
-              }).error(function(err) {
-                global.Log.e('Error while loading ' + arg + ': ' + err);
-              });
+                img.src = arg;
+              } else {
+                $.ajax({url: arg, dataType: 'text'}).always(function() {
+                  Lyria.Preloader.assetsLoaded++;
+                  
+                  loadingProgress();
+                }).error(function(err) {
+                  global.Log.e('Error while loading ' + arg + ': ' + err);
+                });
+              }              
             }
-            
-            
           });
+
         });
       }
     },

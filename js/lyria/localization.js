@@ -2,7 +2,7 @@
  * @namespace Lyria
  * Lyria namespace decleration
  */
-;(function(Lyria, $, undefined) {'use strict';
+;(function(global, Lyria, $, undefined) {'use strict';
 
   Lyria.Localization = function(localization, options) {
     /**
@@ -23,20 +23,22 @@
 
       var localizeObject = {};
       
-      Lyria.Utils.isObjectOrString(localization, function(arg) {
-        // Object
-        localizeObject = arg;
-      }, function(arg) {
-        // String: AJAX request to file
-        // TODO: Promise object
-        $.ajax({
-          url: arg,
-          async: false,
-          dataType: 'json',
-          success: function(data) {
-            localizeObject = data;
-          }
-        });
+      global.check(localization, {
+        object: function(arg) {
+          localizeObject = arg;
+        },
+        string: function(arg) {
+          // AJAX request to file
+          // TODO: Promise object
+          $.ajax({
+            url: arg,
+            async: false,
+            dataType: 'json',
+            success: function(data) {
+              localizeObject = data;
+            }
+          });
+        }
       });
 
       localizeLangObject = localizeObject[options.language];
@@ -85,4 +87,4 @@
 
   Lyria.GlobalLocalization = new Lyria.Localization(Lyria.Resource.name("i18n.json"));
 
-})(this.Lyria = this.Lyria || {}, this.jQuery);
+})(this, this.Lyria = this.Lyria || {}, this.jQuery);
