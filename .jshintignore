@@ -1,1 +1,3 @@
 js/lib
+node_modules
+test/js/lib
