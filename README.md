@@ -1,6 +1,6 @@
 Lyria.js
 ========
-Lightweight prototyping javascript game and web framework based on jQuery. 
+Lightweight prototyping javascript game framework based on jQuery. 
 
 What do I need?
 ---------------
@@ -10,7 +10,6 @@ All libraries are included in the repository, so you don't need to worry about b
 * [LESS](http://lesscss.org/) 1.3 or higher
 * [Modernizr](http://modernizr.com/)
 * [Handlebars.js](http://handlebarsjs.com/)
-* [Routie](http://projects.jga.me/routie/) (optional)
 
 
 What does it look like?
@@ -27,57 +26,67 @@ Our scene called myScene might look this:
 
 1) **scene.html** -> The markup of the scene  
 
-	{{#someText}}
-		<span>{{someText}}</span>
-	{{/someText}}
+```html
+{{#someText}}
+	<span>{{someText}}</span>
+{{/someText}}
 
-	{{#buttons}}
-		<div id="{{id}}">{{caption}}</div>
-	{{/buttons}}
+{{#buttons}}
+	<div id="{{id}}">{{caption}}</div>
+{{/buttons}}
+```
 
 2) **scene.js** -> The data section of a scene. You can use it to prepare data you want to display, calculate stuff or directly set the variables you want to show in the template.
 
-	function(sender, localization) {
-		
-		var buttonArray = [];
-		var button1 = "button1";
-		var button2 = "button2";
+```javascript
+(function(sender, localization) {
+	
+	var buttonArray = [];
+	var button1 = "button1";
+	var button2 = "button2";
 
-		buttonArray.push({id: button1, caption: localization[button1]});
-		buttonArray.push({id: button2, caption: localization[button2]});
+	buttonArray.push({id: button1, caption: localization[button1]});
+	buttonArray.push({id: button2, caption: localization[button2]});
 
-		return {
-			someText: 'Hello there.',
-			buttons: buttonArray
-		}
-	}
+	return {
+		someText: 'Hello there.',
+		buttons: buttonArray
+	};
+})(sender, localization);
+```
 
 3) **localization.json** -> Contains localized strings as a JSON file
 
-	{
-		"en": {
-			"button1": "This is the first button.",
-			"button2": "This is the second button."
-		},
-		"de": {
-			"button1": "Das ist der erste Button.",
-			"button2": "Das ist der zweite Button."
-		}
+```json
+{
+	"en": {
+		"button1": "This is the first button.",
+		"button2": "This is the second button."
+	},
+	"de": {
+		"button1": "Das ist der erste Button.",
+		"button2": "Das ist der zweite Button."
 	}
+}
+```
 
 The result will look this:
 
-	<span>Hello there.</span>
+```html
+<span>Hello there.</span>
 
-	<div id="button1">This is the first button.</div>
-	<div id="button2">This is the second button.</div>
+<div id="button1">This is the first button.</div>
+<div id="button2">This is the second button.</div>
+```
 
 Assuming you opened the web application in a browser with an english language pack. Opening the page in a browser with a german language pack will show this:
 
-	<span>Hello there.</span>
+```html
+<span>Hello there.</span>
 
-	<div id="button1">Das ist der erste Button.</div>
-	<div id="button2">Das ist der zweite Button.</div>
+<div id="button1">Das ist der erste Button.</div>
+<div id="button2">Das ist der zweite Button.</div>
+```
 
 If the page is opened with a browser in a language that is not supported (i.e. not defined in localization.json) the english version will be displayed, as english is the default fallback language in Lyria.
 
@@ -93,13 +102,6 @@ How do I get started?
 
 You are already half-way there. Either download the latest stable version, the current development version if you are feeling adventurous or clone this repository.  
 Head on over to the [wiki](https://github.com/freezedev/Lyria.js/wiki) to have step by step instructions on how to use this framework.
-
-
-Can I use this to build websites?
----------------------------------
-
-While Lyria.js is designed for games in mind, you definitely can use it to build traditional websites as the structure Lyria.js is very open and you can use only the stuff you want.  
-It is recommended to use routing for scenes (with the use of Routie) if you are using Lyria.js to build a website.
 
 
 What does Lyria mean?
