@@ -20,7 +20,7 @@ If you are coming from a game developer background, you may already know what a 
 So in Lyria.js a scene is that as well, but seperated in a markup file, a data file and localization JSON file. Templating is build in through Handlebars.js.
 
 ```javascript
-Lyria.SceneManager.add(Lyria.Scene('myScene'));
+Lyria.SceneManager.add('myScene');
 Lyria.SceneManager.show('myScene');
 ```
 
