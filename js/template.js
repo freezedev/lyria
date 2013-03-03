@@ -1,9 +1,13 @@
 ;(function(global, Lyria, undefined) {
 	
-	var director = new Lyria.SceneDirector('viewport');
-	director.add('scene1');
-	director.add('scene2');
+	var myGame = new Lyria.Game();
 	
-	director.show('scene1');
+	myGame.director = new Lyria.SceneDirector('viewport');
+	myGame.director.add('scene1');
+	myGame.director.add('scene2');
+	
+	myGame.director.show('scene1');
+	
+	global.myGame = myGame;
 	
 })(this, Lyria);
