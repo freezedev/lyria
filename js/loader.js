@@ -29,8 +29,8 @@
       .script('js/lyria/component.js')
       .script('js/lyria/entity.js')
       .script('js/lyria/gameobject.js')
-      .script('js/lyria/game.js')
-      .script('js/lyria/viewport.js').wait()
+      .script('js/lyria/viewport.js')
+      .script('js/lyria/game.js').wait()
       // Load application 
       .script('js/template.js');
   
