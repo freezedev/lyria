@@ -13,41 +13,6 @@
 
   /**
    *
-   * @param {Object} object
-   */
-  Lyria.Utils.isArray = function(object) {
-    if (Object.prototype.toString.call(object) === '[object Array]') {
-      return true;
-    } else {
-      return false;
-    }
-  };
-  /**
-   *
-   * @param {Object} type
-   * @param {Object} callbackObject
-   * @param {Object} callbackString
-   */
-  Lyria.Utils.isObjectOrString = function(type, callbackObject, callbackString) {
-    callbackObject = callbackObject ||
-    function(type) {
-    };
-    callbackString = callbackString ||
-    function(type) {
-    };
-
-    if ( typeof type === "object") {
-      callbackObject(type);
-    } else {
-      if ( typeof type === "string") {
-        callbackString(type);
-      } else {
-        return;
-      }
-    }
-  };
-  /**
-   *
    * @param {Object} filename
    *
    * @returns {Boolean}
