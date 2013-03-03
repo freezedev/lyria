@@ -10,14 +10,14 @@
     // Constructor
     var GameObject = function() {
       
-    }
+    };
     
     GameObject.prototype.add = function(component) {
       
     };
     
     GameObject.prototype.execute = function(functionBody) {
-      (function(gameObject) { functionBody; }).call(this);
+      
     };
     
     GameObject.prototype.log = function() {

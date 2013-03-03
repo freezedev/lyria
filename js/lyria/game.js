@@ -8,7 +8,7 @@
   Lyria.Game = (function() {
     
     // Constructor
-    var Game = function() {}
+    var Game = function() {};
     
     Game.prototype.viewport = new Lyria.Viewport();
     Game.prototype.director = new Lyria.SceneDirector();
