@@ -10,8 +10,9 @@
     // Constructor
     var Game = function() {}
     
-    Game.prototype.SceneDirector = new Lyria.SceneDirector();
-    Game.prototype.Preloader = null;
+    Game.prototype.viewport = new Lyria.Viewport();
+    Game.prototype.director = new Lyria.SceneDirector();
+    Game.prototype.preloader = null;
     
     return Game;
     
