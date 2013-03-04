@@ -11,7 +11,7 @@
     var Game = function() {};
     
     Game.prototype.viewport = new Lyria.Viewport();
-    Game.prototype.director = new Lyria.SceneDirector();
+    Game.prototype.director = new Lyria.SceneDirector(Game.prototype.viewport);
     Game.prototype.preloader = null;
     
     return Game;
