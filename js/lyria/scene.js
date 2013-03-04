@@ -27,6 +27,8 @@
         name: sceneName
       };
       
+      this.eventMap = new EventMap();
+      
       options = $.extend(true, defaultOptions, options);
       
       var deferTemplate = $.Deferred(function(defer) {
@@ -40,6 +42,20 @@
     };
     
     Scene.prototype.add = function(gameObject) {
+      
+    };
+    
+    var methods = ['on', 'off', 'trigger'];
+    
+    for (var i = 0, j = methods.length; i < j; i++) {
+      (function(iterator) {
+        Scene.prototype[iterator] = function() {
+          this.eventMap[iterator].apply(this, arguments);
+        };
+      })(methods[i]);
+    }
+    
+    Scene.prototype.update = function(dt) {
       
     };
     
