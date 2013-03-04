@@ -12,25 +12,13 @@
   Lyria.SceneDirector = (function() {
     
     function SceneDirector(container, parent) {
-      this.containerObj = null;
-            
-      if (container) {
-        
-        if ($('#' + container).length > 0) {
-          this.containerObj = $('#' + container);
-        } else {
-          var createdElement = $(document.createElement('div')).attr('id', container);
-          
-          if (parent) {
-            $(parent).prepend(createdElement);
-          } else {
-            $('body').prepend(createdElement);
-          }
-          
-          this.containerObj = $('#' + container);
-        }
-      }
       
+      if (container instanceof Lyria.Viewport) {
+        this.viewport = container;
+      } else {
+        this.viewport = new Lyria.Viewport(container, parent);
+      }
+            
     }
     
     // Properties
@@ -51,9 +39,9 @@
       
       SceneDirector.prototype.sceneList[newScene.name] = newScene;
       
-      if (this.containerObj) {
+      if (this.viewport.$container) {
         if ($('#' + newScene.name).length === 0) { 
-          this.containerObj.prepend($(document.createElement('div'))
+          this.viewport.$container.prepend($(document.createElement('div'))
                        .attr('id', newScene.name)
                        .attr('class', SceneDirector.prototype.sceneClassName));
         }
