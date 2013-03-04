@@ -28,7 +28,7 @@ sceneList.forEach(function(scene) {
       }
       
       if (fs.existsSync(sceneFunc)) {
-        sceneObject[scene]['content'] = UglifyJS.minify(fs.readFileSync(sceneFunc, 'utf8'), {fromString: true});
+        sceneObject[scene]['content'] = UglifyJS.minify(fs.readFileSync(sceneFunc, 'utf8'), {fromString: true}).code;
       }
       
       if (fs.existsSync(sceneMarkup)) {
