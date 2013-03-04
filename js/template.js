@@ -2,7 +2,6 @@
 	
 	var myGame = new Lyria.Game();
 	
-	myGame.director = new Lyria.SceneDirector('viewport');
 	myGame.director.add('scene1');
 	myGame.director.add('scene2');
 	
