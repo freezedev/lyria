@@ -23,6 +23,7 @@
       .script('js/lyria/localization.js')
       .script('js/lyria/preloader.js')
       .script('js/lyria/scene.js')
+      .script('js/lyria/viewport.js')
       .script('js/lyria/scenedirector.js')
       .script('js/lyria/prefab.js')
       .script('js/lyria/video.js').wait()
@@ -30,7 +31,6 @@
       .script('js/lyria/component.js')
       .script('js/lyria/entity.js')
       .script('js/lyria/gameobject.js')
-      .script('js/lyria/viewport.js')
       .script('js/lyria/game.js').wait()
       // Load application 
       .script('js/template.js');
