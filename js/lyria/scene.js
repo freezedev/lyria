@@ -166,7 +166,7 @@
                     try {
                       outputObject[key.split('.')[0]] = (new Function('sender', 'localization', functionData))(senderObject, templateOptions.argObject);                      
                     } catch (err) {
-                      console.log('Error while evaluating scene ' + sceneName + ': ' + err);
+                      console.log('Error while evaluating ' + (options.isPrefab) ? 'prefab' : 'scene' + ' ' + sceneName + ': ' + err);
                     }
                   } else {
                     outputObject[key.split('.')[0]] = data;
@@ -195,7 +195,7 @@
                   try {
                     outputObject = (new Function('sender', 'localization', functionData))(senderObject, templateOptions.argObject);
                   } catch (err) {
-                    console.log('Error while evaluating scene ' + sceneName + ': ' + err);
+                    console.log('Error while evaluating ' + (options.isPrefab) ? 'prefab' : 'scene' + ' ' + sceneName + ': ' + err);
                   }
                 } else {
                   outputObject = data;
