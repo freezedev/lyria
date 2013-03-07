@@ -49,7 +49,14 @@ sceneList.forEach(function(scene) {
 
 sceneObject += '})();';
 
-console.log(sceneObject);
+fs.writeFile('scenes.js', sceneObject, 'utf8', function(err) {
+  if (err) {
+    console.log(err);
+  }
+});
 
-fs.writeFileSync('scenes.js', sceneObject);
-fs.writeFileSync('scenes.min.js', UglifyJS.minify(sceneObject, {fromString: true}).code);
+fs.writeFileSync('scenes.min.js', UglifyJS.minify(sceneObject, {fromString: true}).code, 'utf8', function(err) {
+  if (err) {
+    console.log(err);
+  }
+});
