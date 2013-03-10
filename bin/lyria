@@ -5,6 +5,7 @@ var program = require('commander');
 
 program
   .version(packageFile.version)
-  .option('build', 'Build the current thing')
-  .option('watch', 'Watch for changes and rebuild instantly')
-  .option('create', 'Create a new Lyria application');
+  .option('--build', 'Build the current thing')
+  .option('--watch', 'Watch for changes and rebuild instantly')
+  .option('--create', 'Create a new Lyria application')
+  .parse(process.argv);
