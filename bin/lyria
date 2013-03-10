@@ -2,10 +2,30 @@
 
 var packageFile = require('../package.json');
 var program = require('commander');
+var fs = require('fs');
+var path = require('path');
+
+var createAssetArray = require('./createassetarray').createAssetArray;
+
+
+var isValidProject = function(dir) {
+  return fs.existsSync(path.join(dir, 'assets'));
+};
+
+var buildProject = function(dir) {
+  if (isValidProject(dir)) {
+    createAssetArray(dir);
+  }
+};
+
+var watchProject = function(dir) {
+
+};
 
 program
   .version(packageFile.version)
-  .option('--build', 'Build the current thing')
-  .option('--watch', 'Watch for changes and rebuild instantly')
-  .option('--create', 'Create a new Lyria application')
+  .option('--build <dir>', 'Build Lyria project', buildProject)
+  .option('--watch <dir>', 'Watch for changes and rebuild instantly')
+  .option('--create <projectname> <dir>', 'Create a new Lyria project')
   .parse(process.argv);
+  
