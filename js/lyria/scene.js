@@ -14,38 +14,20 @@
         return;
       }
       
-      var defaultOptions = {
-        target: '#' + sceneName,
-        template: 'scene.html',
-        path: 'scene',
-        partials: {},
-        helpers: {},
-        localization: 'localization.json',
-        parent: null,
-        route: '/' + sceneName,
-        isPrefab: false,
-        name: sceneName
-      };
       
-      this.eventMap = new EventMap();
+      this.eventMap = new Lyria.EventMap();
       
-      options = $.extend(true, defaultOptions, options);
       
-      var deferTemplate = $.Deferred(function(defer) {
-        
-      });
-      
-      var deferLoc = $.Deferred(function(defer) {
-        
-      });
       
     };
     
     Scene.prototype.add = function(gameObject) {
-      
+      if (gameObject instanceof Lyria.GameObject) {
+        
+      }
     };
     
-    var methods = ['on', 'off', 'trigger'];
+    var methods = Object.keys(Lyria.EventMap.prototype);
     
     for (var i = 0, j = methods.length; i < j; i++) {
       (function(iterator) {
@@ -54,10 +36,6 @@
         };
       })(methods[i]);
     }
-    
-    Scene.prototype.update = function(dt) {
-      
-    };
     
   })();
 
@@ -68,7 +46,7 @@
    * @param {Object} sceneName
    * @param {Object} options
    */
-  Lyria.Scene = function(sceneName, options) {
+/*  Lyria.Scene = function(sceneName, options) {
     if(!sceneName) {
       return;
     }
@@ -361,6 +339,6 @@
       };      
     }
     
-  };
+  };*/
   
 })(this, this.Lyria = this.Lyria || {}, this.jQuery, this.Handlebars);
