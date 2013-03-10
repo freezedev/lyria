@@ -129,22 +129,32 @@ function getFilesRecursively(root, options, callback) {
   });
 }
 
-getFilesRecursively('assets', function(curFiles) {
-  var assetArray = [];
-
-  for (var i = 0, j = curFiles.length; i < j; i++) {
-    if (curFiles[i] !== 'assets.json') {
-      assetArray.push('assets/' + curFiles[i].relname);
+exports.createAssetArray = function(dir) {
+  getFilesRecursively(path.join(dir, 'assets'), function(curFiles) {
+    var assetArray = [];
+  
+    for (var i = 0, j = curFiles.length; i < j; i++) {
+      if (curFiles[i] !== 'assets.json') {
+        var filename = '';
+        
+        if (path.sep === '\\') {
+          filename = curFiles[i].relname.split(path.sep).join('/');
+        } else {
+          filename = curFiles[i];
+        }
+        
+        assetArray.push('assets/' + curFiles[i].relname);
+      }
     }
-  }
-
-  console.log(assetArray);
-
-  fs.writeFile('assets/assets.json', JSON.stringify(assetArray), function(err) {
-    if (err) {     
-     console.log('Error while saving asset array: ' + err);
-     } else {
-       console.log('Asset array successfully saved.');
-     }
-  });
-}); 
+    
+    console.log(assetArray);
+  
+    fs.writeFile(path.join(dir, 'assets', 'assets.json'), JSON.stringify(assetArray), function(err) {
+      if (err) {     
+       console.log('Error while saving asset array: ' + err);
+       } else {
+         console.log('Asset array successfully saved.');
+       }
+    });
+  }); 
+};
