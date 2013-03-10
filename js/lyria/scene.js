@@ -7,7 +7,7 @@
 ;(function(window, Lyria, $, Handlebars, undefined) {
   'use strict';
 
-  Lyria.SceneNew = (function() {
+  Lyria.Scene = (function() {
     
     var Scene = function(sceneName, sceneFunction, options) {
       if (!sceneName) {
@@ -37,7 +37,11 @@
       })(methods[i]);
     }
     
+    return Scene;
+    
   })();
+
+  Lyria.Scenes = {};
 
   var sceneCache = {};
 
