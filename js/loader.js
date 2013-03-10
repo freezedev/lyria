@@ -22,6 +22,7 @@
       .script('js/lyria/audio.js')
       .script('js/lyria/localization.js')
       .script('js/lyria/preloader.js')
+      .script('js/lyria/templates.js')
       .script('js/lyria/scene.js')
       .script('js/lyria/viewport.js')
       .script('js/lyria/scenedirector.js')
