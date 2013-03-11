@@ -16,23 +16,29 @@ var isValidProject = function(dir) {
 var buildProject = function(dir, callback) {
   if (isValidProject(dir)) {
     createAssetArray(dir, function() {
-      prepareScenes(path.join(dir, 'assets', 'scenes'), path.join(dir, 'js', 'scenes.js'), callback);    
+      prepareScenes(path.join(dir, 'assets', 'scenes'), path.join(dir, 'js', 'scenes.js'), function() {
+        console.log('Project built');
+      
+        if (callback) {
+          callback();
+        }
+      });    
     });
   }
 };
 
 var watchProject = function(dir) {
   if (isValidProject(dir)) {
-    watcher = hound.watch(dir);
+    watcher = hound.watch(path.join(dir, 'assets'));
     
     console.log('Valid lyria project found at ' + dir + '. Watching for changes...');
     
     var watchArray = ['create', 'change', 'delete'];
     for (var i = 0, j = watchArray.length; i < j; i++) {
       (function(iterator) {
-        watcher.on(iterator, function() {
-          console.log('Change detected. Rebuilding project...');
-          watcher.unwatch(dir);
+        watcher.on(iterator, function(file) {
+          console.log('Change detected at ' + file + '. Rebuilding project...');
+          watcher.clear();
           buildProject(dir, function() {
             watchProject(dir);
           });
