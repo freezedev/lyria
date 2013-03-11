@@ -4,9 +4,10 @@ var packageFile = require('../package.json');
 var program = require('commander');
 var fs = require('fs');
 var path = require('path');
+var hound = require('hound');
 
 var createAssetArray = require('./createassetarray').createAssetArray;
-
+var prepareScenes = require('./preparescenes').prepareScenes;
 
 var isValidProject = function(dir) {
   return fs.existsSync(path.join(dir, 'assets'));
@@ -15,11 +16,32 @@ var isValidProject = function(dir) {
 var buildProject = function(dir) {
   if (isValidProject(dir)) {
     createAssetArray(dir);
+    
+    prepareScenes(path.join(dir, 'assets', 'scenes'), path.join(dir, 'js', 'scenes.js'));
   }
 };
 
 var watchProject = function(dir) {
-
+  if (isValidProject(dir)) {
+    watcher = hound.watch(dir);
+    
+    console.log('Valid lyria project found at ' + dir + '. Watching for changes...');
+    
+    watcher.on('create', function(file, stats) {
+      console.log(file + ' was created. Rebuilding project');
+      buildProject(dir);
+    });
+    
+    watcher.on('change', function(file, stats) {
+      console.log(file + ' was changed. Rebuilding project');
+      buildProject(dir);
+    });
+    
+    watcher.on('delete', function(file, stats) {
+      console.log(file + ' was deleted. Rebuilding project');
+      buildProject(dir);
+    });
+  }
 };
 
 program
