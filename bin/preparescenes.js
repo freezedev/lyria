@@ -54,7 +54,9 @@ exports.prepareScenes = function(scenePath, output, callback) {
       console.log(err);
     }
     
-    callback();
+    if (callback) {
+      callback();      
+    }
   });
 }
 

@@ -135,14 +135,6 @@ exports.createAssetArray = function(dir, callback) {
   
     for (var i = 0, j = curFiles.length; i < j; i++) {
       if (curFiles[i] !== 'assets.json') {
-        var filename = '';
-        
-        if (path.sep === '\\') {
-          filename = curFiles[i].relname.split(path.sep).join('/');
-        } else {
-          filename = curFiles[i];
-        }
-        
         assetArray.push('assets/' + curFiles[i].relname);
       }
     }
@@ -152,7 +144,10 @@ exports.createAssetArray = function(dir, callback) {
         console.log('Error while saving asset array: ' + err);
        } else {
          console.log('Asset array successfully saved.');
-         callback();
+         
+         if (callback) {
+           callback();
+         }
        }
     });
   }); 
