@@ -133,8 +133,11 @@ exports.createAssetArray = function(dir, callback) {
   getFilesRecursively(path.join(dir, 'assets'), function(curFiles) {
     var assetArray = [];
   
-    for (var i = 0, j = curFiles.length; i < j; i++) {     
-      if (curFiles[i].relname !== 'assets.json') {
+    for (var i = 0, j = curFiles.length; i < j; i++) {   
+      console.log(curFiles[i].basename.toLowerCase());
+      console.log(curFiles[i].basename.toLowerCase().indexOf('readme') !== 0);
+        
+      if ((curFiles[i].relname !== 'assets.json') && (curFiles[i].basename.toLowerCase().indexOf('readme') !== 0)) {
         assetArray.push('assets/' + curFiles[i].relname);
       }
     }
