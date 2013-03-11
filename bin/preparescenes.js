@@ -32,12 +32,12 @@ exports.prepareScenes = function(scenePath, output, callback) {
         }
         
         if (fs.existsSync(sceneMarkup)) {
-          sceneObject += 'sender.template = ' + handlebars.precompile(fs.readFileSync(sceneMarkup, 'utf8')) + ';';
+          sceneObject += 'sender.template = window.Handlebars.template(' + handlebars.precompile(fs.readFileSync(sceneMarkup, 'utf8')) + ');';
         }
         
         
         if (fs.existsSync(sceneFunc)) {
-          sceneObject += fs.readFileSync(sceneFunc, 'utf8');
+          sceneObject += 'return ' + fs.readFileSync(sceneFunc, 'utf8');
         }
         
         
