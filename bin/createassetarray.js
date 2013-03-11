@@ -116,7 +116,7 @@ function getFilesRecursively(root, options, callback) {
     var relPath = file.split(root + path.sep)[1];
 
     if (path.sep === '\\') {
-      relPath.split(path.sep).join('/');
+      relPath = relPath.split(path.sep).join('/');
     }
 
     curFiles.push({
@@ -147,8 +147,6 @@ exports.createAssetArray = function(dir) {
       }
     }
     
-    console.log(assetArray);
-  
     fs.writeFile(path.join(dir, 'assets', 'assets.json'), JSON.stringify(assetArray), function(err) {
       if (err) {     
        console.log('Error while saving asset array: ' + err);
