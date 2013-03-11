@@ -34,6 +34,7 @@
       .script('js/lyria/gameobject.js')
       .script('js/lyria/game.js').wait()
       // Load application 
+      .script('js/scenes.js')
       .script('js/template.js');
   
 })(this, this.$LAB);
