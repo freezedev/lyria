@@ -14,11 +14,22 @@
         return;
       }
       
-      
+      this.name = sceneName;
       this.eventMap = new Lyria.EventMap();
       
       
+      var retValue = sceneFunction.call(this, this);
       
+      
+      if (this.localization) {
+        var currentLocalization = this.localization['de'];
+        
+        retValue = $.extend(retValue, currentLocalization);
+      }
+
+      if (this.template) {
+        this.content = this.template(retValue);
+      }
     };
     
     Scene.prototype.add = function(gameObject) {
