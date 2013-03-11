@@ -41,7 +41,7 @@ exports.prepareScenes = function(scenePath, output, callback) {
         }
         
         
-        sceneObject += '})();'
+        sceneObject += '});'
       }
     }
     
