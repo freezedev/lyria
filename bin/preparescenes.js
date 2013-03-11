@@ -3,7 +3,7 @@ var path = require('path');
 var handlebars = require('handlebars');
 var UglifyJS = require('uglify-js');
 
-exports.prepareScenes = function(scenePath, output) {
+exports.prepareScenes = function(scenePath, output, callback) {
   
   var sceneObject = '(function() {';
   var sceneList = fs.readdirSync(scenePath);
@@ -53,6 +53,8 @@ exports.prepareScenes = function(scenePath, output) {
     if (err) {
       console.log(err);
     }
+    
+    callback();
   });
 }
 

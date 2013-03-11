@@ -129,7 +129,7 @@ function getFilesRecursively(root, options, callback) {
   });
 }
 
-exports.createAssetArray = function(dir) {
+exports.createAssetArray = function(dir, callback) {
   getFilesRecursively(path.join(dir, 'assets'), function(curFiles) {
     var assetArray = [];
   
@@ -149,9 +149,10 @@ exports.createAssetArray = function(dir) {
     
     fs.writeFile(path.join(dir, 'assets', 'assets.json'), JSON.stringify(assetArray), function(err) {
       if (err) {     
-       console.log('Error while saving asset array: ' + err);
+        console.log('Error while saving asset array: ' + err);
        } else {
          console.log('Asset array successfully saved.');
+         callback();
        }
     });
   }); 
