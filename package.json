@@ -9,7 +9,8 @@
     "handlebars": "1.0.10",
     "commander": "1.1.1",
     "uglify-js": "2.2.5",
-    "serve": "*",
+    "connect": "*",
+    "colors": "*",
     "hound": "*"
   }
 }
