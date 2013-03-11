@@ -47,6 +47,10 @@
           this.viewport.$container.prepend($(document.createElement('div'))
                        .attr('id', scene.name)
                        .attr('class', SceneDirector.prototype.sceneClassName));
+                       
+          if (scene.content) {
+            $('#' + scene.name).html(scene.content);
+          }
         }
       }
       
