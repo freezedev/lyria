@@ -6,7 +6,7 @@
 		"title": "Das ist "
 	}
 }
-;sender.template = function (Handlebars,depth0,helpers,partials,data) {
+;sender.template = window.Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [2,'>= 1.0.0-rc.3'];
 helpers = helpers || Handlebars.helpers; data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
@@ -22,7 +22,7 @@ helpers = helpers || Handlebars.helpers; data = data || {};
   buffer += escapeExpression(stack1)
     + "</span>";
   return buffer;
-  };(function(sender, localization) {
+  });return (function(sender, localization) {
 	
 	console.log(sender);
 	console.log(localization);
@@ -43,7 +43,7 @@ helpers = helpers || Handlebars.helpers; data = data || {};
 	"en": {},
 	"de": {}
 }
-;sender.template = function (Handlebars,depth0,helpers,partials,data) {
+;sender.template = window.Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [2,'>= 1.0.0-rc.3'];
 helpers = helpers || Handlebars.helpers; data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
@@ -55,7 +55,7 @@ helpers = helpers || Handlebars.helpers; data = data || {};
   buffer += escapeExpression(stack1)
     + "</div>";
   return buffer;
-  };(function(sender, localization) {
+  });return (function(sender, localization) {
 	
 	console.log(sender);
 	console.log(localization);
