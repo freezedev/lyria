@@ -13,11 +13,11 @@ var isValidProject = function(dir) {
   return fs.existsSync(path.join(dir, 'assets'));
 };
 
-var buildProject = function(dir) {
+var buildProject = function(dir, callback) {
   if (isValidProject(dir)) {
-    createAssetArray(dir);
-    
-    prepareScenes(path.join(dir, 'assets', 'scenes'), path.join(dir, 'js', 'scenes.js'));
+    createAssetArray(dir, function() {
+      prepareScenes(path.join(dir, 'assets', 'scenes'), path.join(dir, 'js', 'scenes.js'), callback);    
+    });
   }
 };
 
@@ -27,27 +27,26 @@ var watchProject = function(dir) {
     
     console.log('Valid lyria project found at ' + dir + '. Watching for changes...');
     
-    watcher.on('create', function(file, stats) {
-      console.log(file + ' was created. Rebuilding project');
-      buildProject(dir);
-    });
+    var watchArray = ['create', 'change', 'delete'];
+    for (var i = 0, j = watchArray.length; i < j; i++) {
+      (function(iterator) {
+        watcher.on(iterator, function() {
+          console.log('Change detected. Rebuilding project...');
+          watcher.unwatch(dir);
+          buildProject(dir, function() {
+            watchProject(dir);
+          });
+        });
+      })(watchArray[i]);
+    }
     
-    watcher.on('change', function(file, stats) {
-      console.log(file + ' was changed. Rebuilding project');
-      buildProject(dir);
-    });
-    
-    watcher.on('delete', function(file, stats) {
-      console.log(file + ' was deleted. Rebuilding project');
-      buildProject(dir);
-    });
   }
 };
 
 program
   .version(packageFile.version)
   .option('--build <dir>', 'Build Lyria project', buildProject)
-  .option('--watch <dir>', 'Watch for changes and rebuild instantly')
+  .option('--watch <dir>', 'Watch for changes and rebuild instantly', watchProject)
   .option('--create <projectname> <dir>', 'Create a new Lyria project')
   .parse(process.argv);
   
