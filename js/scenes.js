@@ -39,7 +39,7 @@ helpers = helpers || Handlebars.helpers; data = data || {};
 		test: "Hallo"
 	};
 })(sender, localization);
-})();Lyria.Scenes["scene2"] = new Lyria.Scene("scene2", function(sender) {var localization = sender.localization = {
+});Lyria.Scenes["scene2"] = new Lyria.Scene("scene2", function(sender) {var localization = sender.localization = {
 	"en": {},
 	"de": {}
 }
@@ -64,4 +64,4 @@ helpers = helpers || Handlebars.helpers; data = data || {};
 		test: "Hallo"
 	};
 })(sender, localization);
-})();})();
+});})();
