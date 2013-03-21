@@ -5,7 +5,7 @@ var UglifyJS = require('uglify-js');
 
 exports.prepareScenes = function(scenePath, output, callback) {
   
-  var sceneObject = '(function() {';
+  var sceneObject = '(function(Lyria) {';
   var sceneList = fs.readdirSync(scenePath);
   
   sceneList.forEach(function(scene) {
@@ -15,7 +15,7 @@ exports.prepareScenes = function(scenePath, output, callback) {
         
         sceneObject[scene] = {};
         
-        sceneObject += 'Lyria.Scenes["' + scene + '"] = new Lyria.Scene("' + scene + '", function(sender) {';
+        sceneObject += 'Lyria.Scenes["' + scene + '"] = new Lyria.Scene("' + scene + '", function(scene) {';
         
         var sceneFunc = path.join(scenePath, scene, 'scene.js');
         var sceneLoc = path.join(scenePath, scene, 'localization.json');
@@ -23,21 +23,19 @@ exports.prepareScenes = function(scenePath, output, callback) {
         
         if (fs.existsSync(sceneLoc)) {
           try {
-            sceneObject += 'var localization = sender.localization = ' + fs.readFileSync(sceneLoc) + ';';          
+            sceneObject += 'this.localization = ' + fs.readFileSync(sceneLoc) + ';';          
           } catch (e) {
             console.log('Error while evaluating ' + sceneLoc + ' :' + e);
           }
-        } else {
-          sceneObject += 'var localization = sender.localization = {}';
         }
         
         if (fs.existsSync(sceneMarkup)) {
-          sceneObject += 'sender.template = window.Handlebars.template(' + handlebars.precompile(fs.readFileSync(sceneMarkup, 'utf8')) + ');';
+          sceneObject += 'this.template = Lyria.TemplateEngine.compile(' + handlebars.precompile(fs.readFileSync(sceneMarkup, 'utf8')) + ');';
         }
         
         
         if (fs.existsSync(sceneFunc)) {
-          sceneObject += 'return ' + fs.readFileSync(sceneFunc, 'utf8');
+          sceneObject += 'return ' + fs.readFileSync(sceneFunc, 'utf8') + ';';
         }
         
         
@@ -47,7 +45,7 @@ exports.prepareScenes = function(scenePath, output, callback) {
     
   });
   
-  sceneObject += '})();';
+  sceneObject += '})(this.Lyria);';
   
   fs.writeFile(output, sceneObject, 'utf8', function(err) {
     if (err) {
