@@ -17,6 +17,9 @@
       this.name = sceneName;
       this.eventMap = new Lyria.EventMap();
       
+      // Default values
+      this.localization = {};
+      this.events = {};
       
       var retValue = sceneFunction.call(this, this);
       
