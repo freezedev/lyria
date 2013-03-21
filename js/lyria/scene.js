@@ -23,6 +23,9 @@
       
       var retValue = sceneFunction.call(this, this);
       
+      if (retValue.events) {
+        this.events = retValue.events;
+      }
       
       if (this.localization) {
         var currentLocalization = this.localization['de'];
@@ -32,6 +35,27 @@
 
       if (this.template) {
         this.content = this.template(retValue);
+      }
+      
+      // Bind events
+      if(!$.isEmptyObject(this.events)) {
+        console.log('arbatos');
+        
+        if (options && options.isPrefab) {
+          this.events.delegate = (options.target) ? options.target : 'body';              
+        } else {
+          this.events.delegate = '#' + sceneName;
+        }
+        
+        var events = this.events;
+
+        $.each(events, function(key, value) {
+          if(( typeof value === 'object') && (key !== 'delegate')) {
+            
+            
+            $(events.delegate).on(value, key);
+          }
+        });
       }
     };
     
