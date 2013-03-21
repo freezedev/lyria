@@ -1,4 +1,4 @@
-(function() {Lyria.Scenes["scene1"] = new Lyria.Scene("scene1", function(sender) {var localization = sender.localization = {
+(function(Lyria) {Lyria.Scenes["scene1"] = new Lyria.Scene("scene1", function(scene) {this.localization = {
 	"en": {
 		"title": "This is "
 	},
@@ -6,7 +6,7 @@
 		"title": "Das ist "
 	}
 }
-;sender.template = window.Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+;this.template = Lyria.TemplateEngine.compile(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [2,'>= 1.0.0-rc.3'];
 helpers = helpers || Handlebars.helpers; data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
@@ -27,6 +27,10 @@ helpers = helpers || Handlebars.helpers; data = data || {};
 	console.log(sender);
 	console.log(localization);
 	
+	sender.events = {
+	  
+	};
+	
 	return {
 		events: {
 			'#btnSwitch': {
@@ -36,14 +40,15 @@ helpers = helpers || Handlebars.helpers; data = data || {};
 			}
 		},
 		btnSwitchToNextScene: "Switch to next scene",
-		test: "Hallo"
+		test: "Hallo",
+		title: sender.name
 	};
-})(sender, localization);
-});Lyria.Scenes["scene2"] = new Lyria.Scene("scene2", function(sender) {var localization = sender.localization = {
+})(this, this.localization);
+;});Lyria.Scenes["scene2"] = new Lyria.Scene("scene2", function(scene) {this.localization = {
 	"en": {},
 	"de": {}
 }
-;sender.template = window.Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+;this.template = Lyria.TemplateEngine.compile(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [2,'>= 1.0.0-rc.3'];
 helpers = helpers || Handlebars.helpers; data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
@@ -63,5 +68,6 @@ helpers = helpers || Handlebars.helpers; data = data || {};
 	return {
 		test: "Hallo"
 	};
-})(sender, localization);
-});})();
+	
+})(this, this.localization);
+;});})(this.Lyria);
