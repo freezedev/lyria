@@ -48,7 +48,7 @@
   if (root.Handlebars) {
     var handlebarsConnector = new Lyria.TemplateConnector({
       compile: function() {
-        
+        return root.Handlebars.template.apply(this, arguments);
       }
     });
 
