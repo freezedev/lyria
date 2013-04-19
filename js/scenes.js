@@ -28,21 +28,19 @@ helpers = helpers || Handlebars.helpers; data = data || {};
 	console.log(localization);
 	
 	sender.events = {
-	  
+		'#btnSwitch': {
+			'click': function(event) {
+				event.data.scene.parent.show('scene2');
+			}
+		}
 	};
 	
 	return {
-		events: {
-			'#btnSwitch': {
-				'click': function() {
-					sender.parent.show('scene2');
-				}
-			}
-		},
 		btnSwitchToNextScene: "Switch to next scene",
 		test: "Hallo",
 		title: sender.name
 	};
+	
 })(this, this.localization);
 ;});Lyria.Scenes["scene2"] = new Lyria.Scene("scene2", function(scene) {this.localization = {
 	"en": {},
