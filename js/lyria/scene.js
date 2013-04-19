@@ -7,6 +7,8 @@
 ;(function(window, Lyria, $, Handlebars, undefined) {
   'use strict';
 
+  var sceneCache = {};
+
   Lyria.Scene = (function() {
     
     var Scene = function(sceneName, sceneFunction, options) {
@@ -14,49 +16,54 @@
         return;
       }
       
+      // We need a reference to the scene not being this
+      var self = this;
+      
+      // Set name
       this.name = sceneName;
+      
+      // Create new event map
       this.eventMap = new Lyria.EventMap();
       
       // Default values
       this.localization = {};
-      this.events = {};
       
-      var retValue = sceneFunction.call(this, this);
+      // Set a context object for sceneFunction to be called in
+      var context = {};
       
-      if (retValue.events) {
-        this.events = retValue.events;
-      }
+      // Call scene
+      var retValue = sceneFunction.call(context, this);
       
-      if (this.localization) {
+      // Mix in keys from context to the scene object
+      $.each(context, function(key, value) {
+        if (self[key]) {
+          
+        } else {
+          self[key] = value;           
+        }
+      });
+      
+      
+      /*if (this.localization) {
         var currentLocalization = this.localization['de'];
         
         retValue = $.extend(retValue, currentLocalization);
-      }
+      }*/
 
       if (this.template) {
         this.content = this.template(retValue);
       }
       
-      // Bind events
-      if(!$.isEmptyObject(this.events)) {
-        console.log('arbatos');
-        
+      
+      
+      if (this.events) {
         if (options && options.isPrefab) {
           this.events.delegate = (options.target) ? options.target : 'body';              
         } else {
           this.events.delegate = '#' + sceneName;
-        }
-        
-        var events = this.events;
-
-        $.each(events, function(key, value) {
-          if(( typeof value === 'object') && (key !== 'delegate')) {
-            
-            
-            $(events.delegate).on(value, key);
-          }
-        });
+        }        
       }
+      
     };
     
     Scene.prototype.add = function(gameObject) {
@@ -81,7 +88,7 @@
 
   Lyria.Scenes = {};
 
-  var sceneCache = {};
+
 
   /**
    * 
