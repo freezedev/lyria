@@ -1,0 +1,17 @@
+{
+  "name": "lyria-template",
+  "stylesheets": "less",
+  "coffeescript": false,
+  "paths": {
+    "assets": {
+      "root": "assets",
+      "scenes": "scenes",
+      "audio": "audio",
+      "data": "data",
+      "images": "images",
+      "video": "video"
+    },
+    "src": "js",
+    "stylesheets": "style"
+  }
+}

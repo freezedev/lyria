@@ -7,45 +7,72 @@
 ;(function(window, Lyria, $, Handlebars, undefined) {
   'use strict';
 
-  Lyria.SceneNew = (function() {
+  var sceneCache = {};
+
+  Lyria.Scene = (function() {
     
     var Scene = function(sceneName, sceneFunction, options) {
       if (!sceneName) {
         return;
       }
       
-      var defaultOptions = {
-        target: '#' + sceneName,
-        template: 'scene.html',
-        path: 'scene',
-        partials: {},
-        helpers: {},
-        localization: 'localization.json',
-        parent: null,
-        route: '/' + sceneName,
-        isPrefab: false,
-        name: sceneName
-      };
+      // We need a reference to the scene not being this
+      var self = this;
       
-      this.eventMap = new EventMap();
+      // Set name
+      this.name = sceneName;
       
-      options = $.extend(true, defaultOptions, options);
+      // Create new event map
+      this.eventMap = new Lyria.EventMap();
       
-      var deferTemplate = $.Deferred(function(defer) {
-        
+      // Default values
+      this.localization = {};
+      
+      // Set a context object for sceneFunction to be called in
+      var context = {};
+      
+      // Call scene
+      var retValue = sceneFunction.call(context, this);
+      
+      // Mix in keys from context to the scene object
+      $.each(context, function(key, value) {
+        if (self[key]) {
+          
+        } else {
+          self[key] = value;           
+        }
       });
       
-      var deferLoc = $.Deferred(function(defer) {
+      
+      /*if (this.localization) {
+        var currentLocalization = this.localization['de'];
         
-      });
+        retValue = $.extend(retValue, currentLocalization);
+      }*/
+
+      if (this.template) {
+        this.content = this.template(retValue);
+      }
+      
+      
+      
+      if (this.events) {
+        if (options && options.isPrefab) {
+          this.events.delegate = (options.target) ? options.target : 'body';              
+        } else {
+          this.events.delegate = '#' + sceneName;
+        }        
+      }
       
     };
     
     Scene.prototype.add = function(gameObject) {
-      
+      if (gameObject instanceof Lyria.GameObject) {
+        
+      }
     };
     
-    var methods = ['on', 'off', 'trigger'];
+    var methods = Object.keys(Lyria.EventMap.prototype);
     
     for (var i = 0, j = methods.length; i < j; i++) {
       (function(iterator) {
@@ -55,20 +82,20 @@
       })(methods[i]);
     }
     
-    Scene.prototype.update = function(dt) {
-      
-    };
+    return Scene;
     
   })();
 
-  var sceneCache = {};
+  Lyria.Scenes = {};
+
+
 
   /**
    * 
    * @param {Object} sceneName
    * @param {Object} options
    */
-  Lyria.Scene = function(sceneName, options) {
+/*  Lyria.Scene = function(sceneName, options) {
     if(!sceneName) {
       return;
     }
@@ -361,6 +388,6 @@
       };      
     }
     
-  };
+  };*/
   
 })(this, this.Lyria = this.Lyria || {}, this.jQuery, this.Handlebars);

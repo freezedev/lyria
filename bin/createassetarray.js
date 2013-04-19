@@ -116,7 +116,7 @@ function getFilesRecursively(root, options, callback) {
     var relPath = file.split(root + path.sep)[1];
 
     if (path.sep === '\\') {
-      relPath.split(path.sep).join('/');
+      relPath = relPath.split(path.sep).join('/');
     }
 
     curFiles.push({
@@ -129,22 +129,27 @@ function getFilesRecursively(root, options, callback) {
   });
 }
 
-getFilesRecursively('assets', function(curFiles) {
-  var assetArray = [];
-
-  for (var i = 0, j = curFiles.length; i < j; i++) {
-    if (curFiles[i] !== 'assets.json') {
-      assetArray.push('assets/' + curFiles[i].relname);
+exports.createAssetArray = function(dir, callback) {
+  getFilesRecursively(path.join(dir, 'assets'), function(curFiles) {
+    var assetArray = [];
+  
+    for (var i = 0, j = curFiles.length; i < j; i++) {   
+        
+      if ((curFiles[i].relname !== 'assets.json') && (curFiles[i].basename.toLowerCase().indexOf('readme') !== 0)) {
+        assetArray.push('assets/' + curFiles[i].relname);
+      }
     }
-  }
-
-  console.log(assetArray);
-
-  fs.writeFile('assets/assets.json', JSON.stringify(assetArray), function(err) {
-    if (err) {     
-     console.log('Error while saving asset array: ' + err);
-     } else {
-       console.log('Asset array successfully saved.');
-     }
-  });
-}); 
+    
+    fs.writeFile(path.join(dir, 'assets', 'assets.json'), JSON.stringify(assetArray), function(err) {
+      if (err) {     
+        console.log('Error while saving asset array: ' + err);
+       } else {
+         console.log('Asset array successfully saved.');
+         
+         if (callback) {
+           callback();
+         }
+       }
+    });
+  }); 
+};

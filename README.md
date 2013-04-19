@@ -26,7 +26,8 @@ Lyria.SceneManager.show('myScene');
 
 Our scene called myScene might look this:  
 
-1) **scene.html** -> The markup of the scene  
+**1) scene.html**  
+The markup of the scene  
 
 ```html
 {{#someText}}
@@ -38,7 +39,8 @@ Our scene called myScene might look this:
 {{/buttons}}
 ```
 
-2) **scene.js** -> The data section of a scene. You can use it to prepare data you want to display, calculate stuff or directly set the variables you want to show in the template.
+**2) scene.js**  
+The data section of a scene. You can use it to prepare data you want to display, calculate stuff or directly set the variables you want to show in the template.
 
 ```javascript
 (function(sender, localization) {
@@ -57,7 +59,8 @@ Our scene called myScene might look this:
 })(sender, localization);
 ```
 
-3) **localization.json** -> Contains localized strings as a JSON file
+**3) localization.json**  
+Contains localized strings as a JSON file
 
 ```json
 {

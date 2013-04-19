@@ -2,81 +2,97 @@
  * @namespace Lyria
  * Lyria namespace decleration
  */
-;(function(window, document, Lyria, $, undefined) {
-  'use strict';
+;(function(window, document, Lyria, $, undefined) {'use strict';
 
   /**
    * The scene director is the manager for all scenes
-   *  
+   *
    */
   Lyria.SceneDirector = (function() {
-    
+
     function SceneDirector(container, parent) {
-      
-      if (container instanceof Lyria.Viewport) {
+
+      if ( container instanceof Lyria.Viewport) {
         this.viewport = container;
       } else {
         this.viewport = new Lyria.Viewport(container, parent);
       }
-            
+
+      this.sceneList = {};
+      this.currentScene = null;
+      this.onSceneChange = function(scene) {
+      };
+
     }
-    
+
     // Properties
     SceneDirector.prototype.sceneClassName = 'scene';
-    SceneDirector.prototype.sceneList = {};
-    SceneDirector.prototype.currentScene = null;
-    SceneDirector.prototype.onSceneChange = function(scene) {};
-    
+
     // Methods
     SceneDirector.prototype.add = function(scene, options) {
-      
-      var defaultOptions = {
-        parent: this
-      };
-      options = $.extend(true, defaultOptions, options);
-      
-      var newScene = Lyria.Scene(scene, options);
-      
-      SceneDirector.prototype.sceneList[newScene.name] = newScene;
-      
-      if (this.viewport.$container) {
-        if ($('#' + newScene.name).length === 0) { 
-          this.viewport.$container.prepend($(document.createElement('div'))
-                       .attr('id', newScene.name)
-                       .attr('class', SceneDirector.prototype.sceneClassName));
+
+      if (!( scene instanceof Lyria.Scene)) {
+        if (Lyria.Scenes[scene]) {
+          scene = Lyria.Scenes[scene];
+        } else {
+          throw 'No valid scene found.';
         }
       }
-      
+
+      scene.parent = this;
+      this.sceneList[scene.name] = scene;
+
+      if (this.viewport.$container) {
+        if ($('#' + scene.name).length === 0) {
+          this.viewport.$container.prepend($(document.createElement('div')).attr('id', scene.name).attr('class', SceneDirector.prototype.sceneClassName));
+
+          if (scene.content) {
+            $('#' + scene.name).html(scene.content);
+          }
+
+          // Bind events
+          if (scene.events && !$.isEmptyObject(scene.events)) {
+            $.each(scene.events, function(key, value) {
+              if (( typeof value === 'object') && (key !== 'delegate')) {
+                $(scene.events.delegate).on(value, key, {
+                  scene: scene
+                });
+              }
+            });
+          }
+        }
+      }
+
       return this;
     };
-    
+
     SceneDirector.prototype.show = function(scene, options, callback) {
-      
-      if (SceneDirector.prototype.onSceneChange) {
-        SceneDirector.prototype.onSceneChange(scene);
+
+      if (this.onSceneChange) {
+        this.onSceneChange(scene);
       }
-      
+
       // More than one scene visible at the same time
       if ($('.' + SceneDirector.prototype.sceneClassName + ':visible')) {
         $('.' + SceneDirector.prototype.sceneClassName).hide();
       }
 
-      if (SceneDirector.prototype.currentScene) {
-        if (SceneDirector.prototype.currentScene.transition && SceneDirector.prototype.currentScene.length) {
-          $('#' + SceneDirector.prototype.currentScene).hide(SceneDirector.prototype.currentScene.transition.length, function() {
+      if (this.currentScene) {
+        if (this.currentScene.transition && this.currentScene.length) {
+          $('#' + this.currentScene).hide(this.currentScene.transition.length, function() {
             $('.' + SceneDirector.prototype.sceneClassName).hide();
           });
         } else {
           $('.' + SceneDirector.prototype.sceneClassName).hide();
         }
 
-        if (SceneDirector.prototype.currentScene.onDeactivated) {
-          SceneDirector.prototype.currentScene.onDeactivated(options);
+        if (this.currentScene.onDeactivated) {
+          this.currentScene.onDeactivated(options);
         }
 
       }
 
-      $.each(SceneDirector.prototype.sceneList, function(key, value) {
+      $.each(this.sceneList, function(key, value) {
         if (key === scene) {
 
           if (scene.transition && scene.transition.length) {
@@ -84,35 +100,35 @@
           } else {
             $('#' + scene).show();
           }
-          SceneDirector.prototype.currentScene = value;
-          if (SceneDirector.prototype.currentScene.onActive) {
-            SceneDirector.prototype.currentScene.onActive(options);
+          this.currentScene = value;
+          if (this.currentScene.onActive) {
+            this.currentScene.onActive(options);
           }
-          
+
           if (callback)
             callback(scene);
-          
+
           return false;
         }
       });
     };
-    
+
     SceneDirector.prototype.render = function() {
-      if (!SceneDirector.prototype.currentScene.render) {
+      if (!this.currentScene.render) {
         return;
       }
-      SceneDirector.prototype.currentScene.render();
+      this.currentScene.render();
     };
-    
+
     SceneDirector.prototype.update = function(dt) {
-      if (!SceneDirector.prototype.currentScene.update) {
+      if (!this.currentScene.update) {
         return;
       }
-      SceneDirector.prototype.currentScene.update(dt);
+      this.currentScene.update(dt);
     };
-    
+
     return SceneDirector;
-    
+
   })();
 
 })(this, this.document, this.Lyria = this.Lyria || {}, this.jQuery);
