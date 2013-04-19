@@ -6,4 +6,5 @@
 	return {
 		test: "Hallo"
 	};
-})(sender, localization);
+	
+})(this, this.localization);
