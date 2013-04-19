@@ -1,8 +1,9 @@
 JavaScript style guide
 * Two spaces for indentation
 * Semicolons where semicolons should
-* Commas at the end
-Configuration can be found at `.jshintrc`.
+* Commas at the end  
+
+Configuration can be found at `.jshintrc`.  
 
 Please note that Lyria is public domain (See UNLICENSE.md)
 
