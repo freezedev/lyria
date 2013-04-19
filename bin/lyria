@@ -51,8 +51,8 @@ var watchProject = function(dir) {
 
 program
   .version(packageFile.version)
-  .option('--build <dir>', 'Build Lyria project', buildProject)
-  .option('--watch <dir>', 'Watch for changes and rebuild instantly', watchProject)
-  .option('--create <projectname> <dir>', 'Create a new Lyria project')
+  .option('build <dir>', 'Build Lyria project', buildProject)
+  .option('watch <dir>', 'Watch for changes and rebuild instantly', watchProject)
+  .option('create <projectname> <dir>', 'Create a new Lyria project')
   .parse(process.argv);
   
