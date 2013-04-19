@@ -5,8 +5,8 @@
 	
 	sender.events = {
 		'#btnSwitch': {
-			'click': function() {
-				sender.parent.show('scene2');
+			'click': function(event) {
+				event.data.scene.parent.show('scene2');
 			}
 		}
 	};
@@ -16,4 +16,5 @@
 		test: "Hallo",
 		title: sender.name
 	};
+	
 })(this, this.localization);
