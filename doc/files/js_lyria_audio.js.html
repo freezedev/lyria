@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>js\lyria\audio.js - lyria</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            
+                <h1><img src="../assets/css/logo.png" title="lyria"></h1>
+            
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: 0.2.0</em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+    <h2 class="off-left">APIs</h2>
+    <div id="api-tabview" class="tabview">
+        <ul class="tabs">
+            <li><a href="#api-classes">Classes</a></li>
+            <li><a href="#api-modules">Modules</a></li>
+        </ul>
+
+        <div id="api-tabview-filter">
+            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+        </div>
+
+        <div id="api-tabview-panel">
+            <ul id="api-classes" class="apis classes">
+            
+                <li><a href="../classes/Lyria
+Lyria namespace decleration.Lyria.Audio
+This class creates an HTML5 audio element.html">Lyria
+Lyria namespace decleration.Lyria.Audio
+This class creates an HTML5 audio element</a></li>
+            
+                <li><a href="../classes/Lyria
+Lyria namespace decleration.Lyria.Video
+This class creates an HTML5 video element.html">Lyria
+Lyria namespace decleration.Lyria.Video
+This class creates an HTML5 video element</a></li>
+            
+            </ul>
+
+            <ul id="api-modules" class="apis modules">
+            
+            </ul>
+        </div>
+    </div>
+</div>
+
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+        Show:
+        <label for="api-show-inherited">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </div>
+
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <h1 class="file-heading">File: js\lyria\audio.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+/**
+ * @namespace Lyria
+ * Lyria namespace decleration
+ */
+define(&#x27;lyria/audio&#x27;, [&#x27;root&#x27;, &#x27;jquery&#x27;], function(root, $) {&#x27;use strict&#x27;;
+
+  /**
+   * @class Lyria.Audio
+   * This class creates an HTML5 audio element
+   *
+   * @example
+   *  var sound = new Lyria.Audio();
+   *  sound.addAudioElement(&#x27;carousel&#x27;, {
+   *       filepath : &#x27;assets/audio/444143_Carousel.mp3&#x27;,
+   *     loop : false,
+   *     play : false
+   *  });
+   *  sound.addAudioElement(&#x27;wind&#x27;, {
+   *     filepath : &#x27;assets/audio/wind.wav&#x27;,
+   *     playAfter : &#x27;carousel&#x27;,
+   *     loop : true,
+   *     play : true
+   *  });
+   */
+  var Audio = function() {
+    var muted = false;
+    /**
+     * Private audio elements
+     *
+     * @example : {
+     *  filepath : &#x27;assets/audio/example.ogg&#x27;,
+     *  playAfter : &#x27;example2&#x27;,
+     *  loop : false,
+     *  play : false
+     * }
+     */
+    var audioElements = {};
+    /**
+     * Loads one or multiple audio files
+     * @param {strin}
+     *    id      identifier of this sound (has to be unique!)
+     * @param {object}
+     *    filepath  filepath of the sound
+     *    playAfter should sth be played after this sound has ended
+     *    loop    loop this sound
+     *    play    should this sound be played immediatelly?
+     */
+    var addAudioElement = function(id, fileObj) {
+      if (!fileObj || typeof (fileObj) !== &#x27;object&#x27;)
+        return;
+      var audioElement = document.createElement(&#x27;audio&#x27;);
+      audioElements[id] = fileObj;
+      $(audioElement).attr(&#x27;id&#x27;, id).attr(&#x27;preload&#x27;, &#x27;auto&#x27;).append(&#x27;&lt;source src=&quot;&#x27; + fileObj.filepath + &#x27;&quot; /&gt;&#x27;);
+
+      $(&#x27;body&#x27;).append(audioElement);
+      if (fileObj.play) {
+        this.play(id);
+      }
+    };
+    var removeAudioElement = function(id) {
+      if (!id || typeof (fileObj) != &#x27;string&#x27;)
+        return;
+      $(&#x27;#&#x27; + id).remove();
+      window.log(&#x27;Lyria.audio.removeAudioElement: &#x27; + id + &#x27; removed&#x27;);
+    };
+    /**
+     * Plays the audio file
+     *
+     * @param {string} element identifier
+     */
+    var play = function(elem) {
+      var sound = audioElements[elem];
+      $(&#x27;#&#x27; + elem).one(&#x27;ended&#x27;, {
+        audioManager: this
+      }, function(event) {
+        if (window.chrome)
+          $(this).load();
+        else
+          $(this).currentTime = 0;
+
+        var id = $(this).attr(&#x27;id&#x27;);
+        var sound = event.data.audioManager.getSound(id);
+        // only play after song defined in playAfter if song is initialized
+        if (sound.playAfter &amp;&amp; $(&#x27;#&#x27; + sound.playAfter).length &gt; 0) {
+          event.data.audioManager.play(sound.playAfter);
+        }
+        if (sound.loop) {
+          event.data.audioManager.play($(this).attr(&#x27;id&#x27;));
+        }
+      });
+      $(&#x27;#&#x27;+elem)[0].play();
+      if (muted) {
+        $(&#x27;#&#x27;+elem)[0].volume = 0;
+      }
+    };
+    /**
+     * Get the audio file object
+     *
+     * @param {string} element identifier
+     */
+    var getSound = function(elem) {
+      return audioElements[elem];
+    };
+    /**
+     * Pauses the audio file
+     *
+     * @param {string} element identifier
+     */
+    var pause = function(elem) {
+      if ($(&#x27;#&#x27; + elem).length &gt; 0) {
+        $(&#x27;#&#x27;+elem)[0].pause();
+      } else {
+        window.log(&#x27;error&#x27;, &#x27;Lyria.Audio.pause: cant finde element &#x27; + elem + &#x27; to pause&#x27;);
+      }
+    };
+    /**
+     * Stops playing the audio file
+     *
+     * @param {string} element identifier
+     */
+    var stop = function(elem) {
+      if ($(&#x27;#&#x27; + elem).length &gt; 0 &amp;&amp; $(&#x27;#&#x27;+elem)[0] &amp;&amp; $(&#x27;#&#x27;+elem)[0].pause) {
+        $(&#x27;#&#x27;+elem)[0].pause();
+        $(&#x27;#&#x27;+elem)[0].currentTime = 0;
+      }
+    };
+    /**
+     * Get the length of the sound file
+     *
+     * @param {string} element identifier
+     */
+    var getLength = function(elem) {
+      return $(&#x27;#&#x27;+elem)[0].duration;
+    };
+    /**
+     * Sets or gets the volume of the audio file
+     *
+     * @param {string} element identifier
+     * @param {number} value (between 0 .. 1)
+     */
+    var volume = function(elem, value) {
+      if ($(&#x27;#&#x27; + elem).length &gt; 0) {
+        if ( typeof (value) === &quot;number&quot;)
+          $(&#x27;#&#x27;+elem)[0].volume = value;
+        else
+          return $(&#x27;#&#x27;+elem)[0].volume;
+      } else {
+        return 0;
+      }
+
+    };
+    /**
+     * Sets or gets the position of the audio file
+     *
+     * @param {string} element identifier
+     * @param {number} value
+     */
+    var pos = function(elem, value) {
+      if ( typeof (value) === &quot;number&quot;)
+        $(&#x27;#&#x27;+elem)[0].currentTime = value;
+      else
+        return $(&#x27;#&#x27;+elem)[0].currentTime;
+    };
+    /**
+     * Sets or gets properties of the audio object
+     * TODO: Method chaining
+     *
+     * @param {Object} prop
+     * @param {Object} value (optional)
+     */
+    var attr = function(prop, value) {
+      switch (prop) {
+        case &#x27;duration&#x27;:
+        case &#x27;length&#x27;:
+          return getLength();
+
+        case &#x27;position&#x27;:
+        case &#x27;pos&#x27;:
+          {
+            if ( typeof (value) === &quot;undefined&quot;)
+              return pos();
+            else
+              pos(value);
+
+          }
+          break;
+
+        case &#x27;volume&#x27;:
+          {
+            if ( typeof (value) === &quot;undefined&quot;)
+              return volume();
+            else
+              volume(value);
+
+          }
+          break;
+      }
+    };
+
+    /**
+     * Mute all sound of the game
+     * @param {boolean} value
+     */
+    var muteSounds = function(value) {
+      muted = value;
+      for (var i in audioElements) {
+        if (audioElements.hasOwnProperty(i)) {
+          if ($(&#x27;#&#x27; + i).length &gt; 0) {
+            $(&#x27;#&#x27;+i)[0].volume = value ? 0 : 1;
+          }
+        }
+      }
+    };
+
+    return {
+      addAudioElement: addAudioElement,
+      removeAudioElement: removeAudioElement,
+      play: play,
+      getSound: getSound,
+      pause: pause,
+      stop: stop,
+      muteSounds: muteSounds,
+
+      getLength: getLength,
+      volume: volume,
+      pos: pos,
+      attr: attr
+    };
+  };
+  
+  return Audio;
+});
+
+    </pre>
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>
