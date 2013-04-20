@@ -40,6 +40,6 @@ module.exports = function(grunt) {
   
   
   grunt.registerTask('test', 'Lints and unit tests', ['jshint']);
-  grunt.registerTask('default', 'Default task', ['concat', 'uglify', 'jshint']);
+  grunt.registerTask('default', 'Default task', ['jshint', 'concat', 'uglify']);
   
 };
