@@ -7,3 +7,10 @@ define('lyria/debug', function() {
 define('lyria/constants', {
   animSpeed: 300
 });
+
+define('lyria/language', ['root'], function(root) {
+  // Fallback language
+  var defaultLanguage = 'en';
+  
+  return detectr.Browser.language() || defaultLanguage;  
+});
