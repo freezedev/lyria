@@ -1,6 +1,7 @@
-(function(global, Lyria) {
+define('lyria/entity', function() {
   
-  Lyria.Entity = (function() {
+  //Lyria.Entity
+  return (function() {
     var functionList;
   
     functionList = {};
@@ -89,6 +90,6 @@
   
     return Entity;
   
-  })();  
+  })();
   
-})(this, this.Lyria = this.Lyria || {});
+});
