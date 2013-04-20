@@ -28,16 +28,3 @@
         };
     } 
 })(this);
-
-/**
- * @namespace Lyria
- * Lyria namespace decleration
- */
-;(function(global, Lyria, detectr, undefined) {
-	'use strict';
-	
-	// Fallback language
-	Lyria.defaultLanguage = 'en';
-	Lyria.Language = detectr.Browser.language() || Lyria.defaultLanguage;
-	
-})(this, this.Lyria = this.Lyria || {}, this.detectr);
