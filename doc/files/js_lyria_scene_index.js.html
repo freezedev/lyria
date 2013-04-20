@@ -98,18 +98,17 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*jshint evil:true */
-
 /**
  * @namespace Lyria
  * Lyria namespace decleration
  */
-;(function(window, Lyria, $, Handlebars, undefined) {
+define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;lyria/eventmap&#x27;, &#x27;lyria/gameobject&#x27;], function($, EventMap, GameObject) {
   &#x27;use strict&#x27;;
 
   var sceneCache = {};
 
-  Lyria.Scene = (function() {
+  //Lyria.Scene
+  return (function() {
     
     var Scene = function(sceneName, sceneFunction, options) {
       if (!sceneName) {
@@ -123,7 +122,7 @@
       this.name = sceneName;
       
       // Create new event map
-      this.eventMap = new Lyria.EventMap();
+      this.eventMap = new EventMap();
       
       // Default values
       this.localization = {};
@@ -167,12 +166,12 @@
     };
     
     Scene.prototype.add = function(gameObject) {
-      if (gameObject instanceof Lyria.GameObject) {
+      if (gameObject instanceof GameObject) {
         
       }
     };
     
-    var methods = Object.keys(Lyria.EventMap.prototype);
+    var methods = Object.keys(EventMap.prototype);
     
     for (var i = 0, j = methods.length; i &lt; j; i++) {
       (function(iterator) {
@@ -185,11 +184,8 @@
     return Scene;
     
   })();
-
-  Lyria.Scenes = {};
-
-})(this, this.Lyria = this.Lyria || {}, this.jQuery, this.Handlebars);
-
+  
+});
     </pre>
 </div>
 

@@ -301,14 +301,14 @@
         },
         {
             "file": "js\\lyria\\scene\\director.js",
-            "line": 7,
+            "line": 8,
             "description": "The scene director is the manager for all scenes",
             "class": "Connector",
             "namespace": "Lyria\nLyria namespace decleration"
         },
         {
             "file": "js\\lyria\\scene\\index.js",
-            "line": 3,
+            "line": 1,
             "class": "Connector",
             "namespace": "Lyria\nLyria namespace decleration"
         },
@@ -777,11 +777,11 @@
         },
         {
             "message": "Missing item type\nThe scene director is the manager for all scenes",
-            "line": " js\\lyria\\scene\\director.js:7"
+            "line": " js\\lyria\\scene\\director.js:8"
         },
         {
             "message": "Missing item type",
-            "line": " js\\lyria\\scene\\index.js:3"
+            "line": " js\\lyria\\scene\\index.js:1"
         },
         {
             "message": "Missing item type",
