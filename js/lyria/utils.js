@@ -2,22 +2,18 @@
  * @namespace Lyria
  * Lyria namespace decleration
  */
-;(function(Lyria, $, undefined) {
-  'use strict';
-
-  /**
-   * @class Lyria.Utils
-   * Utils class
-   */
-  Lyria.Utils = {};
-
+define('lyria/utils', ['jquery'], function($) {
+  
+  
+  var Utils = {};
+  
   /**
    *
    * @param {Object} filename
    *
    * @returns {Boolean}
    */
-  Lyria.Utils.isFile = function(filename) {
+  Utils.isFile = function(filename) {
     var sepPos = filename.indexOf('.');
     if (sepPos === -1) {
       return false;
@@ -39,7 +35,7 @@
    *
    * @returns {Object}
    */
-  Lyria.Utils.cloneObject = function(anyObject) {
+  Utils.cloneObject = function(anyObject) {
     return $.extend(true, {}, anyObject);
   };
   
@@ -49,7 +45,7 @@
    * 
    * @returns {String}
    */
-  Lyria.Utils.serializeObject = function(anyObject) {
+  Utils.serializeObject = function(anyObject) {
     if ((typeof anyObject !== 'object') || (anyObject instanceof $)) {
       return;
     }
@@ -86,4 +82,6 @@
       return str;
   };
   
-})(this.Lyria = this.Lyria || {}, this.jQuery);
+  return Utils;
+  
+});
