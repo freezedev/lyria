@@ -61,9 +61,23 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-yuidoc');
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  
+  var createAssetArray = require('./createassetarray').createAssetArray;
+  var prepareScenes = require('./preparescenes').prepareScenes;
+  var path = require('path');
+
+  grunt.registerTask('build', 'Updates asset array and prepares scenes', function() {
+    var dir = './';
+    
+    createAssetArray(dir, function() {
+      prepareScenes(path.join(dir, 'assets', 'scenes'), path.join(dir, 'js', 'scenes.js'), function() {
+        grunt.log.writeln('Project built');
+      });    
+    });
+  });
 
   grunt.registerTask('test', 'Lints and unit tests', ['jshint']);
   grunt.registerTask('doc', 'Generated documentation', ['yuidoc']);
-  grunt.registerTask('default', 'Default task', ['test', 'concat', 'uglify', 'less', 'doc']);
+  grunt.registerTask('default', 'Default task', ['test', 'concat', 'uglify', 'less', 'build', 'doc']);
 
 };
