@@ -20,6 +20,7 @@
     "grunt-contrib-concat": "*",
     "grunt-contrib-yuidoc": "*",
     "grunt-contrib-less": "*",
-    "grunt-contrib-watch": "*"
+    "grunt-contrib-watch": "*",
+    "grunt-dependo": "*"
   }
 }
