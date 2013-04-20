@@ -41,21 +41,21 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a href="../classes/Lyria
-Lyria namespace decleration.Lyria.Audio
-This class creates an HTML5 audio element.html">Lyria
-Lyria namespace decleration.Lyria.Audio
-This class creates an HTML5 audio element</a></li>
+                <li><a href="../classes/Audio.html">Audio</a></li>
             
-                <li><a href="../classes/Lyria
-Lyria namespace decleration.Lyria.Video
-This class creates an HTML5 video element.html">Lyria
-Lyria namespace decleration.Lyria.Video
-This class creates an HTML5 video element</a></li>
+                <li><a href="../classes/Connector.html">Connector</a></li>
+            
+                <li><a href="../classes/Engine.html">Engine</a></li>
+            
+                <li><a href="../classes/Loop.html">Loop</a></li>
             
             </ul>
 
             <ul id="api-modules" class="apis modules">
+            
+                <li><a href="../modules/Lyria.html">Lyria</a></li>
+            
+                <li><a href="../modules/Template.html">Template</a></li>
             
             </ul>
         </div>
@@ -97,28 +97,13 @@ This class creates an HTML5 video element</a></li>
 <div class="file">
     <pre class="code prettyprint linenums">
 /**
- * @namespace Lyria
- * Lyria namespace decleration
+ * @module Lyria
  */
 define(&#x27;lyria/audio&#x27;, [&#x27;root&#x27;, &#x27;jquery&#x27;], function(root, $) {&#x27;use strict&#x27;;
 
   /**
-   * @class Lyria.Audio
-   * This class creates an HTML5 audio element
-   *
-   * @example
-   *  var sound = new Lyria.Audio();
-   *  sound.addAudioElement(&#x27;carousel&#x27;, {
-   *       filepath : &#x27;assets/audio/444143_Carousel.mp3&#x27;,
-   *     loop : false,
-   *     play : false
-   *  });
-   *  sound.addAudioElement(&#x27;wind&#x27;, {
-   *     filepath : &#x27;assets/audio/wind.wav&#x27;,
-   *     playAfter : &#x27;carousel&#x27;,
-   *     loop : true,
-   *     play : true
-   *  });
+   * @class Audio
+   * @static 
    */
   var Audio = function() {
     var muted = false;
@@ -135,7 +120,7 @@ define(&#x27;lyria/audio&#x27;, [&#x27;root&#x27;, &#x27;jquery&#x27;], function
     var audioElements = {};
     /**
      * Loads one or multiple audio files
-     * @param {strin}
+     * @param {string}
      *    id      identifier of this sound (has to be unique!)
      * @param {object}
      *    filepath  filepath of the sound

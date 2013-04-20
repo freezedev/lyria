@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>js\lyria\utils.js - lyria</title>
+    <title>Lyria - lyria</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -92,99 +92,83 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: js\lyria\utils.js</h1>
-
-<div class="file">
-    <pre class="code prettyprint linenums">
-/**
- * @namespace Lyria
- * Lyria namespace decleration
- */
-define(&#x27;lyria/utils&#x27;, [&#x27;jquery&#x27;], function($) {
-  
-  
-  var Utils = {};
-  
-  /**
-   *
-   * @param {Object} filename
-   *
-   * @returns {Boolean}
-   */
-  Utils.isFile = function(filename) {
-    var sepPos = filename.indexOf(&#x27;.&#x27;);
-    if (sepPos === -1) {
-      return false;
-    }
-
-    var filenameLength = filename.length;
-    var diff = filenameLength - sepPos;
-
-    // A filename extension is allowed to be one to four characters long.
-    if ((diff &gt; 1) &amp;&amp; (diff &lt;= 5)) {
-      return true;
-    } else {
-      return false;
-    }
-  };
-  /**
-   *
-   * @param {Object} anyObject
-   *
-   * @returns {Object}
-   */
-  Utils.cloneObject = function(anyObject) {
-    return $.extend(true, {}, anyObject);
-  };
-  
-  /**
-   * 
-   * @param {Object} anyObject
-   * 
-   * @returns {String}
-   */
-  Utils.serializeObject = function(anyObject) {
-    if ((typeof anyObject !== &#x27;object&#x27;) || (anyObject instanceof $)) {
-      return;
-    }
+                        <h1>Lyria Module</h1>
+<div class="box clearfix meta">
     
-      var str = &#x27;{&#x27;;        
-      
-      for (var p in anyObject) {
-          if (anyObject.hasOwnProperty(p)) {
-            if (anyObject[p] instanceof $) {
-              continue;
-            }
-            
-            var objKeys = Object.keys(anyObject);
-            var commaStr = (objKeys.indexOf(p) === (objKeys.length - 1)) ? &#x27;&#x27; : &#x27;,&#x27;;
-            
-            switch (typeof anyObject[p]) {
-              case &#x27;object&#x27;: {
-                str += p + &#x27;: &#x27; + Lyria.Utils.serializeObject(anyObject[p]) + commaStr + &#x27;\n&#x27;;
-              }
-                break;
-              case &#x27;string&#x27;: {
-                str += p + &#x27;: &quot;&#x27; + anyObject[p] + &#x27;&quot;&#x27; + commaStr + &#x27;\n&#x27;;
-              }
-                break;
-              default: {
-                str += p + &#x27;: &#x27; + anyObject[p] + commaStr + &#x27;\n&#x27;;
-              }
-                break;
-            }
-          }
-      }
-      str += &#x27;}&#x27;;
-      
-      return str;
-  };
-  
-  return Utils;
-  
-});
 
-    </pre>
+    
+
+    
+        <div class="foundat">
+            Defined in: <a href="../files/js_lyria_loop.js.html#l7"><code>js\lyria\loop.js:7</code></a>
+        </div>
+    
+
+    
+</div>
+
+
+
+<div class="box intro">
+    
+</div>
+
+
+
+<div class="yui3-g">
+    <div class="yui3-u-1-2">
+        
+            <p>This module provides the following classes:</p>
+
+            <ul class="module-classes">
+            
+                <li class="module-class">
+                    <a href="../classes/Audio.html">
+                        Audio
+                    </a>
+                </li>
+            
+                <li class="module-class">
+                    <a href="../classes/Connector.html">
+                        Connector
+                    </a>
+                </li>
+            
+                <li class="module-class">
+                    <a href="../classes/Engine.html">
+                        Engine
+                    </a>
+                </li>
+            
+                <li class="module-class">
+                    <a href="../classes/Loop.html">
+                        Loop
+                    </a>
+                </li>
+            
+            </ul>
+        
+    </div>
+
+    <div class="yui3-u-1-2">
+        
+            <p>This module is a rollup of the following modules:</p>
+
+            <ul class="module-submodules">
+            
+                <li class="module-submodule">
+                    <a href="../modules/Template.html">
+                        Template
+                    </a>
+
+                    <div class="module-submodule-description">
+                        
+                    </div>
+                </li>
+            
+            </ul>
+        
+    </div>
 </div>
 
                     </div>

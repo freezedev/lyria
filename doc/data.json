@@ -24,6 +24,26 @@
                 "Lyria\nLyria namespace decleration": 1
             }
         },
+        "js\\lyria\\template\\connector.js": {
+            "name": "js\\lyria\\template\\connector.js",
+            "modules": {
+                "Template": 1
+            },
+            "classes": {
+                "Connector": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "js\\lyria\\template\\engine.js": {
+            "name": "js\\lyria\\template\\engine.js",
+            "modules": {},
+            "classes": {
+                "Engine": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "js\\lyria\\achievements.js": {
             "name": "js\\lyria\\achievements.js",
             "modules": {},
@@ -44,14 +64,14 @@
         },
         "js\\lyria\\audio.js": {
             "name": "js\\lyria\\audio.js",
-            "modules": {},
+            "modules": {
+                "Lyria": 1
+            },
             "classes": {
-                "Lyria\nLyria namespace decleration.Lyria.Audio\nThis class creates an HTML5 audio element": 1
+                "Audio": 1
             },
             "fors": {},
-            "namespaces": {
-                "Lyria\nLyria namespace decleration": 1
-            }
+            "namespaces": {}
         },
         "js\\lyria\\events.js": {
             "name": "js\\lyria\\events.js",
@@ -110,11 +130,11 @@
         "js\\lyria\\loop.js": {
             "name": "js\\lyria\\loop.js",
             "modules": {},
-            "classes": {},
+            "classes": {
+                "Loop": 1
+            },
             "fors": {},
-            "namespaces": {
-                "Lyria\nLyria namespace decleration": 1
-            }
+            "namespaces": {}
         },
         "js\\lyria\\prefab.js": {
             "name": "js\\lyria\\prefab.js",
@@ -143,17 +163,6 @@
                 "Lyria\nLyria namespace decleration": 1
             }
         },
-        "js\\lyria\\video.js": {
-            "name": "js\\lyria\\video.js",
-            "modules": {},
-            "classes": {
-                "Lyria\nLyria namespace decleration.Lyria.Video\nThis class creates an HTML5 video element": 1
-            },
-            "fors": {},
-            "namespaces": {
-                "Lyria\nLyria namespace decleration": 1
-            }
-        },
         "js\\lyria\\viewport.js": {
             "name": "js\\lyria\\viewport.js",
             "modules": {},
@@ -164,60 +173,134 @@
             }
         }
     },
-    "modules": {},
+    "modules": {
+        "Lyria": {
+            "name": "Lyria",
+            "submodules": {
+                "Template": 1
+            },
+            "classes": {
+                "Connector": 1,
+                "Engine": 1,
+                "Audio": 1,
+                "Loop": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "Lyria\nLyria namespace decleration": 1
+            },
+            "tag": "module",
+            "file": "js\\lyria\\loop.js",
+            "line": 7
+        },
+        "Template": {
+            "name": "Template",
+            "submodules": {},
+            "classes": {
+                "Connector": 1,
+                "Engine": 1
+            },
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "Lyria",
+            "namespace": "",
+            "file": "js\\lyria\\template\\engine.js",
+            "line": 9
+        }
+    },
     "classes": {
-        "Lyria\nLyria namespace decleration.Lyria.Audio\nThis class creates an HTML5 audio element": {
-            "name": "Lyria\nLyria namespace decleration.Lyria.Audio\nThis class creates an HTML5 audio element",
-            "shortname": "Lyria.Audio\nThis class creates an HTML5 audio element",
+        "Connector": {
+            "name": "Connector",
+            "shortname": "Connector",
             "classitems": [],
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "namespace": "Lyria\nLyria namespace decleration",
-            "file": "js\\lyria\\audio.js",
-            "line": 7,
-            "example": [
-                "\n var sound = new Lyria.Audio();\n sound.addAudioElement('carousel', {\n      filepath : 'assets/audio/444143_Carousel.mp3',\n    loop : false,\n    play : false\n });\n sound.addAudioElement('wind', {\n    filepath : 'assets/audio/wind.wav',\n    playAfter : 'carousel',\n    loop : true,\n    play : true\n });"
+            "module": "Lyria",
+            "submodule": "Template",
+            "namespace": "",
+            "file": "js\\lyria\\template\\connector.js",
+            "line": 12,
+            "is_constructor": 1
+        },
+        "Engine": {
+            "name": "Engine",
+            "shortname": "Engine",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Lyria",
+            "submodule": "Template",
+            "namespace": "",
+            "file": "js\\lyria\\template\\engine.js",
+            "line": 9,
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "templateConnector",
+                    "description": "",
+                    "type": "Object"
+                }
             ]
         },
-        "Lyria\nLyria namespace decleration.Lyria.Video\nThis class creates an HTML5 video element": {
-            "name": "Lyria\nLyria namespace decleration.Lyria.Video\nThis class creates an HTML5 video element",
-            "shortname": "Lyria.Video\nThis class creates an HTML5 video element",
+        "Audio": {
+            "name": "Audio",
+            "shortname": "Audio",
             "classitems": [],
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "namespace": "Lyria\nLyria namespace decleration",
-            "file": "js\\lyria\\video.js",
-            "line": 8
+            "module": "Lyria",
+            "namespace": "",
+            "file": "js\\lyria\\audio.js",
+            "line": 6,
+            "static": 1
+        },
+        "Loop": {
+            "name": "Loop",
+            "shortname": "Loop",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Lyria",
+            "namespace": "",
+            "file": "js\\lyria\\loop.js",
+            "line": 7,
+            "static": 1
         }
     },
     "classitems": [
         {
             "file": "js\\lyria\\scene\\director.js",
             "line": 1,
-            "class": "Lyria\nLyria namespace decleration.Lyria.Audio\nThis class creates an HTML5 audio element",
+            "class": "Connector",
             "namespace": "Lyria\nLyria namespace decleration"
         },
         {
             "file": "js\\lyria\\scene\\director.js",
             "line": 7,
             "description": "The scene director is the manager for all scenes",
-            "class": "Lyria\nLyria namespace decleration.Lyria.Audio\nThis class creates an HTML5 audio element",
+            "class": "Connector",
             "namespace": "Lyria\nLyria namespace decleration"
         },
         {
             "file": "js\\lyria\\scene\\index.js",
             "line": 3,
-            "class": "Lyria\nLyria namespace decleration.Lyria.Audio\nThis class creates an HTML5 audio element",
+            "class": "Connector",
             "namespace": "Lyria\nLyria namespace decleration"
         },
         {
             "file": "js\\lyria\\achievements.js",
             "line": 1,
-            "class": "Lyria\nLyria namespace decleration.Lyria.Audio\nThis class creates an HTML5 audio element",
+            "class": "Audio",
+            "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
         },
         {
@@ -228,7 +311,8 @@
                 "description": "The exact number of unlocked achievements",
                 "type": "Number"
             },
-            "class": "Lyria\nLyria namespace decleration.Lyria.Audio\nThis class creates an HTML5 audio element",
+            "class": "Audio",
+            "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
         },
         {
@@ -239,7 +323,8 @@
                 "description": "The markup for the list",
                 "type": "String"
             },
-            "class": "Lyria\nLyria namespace decleration.Lyria.Audio\nThis class creates an HTML5 audio element",
+            "class": "Audio",
+            "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
         },
         {
@@ -253,52 +338,50 @@
                     "type": "String"
                 }
             ],
-            "class": "Lyria\nLyria namespace decleration.Lyria.Audio\nThis class creates an HTML5 audio element",
+            "class": "Audio",
+            "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
         },
         {
             "file": "js\\lyria\\assets.js",
             "line": 1,
-            "class": "Lyria\nLyria namespace decleration.Lyria.Audio\nThis class creates an HTML5 audio element",
+            "class": "Audio",
+            "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
         },
         {
             "file": "js\\lyria\\assets.js",
             "line": 6,
-            "class": "Lyria\nLyria namespace decleration.Lyria.Audio\nThis class creates an HTML5 audio element",
+            "class": "Audio",
+            "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
         },
         {
             "file": "js\\lyria\\assets.js",
             "line": 19,
-            "class": "Lyria\nLyria namespace decleration.Lyria.Audio\nThis class creates an HTML5 audio element",
+            "class": "Audio",
+            "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
         },
         {
             "file": "js\\lyria\\audio.js",
-            "line": 1,
-            "class": "Lyria\nLyria namespace decleration.Lyria.Audio\nThis class creates an HTML5 audio element",
-            "namespace": "Lyria\nLyria namespace decleration"
-        },
-        {
-            "file": "js\\lyria\\audio.js",
-            "line": 27,
+            "line": 12,
             "description": "Private audio elements",
             "example": [
                 " : {\n filepath : 'assets/audio/example.ogg',\n playAfter : 'example2',\n loop : false,\n play : false\n}"
             ],
-            "class": "Lyria\nLyria namespace decleration.Lyria.Audio\nThis class creates an HTML5 audio element",
-            "namespace": "Lyria\nLyria namespace decleration"
+            "class": "Audio",
+            "module": "Lyria"
         },
         {
             "file": "js\\lyria\\audio.js",
-            "line": 38,
+            "line": 23,
             "description": "Loads one or multiple audio files",
             "params": [
                 {
                     "name": "!~YUIDOC_LINE~!",
                     "description": "id      identifier of this sound (has to be unique!)",
-                    "type": "Strin"
+                    "type": "String"
                 },
                 {
                     "name": "!~YUIDOC_LINE~!",
@@ -306,12 +389,12 @@
                     "type": "Object"
                 }
             ],
-            "class": "Lyria\nLyria namespace decleration.Lyria.Audio\nThis class creates an HTML5 audio element",
-            "namespace": "Lyria\nLyria namespace decleration"
+            "class": "Audio",
+            "module": "Lyria"
         },
         {
             "file": "js\\lyria\\audio.js",
-            "line": 66,
+            "line": 51,
             "description": "Plays the audio file",
             "params": [
                 {
@@ -320,12 +403,12 @@
                     "type": "String"
                 }
             ],
-            "class": "Lyria\nLyria namespace decleration.Lyria.Audio\nThis class creates an HTML5 audio element",
-            "namespace": "Lyria\nLyria namespace decleration"
+            "class": "Audio",
+            "module": "Lyria"
         },
         {
             "file": "js\\lyria\\audio.js",
-            "line": 96,
+            "line": 81,
             "description": "Get the audio file object",
             "params": [
                 {
@@ -334,12 +417,12 @@
                     "type": "String"
                 }
             ],
-            "class": "Lyria\nLyria namespace decleration.Lyria.Audio\nThis class creates an HTML5 audio element",
-            "namespace": "Lyria\nLyria namespace decleration"
+            "class": "Audio",
+            "module": "Lyria"
         },
         {
             "file": "js\\lyria\\audio.js",
-            "line": 104,
+            "line": 89,
             "description": "Pauses the audio file",
             "params": [
                 {
@@ -348,12 +431,12 @@
                     "type": "String"
                 }
             ],
-            "class": "Lyria\nLyria namespace decleration.Lyria.Audio\nThis class creates an HTML5 audio element",
-            "namespace": "Lyria\nLyria namespace decleration"
+            "class": "Audio",
+            "module": "Lyria"
         },
         {
             "file": "js\\lyria\\audio.js",
-            "line": 116,
+            "line": 101,
             "description": "Stops playing the audio file",
             "params": [
                 {
@@ -362,12 +445,12 @@
                     "type": "String"
                 }
             ],
-            "class": "Lyria\nLyria namespace decleration.Lyria.Audio\nThis class creates an HTML5 audio element",
-            "namespace": "Lyria\nLyria namespace decleration"
+            "class": "Audio",
+            "module": "Lyria"
         },
         {
             "file": "js\\lyria\\audio.js",
-            "line": 127,
+            "line": 112,
             "description": "Get the length of the sound file",
             "params": [
                 {
@@ -376,12 +459,12 @@
                     "type": "String"
                 }
             ],
-            "class": "Lyria\nLyria namespace decleration.Lyria.Audio\nThis class creates an HTML5 audio element",
-            "namespace": "Lyria\nLyria namespace decleration"
+            "class": "Audio",
+            "module": "Lyria"
         },
         {
             "file": "js\\lyria\\audio.js",
-            "line": 135,
+            "line": 120,
             "description": "Sets or gets the volume of the audio file",
             "params": [
                 {
@@ -395,12 +478,12 @@
                     "type": "Number"
                 }
             ],
-            "class": "Lyria\nLyria namespace decleration.Lyria.Audio\nThis class creates an HTML5 audio element",
-            "namespace": "Lyria\nLyria namespace decleration"
+            "class": "Audio",
+            "module": "Lyria"
         },
         {
             "file": "js\\lyria\\audio.js",
-            "line": 152,
+            "line": 137,
             "description": "Sets or gets the position of the audio file",
             "params": [
                 {
@@ -414,12 +497,12 @@
                     "type": "Number"
                 }
             ],
-            "class": "Lyria\nLyria namespace decleration.Lyria.Audio\nThis class creates an HTML5 audio element",
-            "namespace": "Lyria\nLyria namespace decleration"
+            "class": "Audio",
+            "module": "Lyria"
         },
         {
             "file": "js\\lyria\\audio.js",
-            "line": 164,
+            "line": 149,
             "description": "Sets or gets properties of the audio object\nTODO: Method chaining",
             "params": [
                 {
@@ -433,12 +516,12 @@
                     "type": "Object"
                 }
             ],
-            "class": "Lyria\nLyria namespace decleration.Lyria.Audio\nThis class creates an HTML5 audio element",
-            "namespace": "Lyria\nLyria namespace decleration"
+            "class": "Audio",
+            "module": "Lyria"
         },
         {
             "file": "js\\lyria\\audio.js",
-            "line": 200,
+            "line": 185,
             "description": "Mute all sound of the game",
             "params": [
                 {
@@ -447,44 +530,50 @@
                     "type": "Boolean"
                 }
             ],
-            "class": "Lyria\nLyria namespace decleration.Lyria.Audio\nThis class creates an HTML5 audio element",
-            "namespace": "Lyria\nLyria namespace decleration"
+            "class": "Audio",
+            "module": "Lyria"
         },
         {
             "file": "js\\lyria\\events.js",
             "line": 1,
-            "class": "Lyria\nLyria namespace decleration.Lyria.Video\nThis class creates an HTML5 video element",
+            "class": "Loop",
+            "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
         },
         {
             "file": "js\\lyria\\events.js",
             "line": 7,
             "description": "This is directly taken from\nhttps://github.com/elysion-powered/elyssa/blob/master/src/core/events.coffee\nJust using a different namespace",
-            "class": "Lyria\nLyria namespace decleration.Lyria.Video\nThis class creates an HTML5 video element",
+            "class": "Loop",
+            "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
         },
         {
             "file": "js\\lyria\\game.js",
             "line": 1,
-            "class": "Lyria\nLyria namespace decleration.Lyria.Video\nThis class creates an HTML5 video element",
+            "class": "Loop",
+            "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
         },
         {
             "file": "js\\lyria\\gameobject.js",
             "line": 1,
-            "class": "Lyria\nLyria namespace decleration.Lyria.Video\nThis class creates an HTML5 video element",
+            "class": "Loop",
+            "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
         },
         {
             "file": "js\\lyria\\layer.js",
             "line": 1,
-            "class": "Lyria\nLyria namespace decleration.Lyria.Video\nThis class creates an HTML5 video element",
+            "class": "Loop",
+            "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
         },
         {
             "file": "js\\lyria\\localization.js",
             "line": 1,
-            "class": "Lyria\nLyria namespace decleration.Lyria.Video\nThis class creates an HTML5 video element",
+            "class": "Loop",
+            "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
         },
         {
@@ -502,7 +591,8 @@
                     "type": "Object"
                 }
             ],
-            "class": "Lyria\nLyria namespace decleration.Lyria.Video\nThis class creates an HTML5 video element",
+            "class": "Loop",
+            "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
         },
         {
@@ -520,55 +610,73 @@
                     "type": "Object"
                 }
             ],
-            "class": "Lyria\nLyria namespace decleration.Lyria.Video\nThis class creates an HTML5 video element",
+            "class": "Loop",
+            "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
         },
         {
             "file": "js\\lyria\\logger.js",
             "line": 1,
-            "class": "Lyria\nLyria namespace decleration.Lyria.Video\nThis class creates an HTML5 video element",
+            "class": "Loop",
+            "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
         },
         {
             "file": "js\\lyria\\loop.js",
-            "line": 1,
-            "class": "Lyria\nLyria namespace decleration.Lyria.Video\nThis class creates an HTML5 video element",
-            "namespace": "Lyria\nLyria namespace decleration"
+            "line": 16,
+            "itemtype": "method",
+            "name": "run",
+            "class": "Loop",
+            "module": "Lyria"
+        },
+        {
+            "file": "js\\lyria\\loop.js",
+            "line": 42,
+            "itemtype": "method",
+            "name": "stop",
+            "class": "Loop",
+            "module": "Lyria"
         },
         {
             "file": "js\\lyria\\prefab.js",
             "line": 1,
-            "class": "Lyria\nLyria namespace decleration.Lyria.Video\nThis class creates an HTML5 video element",
+            "class": "",
+            "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
         },
         {
             "file": "js\\lyria\\preloader.js",
             "line": 1,
-            "class": "Lyria\nLyria namespace decleration.Lyria.Video\nThis class creates an HTML5 video element",
+            "class": "",
+            "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
         },
         {
             "file": "js\\lyria\\preloader.js",
             "line": 8,
-            "class": "Lyria\nLyria namespace decleration.Lyria.Video\nThis class creates an HTML5 video element",
+            "class": "",
+            "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
         },
         {
             "file": "js\\lyria\\preloader.js",
             "line": 84,
-            "class": "Lyria\nLyria namespace decleration.Lyria.Video\nThis class creates an HTML5 video element",
+            "class": "",
+            "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
         },
         {
             "file": "js\\lyria\\preloader.js",
             "line": 90,
-            "class": "Lyria\nLyria namespace decleration.Lyria.Video\nThis class creates an HTML5 video element",
+            "class": "",
+            "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
         },
         {
             "file": "js\\lyria\\utils.js",
             "line": 1,
-            "class": "Lyria\nLyria namespace decleration.Lyria.Video\nThis class creates an HTML5 video element",
+            "class": "",
+            "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
         },
         {
@@ -585,7 +693,8 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": "Lyria\nLyria namespace decleration.Lyria.Video\nThis class creates an HTML5 video element",
+            "class": "",
+            "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
         },
         {
@@ -602,7 +711,8 @@
                 "description": "",
                 "type": "Object"
             },
-            "class": "Lyria\nLyria namespace decleration.Lyria.Video\nThis class creates an HTML5 video element",
+            "class": "",
+            "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
         },
         {
@@ -619,19 +729,15 @@
                 "description": "",
                 "type": "String"
             },
-            "class": "Lyria\nLyria namespace decleration.Lyria.Video\nThis class creates an HTML5 video element",
-            "namespace": "Lyria\nLyria namespace decleration"
-        },
-        {
-            "file": "js\\lyria\\video.js",
-            "line": 1,
-            "class": "Lyria\nLyria namespace decleration.Lyria.Video\nThis class creates an HTML5 video element",
+            "class": "",
+            "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
         },
         {
             "file": "js\\lyria\\viewport.js",
             "line": 1,
             "class": "",
+            "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
         }
     ],
@@ -697,52 +803,48 @@
             "line": " js\\lyria\\assets.js:19"
         },
         {
-            "message": "Missing item type",
-            "line": " js\\lyria\\audio.js:1"
-        },
-        {
             "message": "Missing item type\nPrivate audio elements",
-            "line": " js\\lyria\\audio.js:27"
+            "line": " js\\lyria\\audio.js:12"
         },
         {
             "message": "Missing item type\nLoads one or multiple audio files",
-            "line": " js\\lyria\\audio.js:38"
+            "line": " js\\lyria\\audio.js:23"
         },
         {
             "message": "Missing item type\nPlays the audio file",
-            "line": " js\\lyria\\audio.js:66"
+            "line": " js\\lyria\\audio.js:51"
         },
         {
             "message": "Missing item type\nGet the audio file object",
-            "line": " js\\lyria\\audio.js:96"
+            "line": " js\\lyria\\audio.js:81"
         },
         {
             "message": "Missing item type\nPauses the audio file",
-            "line": " js\\lyria\\audio.js:104"
+            "line": " js\\lyria\\audio.js:89"
         },
         {
             "message": "Missing item type\nStops playing the audio file",
-            "line": " js\\lyria\\audio.js:116"
+            "line": " js\\lyria\\audio.js:101"
         },
         {
             "message": "Missing item type\nGet the length of the sound file",
-            "line": " js\\lyria\\audio.js:127"
+            "line": " js\\lyria\\audio.js:112"
         },
         {
             "message": "Missing item type\nSets or gets the volume of the audio file",
-            "line": " js\\lyria\\audio.js:135"
+            "line": " js\\lyria\\audio.js:120"
         },
         {
             "message": "Missing item type\nSets or gets the position of the audio file",
-            "line": " js\\lyria\\audio.js:152"
+            "line": " js\\lyria\\audio.js:137"
         },
         {
             "message": "Missing item type\nSets or gets properties of the audio object\nTODO: Method chaining",
-            "line": " js\\lyria\\audio.js:164"
+            "line": " js\\lyria\\audio.js:149"
         },
         {
             "message": "Missing item type\nMute all sound of the game",
-            "line": " js\\lyria\\audio.js:200"
+            "line": " js\\lyria\\audio.js:185"
         },
         {
             "message": "Missing item type",
@@ -782,10 +884,6 @@
         },
         {
             "message": "Missing item type",
-            "line": " js\\lyria\\loop.js:1"
-        },
-        {
-            "message": "Missing item type",
             "line": " js\\lyria\\prefab.js:1"
         },
         {
@@ -819,10 +917,6 @@
         {
             "message": "Missing item type",
             "line": " js\\lyria\\utils.js:42"
-        },
-        {
-            "message": "Missing item type",
-            "line": " js\\lyria\\video.js:1"
         },
         {
             "message": "Missing item type",
