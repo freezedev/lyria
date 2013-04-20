@@ -9,7 +9,7 @@
    * @class Lyria.Resource
    * Resource
    */
-  Lyria.Resource = Lyria.Base.extend({
+  Lyria.Resource = {
     /**
      * 
      */
@@ -47,13 +47,13 @@
         return [assetPath, filename].join('/');
       }
     }
-  });
+  };
   
   /**
    * @class Lyria.Assets
    * Asset class
    */
-  Lyria.Assets = Lyria.Base.extend({
+  Lyria.Assets = {
     
     /**
      * 
@@ -85,6 +85,6 @@
     video: function(filename) {
   
     }
-  });
+  };
 
 })(window.Lyria = window.Lyria || {});
