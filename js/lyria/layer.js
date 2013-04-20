@@ -1,13 +1,16 @@
 /**
- * @namespace Lyria
- * Lyria namespace decleration
+ * @module Lyria
  */
 define('lyria/layer', ['lyria/gameobject'], function(GameObject) {
   'use strict';
 
-  //Lyria.Layer
   return (function(parent) {
 
+    /**
+     * @class Layer
+     * @extends Lyria.GameObject 
+     * @constructor
+     */
     var Layer = function() {
 
     };
