@@ -106,7 +106,8 @@ define('lyria/achievements', ['root', 'jquery'], function(root, $) {
   }();
   
   return Achievements;
-});;/**
+});
+/**
  * @namespace Lyria
  * Lyria namespace decleration
  */
@@ -148,7 +149,8 @@ define('lyria/resource', {
       return [assetPath, filename].join('/');
     }
   }
-}); ;/**
+}); 
+/**
  * @namespace Lyria
  * Lyria namespace decleration
  */
@@ -380,7 +382,8 @@ define('lyria/audio', ['root', 'jquery'], function(root, $) {'use strict';
   
   return Audio;
 });
-;define('lyria/component', function() {
+
+define('lyria/component', function() {
 
   //Lyria.Component
   return (function() {
@@ -407,7 +410,8 @@ define('lyria/audio', ['root', 'jquery'], function(root, $) {'use strict';
   })();
 
 });
-;// Debug settings
+
+// Debug settings
 define('lyria/debug', function() {
   return true;
 });
@@ -423,7 +427,8 @@ define('lyria/language', ['root'], function(root) {
   
   return detectr.Browser.language() || defaultLanguage;  
 });
-;;(function(window, undefined) {
+
+;(function(window, undefined) {
   // frameRate is only used if requestAnimFrame is not available
   window.frameRate = 60;
   
@@ -453,7 +458,8 @@ define('lyria/language', ['root'], function(root) {
         };
     } 
 })(this);
-;define('lyria/entity', function() {
+
+define('lyria/entity', function() {
   
   //Lyria.Entity
   return (function() {
@@ -547,7 +553,8 @@ define('lyria/language', ['root'], function(root) {
   
   })();
   
-});;/**
+});
+/**
  * @namespace Lyria
  * Lyria namespace decleration
  */
@@ -661,7 +668,8 @@ define('lyria/events', ['lyria/eventmap'], function(EventMap) {
 
   return instance;
 });
-;/**
+
+/**
  * @namespace Lyria
  * Lyria namespace decleration
  */
@@ -682,7 +690,8 @@ define('lyria/game', ['lyria/viewport', 'lyria/scene/director'], function(Viewpo
     
   })();
   
-});;/**
+});
+/**
  * @namespace Lyria
  * Lyria namespace decleration
  */
@@ -713,7 +722,8 @@ define('lyria/gameobject', function() {
     
   })();
   
-});;/**
+});
+/**
  * @namespace Lyria
  * Lyria namespace decleration
  */
@@ -732,7 +742,8 @@ define('lyria/layer', ['lyria/gameobject'], function(GameObject) {
     return Layer;
 
   })(GameObject);
-}); ;/**
+}); 
+/**
  * @namespace Lyria
  * Lyria namespace decleration
  */
@@ -828,7 +839,8 @@ define('lyria/globallocalization', ['lyria/localization', 'lyria/resource'], fun
   
   return instance;
 });
-;/**
+
+/**
  * @namespace Lyria
  * Lyria namespace decleration
  */
@@ -905,7 +917,8 @@ define('lyria/log', ['root'], function(root) {
   root.log = root.out = Lyria.Log.i;
   
   return Log;
-});;/**
+});
+/**
  * @namespace Lyria
  * Lyria namespace decleration
  */
@@ -980,7 +993,8 @@ define('lyria/loop', ['root'], function(root) {
     };
   })();
   
-});;/**
+});
+/**
  * @namespace Lyria
  * Lyria namespace decleration
  */
@@ -1004,7 +1018,8 @@ define('lyria/prefab', ['lyria/scene', 'jquery'], function(scene, $) {
 		
 	};
   
-});;/**
+});
+/**
  * @namespace Lyria
  * Lyria namespace decleration
  */
@@ -1102,7 +1117,8 @@ define('lyria/preloader', ['checkt', 'jquery'], function(checkt, $) {
   };
   
   return Preloader;
-});;/**
+});
+/**
  * @namespace Lyria
  * Lyria namespace decleration
  */
@@ -1236,7 +1252,8 @@ define('lyria/preloader', ['checkt', 'jquery'], function(checkt, $) {
   })();
 
 })(this, this.document, this.Lyria = this.Lyria || {}, this.jQuery);
-;/*jshint evil:true */
+
+/*jshint evil:true */
 
 /**
  * @namespace Lyria
@@ -1327,7 +1344,8 @@ define('lyria/preloader', ['checkt', 'jquery'], function(checkt, $) {
   Lyria.Scenes = {};
 
 })(this, this.Lyria = this.Lyria || {}, this.jQuery, this.Handlebars);
-;define('lyria/template/connector', function() {
+
+define('lyria/template/connector', function() {
   var noop = function() {
   };
   var templateMethods = ['compile'];
@@ -1359,7 +1377,8 @@ define('lyria/preloader', ['checkt', 'jquery'], function(checkt, $) {
     return TemplateConnector;
 
   })();
-}); ;define('lyria/template/engine', ['root', 'lyria/template/connector'], function(root, TemplateConnector) {
+}); 
+define('lyria/template/engine', ['root', 'lyria/template/connector'], function(root, TemplateConnector) {
 
   var noop = function() {};
 
@@ -1390,7 +1409,8 @@ define('lyria/preloader', ['checkt', 'jquery'], function(checkt, $) {
   }
 
 });
-;/**
+
+/**
  * @namespace Lyria
  * Lyria namespace decleration
  */
@@ -1477,7 +1497,8 @@ define('lyria/utils', ['jquery'], function($) {
   return Utils;
   
 });
-;/**
+
+/**
  * @namespace Lyria
  * Lyria namespace decleration
  */
@@ -1513,7 +1534,8 @@ define('lyria/video', function() {
   })();
   
 });
-;/**
+
+/**
  * @namespace Lyria
  * Lyria namespace decleration
  */
