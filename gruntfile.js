@@ -40,10 +40,6 @@ module.exports = function(grunt) {
           outdir: 'doc/'
         }
       }
-    },
-    server: {
-      port: 8080,
-      base: './'
     }
   });
   
