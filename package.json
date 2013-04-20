@@ -12,5 +12,11 @@
     "connect": "*",
     "colors": "*",
     "hound": "*"
+  },
+  "devDependencies": {
+    "grunt": "0.4.x",
+    "grunt-contrib-uglify": "*",
+    "grunt-contrib-jshint": "*",
+    "grunt-contrib-concat": "*"
   }
 }
