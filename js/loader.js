@@ -4,7 +4,6 @@
       // Load dependencies
       .script('js/lib/es6-shim.js')
       .script('js/lib/jquery.js')
-      .script('js/lib/less.js')
       .script('js/lib/detectr.js')
       .script('js/lib/check.js')
       .script('js/lib/modernizr.js')
