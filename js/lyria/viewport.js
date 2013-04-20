@@ -2,7 +2,7 @@
  * @namespace Lyria
  * Lyria namespace decleration
  */
-;(function(Lyria, undefined) {
+define('lyria/viewport', ['root'], function(root) {
   'use strict';
 
   Lyria.Viewport = (function() {
@@ -17,7 +17,7 @@
       if ($('#' + container).length > 0) {
         this.$container = $('#' + container);
       } else {
-        var createdElement = $(document.createElement('div')).attr('id', container);
+        var createdElement = $(root.document.createElement('div')).attr('id', container);
         
         if (parent) {
           $(parent).prepend(createdElement);
@@ -57,6 +57,4 @@
     return Viewport;
     
   })();
-
-
-})(this.Lyria = this.Lyria || {});
+});
