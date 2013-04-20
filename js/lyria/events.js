@@ -2,39 +2,31 @@
  * @namespace Lyria
  * Lyria namespace decleration
  */
-;(function(window, Lyria, undefined) {
-	'use strict';
+define('lyria/eventmap', function() {'use strict';
 
-  // TODO: Contemplate what to do with this object, it's deprecated
-	Lyria.Event = {
-		Map: {
-			'click': {
-				'mobile': 'touchend'
-			}
-		}
-	};
-	
-	/**
-	 * This is directly taken from
-	 * https://github.com/elysion-powered/elyssa/blob/master/src/core/events.coffee
-	 * Just using a different namespace
-	 */ 
-	var __slice = [].slice;
+  /**
+   * This is directly taken from
+   * https://github.com/elysion-powered/elyssa/blob/master/src/core/events.coffee
+   * Just using a different namespace
+   */
+  var __slice = [].slice;
 
-  Lyria.EventMap = (function() {
+  // Lyria.EventMap
+  return (function() {
     var eventFunctions, eventMap;
-  
+
     eventMap = {};
-  
+
     eventFunctions = {};
-  
+
     function EventMap() {
       eventMap = {};
       eventFunctions = {};
     }
-  
+
+
     EventMap.prototype.validEvents = [];
-  
+
     EventMap.prototype.on = function(eventName, eventFunction) {
       if (!eventFunction) {
         return;
@@ -51,7 +43,7 @@
       };
       return this;
     };
-  
+
     EventMap.prototype.off = function(eventName) {
       if (!eventName) {
         return;
@@ -69,14 +61,14 @@
       }
       return this;
     };
-  
+
     EventMap.prototype.trigger = function() {
       var args, context, eventName, interval, name, repeat, triggerFunction;
       eventName = arguments[0], args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
       if (eventName == null) {
         return;
       }
-      if (typeof eventName === 'object') {
+      if ( typeof eventName === 'object') {
         name = eventName.name, interval = eventName.interval, repeat = eventName.repeat, context = eventName.context;
       } else {
         name = eventName;
@@ -109,11 +101,14 @@
       }
       return this;
     };
-  
+
     return EventMap;
-  
+
   })();
-  
-  Lyria.Events = new Lyria.EventMap();
-	
-})(this, this.Lyria = this.Lyria || {});
+});
+
+define('lyria/events', ['lyria/eventmap'], function(EventMap) {
+  var instance = instance || new EventMap();
+
+  return instance;
+});
