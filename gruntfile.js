@@ -5,9 +5,6 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     concat: {
-      options: {
-        separator: ';'
-      },
       dist: {
         src: [lyriaOrigin],
         dest: 'dist/<%= pkg.name %>.js'
@@ -31,15 +28,34 @@ module.exports = function(grunt) {
         eqnull: true,
         es5: true
       }
+    },
+    yuidoc: {
+      compile: {
+        name: '<%= pkg.name %>',
+        description: '<%= pkg.description %>',
+        version: '<%= pkg.version %>',
+        url: '<%= pkg.homepage %>',
+        options: {
+          paths: lyriaOrigin,
+          outdir: 'doc/'
+        }
+      }
+    },
+    server: {
+      port: 8080,
+      base: './'
     }
   });
   
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-yuidoc');
+  grunt.loadNpmTasks('grunt-contrib-watch');
   
   
   grunt.registerTask('test', 'Lints and unit tests', ['jshint']);
-  grunt.registerTask('default', 'Default task', ['jshint', 'concat', 'uglify']);
+  grunt.registerTask('doc', 'Generated documentation', ['yuidoc']);
+  grunt.registerTask('default', 'Default task', ['test', 'concat', 'uglify', 'doc']);
   
 };
