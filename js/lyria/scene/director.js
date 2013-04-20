@@ -2,20 +2,21 @@
  * @namespace Lyria
  * Lyria namespace decleration
  */
-;(function(window, document, Lyria, $, undefined) {'use strict';
-
+define('lyria/scene/director', ['root', 'jquery', 'lyria/scene', 'lyria/viewport'], function(root, $, Scene, Viewport) {
+  'use strict';
+  
   /**
    * The scene director is the manager for all scenes
    *
    */
-  Lyria.SceneDirector = (function() {
+  return (function() {
 
     function SceneDirector(container, parent) {
 
-      if ( container instanceof Lyria.Viewport) {
+      if ( container instanceof Viewport) {
         this.viewport = container;
       } else {
-        this.viewport = new Lyria.Viewport(container, parent);
+        this.viewport = new Viewport(container, parent);
       }
 
       this.sceneList = {};
@@ -31,8 +32,8 @@
     // Methods
     SceneDirector.prototype.add = function(scene, options) {
 
-      if (!( scene instanceof Lyria.Scene)) {
-        if (Lyria.Scenes[scene]) {
+      if (!( scene instanceof Scene)) {
+        if (Lyria && Lyria.Scenes && Lyria.Scenes[scene]) {
           scene = Lyria.Scenes[scene];
         } else {
           throw 'No valid scene found.';
@@ -44,7 +45,7 @@
 
       if (this.viewport.$container) {
         if ($('#' + scene.name).length === 0) {
-          this.viewport.$container.prepend($(document.createElement('div')).attr('id', scene.name).attr('class', SceneDirector.prototype.sceneClassName));
+          this.viewport.$container.prepend($(root.document.createElement('div')).attr('id', scene.name).attr('class', SceneDirector.prototype.sceneClassName));
 
           if (scene.content) {
             $('#' + scene.name).html(scene.content);
@@ -130,5 +131,4 @@
     return SceneDirector;
 
   })();
-
-})(this, this.document, this.Lyria = this.Lyria || {}, this.jQuery);
+});
