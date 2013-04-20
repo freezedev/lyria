@@ -1,11 +1,18 @@
+/**
+ * @module Lyria
+ * @submodule Template 
+ */
 define('lyria/template/connector', function() {
   var noop = function() {
   };
   var templateMethods = ['compile'];
 
-  //Lyria.TemplateConnector
   return (function() {
 
+    /**
+     * @class Connector 
+     * @constructor
+     */
     var TemplateConnector = function(functionRefs) {
       if ( typeof functionRefs === 'object') {
         var key, value;

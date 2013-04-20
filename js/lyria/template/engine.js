@@ -1,7 +1,17 @@
+/**
+ * @module Lyria
+ * @submodule Template 
+ */
 define('lyria/template/engine', ['root', 'lyria/template/connector'], function(root, TemplateConnector) {
 
   var noop = function() {};
 
+  /**
+   * @class Engine
+   * @constructor
+   *  
+   * @param {Object} templateConnector
+   */
   var TemplateEngine = function(templateConnector) {
     if ( templateConnector instanceof Lyria.TemplateConnector) {
       for (var i = 0, j = templateMethods.length; i < j; i++) {
