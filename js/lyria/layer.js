@@ -2,19 +2,19 @@
  * @namespace Lyria
  * Lyria namespace decleration
  */
-;(function(Lyria, undefined) {
-	'use strict';
+define('lyria/layer', ['lyria/gameobject'], function(GameObject) {
+  'use strict';
 
-  Lyria.Layer = (function(parent) {
-    
+  //Lyria.Layer
+  return (function(parent) {
+
     var Layer = function() {
-      
+
     };
-    
+
     Layer.prototype = parent.prototype;
-    
+
     return Layer;
-    
-  })(Lyria.GameObject);
-	
-})(window.Lyria = window.Lyria || {});
+
+  })(GameObject);
+}); 
