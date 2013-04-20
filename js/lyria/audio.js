@@ -1,26 +1,11 @@
 /**
- * @namespace Lyria
- * Lyria namespace decleration
+ * @module Lyria
  */
 define('lyria/audio', ['root', 'jquery'], function(root, $) {'use strict';
 
   /**
-   * @class Lyria.Audio
-   * This class creates an HTML5 audio element
-   *
-   * @example
-   *  var sound = new Lyria.Audio();
-   *  sound.addAudioElement('carousel', {
-   *       filepath : 'assets/audio/444143_Carousel.mp3',
-   *     loop : false,
-   *     play : false
-   *  });
-   *  sound.addAudioElement('wind', {
-   *     filepath : 'assets/audio/wind.wav',
-   *     playAfter : 'carousel',
-   *     loop : true,
-   *     play : true
-   *  });
+   * @class Audio
+   * @static 
    */
   var Audio = function() {
     var muted = false;
@@ -37,7 +22,7 @@ define('lyria/audio', ['root', 'jquery'], function(root, $) {'use strict';
     var audioElements = {};
     /**
      * Loads one or multiple audio files
-     * @param {strin}
+     * @param {string}
      *    id      identifier of this sound (has to be unique!)
      * @param {object}
      *    filepath  filepath of the sound
