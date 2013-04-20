@@ -1118,20 +1118,21 @@ define('lyria/preloader', ['checkt', 'jquery'], function(checkt, $) {
  * @namespace Lyria
  * Lyria namespace decleration
  */
-;(function(window, document, Lyria, $, undefined) {'use strict';
-
+define('lyria/scene/director', ['root', 'jquery', 'lyria/scene', 'lyria/viewport'], function(root, $, Scene, Viewport) {
+  'use strict';
+  
   /**
    * The scene director is the manager for all scenes
    *
    */
-  Lyria.SceneDirector = (function() {
+  return (function() {
 
     function SceneDirector(container, parent) {
 
-      if ( container instanceof Lyria.Viewport) {
+      if ( container instanceof Viewport) {
         this.viewport = container;
       } else {
-        this.viewport = new Lyria.Viewport(container, parent);
+        this.viewport = new Viewport(container, parent);
       }
 
       this.sceneList = {};
@@ -1147,8 +1148,8 @@ define('lyria/preloader', ['checkt', 'jquery'], function(checkt, $) {
     // Methods
     SceneDirector.prototype.add = function(scene, options) {
 
-      if (!( scene instanceof Lyria.Scene)) {
-        if (Lyria.Scenes[scene]) {
+      if (!( scene instanceof Scene)) {
+        if (Lyria && Lyria.Scenes && Lyria.Scenes[scene]) {
           scene = Lyria.Scenes[scene];
         } else {
           throw 'No valid scene found.';
@@ -1160,7 +1161,7 @@ define('lyria/preloader', ['checkt', 'jquery'], function(checkt, $) {
 
       if (this.viewport.$container) {
         if ($('#' + scene.name).length === 0) {
-          this.viewport.$container.prepend($(document.createElement('div')).attr('id', scene.name).attr('class', SceneDirector.prototype.sceneClassName));
+          this.viewport.$container.prepend($(root.document.createElement('div')).attr('id', scene.name).attr('class', SceneDirector.prototype.sceneClassName));
 
           if (scene.content) {
             $('#' + scene.name).html(scene.content);
@@ -1246,21 +1247,19 @@ define('lyria/preloader', ['checkt', 'jquery'], function(checkt, $) {
     return SceneDirector;
 
   })();
-
-})(this, this.document, this.Lyria = this.Lyria || {}, this.jQuery);
-
-/*jshint evil:true */
+});
 
 /**
  * @namespace Lyria
  * Lyria namespace decleration
  */
-;(function(window, Lyria, $, Handlebars, undefined) {
+define('lyria/scene', ['jquery', 'lyria/eventmap', 'lyria/gameobject'], function($, EventMap, GameObject) {
   'use strict';
 
   var sceneCache = {};
 
-  Lyria.Scene = (function() {
+  //Lyria.Scene
+  return (function() {
     
     var Scene = function(sceneName, sceneFunction, options) {
       if (!sceneName) {
@@ -1274,7 +1273,7 @@ define('lyria/preloader', ['checkt', 'jquery'], function(checkt, $) {
       this.name = sceneName;
       
       // Create new event map
-      this.eventMap = new Lyria.EventMap();
+      this.eventMap = new EventMap();
       
       // Default values
       this.localization = {};
@@ -1318,12 +1317,12 @@ define('lyria/preloader', ['checkt', 'jquery'], function(checkt, $) {
     };
     
     Scene.prototype.add = function(gameObject) {
-      if (gameObject instanceof Lyria.GameObject) {
+      if (gameObject instanceof GameObject) {
         
       }
     };
     
-    var methods = Object.keys(Lyria.EventMap.prototype);
+    var methods = Object.keys(EventMap.prototype);
     
     for (var i = 0, j = methods.length; i < j; i++) {
       (function(iterator) {
@@ -1336,11 +1335,8 @@ define('lyria/preloader', ['checkt', 'jquery'], function(checkt, $) {
     return Scene;
     
   })();
-
-  Lyria.Scenes = {};
-
-})(this, this.Lyria = this.Lyria || {}, this.jQuery, this.Handlebars);
-
+  
+});
 /**
  * @module Lyria
  * @submodule Template 
