@@ -1,7 +1,7 @@
 /**
  * @module Lyria
  */
-define('lyria/loop', ['root'], function(root) {
+define('lyria/loop', ['root', 'requestAnimationFrame'], function(root, requestAnimationFrame) {
   'use strict';
   
   /**
@@ -20,7 +20,7 @@ define('lyria/loop', ['root'], function(root) {
       var time;
 
       (function loop() {
-        root.requestAnimFrame(loop);
+        requestAnimationFrame(loop);
 
         var now = Date.now();
         var dt = now - (time || now);
