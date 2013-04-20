@@ -1,16 +1,21 @@
 /**
- * @namespace Lyria
- * Lyria namespace decleration
+ * @module Lyria
  */
 define('lyria/loop', ['root'], function(root) {
   'use strict';
   
-  //Lyria.Loop
+  /**
+   * @class Loop
+   * @static 
+   */
   return (function() {
 
     var taskList = {};
     var isRunning = true;
 
+    /**
+     * @method run 
+     */
     var run = function() {
       var time;
 
@@ -34,6 +39,9 @@ define('lyria/loop', ['root'], function(root) {
       })();
     };
 
+    /**
+     * @method stop 
+     */
     var stop = function() {
       isRunning = false;
     };
