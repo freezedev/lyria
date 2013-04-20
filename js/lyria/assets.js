@@ -2,89 +2,42 @@
  * @namespace Lyria
  * Lyria namespace decleration
  */
-;(function(Lyria, undefined) {
-  'use strict';
+define('lyria/resource', {
+  /**
+   *
+   */
+  path: {
+    assets: "assets",
+    audio: "audio",
+    data: "data",
+    image: "images",
+    scene: "scenes",
+    video: "video",
+    prefab: "prefabs"
+  },
 
   /**
-   * @class Lyria.Resource
-   * Resource
+   *
+   *
    */
-  Lyria.Resource = {
-    /**
-     * 
-     */
-    path: {
-      assets: "assets",
-      audio: "audio",
-      data: "data",
-      image: "images",
-      scene: "scenes",
-      video: "video",
-      prefab: "prefabs"
-    },
-  
-    /**
-     *
-     *
-     */
-    name: function(filename, type) {
-      if(!filename) {
-        return;
-      }
-  
-      var assetPath = Lyria.Resource.path['assets'];
-      var typePath = "";
-  
-      if(Lyria.Resource.path[type]) {
-        typePath = Lyria.Resource.path[type];
-      } else {
-        typePath = type;
-      }
-  
-      if(typePath) {
-        return [assetPath, typePath.split('.').join('/'), filename].join('/');
-      } else {
-        return [assetPath, filename].join('/');
-      }
+  name: function(filename, type) {
+    if (!filename) {
+      return;
     }
-  };
-  
-  /**
-   * @class Lyria.Assets
-   * Asset class
-   */
-  Lyria.Assets = {
-    
-    /**
-     * 
-       * @param {Object} filename
-     */
-    audio: function(filename) {
-      var myAudio = new Lyria.Audio();
-      myAudio.loadFromFile(filename);
-      return myAudio;
-    },
-    /**
-     * 
-     * @param {Object} filename
-     */
-    image: function(filename) {
-  
-    },
-    /**
-     * 
-     * @param {Object} filename
-     */
-    data: function(filename) {
-  
-    },
-    /**
-     * 
-     * @param {Object} filename
-     */
-    video: function(filename) {
-  
-    }
-  };
 
-})(window.Lyria = window.Lyria || {});
+    var assetPath = Lyria.Resource.path['assets'];
+    var typePath = "";
+
+    if (Lyria.Resource.path[type]) {
+      typePath = Lyria.Resource.path[type];
+    } else {
+      typePath = type;
+    }
+
+    if (typePath) {
+      return [assetPath, typePath.split('.').join('/'), filename].join('/');
+    } else {
+      return [assetPath, filename].join('/');
+    }
+  }
+}); 

@@ -1,21 +1,27 @@
-(function(global, Lyria) {
-  
-  Lyria.Component = (function() {
+define('lyria/component', function() {
 
-  function Component(name) {
-    this.name = name != null ? name : this.constructor.name;
-  }
+  //Lyria.Component
+  return (function() {
 
-  Component.prototype.register = function() {};
+    function Component(name) {
+      this.name = name != null ? name : this.constructor.name;
+    }
 
-  Component.prototype.unregister = function() {};
 
-  Component.prototype.render = function() {};
+    Component.prototype.register = function() {
+    };
 
-  Component.prototype.update = function(dt) {};
+    Component.prototype.unregister = function() {
+    };
 
-  return Component;
+    Component.prototype.render = function() {
+    };
 
-})();
-  
-})(this, this.Lyria = this.Lyria || {});
+    Component.prototype.update = function(dt) {
+    };
+
+    return Component;
+
+  })();
+
+});

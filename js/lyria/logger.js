@@ -2,9 +2,10 @@
  * @namespace Lyria
  * Lyria namespace decleration
  */
-;(function(global, Lyria, undefined) {'use strict';
-
-  Lyria.Log = (function() {
+define('lyria/log', ['root'], function(root) {
+  'use strict';
+  
+  var Log = (function() {
 
     var Log = {};
 
@@ -14,28 +15,28 @@
 
     Log.Plugins.Console = {
       e: function(text) {
-        if (global.console && global.console.error) {
-          global.console.error(text);
+        if (root.console && root.console.error) {
+          root.console.error(text);
         }
       },
       w: function(text) {
-        if (global.console && global.console.warn) {
-          global.console.warn(text);
+        if (root.console && root.console.warn) {
+          root.console.warn(text);
         }
       },
       i: function(text) {
-        if (global.console && global.console.info) {
-          global.console.info(text);
+        if (root.console && root.console.info) {
+          root.console.info(text);
         }
       },
       d: function(text) {
-        if (global.console && global.console.log) {
-          global.console.log(text);
+        if (root.console && root.console.log) {
+          root.console.log(text);
         }
       },
       v: function(text) {
-        if (global.console && global.console.log) {
-          global.console.log(text);
+        if (root.console && root.console.log) {
+          root.console.log(text);
         }
       }
     };
@@ -71,6 +72,7 @@
   })();
 
   // Map shorthand functions to Log.i
-  global.log = global.out = Lyria.Log.i;
-
-})(this, this.Lyria = this.Lyria || {});
+  root.log = root.out = Lyria.Log.i;
+  
+  return Log;
+});

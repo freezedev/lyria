@@ -2,20 +2,21 @@
  * @namespace Lyria
  * Lyria namespace decleration
  */
-;(function(window, Lyria, undefined) {
+define('lyria/game', ['lyria/viewport', 'lyria/scene/director'], function(Viewport, Director) {
   'use strict';
   
-  Lyria.Game = (function() {
+  // Lyria.Game
+  return (function() {
     
     // Constructor
     var Game = function() {};
     
-    Game.prototype.viewport = new Lyria.Viewport();
-    Game.prototype.director = new Lyria.SceneDirector(Game.prototype.viewport);
+    Game.prototype.viewport = new Viewport();
+    Game.prototype.director = new Director(Game.prototype.viewport);
     Game.prototype.preloader = null;
     
     return Game;
     
   })();
   
-})(this, this.Lyria = this.Lyria || {});
+});

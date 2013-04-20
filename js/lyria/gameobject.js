@@ -2,10 +2,11 @@
  * @namespace Lyria
  * Lyria namespace decleration
  */
-;(function(window, Lyria, undefined) {
+define('lyria/gameobject', function() {
   'use strict';
   
-  Lyria.GameObject = (function() {
+  //Lyria.GameObject
+  return (function() {
     
     // Constructor
     var GameObject = function() {
@@ -28,4 +29,4 @@
     
   })();
   
-})(this, this.Lyria = this.Lyria || {});
+});

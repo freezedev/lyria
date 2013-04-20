@@ -2,10 +2,11 @@
  * @namespace Lyria
  * Lyria namespace decleration
  */
-;(function(Lyria, $, undefined) {
+define('lyria/prefab', ['lyria/scene', 'jquery'], function(scene, $) {
 	'use strict';
 
-	Lyria.Prefab = function(prefabName, options) {
+	//Lyria.Prefab
+	return function(prefabName, options) {
 		
 		var defaultOptions = {
 			target: null,
@@ -20,5 +21,5 @@
 		return Lyria.Scene(prefabName, options);
 		
 	};
-
-})(this.Lyria = this.Lyria || {}, this.jQuery);
+  
+});

@@ -1,11 +1,9 @@
-;(function(global, Lyria) {
-  
-  // Debug settings
-  Lyria.Debug = true;
-  
-  // General constants
-  Lyria.Constants = {
-    animSpeed: 300
-  };
-  
-})(this, this.Lyria = this.Lyria || {});
+// Debug settings
+define('lyria/debug', function() {
+  return true;
+});
+
+// General constants
+define('lyria/constants', {
+  animSpeed: 300
+});
