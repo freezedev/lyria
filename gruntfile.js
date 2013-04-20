@@ -1,7 +1,7 @@
 module.exports = function(grunt) {
-  
+
   var lyriaOrigin = 'js/<%= pkg.name %>/**/*.js';
-  
+
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     concat: {
@@ -12,7 +12,8 @@ module.exports = function(grunt) {
     },
     uglify: {
       options: {
-        banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
+        banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - <%= grunt.template.today("dd-mm-yyyy") %> */\n',
+        report: 'gzip'
       },
       dist: {
         files: {
@@ -40,18 +41,29 @@ module.exports = function(grunt) {
           outdir: 'doc/'
         }
       }
+    },
+    less: {
+      options: {
+        paths: ['style', 'style/lib', 'style/lib/lyria'],
+        yuicompress: true
+      },
+      dist: {
+        files: {
+          'css/main.css': 'style/main.less'
+        }        
+      }
     }
   });
-  
+
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-yuidoc');
+  grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  
-  
+
   grunt.registerTask('test', 'Lints and unit tests', ['jshint']);
   grunt.registerTask('doc', 'Generated documentation', ['yuidoc']);
-  grunt.registerTask('default', 'Default task', ['test', 'concat', 'uglify', 'doc']);
-  
+  grunt.registerTask('default', 'Default task', ['test', 'concat', 'uglify', 'less', 'doc']);
+
 };
