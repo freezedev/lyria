@@ -4,6 +4,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "Audio",
         "Connector",
         "Engine",
+        "Layer",
         "Loop"
     ],
     "modules": [

@@ -103,11 +103,11 @@
         "js\\lyria\\layer.js": {
             "name": "js\\lyria\\layer.js",
             "modules": {},
-            "classes": {},
+            "classes": {
+                "Layer": 1
+            },
             "fors": {},
-            "namespaces": {
-                "Lyria\nLyria namespace decleration": 1
-            }
+            "namespaces": {}
         },
         "js\\lyria\\localization.js": {
             "name": "js\\lyria\\localization.js",
@@ -183,6 +183,7 @@
                 "Connector": 1,
                 "Engine": 1,
                 "Audio": 1,
+                "Layer": 1,
                 "Loop": 1
             },
             "fors": {},
@@ -260,6 +261,21 @@
             "file": "js\\lyria\\audio.js",
             "line": 6,
             "static": 1
+        },
+        "Layer": {
+            "name": "Layer",
+            "shortname": "Layer",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Lyria",
+            "namespace": "",
+            "file": "js\\lyria\\layer.js",
+            "line": 9,
+            "extends": "Lyria.GameObject",
+            "is_constructor": 1
         },
         "Loop": {
             "name": "Loop",
@@ -536,7 +552,7 @@
         {
             "file": "js\\lyria\\events.js",
             "line": 1,
-            "class": "Loop",
+            "class": "Layer",
             "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
         },
@@ -544,28 +560,21 @@
             "file": "js\\lyria\\events.js",
             "line": 7,
             "description": "This is directly taken from\nhttps://github.com/elysion-powered/elyssa/blob/master/src/core/events.coffee\nJust using a different namespace",
-            "class": "Loop",
+            "class": "Layer",
             "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
         },
         {
             "file": "js\\lyria\\game.js",
             "line": 1,
-            "class": "Loop",
+            "class": "Layer",
             "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
         },
         {
             "file": "js\\lyria\\gameobject.js",
             "line": 1,
-            "class": "Loop",
-            "module": "Lyria",
-            "namespace": "Lyria\nLyria namespace decleration"
-        },
-        {
-            "file": "js\\lyria\\layer.js",
-            "line": 1,
-            "class": "Loop",
+            "class": "Layer",
             "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
         },
@@ -861,10 +870,6 @@
         {
             "message": "Missing item type",
             "line": " js\\lyria\\gameobject.js:1"
-        },
-        {
-            "message": "Missing item type",
-            "line": " js\\lyria\\layer.js:1"
         },
         {
             "message": "Missing item type",
