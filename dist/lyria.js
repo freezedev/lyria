@@ -2,11 +2,11 @@
  * @namespace Lyria
  * Lyria namespace decleration
  */
-;(function(window, Lyria, $, undefined) {
+define('lyria/achievements', ['root', 'jquery'], function(root, $) {
   'use strict';
   
   // Achievement "Singleton": Revealing module pattern
-  Lyria.Achievements = function() {
+  var Achievements = function() {
     //Private object "array" stores all achievements
     var array = {},
     // Private
@@ -17,9 +17,9 @@
       _localStorageKey = localStorageKey;
   
       // Loads achievements from local storage if any
-      if(window.localStorage) {
-        if(window.localStorage[_localStorageKey]) {
-          array = JSON.parse(window.localStorage[_localStorageKey]);                  
+      if(root.localStorage) {
+        if(root.localStorage[_localStorageKey]) {
+          array = JSON.parse(root.localStorage[_localStorageKey]);                  
         }
       }
     }, register = function(text, description, icon) {
@@ -91,8 +91,8 @@
         array[text].active = true;
       }
   
-      if(window.localStorage)
-        window.localStorage[_localStorageKey] = JSON.stringify(array);
+      if(root.localStorage)
+        root.localStorage[_localStorageKey] = JSON.stringify(array);
     };
   
     return {
@@ -105,8 +105,8 @@
     };
   }();
   
-})(this, this.Lyria = this.Lyria || {}, this.jQuery);
-;/**
+  return Achievements;
+});;/**
  * @namespace Lyria
  * Lyria namespace decleration
  */
@@ -152,13 +152,12 @@ define('lyria/resource', {
  * @namespace Lyria
  * Lyria namespace decleration
  */
-;(function(window, document, Lyria, $, undefined) {
-  'use strict';
-  
+define('lyria/audio', ['root', 'jquery'], function(root, $) {'use strict';
+
   /**
    * @class Lyria.Audio
    * This class creates an HTML5 audio element
-   * 
+   *
    * @example
    *  var sound = new Lyria.Audio();
    *  sound.addAudioElement('carousel', {
@@ -173,11 +172,11 @@ define('lyria/resource', {
    *     play : true
    *  });
    */
-  Lyria.Audio = function() {
+  var Audio = function() {
     var muted = false;
     /**
-     * Private audio elements 
-     * 
+     * Private audio elements
+     *
      * @example : {
      *  filepath : 'assets/audio/example.ogg',
      *  playAfter : 'example2',
@@ -188,7 +187,7 @@ define('lyria/resource', {
     var audioElements = {};
     /**
      * Loads one or multiple audio files
-     * @param {strin} 
+     * @param {strin}
      *    id      identifier of this sound (has to be unique!)
      * @param {object}
      *    filepath  filepath of the sound
@@ -202,7 +201,7 @@ define('lyria/resource', {
       var audioElement = document.createElement('audio');
       audioElements[id] = fileObj;
       $(audioElement).attr('id', id).attr('preload', 'auto').append('<source src="' + fileObj.filepath + '" />');
-      
+
       $('body').append(audioElement);
       if (fileObj.play) {
         this.play(id);
@@ -211,24 +210,28 @@ define('lyria/resource', {
     var removeAudioElement = function(id) {
       if (!id || typeof (fileObj) != 'string')
         return;
-      $('#'+id).remove();
-      window.log('Lyria.audio.removeAudioElement: '+ id + ' removed');
+      $('#' + id).remove();
+      window.log('Lyria.audio.removeAudioElement: ' + id + ' removed');
     };
     /**
-     * Plays the audio file 
+     * Plays the audio file
      *
      * @param {string} element identifier
      */
     var play = function(elem) {
       var sound = audioElements[elem];
-      $('#'+elem).one('ended', {audioManager: this}, function(event) {
-        if (window.chrome) $(this).load();
-        else $(this).currentTime = 0;
-        
+      $('#' + elem).one('ended', {
+        audioManager: this
+      }, function(event) {
+        if (window.chrome)
+          $(this).load();
+        else
+          $(this).currentTime = 0;
+
         var id = $(this).attr('id');
         var sound = event.data.audioManager.getSound(id);
         // only play after song defined in playAfter if song is initialized
-        if (sound.playAfter && $('#'+sound.playAfter).length > 0) {
+        if (sound.playAfter && $('#' + sound.playAfter).length > 0) {
           event.data.audioManager.play(sound.playAfter);
         }
         if (sound.loop) {
@@ -237,8 +240,8 @@ define('lyria/resource', {
       });
       $('#'+elem)[0].play();
       if (muted) {
-                $('#'+elem)[0].volume = 0;
-            }
+        $('#'+elem)[0].volume = 0;
+      }
     };
     /**
      * Get the audio file object
@@ -250,30 +253,30 @@ define('lyria/resource', {
     };
     /**
      * Pauses the audio file
-     * 
+     *
      * @param {string} element identifier
      */
     var pause = function(elem) {
-        if ($('#'+elem).length > 0) {
-            $('#'+elem)[0].pause();
-        } else {
-            window.log('error', 'Lyria.Audio.pause: cant finde element '+elem+' to pause');
-        }
+      if ($('#' + elem).length > 0) {
+        $('#'+elem)[0].pause();
+      } else {
+        window.log('error', 'Lyria.Audio.pause: cant finde element ' + elem + ' to pause');
+      }
     };
     /**
      * Stops playing the audio file
-     * 
+     *
      * @param {string} element identifier
      */
     var stop = function(elem) {
-        if ($('#'+elem).length > 0 && $('#'+elem)[0] && $('#'+elem)[0].pause) {
-                $('#'+elem)[0].pause();
-                $('#'+elem)[0].currentTime = 0;
-        }
+      if ($('#' + elem).length > 0 && $('#'+elem)[0] && $('#'+elem)[0].pause) {
+        $('#'+elem)[0].pause();
+        $('#'+elem)[0].currentTime = 0;
+      }
     };
     /**
      * Get the length of the sound file
-     * 
+     *
      * @param {string} element identifier
      */
     var getLength = function(elem) {
@@ -286,14 +289,14 @@ define('lyria/resource', {
      * @param {number} value (between 0 .. 1)
      */
     var volume = function(elem, value) {
-        if ($('#'+elem).length >0) {
-                if( typeof (value) === "number")
-                    $('#'+elem)[0].volume = value;
-                else
-                    return $('#'+elem)[0].volume;   
-        } else {
-            return 0;
-        }
+      if ($('#' + elem).length > 0) {
+        if ( typeof (value) === "number")
+          $('#'+elem)[0].volume = value;
+        else
+          return $('#'+elem)[0].volume;
+      } else {
+        return 0;
+      }
 
     };
     /**
@@ -303,7 +306,7 @@ define('lyria/resource', {
      * @param {number} value
      */
     var pos = function(elem, value) {
-      if( typeof (value) === "number")
+      if ( typeof (value) === "number")
         $('#'+elem)[0].currentTime = value;
       else
         return $('#'+elem)[0].currentTime;
@@ -318,45 +321,47 @@ define('lyria/resource', {
     var attr = function(prop, value) {
       switch (prop) {
         case 'duration':
-        case 'length': 
+        case 'length':
           return getLength();
-  
+
         case 'position':
-        case 'pos': {
-          if( typeof (value) === "undefined")
-            return pos();
-          else
-            pos(value);
-  
-        }
+        case 'pos':
+          {
+            if ( typeof (value) === "undefined")
+              return pos();
+            else
+              pos(value);
+
+          }
           break;
-  
-        case 'volume': {
-          if( typeof (value) === "undefined")
-            return volume();
-          else
-            volume(value);
-  
-        }
+
+        case 'volume':
+          {
+            if ( typeof (value) === "undefined")
+              return volume();
+            else
+              volume(value);
+
+          }
           break;
       }
     };
-    
+
     /**
      * Mute all sound of the game
-         * @param {boolean} value
+     * @param {boolean} value
      */
     var muteSounds = function(value) {
-            muted = value;
-            for (var i in audioElements) {
-               if (audioElements.hasOwnProperty(i)) {
-                  if ($('#'+i).length > 0) {
-                      $('#'+i)[0].volume = value ? 0 : 1; 
-                  }
-               }
-            }
-        };
-  
+      muted = value;
+      for (var i in audioElements) {
+        if (audioElements.hasOwnProperty(i)) {
+          if ($('#' + i).length > 0) {
+            $('#'+i)[0].volume = value ? 0 : 1;
+          }
+        }
+      }
+    };
+
     return {
       addAudioElement: addAudioElement,
       removeAudioElement: removeAudioElement,
@@ -365,7 +370,7 @@ define('lyria/resource', {
       pause: pause,
       stop: stop,
       muteSounds: muteSounds,
-  
+
       getLength: getLength,
       volume: volume,
       pos: pos,
@@ -373,7 +378,8 @@ define('lyria/resource', {
     };
   };
   
-})(this, this.document, window.Lyria = window.Lyria || {}, this.jQuery);
+  return Audio;
+});
 ;define('lyria/component', function() {
 
   //Lyria.Component
@@ -410,6 +416,13 @@ define('lyria/debug', function() {
 define('lyria/constants', {
   animSpeed: 300
 });
+
+define('lyria/language', ['root'], function(root) {
+  // Fallback language
+  var defaultLanguage = 'en';
+  
+  return detectr.Browser.language() || defaultLanguage;  
+});
 ;;(function(window, undefined) {
   // frameRate is only used if requestAnimFrame is not available
   window.frameRate = 60;
@@ -440,22 +453,10 @@ define('lyria/constants', {
         };
     } 
 })(this);
-
-/**
- * @namespace Lyria
- * Lyria namespace decleration
- */
-;(function(global, Lyria, detectr, undefined) {
-	'use strict';
-	
-	// Fallback language
-	Lyria.defaultLanguage = 'en';
-	Lyria.Language = detectr.Browser.language() || Lyria.defaultLanguage;
-	
-})(this, this.Lyria = this.Lyria || {}, this.detectr);
-;(function(global, Lyria) {
+;define('lyria/entity', function() {
   
-  Lyria.Entity = (function() {
+  //Lyria.Entity
+  return (function() {
     var functionList;
   
     functionList = {};
@@ -544,46 +545,37 @@ define('lyria/constants', {
   
     return Entity;
   
-  })();  
+  })();
   
-})(this, this.Lyria = this.Lyria || {});
-;/**
+});;/**
  * @namespace Lyria
  * Lyria namespace decleration
  */
-;(function(window, Lyria, undefined) {
-	'use strict';
+define('lyria/eventmap', function() {'use strict';
 
-  // TODO: Contemplate what to do with this object, it's deprecated
-	Lyria.Event = {
-		Map: {
-			'click': {
-				'mobile': 'touchend'
-			}
-		}
-	};
-	
-	/**
-	 * This is directly taken from
-	 * https://github.com/elysion-powered/elyssa/blob/master/src/core/events.coffee
-	 * Just using a different namespace
-	 */ 
-	var __slice = [].slice;
+  /**
+   * This is directly taken from
+   * https://github.com/elysion-powered/elyssa/blob/master/src/core/events.coffee
+   * Just using a different namespace
+   */
+  var __slice = [].slice;
 
-  Lyria.EventMap = (function() {
+  // Lyria.EventMap
+  return (function() {
     var eventFunctions, eventMap;
-  
+
     eventMap = {};
-  
+
     eventFunctions = {};
-  
+
     function EventMap() {
       eventMap = {};
       eventFunctions = {};
     }
-  
+
+
     EventMap.prototype.validEvents = [];
-  
+
     EventMap.prototype.on = function(eventName, eventFunction) {
       if (!eventFunction) {
         return;
@@ -600,7 +592,7 @@ define('lyria/constants', {
       };
       return this;
     };
-  
+
     EventMap.prototype.off = function(eventName) {
       if (!eventName) {
         return;
@@ -618,14 +610,14 @@ define('lyria/constants', {
       }
       return this;
     };
-  
+
     EventMap.prototype.trigger = function() {
       var args, context, eventName, interval, name, repeat, triggerFunction;
       eventName = arguments[0], args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
       if (eventName == null) {
         return;
       }
-      if (typeof eventName === 'object') {
+      if ( typeof eventName === 'object') {
         name = eventName.name, interval = eventName.interval, repeat = eventName.repeat, context = eventName.context;
       } else {
         name = eventName;
@@ -658,14 +650,17 @@ define('lyria/constants', {
       }
       return this;
     };
-  
+
     return EventMap;
-  
+
   })();
-  
-  Lyria.Events = new Lyria.EventMap();
-	
-})(this, this.Lyria = this.Lyria || {});
+});
+
+define('lyria/events', ['lyria/eventmap'], function(EventMap) {
+  var instance = instance || new EventMap();
+
+  return instance;
+});
 ;/**
  * @namespace Lyria
  * Lyria namespace decleration
@@ -722,29 +717,29 @@ define('lyria/gameobject', function() {
  * @namespace Lyria
  * Lyria namespace decleration
  */
-;(function(Lyria, undefined) {
-	'use strict';
+define('lyria/layer', ['lyria/gameobject'], function(GameObject) {
+  'use strict';
 
-  Lyria.Layer = (function(parent) {
-    
+  //Lyria.Layer
+  return (function(parent) {
+
     var Layer = function() {
-      
+
     };
-    
+
     Layer.prototype = parent.prototype;
-    
+
     return Layer;
-    
-  })(Lyria.GameObject);
-	
-})(window.Lyria = window.Lyria || {});
-;/**
+
+  })(GameObject);
+}); ;/**
  * @namespace Lyria
  * Lyria namespace decleration
  */
-;(function(global, Lyria, $, undefined) {'use strict';
+define('lyria/localization', ['checkt', 'jquery', 'lyria/language'], function(check, $, language) {'use strict';
 
-  Lyria.Localization = (function() {
+  //Lyria.Localization
+  return (function() {
     /**
      *
      * @param {Object} localization
@@ -756,7 +751,7 @@ define('lyria/gameobject', function() {
       }
       var localizeLangObject = {};
       var defaultOptions = {
-        language: Lyria.Language
+        language: language
       };
 
       options = $.extend(true, defaultOptions, options);
@@ -785,7 +780,7 @@ define('lyria/gameobject', function() {
 
       // Language not found, switch to default language if available
       if (!localizeLangObject) {
-        localizeLangObject = localizeObject[Lyria.DefaultLanguage];
+        localizeLangObject = localizeObject['en'];
       }
       
       this.localizeLangObject = localizeLangObject;
@@ -825,10 +820,14 @@ define('lyria/gameobject', function() {
     return Localization;
     
   })();
+  
+});
 
-  Lyria.GlobalLocalization = new Lyria.Localization(Lyria.Resource.name("i18n.json"));
-
-})(this, this.Lyria = this.Lyria || {}, this.jQuery);
+define('lyria/globallocalization', ['lyria/localization', 'lyria/resource'], function(Localization, Resource) {
+  var instance = instance || new Localization(Resource.name("i18n.json"));
+  
+  return instance;
+});
 ;/**
  * @namespace Lyria
  * Lyria namespace decleration
@@ -1328,13 +1327,13 @@ define('lyria/preloader', ['checkt', 'jquery'], function(checkt, $) {
   Lyria.Scenes = {};
 
 })(this, this.Lyria = this.Lyria || {}, this.jQuery, this.Handlebars);
-;(function(root, $, Lyria) {
-
+;define('lyria/template/connector', function() {
   var noop = function() {
   };
   var templateMethods = ['compile'];
 
-  Lyria.TemplateConnector = (function() {
+  //Lyria.TemplateConnector
+  return (function() {
 
     var TemplateConnector = function(functionRefs) {
       if ( typeof functionRefs === 'object') {
@@ -1360,8 +1359,11 @@ define('lyria/preloader', ['checkt', 'jquery'], function(checkt, $) {
     return TemplateConnector;
 
   })();
+}); ;define('lyria/template/engine', ['root', 'lyria/template/connector'], function(root, TemplateConnector) {
 
-  Lyria.TemplateEngine = function(templateConnector) {
+  var noop = function() {};
+
+  var TemplateEngine = function(templateConnector) {
     if ( templateConnector instanceof Lyria.TemplateConnector) {
       for (var i = 0, j = templateMethods.length; i < j; i++) {
         (function(iterator) {
@@ -1382,30 +1384,28 @@ define('lyria/preloader', ['checkt', 'jquery'], function(checkt, $) {
       }
     });
 
-    Lyria.TemplateEngine(handlebarsConnector);
+    return TemplateEngine(handlebarsConnector);
+  } else {
+    return TemplateEngine;
   }
 
-})(this, this.jQuery, this.Lyria = this.Lyria || {});
+});
 ;/**
  * @namespace Lyria
  * Lyria namespace decleration
  */
-;(function(Lyria, $, undefined) {
-  'use strict';
-
-  /**
-   * @class Lyria.Utils
-   * Utils class
-   */
-  Lyria.Utils = {};
-
+define('lyria/utils', ['jquery'], function($) {
+  
+  
+  var Utils = {};
+  
   /**
    *
    * @param {Object} filename
    *
    * @returns {Boolean}
    */
-  Lyria.Utils.isFile = function(filename) {
+  Utils.isFile = function(filename) {
     var sepPos = filename.indexOf('.');
     if (sepPos === -1) {
       return false;
@@ -1427,7 +1427,7 @@ define('lyria/preloader', ['checkt', 'jquery'], function(checkt, $) {
    *
    * @returns {Object}
    */
-  Lyria.Utils.cloneObject = function(anyObject) {
+  Utils.cloneObject = function(anyObject) {
     return $.extend(true, {}, anyObject);
   };
   
@@ -1437,7 +1437,7 @@ define('lyria/preloader', ['checkt', 'jquery'], function(checkt, $) {
    * 
    * @returns {String}
    */
-  Lyria.Utils.serializeObject = function(anyObject) {
+  Utils.serializeObject = function(anyObject) {
     if ((typeof anyObject !== 'object') || (anyObject instanceof $)) {
       return;
     }
@@ -1474,19 +1474,21 @@ define('lyria/preloader', ['checkt', 'jquery'], function(checkt, $) {
       return str;
   };
   
-})(this.Lyria = this.Lyria || {}, this.jQuery);
+  return Utils;
+  
+});
 ;/**
  * @namespace Lyria
  * Lyria namespace decleration
  */
-;(function(Lyria, undefined) {
+define('lyria/video', function() {
   'use strict';
 
   /**
    * @class Lyria.Video
    * This class creates an HTML5 video element
    */
-  Lyria.Video = (function() {
+  return (function() {
     var Video = function() {
 
     };
@@ -1509,13 +1511,13 @@ define('lyria/preloader', ['checkt', 'jquery'], function(checkt, $) {
 
     return Video;
   })();
-
-})(this.Lyria = this.Lyria || {});
+  
+});
 ;/**
  * @namespace Lyria
  * Lyria namespace decleration
  */
-;(function(Lyria, undefined) {
+define('lyria/viewport', ['root'], function(root) {
   'use strict';
 
   Lyria.Viewport = (function() {
@@ -1530,7 +1532,7 @@ define('lyria/preloader', ['checkt', 'jquery'], function(checkt, $) {
       if ($('#' + container).length > 0) {
         this.$container = $('#' + container);
       } else {
-        var createdElement = $(document.createElement('div')).attr('id', container);
+        var createdElement = $(root.document.createElement('div')).attr('id', container);
         
         if (parent) {
           $(parent).prepend(createdElement);
@@ -1570,6 +1572,4 @@ define('lyria/preloader', ['checkt', 'jquery'], function(checkt, $) {
     return Viewport;
     
   })();
-
-
-})(this.Lyria = this.Lyria || {});
+});
