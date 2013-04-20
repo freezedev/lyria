@@ -2,9 +2,10 @@
  * @namespace Lyria
  * Lyria namespace decleration
  */
-;(function(global, Lyria, $, undefined) {'use strict';
+define('lyria/localization', ['checkt', 'jquery', 'lyria/language'], function(check, $, language) {'use strict';
 
-  Lyria.Localization = (function() {
+  //Lyria.Localization
+  return (function() {
     /**
      *
      * @param {Object} localization
@@ -16,7 +17,7 @@
       }
       var localizeLangObject = {};
       var defaultOptions = {
-        language: Lyria.Language
+        language: language
       };
 
       options = $.extend(true, defaultOptions, options);
@@ -45,7 +46,7 @@
 
       // Language not found, switch to default language if available
       if (!localizeLangObject) {
-        localizeLangObject = localizeObject[Lyria.DefaultLanguage];
+        localizeLangObject = localizeObject['en'];
       }
       
       this.localizeLangObject = localizeLangObject;
@@ -85,7 +86,11 @@
     return Localization;
     
   })();
+  
+});
 
-  Lyria.GlobalLocalization = new Lyria.Localization(Lyria.Resource.name("i18n.json"));
-
-})(this, this.Lyria = this.Lyria || {}, this.jQuery);
+define('lyria/globallocalization', ['lyria/localization', 'lyria/resource'], function(Localization, Resource) {
+  var instance = instance || new Localization(Resource.name("i18n.json"));
+  
+  return instance;
+});
