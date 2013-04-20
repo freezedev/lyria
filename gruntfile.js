@@ -38,7 +38,7 @@ module.exports = function(grunt) {
         url: '<%= pkg.homepage %>',
         options: {
           paths: 'js/lyria/',
-          outdir: 'doc/'
+          outdir: 'doc/api'
         }
       }
     },
@@ -52,6 +52,11 @@ module.exports = function(grunt) {
           'css/main.css': 'style/main.less'
         }        
       }
+    },
+    dependo: {
+      targetPath: 'js/lyria',
+      outputPath: './doc/dependencies',
+      format: 'amd'
     }
   });
 
@@ -61,6 +66,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-yuidoc');
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-dependo');
   
   var createAssetArray = require('./createassetarray').createAssetArray;
   var prepareScenes = require('./preparescenes').prepareScenes;
@@ -77,7 +83,7 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('test', 'Lints and unit tests', ['jshint']);
-  grunt.registerTask('doc', 'Generated documentation', ['yuidoc']);
+  grunt.registerTask('doc', 'Generated documentation', ['yuidoc', 'dependo']);
   grunt.registerTask('default', 'Default task', ['test', 'concat', 'uglify', 'less', 'build', 'doc']);
 
 };
