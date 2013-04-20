@@ -2,14 +2,14 @@
  * @namespace Lyria
  * Lyria namespace decleration
  */
-;(function(Lyria, undefined) {
+define('lyria/video', function() {
   'use strict';
 
   /**
    * @class Lyria.Video
    * This class creates an HTML5 video element
    */
-  Lyria.Video = (function() {
+  return (function() {
     var Video = function() {
 
     };
@@ -32,5 +32,5 @@
 
     return Video;
   })();
-
-})(this.Lyria = this.Lyria || {});
+  
+});
