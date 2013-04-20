@@ -1,15 +1,14 @@
-/*jshint evil:true */
-
 /**
  * @namespace Lyria
  * Lyria namespace decleration
  */
-;(function(window, Lyria, $, Handlebars, undefined) {
+define('lyria/scene', ['jquery', 'lyria/eventmap', 'lyria/gameobject'], function($, EventMap, GameObject) {
   'use strict';
 
   var sceneCache = {};
 
-  Lyria.Scene = (function() {
+  //Lyria.Scene
+  return (function() {
     
     var Scene = function(sceneName, sceneFunction, options) {
       if (!sceneName) {
@@ -23,7 +22,7 @@
       this.name = sceneName;
       
       // Create new event map
-      this.eventMap = new Lyria.EventMap();
+      this.eventMap = new EventMap();
       
       // Default values
       this.localization = {};
@@ -67,12 +66,12 @@
     };
     
     Scene.prototype.add = function(gameObject) {
-      if (gameObject instanceof Lyria.GameObject) {
+      if (gameObject instanceof GameObject) {
         
       }
     };
     
-    var methods = Object.keys(Lyria.EventMap.prototype);
+    var methods = Object.keys(EventMap.prototype);
     
     for (var i = 0, j = methods.length; i < j; i++) {
       (function(iterator) {
@@ -85,7 +84,5 @@
     return Scene;
     
   })();
-
-  Lyria.Scenes = {};
-
-})(this, this.Lyria = this.Lyria || {}, this.jQuery, this.Handlebars);
+  
+});
