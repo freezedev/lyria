@@ -11,7 +11,6 @@
       .script('js/lib/handlebars.js').wait()
       // Load libraries
       .script('js/lyria/constants.js')
-      .script('js/lyria/base.js')
       .script('js/lyria/core.js')
       .script('js/lyria/events.js')
       .script('js/lyria/logger.js')
