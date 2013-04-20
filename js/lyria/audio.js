@@ -2,13 +2,12 @@
  * @namespace Lyria
  * Lyria namespace decleration
  */
-;(function(window, document, Lyria, $, undefined) {
-  'use strict';
-  
+define('lyria/audio', ['root', 'jquery'], function(root, $) {'use strict';
+
   /**
    * @class Lyria.Audio
    * This class creates an HTML5 audio element
-   * 
+   *
    * @example
    *  var sound = new Lyria.Audio();
    *  sound.addAudioElement('carousel', {
@@ -23,11 +22,11 @@
    *     play : true
    *  });
    */
-  Lyria.Audio = function() {
+  var Audio = function() {
     var muted = false;
     /**
-     * Private audio elements 
-     * 
+     * Private audio elements
+     *
      * @example : {
      *  filepath : 'assets/audio/example.ogg',
      *  playAfter : 'example2',
@@ -38,7 +37,7 @@
     var audioElements = {};
     /**
      * Loads one or multiple audio files
-     * @param {strin} 
+     * @param {strin}
      *    id      identifier of this sound (has to be unique!)
      * @param {object}
      *    filepath  filepath of the sound
@@ -52,7 +51,7 @@
       var audioElement = document.createElement('audio');
       audioElements[id] = fileObj;
       $(audioElement).attr('id', id).attr('preload', 'auto').append('<source src="' + fileObj.filepath + '" />');
-      
+
       $('body').append(audioElement);
       if (fileObj.play) {
         this.play(id);
@@ -61,24 +60,28 @@
     var removeAudioElement = function(id) {
       if (!id || typeof (fileObj) != 'string')
         return;
-      $('#'+id).remove();
-      window.log('Lyria.audio.removeAudioElement: '+ id + ' removed');
+      $('#' + id).remove();
+      window.log('Lyria.audio.removeAudioElement: ' + id + ' removed');
     };
     /**
-     * Plays the audio file 
+     * Plays the audio file
      *
      * @param {string} element identifier
      */
     var play = function(elem) {
       var sound = audioElements[elem];
-      $('#'+elem).one('ended', {audioManager: this}, function(event) {
-        if (window.chrome) $(this).load();
-        else $(this).currentTime = 0;
-        
+      $('#' + elem).one('ended', {
+        audioManager: this
+      }, function(event) {
+        if (window.chrome)
+          $(this).load();
+        else
+          $(this).currentTime = 0;
+
         var id = $(this).attr('id');
         var sound = event.data.audioManager.getSound(id);
         // only play after song defined in playAfter if song is initialized
-        if (sound.playAfter && $('#'+sound.playAfter).length > 0) {
+        if (sound.playAfter && $('#' + sound.playAfter).length > 0) {
           event.data.audioManager.play(sound.playAfter);
         }
         if (sound.loop) {
@@ -87,8 +90,8 @@
       });
       $('#'+elem)[0].play();
       if (muted) {
-                $('#'+elem)[0].volume = 0;
-            }
+        $('#'+elem)[0].volume = 0;
+      }
     };
     /**
      * Get the audio file object
@@ -100,30 +103,30 @@
     };
     /**
      * Pauses the audio file
-     * 
+     *
      * @param {string} element identifier
      */
     var pause = function(elem) {
-        if ($('#'+elem).length > 0) {
-            $('#'+elem)[0].pause();
-        } else {
-            window.log('error', 'Lyria.Audio.pause: cant finde element '+elem+' to pause');
-        }
+      if ($('#' + elem).length > 0) {
+        $('#'+elem)[0].pause();
+      } else {
+        window.log('error', 'Lyria.Audio.pause: cant finde element ' + elem + ' to pause');
+      }
     };
     /**
      * Stops playing the audio file
-     * 
+     *
      * @param {string} element identifier
      */
     var stop = function(elem) {
-        if ($('#'+elem).length > 0 && $('#'+elem)[0] && $('#'+elem)[0].pause) {
-                $('#'+elem)[0].pause();
-                $('#'+elem)[0].currentTime = 0;
-        }
+      if ($('#' + elem).length > 0 && $('#'+elem)[0] && $('#'+elem)[0].pause) {
+        $('#'+elem)[0].pause();
+        $('#'+elem)[0].currentTime = 0;
+      }
     };
     /**
      * Get the length of the sound file
-     * 
+     *
      * @param {string} element identifier
      */
     var getLength = function(elem) {
@@ -136,14 +139,14 @@
      * @param {number} value (between 0 .. 1)
      */
     var volume = function(elem, value) {
-        if ($('#'+elem).length >0) {
-                if( typeof (value) === "number")
-                    $('#'+elem)[0].volume = value;
-                else
-                    return $('#'+elem)[0].volume;   
-        } else {
-            return 0;
-        }
+      if ($('#' + elem).length > 0) {
+        if ( typeof (value) === "number")
+          $('#'+elem)[0].volume = value;
+        else
+          return $('#'+elem)[0].volume;
+      } else {
+        return 0;
+      }
 
     };
     /**
@@ -153,7 +156,7 @@
      * @param {number} value
      */
     var pos = function(elem, value) {
-      if( typeof (value) === "number")
+      if ( typeof (value) === "number")
         $('#'+elem)[0].currentTime = value;
       else
         return $('#'+elem)[0].currentTime;
@@ -168,45 +171,47 @@
     var attr = function(prop, value) {
       switch (prop) {
         case 'duration':
-        case 'length': 
+        case 'length':
           return getLength();
-  
+
         case 'position':
-        case 'pos': {
-          if( typeof (value) === "undefined")
-            return pos();
-          else
-            pos(value);
-  
-        }
+        case 'pos':
+          {
+            if ( typeof (value) === "undefined")
+              return pos();
+            else
+              pos(value);
+
+          }
           break;
-  
-        case 'volume': {
-          if( typeof (value) === "undefined")
-            return volume();
-          else
-            volume(value);
-  
-        }
+
+        case 'volume':
+          {
+            if ( typeof (value) === "undefined")
+              return volume();
+            else
+              volume(value);
+
+          }
           break;
       }
     };
-    
+
     /**
      * Mute all sound of the game
-         * @param {boolean} value
+     * @param {boolean} value
      */
     var muteSounds = function(value) {
-            muted = value;
-            for (var i in audioElements) {
-               if (audioElements.hasOwnProperty(i)) {
-                  if ($('#'+i).length > 0) {
-                      $('#'+i)[0].volume = value ? 0 : 1; 
-                  }
-               }
-            }
-        };
-  
+      muted = value;
+      for (var i in audioElements) {
+        if (audioElements.hasOwnProperty(i)) {
+          if ($('#' + i).length > 0) {
+            $('#'+i)[0].volume = value ? 0 : 1;
+          }
+        }
+      }
+    };
+
     return {
       addAudioElement: addAudioElement,
       removeAudioElement: removeAudioElement,
@@ -215,7 +220,7 @@
       pause: pause,
       stop: stop,
       muteSounds: muteSounds,
-  
+
       getLength: getLength,
       volume: volume,
       pos: pos,
@@ -223,4 +228,5 @@
     };
   };
   
-})(this, this.document, window.Lyria = window.Lyria || {}, this.jQuery);
+  return Audio;
+});
