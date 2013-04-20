@@ -151,28 +151,13 @@ define('lyria/resource', {
   }
 }); 
 /**
- * @namespace Lyria
- * Lyria namespace decleration
+ * @module Lyria
  */
 define('lyria/audio', ['root', 'jquery'], function(root, $) {'use strict';
 
   /**
-   * @class Lyria.Audio
-   * This class creates an HTML5 audio element
-   *
-   * @example
-   *  var sound = new Lyria.Audio();
-   *  sound.addAudioElement('carousel', {
-   *       filepath : 'assets/audio/444143_Carousel.mp3',
-   *     loop : false,
-   *     play : false
-   *  });
-   *  sound.addAudioElement('wind', {
-   *     filepath : 'assets/audio/wind.wav',
-   *     playAfter : 'carousel',
-   *     loop : true,
-   *     play : true
-   *  });
+   * @class Audio
+   * @static 
    */
   var Audio = function() {
     var muted = false;
@@ -189,7 +174,7 @@ define('lyria/audio', ['root', 'jquery'], function(root, $) {'use strict';
     var audioElements = {};
     /**
      * Loads one or multiple audio files
-     * @param {strin}
+     * @param {string}
      *    id      identifier of this sound (has to be unique!)
      * @param {object}
      *    filepath  filepath of the sound
@@ -724,15 +709,18 @@ define('lyria/gameobject', function() {
   
 });
 /**
- * @namespace Lyria
- * Lyria namespace decleration
+ * @module Lyria
  */
 define('lyria/layer', ['lyria/gameobject'], function(GameObject) {
   'use strict';
 
-  //Lyria.Layer
   return (function(parent) {
 
+    /**
+     * @class Layer
+     * @extends Lyria.GameObject 
+     * @constructor
+     */
     var Layer = function() {
 
     };
@@ -919,18 +907,23 @@ define('lyria/log', ['root'], function(root) {
   return Log;
 });
 /**
- * @namespace Lyria
- * Lyria namespace decleration
+ * @module Lyria
  */
 define('lyria/loop', ['root'], function(root) {
   'use strict';
   
-  //Lyria.Loop
+  /**
+   * @class Loop
+   * @static 
+   */
   return (function() {
 
     var taskList = {};
     var isRunning = true;
 
+    /**
+     * @method run 
+     */
     var run = function() {
       var time;
 
@@ -954,6 +947,9 @@ define('lyria/loop', ['root'], function(root) {
       })();
     };
 
+    /**
+     * @method stop 
+     */
     var stop = function() {
       isRunning = false;
     };
@@ -1345,14 +1341,21 @@ define('lyria/preloader', ['checkt', 'jquery'], function(checkt, $) {
 
 })(this, this.Lyria = this.Lyria || {}, this.jQuery, this.Handlebars);
 
+/**
+ * @module Lyria
+ * @submodule Template 
+ */
 define('lyria/template/connector', function() {
   var noop = function() {
   };
   var templateMethods = ['compile'];
 
-  //Lyria.TemplateConnector
   return (function() {
 
+    /**
+     * @class Connector 
+     * @constructor
+     */
     var TemplateConnector = function(functionRefs) {
       if ( typeof functionRefs === 'object') {
         var key, value;
@@ -1378,10 +1381,20 @@ define('lyria/template/connector', function() {
 
   })();
 }); 
+/**
+ * @module Lyria
+ * @submodule Template 
+ */
 define('lyria/template/engine', ['root', 'lyria/template/connector'], function(root, TemplateConnector) {
 
   var noop = function() {};
 
+  /**
+   * @class Engine
+   * @constructor
+   *  
+   * @param {Object} templateConnector
+   */
   var TemplateEngine = function(templateConnector) {
     if ( templateConnector instanceof Lyria.TemplateConnector) {
       for (var i = 0, j = templateMethods.length; i < j; i++) {
@@ -1498,17 +1511,11 @@ define('lyria/utils', ['jquery'], function($) {
   
 });
 
-/**
- * @namespace Lyria
- * Lyria namespace decleration
- */
+
 define('lyria/video', function() {
   'use strict';
 
-  /**
-   * @class Lyria.Video
-   * This class creates an HTML5 video element
-   */
+
   return (function() {
     var Video = function() {
 
