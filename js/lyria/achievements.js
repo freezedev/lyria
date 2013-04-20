@@ -2,11 +2,11 @@
  * @namespace Lyria
  * Lyria namespace decleration
  */
-;(function(window, Lyria, $, undefined) {
+define('lyria/achievements', ['root', 'jquery'], function(root, $) {
   'use strict';
   
   // Achievement "Singleton": Revealing module pattern
-  Lyria.Achievements = function() {
+  var Achievements = function() {
     //Private object "array" stores all achievements
     var array = {},
     // Private
@@ -17,9 +17,9 @@
       _localStorageKey = localStorageKey;
   
       // Loads achievements from local storage if any
-      if(window.localStorage) {
-        if(window.localStorage[_localStorageKey]) {
-          array = JSON.parse(window.localStorage[_localStorageKey]);                  
+      if(root.localStorage) {
+        if(root.localStorage[_localStorageKey]) {
+          array = JSON.parse(root.localStorage[_localStorageKey]);                  
         }
       }
     }, register = function(text, description, icon) {
@@ -91,8 +91,8 @@
         array[text].active = true;
       }
   
-      if(window.localStorage)
-        window.localStorage[_localStorageKey] = JSON.stringify(array);
+      if(root.localStorage)
+        root.localStorage[_localStorageKey] = JSON.stringify(array);
     };
   
     return {
@@ -105,4 +105,5 @@
     };
   }();
   
-})(this, this.Lyria = this.Lyria || {}, this.jQuery);
+  return Achievements;
+});
