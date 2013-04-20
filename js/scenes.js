@@ -16,7 +16,7 @@ helpers = helpers || Handlebars.helpers; data = data || {};
   if (stack1 = helpers.title) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.title; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
-    + "</div>\n\n<span id=\"btnSwitch\">";
+    + "</div>\r\n\r\n<span id=\"btnSwitch\">";
   if (stack1 = helpers.btnSwitchToNextScene) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.btnSwitchToNextScene; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
@@ -68,4 +68,4 @@ helpers = helpers || Handlebars.helpers; data = data || {};
 	};
 	
 })(this, this.localization);
-;});})(this.Lyria);
+;});})(this.Lyria = this.Lyria || {});
