@@ -19,6 +19,7 @@
     "grunt-contrib-jshint": "*",
     "grunt-contrib-concat": "*",
     "grunt-contrib-yuidoc": "*",
+    "grunt-contrib-less": "*",
     "grunt-contrib-watch": "*"
   }
 }
