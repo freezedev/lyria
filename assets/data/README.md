@@ -1,1 +1,0 @@
-Gameplay-relevant data like JSON or XML files
