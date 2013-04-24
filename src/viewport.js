@@ -5,7 +5,8 @@
 define('lyria/viewport', ['root'], function(root) {
   'use strict';
 
-  Lyria.Viewport = (function() {
+  // Lyria.Viewport
+  return (function() {
     
     function Viewport(container, parent) {
       
