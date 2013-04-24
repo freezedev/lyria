@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>js\lyria\localization.js - lyria</title>
+    <title>src\achievements.js - lyria</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -94,7 +94,7 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: js\lyria\localization.js</h1>
+                        <h1 class="file-heading">File: src\achievements.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
@@ -102,99 +102,111 @@
  * @namespace Lyria
  * Lyria namespace decleration
  */
-define(&#x27;lyria/localization&#x27;, [&#x27;checkt&#x27;, &#x27;jquery&#x27;, &#x27;lyria/language&#x27;], function(check, $, language) {&#x27;use strict&#x27;;
-
-  //Lyria.Localization
-  return (function() {
-    /**
-     *
-     * @param {Object} localization
-     * @param {Object} options
-     */
-    var Localization = function(localization, options) {
-      if (!localization) {
-        return;
+define(&#x27;lyria/achievements&#x27;, [&#x27;root&#x27;, &#x27;jquery&#x27;], function(root, $) {
+  &#x27;use strict&#x27;;
+  
+  // Achievement &quot;Singleton&quot;: Revealing module pattern
+  var Achievements = function() {
+    //Private object &quot;array&quot; stores all achievements
+    var array = {},
+    // Private
+    _localStorageKey,
+    // Initializes the achievements object with the some juicy
+    initialize = function(localStorageKey) {
+      // Saves localStorage key internally
+      _localStorageKey = localStorageKey;
+  
+      // Loads achievements from local storage if any
+      if(root.localStorage) {
+        if(root.localStorage[_localStorageKey]) {
+          array = JSON.parse(root.localStorage[_localStorageKey]);                  
+        }
       }
-      var localizeLangObject = {};
-      var defaultOptions = {
-        language: language
+    }, register = function(text, description, icon) {
+      array[text] = {
+        active: false
       };
-
-      options = $.extend(true, defaultOptions, options);
-
-      var localizeObject = {};
-      
-      global.check(localization, {
-        object: function(arg) {
-          localizeObject = arg;
-        },
-        string: function(arg) {
-          // AJAX request to file
-          // TODO: Promise object
-          $.ajax({
-            url: arg,
-            async: false,
-            dataType: &#x27;json&#x27;,
-            success: function(data) {
-              localizeObject = data;
-            }
-          });
-        }
-      });
-
-      localizeLangObject = localizeObject[options.language];
-
-      // Language not found, switch to default language if available
-      if (!localizeLangObject) {
-        localizeLangObject = localizeObject[&#x27;en&#x27;];
-      }
-      
-      this.localizeLangObject = localizeLangObject;
-    };
-    
+      if( typeof (description) !== &quot;undefined&quot;)
+        array[text][&quot;description&quot;] = description;
+      if( typeof (icon) !== &quot;undefined&quot;)
+        array[text][&quot;icon&quot;] = icon;
+    }, getCount = function() {
+      return Object.keys(array).length;
+    },
     /**
+     * Gets the number of how many achievements have been unlocked
      *
-     * @param {Object} name
-     * @param {Object} fallback
+     * @returns {number} The exact number of unlocked achievements
      */
-    Localization.prototype.get = function(name, fallback) {   
-      if (this.localizeLangObject) {
-        if (this.localizeLangObject[name]) {
-          return this.localizeLangObject[name];
-        }
-
+    getUnlockedCount = function() {
+      var count = 0;
+      for(var i in array) {
+        if(array[i][&quot;active&quot;])
+          count++;
       }
-
-      if ((!name) &amp;&amp; (!fallback)) {
-        return this.localizeLangObject;
-      } else {
-        if (!name) {
-          return fallback;
-        } else {
-
-          if (fallback) {
-            return fallback;
-          } else {
-            return name;
-          }
-
-        }
+      return count;
+    },
+    /**
+     * Lists all achievements in a list of &lt;div&gt;s
+     *
+     * @returns {string} The markup for the list
+     */
+    list = function() {
+      // Locked achievements will be shown in a grey-ish color
+      var result = &quot;&quot;;
+      for(var i in array) {
+        if(array[i][&quot;active&quot;])
+          result += &#x27;&lt;div class=&quot;ach_box unlocked&quot;&gt;&lt;span class=&quot;ach_unlocked&quot;&gt;&#x27; + i + &#x27;&lt;/span&gt;&lt;br /&gt;&lt;span class=&quot;ach_details&quot;&gt;&#x27; + array[i][&quot;description&quot;] + &#x27;&lt;/span&gt;&lt;/div&gt;&lt;br /&gt;&lt;br /&gt;&#x27;;
+        else
+          result += &#x27;&lt;div class=&quot;ach_box locked&quot;&gt;&lt;span class=&quot;ach_locked&quot;&gt;&#x27; + i + &#x27;&lt;/span&gt;&lt;br /&gt;&lt;span class=&quot;ach_details&quot;&gt;&#x27; + array[i][&quot;description&quot;] + &#x27;&lt;/span&gt;&lt;/div&gt;&lt;br /&gt;&lt;br /&gt;&#x27;;
       }
-
+  
+      return result;
+    },
+    /**
+     * Displays an achievement if it hasn&#x27;t been displayed yet
+     *
+     * @param {string} text
+     */
+    show = function(text) {
+      // If someone forget to register an achievement
+      if(array[text] === &quot;undefined&quot;)
+        register(text);
+  
+      if(!array[text][&quot;active&quot;]) {
+        if(!array[text].icon)
+          $(&#x27;.status.achievement&#x27;).css(&quot;background-image&quot;, &quot;url(&quot; + array[text].icon + &quot;)&quot;);
+  
+        $(&#x27;.achievement .text&#x27;).html(text);
+        $(&#x27;.status.achievement&#x27;).css({
+          opacity: 0.0
+        }).animate({
+          opacity: 1.0,
+          bottom: &#x27;8px&#x27;
+        }, 750).delay(2500).animate({
+          opacity: 0.0,
+          bottom: &#x27;-80px&#x27;
+        }, 750);
+  
+        array[text].active = true;
+      }
+  
+      if(root.localStorage)
+        root.localStorage[_localStorageKey] = JSON.stringify(array);
     };
-    
-    return Localization;
-    
-  })();
   
-});
-
-define(&#x27;lyria/globallocalization&#x27;, [&#x27;lyria/localization&#x27;, &#x27;lyria/resource&#x27;], function(Localization, Resource) {
-  var instance = instance || new Localization(Resource.name(&quot;i18n.json&quot;));
+    return {
+      initialize: initialize,
+      getCount: getCount,
+      getUnlockedCount: getUnlockedCount,
+      list: list,
+      register: register,
+      show: show
+    };
+  }();
   
-  return instance;
+  return Achievements;
 });
-
     </pre>
 </div>
 

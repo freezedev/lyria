@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>js\lyria\scene\director.js - lyria</title>
+    <title>src\events.js - lyria</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -94,7 +94,7 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: js\lyria\scene\director.js</h1>
+                        <h1 class="file-heading">File: src\events.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
@@ -102,135 +102,115 @@
  * @namespace Lyria
  * Lyria namespace decleration
  */
-define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;jquery&#x27;, &#x27;lyria/scene&#x27;, &#x27;lyria/viewport&#x27;], function(root, $, Scene, Viewport) {
-  &#x27;use strict&#x27;;
-  
+define(&#x27;lyria/eventmap&#x27;, function() {&#x27;use strict&#x27;;
+
   /**
-   * The scene director is the manager for all scenes
-   *
+   * This is directly taken from
+   * https://github.com/elysion-powered/elyssa/blob/master/src/core/events.coffee
+   * Just using a different namespace
    */
+  var __slice = [].slice;
+
+  // Lyria.EventMap
   return (function() {
+    var eventFunctions, eventMap;
 
-    function SceneDirector(container, parent) {
+    eventMap = {};
 
-      if ( container instanceof Viewport) {
-        this.viewport = container;
-      } else {
-        this.viewport = new Viewport(container, parent);
-      }
+    eventFunctions = {};
 
-      this.sceneList = {};
-      this.currentScene = null;
-      this.onSceneChange = function(scene) {
-      };
-
+    function EventMap() {
+      eventMap = {};
+      eventFunctions = {};
     }
 
-    // Properties
-    SceneDirector.prototype.sceneClassName = &#x27;scene&#x27;;
 
-    // Methods
-    SceneDirector.prototype.add = function(scene, options) {
+    EventMap.prototype.validEvents = [];
 
-      if (!( scene instanceof Scene)) {
-        if (Lyria &amp;&amp; Lyria.Scenes &amp;&amp; Lyria.Scenes[scene]) {
-          scene = Lyria.Scenes[scene];
-        } else {
-          throw &#x27;No valid scene found.&#x27;;
+    EventMap.prototype.on = function(eventName, eventFunction) {
+      if (!eventFunction) {
+        return;
+      }
+      if (this.validEvents.length &gt; 0) {
+        if (validEvents.indexOf(eventName) === -1) {
+          return;
         }
       }
-
-      scene.parent = this;
-      this.sceneList[scene.name] = scene;
-
-      if (this.viewport.$container) {
-        if ($(&#x27;#&#x27; + scene.name).length === 0) {
-          this.viewport.$container.prepend($(root.document.createElement(&#x27;div&#x27;)).attr(&#x27;id&#x27;, scene.name).attr(&#x27;class&#x27;, SceneDirector.prototype.sceneClassName));
-
-          if (scene.content) {
-            $(&#x27;#&#x27; + scene.name).html(scene.content);
-          }
-
-          // Bind events
-          if (scene.events &amp;&amp; !$.isEmptyObject(scene.events)) {
-            $.each(scene.events, function(key, value) {
-              if (( typeof value === &#x27;object&#x27;) &amp;&amp; (key !== &#x27;delegate&#x27;)) {
-                $(scene.events.delegate).on(value, key, {
-                  scene: scene
-                });
-              }
-            });
-          }
-        }
-      }
-
+      eventMap[eventName] = {
+        event: eventFunction,
+        id: -1,
+        type: &#x27;&#x27;
+      };
       return this;
     };
 
-    SceneDirector.prototype.show = function(scene, options, callback) {
-
-      if (this.onSceneChange) {
-        this.onSceneChange(scene);
+    EventMap.prototype.off = function(eventName) {
+      if (!eventName) {
+        return;
       }
-
-      // More than one scene visible at the same time
-      if ($(&#x27;.&#x27; + SceneDirector.prototype.sceneClassName + &#x27;:visible&#x27;)) {
-        $(&#x27;.&#x27; + SceneDirector.prototype.sceneClassName).hide();
+      if (eventMap[eventName].type === &#x27;once&#x27; || eventMap[eventName].type === &#x27;repeat&#x27;) {
+        if (eventMap[eventName].type === &#x27;repeat&#x27;) {
+          window.clearInterval(eventMap[eventName].id);
+        }
+        if (eventMap[eventName].type === &#x27;once&#x27;) {
+          window.clearTimeout(eventMap[eventName].id);
+        }
       }
+      if (eventMap[eventName]) {
+        delete eventMap[eventName];
+      }
+      return this;
+    };
 
-      if (this.currentScene) {
-        if (this.currentScene.transition &amp;&amp; this.currentScene.length) {
-          $(&#x27;#&#x27; + this.currentScene).hide(this.currentScene.transition.length, function() {
-            $(&#x27;.&#x27; + SceneDirector.prototype.sceneClassName).hide();
-          });
+    EventMap.prototype.trigger = function() {
+      var args, context, eventName, interval, name, repeat, triggerFunction;
+      eventName = arguments[0], args = 2 &lt;= arguments.length ? __slice.call(arguments, 1) : [];
+      if (eventName == null) {
+        return;
+      }
+      if ( typeof eventName === &#x27;object&#x27;) {
+        name = eventName.name, interval = eventName.interval, repeat = eventName.repeat, context = eventName.context;
+      } else {
+        name = eventName;
+      }
+      if (interval == null) {
+        interval = 0;
+      }
+      if (repeat == null) {
+        repeat = false;
+      }
+      if (context == null) {
+        context = this;
+      }
+      triggerFunction = function() {
+        if (eventMap[name]) {
+          return eventMap[name].event.apply(context, args);
+        }
+      };
+      if (interval) {
+        if (repeat) {
+          eventMap[name].type = &#x27;repeat&#x27;;
+          eventMap[name].id = window.setInterval(triggerFunction, interval);
         } else {
-          $(&#x27;.&#x27; + SceneDirector.prototype.sceneClassName).hide();
+          eventMap[name].type = &#x27;once&#x27;;
+          eventMap[name].id = window.setTimeout(triggerFunction, interval);
         }
-
-        if (this.currentScene.onDeactivated) {
-          this.currentScene.onDeactivated(options);
-        }
-
+      } else {
+        eventMap[name].type = &#x27;direct&#x27;;
+        triggerFunction.call(this);
       }
-
-      $.each(this.sceneList, function(key, value) {
-        if (key === scene) {
-
-          if (scene.transition &amp;&amp; scene.transition.length) {
-            $(&#x27;#&#x27; + scene).show(scene.transition.length);
-          } else {
-            $(&#x27;#&#x27; + scene).show();
-          }
-          this.currentScene = value;
-          if (this.currentScene.onActive) {
-            this.currentScene.onActive(options);
-          }
-
-          if (callback)
-            callback(scene);
-
-          return false;
-        }
-      });
+      return this;
     };
 
-    SceneDirector.prototype.render = function() {
-      if (!this.currentScene.render) {
-        return;
-      }
-      this.currentScene.render();
-    };
-
-    SceneDirector.prototype.update = function(dt) {
-      if (!this.currentScene.update) {
-        return;
-      }
-      this.currentScene.update(dt);
-    };
-
-    return SceneDirector;
+    return EventMap;
 
   })();
+});
+
+define(&#x27;lyria/events&#x27;, [&#x27;lyria/eventmap&#x27;], function(EventMap) {
+  var instance = instance || new EventMap();
+
+  return instance;
 });
 
     </pre>

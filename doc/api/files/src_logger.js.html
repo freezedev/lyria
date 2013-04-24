@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>js\lyria\prefab.js - lyria</title>
+    <title>src\logger.js - lyria</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -94,7 +94,7 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: js\lyria\prefab.js</h1>
+                        <h1 class="file-heading">File: src\logger.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
@@ -102,26 +102,79 @@
  * @namespace Lyria
  * Lyria namespace decleration
  */
-define(&#x27;lyria/prefab&#x27;, [&#x27;lyria/scene&#x27;, &#x27;jquery&#x27;], function(scene, $) {
-	&#x27;use strict&#x27;;
-
-	//Lyria.Prefab
-	return function(prefabName, options) {
-		
-		var defaultOptions = {
-			target: null,
-			template: &#x27;prefab.html&#x27;,
-			data: &#x27;prefab.js&#x27;,
-			path: &#x27;prefab&#x27;,
-			isPrefab: true
-		};
-		
-		options = $.extend(true, defaultOptions, options);
-		
-		return Lyria.Scene(prefabName, options);
-		
-	};
+define(&#x27;lyria/log&#x27;, [&#x27;root&#x27;], function(root) {
+  &#x27;use strict&#x27;;
   
+  var Log = (function() {
+
+    var Log = {};
+
+    Log.Connector = null;
+
+    Log.Plugins = {};
+
+    Log.Plugins.Console = {
+      e: function(text) {
+        if (root.console &amp;&amp; root.console.error) {
+          root.console.error(text);
+        }
+      },
+      w: function(text) {
+        if (root.console &amp;&amp; root.console.warn) {
+          root.console.warn(text);
+        }
+      },
+      i: function(text) {
+        if (root.console &amp;&amp; root.console.info) {
+          root.console.info(text);
+        }
+      },
+      d: function(text) {
+        if (root.console &amp;&amp; root.console.log) {
+          root.console.log(text);
+        }
+      },
+      v: function(text) {
+        if (root.console &amp;&amp; root.console.log) {
+          root.console.log(text);
+        }
+      }
+    };
+
+    Log.Connector = Log.Plugins.Console;
+
+    Log.logLevelMap = {
+      &#x27;error&#x27;: [&#x27;e&#x27;],
+      &#x27;warn&#x27;: [&#x27;w&#x27;, &#x27;e&#x27;],
+      &#x27;info&#x27;: [&#x27;i&#x27;, &#x27;w&#x27;, &#x27;e&#x27;],
+      &#x27;debug&#x27;: [&#x27;d&#x27;, &#x27;i&#x27;, &#x27;w&#x27;, &#x27;e&#x27;],
+      &#x27;verbose&#x27;: [&#x27;v&#x27;, &#x27;d&#x27;, &#x27;i&#x27;, &#x27;w&#x27;, &#x27;e&#x27;]
+    };
+
+    Log.logLevel = &#x27;verbose&#x27;;
+
+    var logFunctions = [&#x27;v&#x27;, &#x27;d&#x27;, &#x27;i&#x27;, &#x27;w&#x27;, &#x27;e&#x27;];
+
+    for (var i = 0, j = logFunctions.length; i &lt; j; i++) {
+
+      (function(iterator) {
+        Log[iterator] = function() {
+          if (Log.logLevelMap[Log.logLevel].indexOf(iterator) &gt;= 0) {
+            Log.Connector[iterator].apply(this, arguments);
+          }
+        };        
+      })(logFunctions[i]);
+      
+    }
+
+    return Log;
+
+  })();
+
+  // Map shorthand functions to Log.i
+  root.log = root.out = Lyria.Log.i;
+  
+  return Log;
 });
     </pre>
 </div>

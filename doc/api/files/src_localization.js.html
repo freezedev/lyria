@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>js\lyria\events.js - lyria</title>
+    <title>src\localization.js - lyria</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -94,7 +94,7 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: js\lyria\events.js</h1>
+                        <h1 class="file-heading">File: src\localization.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
@@ -102,114 +102,96 @@
  * @namespace Lyria
  * Lyria namespace decleration
  */
-define(&#x27;lyria/eventmap&#x27;, function() {&#x27;use strict&#x27;;
+define(&#x27;lyria/localization&#x27;, [&#x27;checkt&#x27;, &#x27;jquery&#x27;, &#x27;lyria/language&#x27;], function(check, $, language) {&#x27;use strict&#x27;;
 
-  /**
-   * This is directly taken from
-   * https://github.com/elysion-powered/elyssa/blob/master/src/core/events.coffee
-   * Just using a different namespace
-   */
-  var __slice = [].slice;
-
-  // Lyria.EventMap
+  //Lyria.Localization
   return (function() {
-    var eventFunctions, eventMap;
-
-    eventMap = {};
-
-    eventFunctions = {};
-
-    function EventMap() {
-      eventMap = {};
-      eventFunctions = {};
-    }
-
-
-    EventMap.prototype.validEvents = [];
-
-    EventMap.prototype.on = function(eventName, eventFunction) {
-      if (!eventFunction) {
+    /**
+     *
+     * @param {Object} localization
+     * @param {Object} options
+     */
+    var Localization = function(localization, options) {
+      if (!localization) {
         return;
       }
-      if (this.validEvents.length &gt; 0) {
-        if (validEvents.indexOf(eventName) === -1) {
-          return;
-        }
-      }
-      eventMap[eventName] = {
-        event: eventFunction,
-        id: -1,
-        type: &#x27;&#x27;
+      var localizeLangObject = {};
+      var defaultOptions = {
+        language: language
       };
-      return this;
-    };
 
-    EventMap.prototype.off = function(eventName) {
-      if (!eventName) {
-        return;
-      }
-      if (eventMap[eventName].type === &#x27;once&#x27; || eventMap[eventName].type === &#x27;repeat&#x27;) {
-        if (eventMap[eventName].type === &#x27;repeat&#x27;) {
-          window.clearInterval(eventMap[eventName].id);
-        }
-        if (eventMap[eventName].type === &#x27;once&#x27;) {
-          window.clearTimeout(eventMap[eventName].id);
-        }
-      }
-      if (eventMap[eventName]) {
-        delete eventMap[eventName];
-      }
-      return this;
-    };
+      options = $.extend(true, defaultOptions, options);
 
-    EventMap.prototype.trigger = function() {
-      var args, context, eventName, interval, name, repeat, triggerFunction;
-      eventName = arguments[0], args = 2 &lt;= arguments.length ? __slice.call(arguments, 1) : [];
-      if (eventName == null) {
-        return;
+      var localizeObject = {};
+      
+      global.check(localization, {
+        object: function(arg) {
+          localizeObject = arg;
+        },
+        string: function(arg) {
+          // AJAX request to file
+          // TODO: Promise object
+          $.ajax({
+            url: arg,
+            async: false,
+            dataType: &#x27;json&#x27;,
+            success: function(data) {
+              localizeObject = data;
+            }
+          });
+        }
+      });
+
+      localizeLangObject = localizeObject[options.language];
+
+      // Language not found, switch to default language if available
+      if (!localizeLangObject) {
+        localizeLangObject = localizeObject[&#x27;en&#x27;];
       }
-      if ( typeof eventName === &#x27;object&#x27;) {
-        name = eventName.name, interval = eventName.interval, repeat = eventName.repeat, context = eventName.context;
+      
+      this.localizeLangObject = localizeLangObject;
+    };
+    
+    /**
+     *
+     * @param {Object} name
+     * @param {Object} fallback
+     */
+    Localization.prototype.get = function(name, fallback) {   
+      if (this.localizeLangObject) {
+        if (this.localizeLangObject[name]) {
+          return this.localizeLangObject[name];
+        }
+
+      }
+
+      if ((!name) &amp;&amp; (!fallback)) {
+        return this.localizeLangObject;
       } else {
-        name = eventName;
-      }
-      if (interval == null) {
-        interval = 0;
-      }
-      if (repeat == null) {
-        repeat = false;
-      }
-      if (context == null) {
-        context = this;
-      }
-      triggerFunction = function() {
-        if (eventMap[name]) {
-          return eventMap[name].event.apply(context, args);
-        }
-      };
-      if (interval) {
-        if (repeat) {
-          eventMap[name].type = &#x27;repeat&#x27;;
-          eventMap[name].id = window.setInterval(triggerFunction, interval);
+        if (!name) {
+          return fallback;
         } else {
-          eventMap[name].type = &#x27;once&#x27;;
-          eventMap[name].id = window.setTimeout(triggerFunction, interval);
+
+          if (fallback) {
+            return fallback;
+          } else {
+            return name;
+          }
+
         }
-      } else {
-        eventMap[name].type = &#x27;direct&#x27;;
-        triggerFunction.call(this);
       }
-      return this;
+
     };
-
-    return EventMap;
-
+    
+    return Localization;
+    
   })();
+  
 });
 
-define(&#x27;lyria/events&#x27;, [&#x27;lyria/eventmap&#x27;], function(EventMap) {
-  var instance = instance || new EventMap();
-
+define(&#x27;lyria/globallocalization&#x27;, [&#x27;lyria/localization&#x27;, &#x27;lyria/resource&#x27;], function(Localization, Resource) {
+  var instance = instance || new Localization(Resource.name(&quot;i18n.json&quot;));
+  
   return instance;
 });
 

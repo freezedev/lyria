@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>js\lyria\viewport.js - lyria</title>
+    <title>src\scene\director.js - lyria</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -94,7 +94,7 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: js\lyria\viewport.js</h1>
+                        <h1 class="file-heading">File: src\scene\director.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
@@ -102,60 +102,134 @@
  * @namespace Lyria
  * Lyria namespace decleration
  */
-define(&#x27;lyria/viewport&#x27;, [&#x27;root&#x27;], function(root) {
+define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;jquery&#x27;, &#x27;lyria/scene&#x27;, &#x27;lyria/viewport&#x27;], function(root, $, Scene, Viewport) {
   &#x27;use strict&#x27;;
+  
+  /**
+   * The scene director is the manager for all scenes
+   *
+   */
+  return (function() {
 
-  Lyria.Viewport = (function() {
-    
-    function Viewport(container, parent) {
-      
-      // Defaults container to the string &#x27;viewport&#x27;
-      if (container == null) {
-        container = &#x27;viewport&#x27;;
-      }
+    function SceneDirector(container, parent) {
 
-      if ($(&#x27;#&#x27; + container).length &gt; 0) {
-        this.$container = $(&#x27;#&#x27; + container);
+      if ( container instanceof Viewport) {
+        this.viewport = container;
       } else {
-        var createdElement = $(root.document.createElement(&#x27;div&#x27;)).attr(&#x27;id&#x27;, container);
-        
-        if (parent) {
-          $(parent).prepend(createdElement);
-        } else {
-          $(&#x27;body&#x27;).prepend(createdElement);
-        }
-        
-        this.$container = $(&#x27;#&#x27; + container);
+        this.viewport = new Viewport(container, parent);
       }
-      
+
+      this.sceneList = {};
+      this.currentScene = null;
+      this.onSceneChange = function(scene) {
+      };
+
     }
-    
-    Viewport.prototype.scale = function(scaleX, scaleY) {
-      if (scaleX == null) {
+
+    // Properties
+    SceneDirector.prototype.sceneClassName = &#x27;scene&#x27;;
+
+    // Methods
+    SceneDirector.prototype.add = function(scene, options) {
+
+      if (!( scene instanceof Scene)) {
+        if (Lyria &amp;&amp; Lyria.Scenes &amp;&amp; Lyria.Scenes[scene]) {
+          scene = Lyria.Scenes[scene];
+        } else {
+          throw &#x27;No valid scene found.&#x27;;
+        }
+      }
+
+      scene.parent = this;
+      this.sceneList[scene.name] = scene;
+
+      if (this.viewport.$container) {
+        if ($(&#x27;#&#x27; + scene.name).length === 0) {
+          this.viewport.$container.prepend($(root.document.createElement(&#x27;div&#x27;)).attr(&#x27;id&#x27;, scene.name).attr(&#x27;class&#x27;, SceneDirector.prototype.sceneClassName));
+
+          if (scene.content) {
+            $(&#x27;#&#x27; + scene.name).html(scene.content);
+          }
+
+          // Bind events
+          if (scene.events &amp;&amp; !$.isEmptyObject(scene.events)) {
+            $.each(scene.events, function(key, value) {
+              if (( typeof value === &#x27;object&#x27;) &amp;&amp; (key !== &#x27;delegate&#x27;)) {
+                $(scene.events.delegate).on(value, key, {
+                  scene: scene
+                });
+              }
+            });
+          }
+        }
+      }
+
+      return this;
+    };
+
+    SceneDirector.prototype.show = function(scene, options, callback) {
+
+      if (this.onSceneChange) {
+        this.onSceneChange(scene);
+      }
+
+      // More than one scene visible at the same time
+      if ($(&#x27;.&#x27; + SceneDirector.prototype.sceneClassName + &#x27;:visible&#x27;)) {
+        $(&#x27;.&#x27; + SceneDirector.prototype.sceneClassName).hide();
+      }
+
+      if (this.currentScene) {
+        if (this.currentScene.transition &amp;&amp; this.currentScene.length) {
+          $(&#x27;#&#x27; + this.currentScene).hide(this.currentScene.transition.length, function() {
+            $(&#x27;.&#x27; + SceneDirector.prototype.sceneClassName).hide();
+          });
+        } else {
+          $(&#x27;.&#x27; + SceneDirector.prototype.sceneClassName).hide();
+        }
+
+        if (this.currentScene.onDeactivated) {
+          this.currentScene.onDeactivated(options);
+        }
+
+      }
+
+      $.each(this.sceneList, function(key, value) {
+        if (key === scene) {
+
+          if (scene.transition &amp;&amp; scene.transition.length) {
+            $(&#x27;#&#x27; + scene).show(scene.transition.length);
+          } else {
+            $(&#x27;#&#x27; + scene).show();
+          }
+          this.currentScene = value;
+          if (this.currentScene.onActive) {
+            this.currentScene.onActive(options);
+          }
+
+          if (callback)
+            callback(scene);
+
+          return false;
+        }
+      });
+    };
+
+    SceneDirector.prototype.render = function() {
+      if (!this.currentScene.render) {
         return;
       }
-      
-      if (scaleY == null) {
-        scaleY = scaleX;
-      }
-      
-      this.$container.css(&#x27;transform&#x27;, &#x27;scale(&#x27; + scaleX + &#x27;,&#x27; + scaleY + &#x27;)&#x27;);
+      this.currentScene.render();
     };
-    
-    Viewport.prototype.center = function() {
-      
-    };
-    
-    Viewport.prototype.rotate = function(angle) {
-      if (angle == null) {
+
+    SceneDirector.prototype.update = function(dt) {
+      if (!this.currentScene.update) {
         return;
       }
-      
-      this.$container.css(&#x27;transform&#x27;, &#x27;rotate(&#x27; + angle + &#x27;)&#x27;);
+      this.currentScene.update(dt);
     };
-    
-    return Viewport;
-    
+
+    return SceneDirector;
+
   })();
 });
 

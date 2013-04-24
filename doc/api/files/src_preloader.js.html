@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>js\lyria\template\connector.js - lyria</title>
+    <title>src\preloader.js - lyria</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -94,50 +94,109 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: js\lyria\template\connector.js</h1>
+                        <h1 class="file-heading">File: src\preloader.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
 /**
- * @module Lyria
- * @submodule Template 
+ * @namespace Lyria
+ * Lyria namespace decleration
  */
-define(&#x27;lyria/template/connector&#x27;, function() {
-  var noop = function() {
-  };
-  var templateMethods = [&#x27;compile&#x27;];
+define(&#x27;lyria/preloader&#x27;, [&#x27;checkt&#x27;, &#x27;jquery&#x27;], function(checkt, $) {
+  &#x27;use strict&#x27;;
 
-  return (function() {
-
-    /**
-     * @class Connector 
-     * @constructor
-     */
-    var TemplateConnector = function(functionRefs) {
-      if ( typeof functionRefs === &#x27;object&#x27;) {
-        var key, value;
-
-        for (key in functionRefs) {
-          value = functionRefs[key];
-
-          if ( typeof value === &#x27;function&#x27;) {
-            this[key] = value;
+  /**
+   * 
+   */
+  var Preloader = {
+    maxAssets: 0,
+    assetsLoaded: 0,
+    percentLoaded: 0,
+    init: function(assetArray, options) {
+      var defaultOptions = {
+        showLoadingScreen: true,
+        loadingScreenClass: &#x27;loading-screen&#x27;,
+        loadingBarClass: &#x27;loading-bar&#x27;
+      };
+      options = $.extend(true, defaultOptions, options);
+      
+      
+      function loadingProgress() {
+  
+        Preloader.percentLoaded = Preloader.assetsLoaded / Preloader.maxAssets;
+        if (Preloader.onProgressChange) {
+          Preloader.onProgressChange(Preloader.percentLoaded);
+        }
+  
+        if (options.showLoadingScreen) {
+          
+        }
+  
+        if(Preloader.assetsLoaded === Preloader.maxAssets) {
+          if (options.showLoadingScreen) {
+            
+          }
+          
+          if(Preloader.complete &amp;&amp; ( typeof Preloader.complete === &quot;function&quot;)) {
+            // Callback
+            Preloader.complete();
           }
         }
-
       }
-    };
+  
+      // Check if it&#x27;s an array
+      if(assetArray.length) {
+        Preloader.maxAssets = assetArray.length;
+  
+        $.each(assetArray, function(key, value) {
+          
+          global.check(value, {
+            object: function() {},
+            string: function(arg) {
+              if (arg.contains(&#x27;/&#x27; + Lyria.Resource.path.image + &#x27;/&#x27;)) {
+                var img = new global.Image();
+                img.onload = function() {
+                  Preloader.assetsLoaded++;
+                  
+                  loadingProgress();
+                };
+                
+                img.onerror = function(err) {
+                  global.Log.e(&#x27;Error while loading &#x27; + arg);
+                };
+                
+                img.src = arg;
+              } else {
+                $.ajax({url: arg, dataType: &#x27;text&#x27;}).always(function() {
+                  Preloader.assetsLoaded++;
+                  
+                  loadingProgress();
+                }).error(function(err) {
+                  global.Log.e(&#x27;Error while loading &#x27; + arg + &#x27;: &#x27; + err);
+                });
+              }              
+            }
+          });
 
-    for (var i = 0, j = templateMethods.length; i &lt; j; i++) {
-      (function(iterator) {
-        TemplateConnector.prototype[iterator] = noop;
-      })(templateMethods[i]);
+        });
+      }
+    },
+    /**
+     * 
+     */
+    onProgressChange: function(value) {
+      
+    },
+    /**
+     * 
+     */
+    complete: function() {
+  
     }
-
-    return TemplateConnector;
-
-  })();
-}); 
+  };
+  
+  return Preloader;
+});
     </pre>
 </div>
 

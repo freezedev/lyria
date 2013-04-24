@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>js\lyria\assets.js - lyria</title>
+    <title>src\scene\index.js - lyria</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -94,7 +94,7 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: js\lyria\assets.js</h1>
+                        <h1 class="file-heading">File: src\scene\index.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
@@ -102,45 +102,90 @@
  * @namespace Lyria
  * Lyria namespace decleration
  */
-define(&#x27;lyria/resource&#x27;, {
-  /**
-   *
-   */
-  path: {
-    assets: &quot;assets&quot;,
-    audio: &quot;audio&quot;,
-    data: &quot;data&quot;,
-    image: &quot;images&quot;,
-    scene: &quot;scenes&quot;,
-    video: &quot;video&quot;,
-    prefab: &quot;prefabs&quot;
-  },
+define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;lyria/eventmap&#x27;, &#x27;lyria/gameobject&#x27;], function($, EventMap, GameObject) {
+  &#x27;use strict&#x27;;
 
-  /**
-   *
-   *
-   */
-  name: function(filename, type) {
-    if (!filename) {
-      return;
+  var sceneCache = {};
+
+  //Lyria.Scene
+  return (function() {
+    
+    var Scene = function(sceneName, sceneFunction, options) {
+      if (!sceneName) {
+        return;
+      }
+      
+      // We need a reference to the scene not being this
+      var self = this;
+      
+      // Set name
+      this.name = sceneName;
+      
+      // Create new event map
+      this.eventMap = new EventMap();
+      
+      // Default values
+      this.localization = {};
+      
+      // Set a context object for sceneFunction to be called in
+      var context = {};
+      
+      // Call scene
+      var retValue = sceneFunction.call(context, this);
+      
+      // Mix in keys from context to the scene object
+      $.each(context, function(key, value) {
+        if (self[key]) {
+          
+        } else {
+          self[key] = value;           
+        }
+      });
+      
+      
+      /*if (this.localization) {
+        var currentLocalization = this.localization[&#x27;de&#x27;];
+        
+        retValue = $.extend(retValue, currentLocalization);
+      }*/
+
+      if (this.template) {
+        this.content = this.template(retValue);
+      }
+      
+      
+      
+      if (this.events) {
+        if (options &amp;&amp; options.isPrefab) {
+          this.events.delegate = (options.target) ? options.target : &#x27;body&#x27;;              
+        } else {
+          this.events.delegate = &#x27;#&#x27; + sceneName;
+        }        
+      }
+      
+    };
+    
+    Scene.prototype.add = function(gameObject) {
+      if (gameObject instanceof GameObject) {
+        
+      }
+    };
+    
+    var methods = Object.keys(EventMap.prototype);
+    
+    for (var i = 0, j = methods.length; i &lt; j; i++) {
+      (function(iterator) {
+        Scene.prototype[iterator] = function() {
+          this.eventMap[iterator].apply(this, arguments);
+        };
+      })(methods[i]);
     }
-
-    var assetPath = Lyria.Resource.path[&#x27;assets&#x27;];
-    var typePath = &quot;&quot;;
-
-    if (Lyria.Resource.path[type]) {
-      typePath = Lyria.Resource.path[type];
-    } else {
-      typePath = type;
-    }
-
-    if (typePath) {
-      return [assetPath, typePath.split(&#x27;.&#x27;).join(&#x27;/&#x27;), filename].join(&#x27;/&#x27;);
-    } else {
-      return [assetPath, filename].join(&#x27;/&#x27;);
-    }
-  }
-}); 
+    
+    return Scene;
+    
+  })();
+  
+});
     </pre>
 </div>
 

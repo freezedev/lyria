@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>js\lyria\logger.js - lyria</title>
+    <title>src\utils.js - lyria</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -94,7 +94,7 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: js\lyria\logger.js</h1>
+                        <h1 class="file-heading">File: src\utils.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
@@ -102,80 +102,90 @@
  * @namespace Lyria
  * Lyria namespace decleration
  */
-define(&#x27;lyria/log&#x27;, [&#x27;root&#x27;], function(root) {
-  &#x27;use strict&#x27;;
+define(&#x27;lyria/utils&#x27;, [&#x27;jquery&#x27;], function($) {
   
-  var Log = (function() {
-
-    var Log = {};
-
-    Log.Connector = null;
-
-    Log.Plugins = {};
-
-    Log.Plugins.Console = {
-      e: function(text) {
-        if (root.console &amp;&amp; root.console.error) {
-          root.console.error(text);
-        }
-      },
-      w: function(text) {
-        if (root.console &amp;&amp; root.console.warn) {
-          root.console.warn(text);
-        }
-      },
-      i: function(text) {
-        if (root.console &amp;&amp; root.console.info) {
-          root.console.info(text);
-        }
-      },
-      d: function(text) {
-        if (root.console &amp;&amp; root.console.log) {
-          root.console.log(text);
-        }
-      },
-      v: function(text) {
-        if (root.console &amp;&amp; root.console.log) {
-          root.console.log(text);
-        }
-      }
-    };
-
-    Log.Connector = Log.Plugins.Console;
-
-    Log.logLevelMap = {
-      &#x27;error&#x27;: [&#x27;e&#x27;],
-      &#x27;warn&#x27;: [&#x27;w&#x27;, &#x27;e&#x27;],
-      &#x27;info&#x27;: [&#x27;i&#x27;, &#x27;w&#x27;, &#x27;e&#x27;],
-      &#x27;debug&#x27;: [&#x27;d&#x27;, &#x27;i&#x27;, &#x27;w&#x27;, &#x27;e&#x27;],
-      &#x27;verbose&#x27;: [&#x27;v&#x27;, &#x27;d&#x27;, &#x27;i&#x27;, &#x27;w&#x27;, &#x27;e&#x27;]
-    };
-
-    Log.logLevel = &#x27;verbose&#x27;;
-
-    var logFunctions = [&#x27;v&#x27;, &#x27;d&#x27;, &#x27;i&#x27;, &#x27;w&#x27;, &#x27;e&#x27;];
-
-    for (var i = 0, j = logFunctions.length; i &lt; j; i++) {
-
-      (function(iterator) {
-        Log[iterator] = function() {
-          if (Log.logLevelMap[Log.logLevel].indexOf(iterator) &gt;= 0) {
-            Log.Connector[iterator].apply(this, arguments);
-          }
-        };        
-      })(logFunctions[i]);
-      
+  
+  var Utils = {};
+  
+  /**
+   *
+   * @param {Object} filename
+   *
+   * @returns {Boolean}
+   */
+  Utils.isFile = function(filename) {
+    var sepPos = filename.indexOf(&#x27;.&#x27;);
+    if (sepPos === -1) {
+      return false;
     }
 
-    return Log;
+    var filenameLength = filename.length;
+    var diff = filenameLength - sepPos;
 
-  })();
-
-  // Map shorthand functions to Log.i
-  root.log = root.out = Lyria.Log.i;
+    // A filename extension is allowed to be one to four characters long.
+    if ((diff &gt; 1) &amp;&amp; (diff &lt;= 5)) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+  /**
+   *
+   * @param {Object} anyObject
+   *
+   * @returns {Object}
+   */
+  Utils.cloneObject = function(anyObject) {
+    return $.extend(true, {}, anyObject);
+  };
   
-  return Log;
+  /**
+   * 
+   * @param {Object} anyObject
+   * 
+   * @returns {String}
+   */
+  Utils.serializeObject = function(anyObject) {
+    if ((typeof anyObject !== &#x27;object&#x27;) || (anyObject instanceof $)) {
+      return;
+    }
+    
+      var str = &#x27;{&#x27;;        
+      
+      for (var p in anyObject) {
+          if (anyObject.hasOwnProperty(p)) {
+            if (anyObject[p] instanceof $) {
+              continue;
+            }
+            
+            var objKeys = Object.keys(anyObject);
+            var commaStr = (objKeys.indexOf(p) === (objKeys.length - 1)) ? &#x27;&#x27; : &#x27;,&#x27;;
+            
+            switch (typeof anyObject[p]) {
+              case &#x27;object&#x27;: {
+                str += p + &#x27;: &#x27; + Lyria.Utils.serializeObject(anyObject[p]) + commaStr + &#x27;\n&#x27;;
+              }
+                break;
+              case &#x27;string&#x27;: {
+                str += p + &#x27;: &quot;&#x27; + anyObject[p] + &#x27;&quot;&#x27; + commaStr + &#x27;\n&#x27;;
+              }
+                break;
+              default: {
+                str += p + &#x27;: &#x27; + anyObject[p] + commaStr + &#x27;\n&#x27;;
+              }
+                break;
+            }
+          }
+      }
+      str += &#x27;}&#x27;;
+      
+      return str;
+  };
+  
+  return Utils;
+  
 });
+
     </pre>
 </div>
 
