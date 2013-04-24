@@ -1,25 +1,26 @@
 /**
  * @module Lyria
- * @submodule Template 
+ * @submodule Template
  */
-define('lyria/template/engine', ['root', 'lyria/template/connector'], function(root, TemplateConnector) {
+define('lyria/template/engine', ['root', 'lyria/template/connector', 'lyria/template/methods'], function(root, TemplateConnector, templateMethods) {
 
-  var noop = function() {};
+  var noop = function() {
+  };
 
   /**
    * @class Engine
    * @constructor
-   *  
+   *
    * @param {Object} templateConnector
    */
   var TemplateEngine = function(templateConnector) {
-    if ( templateConnector instanceof Lyria.TemplateConnector) {
+    if ( templateConnector instanceof TemplateConnector) {
       for (var i = 0, j = templateMethods.length; i < j; i++) {
         (function(iterator) {
           if ((templateConnector[iterator] != null) && ( typeof templateConnector[iterator] === 'function')) {
-            Lyria.TemplateEngine[iterator] = templateConnector[iterator];
+            TemplateEngine[iterator] = templateConnector[iterator];
           } else {
-            Lyria.TemplateEngine[iterator] = noop;
+            TemplateEngine[iterator] = noop;
           }
         })(templateMethods[i]);
       }
@@ -27,7 +28,7 @@ define('lyria/template/engine', ['root', 'lyria/template/connector'], function(r
   };
 
   if (root.Handlebars) {
-    var handlebarsConnector = new Lyria.TemplateConnector({
+    var handlebarsConnector = new TemplateConnector({
       compile: function() {
         return root.Handlebars.template.apply(this, arguments);
       }
