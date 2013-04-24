@@ -1,6 +1,6 @@
 module.exports = function(grunt) {
 
-  var lyriaOrigin = 'js/<%= pkg.name %>/**/*.js';
+  var lyriaOrigin = 'src/**/*.js';
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -37,7 +37,7 @@ module.exports = function(grunt) {
         version: '<%= pkg.version %>',
         url: '<%= pkg.homepage %>',
         options: {
-          paths: 'js/lyria/',
+          paths: 'src/',
           outdir: 'doc/api'
         }
       }
@@ -54,7 +54,7 @@ module.exports = function(grunt) {
       }
     },
     dependo: {
-      targetPath: 'js/lyria',
+      targetPath: 'src',
       outputPath: './doc/dependencies',
       format: 'amd'
     }
