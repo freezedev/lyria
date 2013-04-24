@@ -102,10 +102,9 @@
  * @module Lyria
  * @submodule Template 
  */
-define(&#x27;lyria/template/connector&#x27;, function() {
+define(&#x27;lyria/template/connector&#x27;, [&#x27;lyria/template/methods&#x27;], function(templateMethods) {
   var noop = function() {
   };
-  var templateMethods = [&#x27;compile&#x27;];
 
   return (function() {
 

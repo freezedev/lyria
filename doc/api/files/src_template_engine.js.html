@@ -100,26 +100,27 @@
     <pre class="code prettyprint linenums">
 /**
  * @module Lyria
- * @submodule Template 
+ * @submodule Template
  */
-define(&#x27;lyria/template/engine&#x27;, [&#x27;root&#x27;, &#x27;lyria/template/connector&#x27;], function(root, TemplateConnector) {
+define(&#x27;lyria/template/engine&#x27;, [&#x27;root&#x27;, &#x27;lyria/template/connector&#x27;, &#x27;lyria/template/methods&#x27;], function(root, TemplateConnector, templateMethods) {
 
-  var noop = function() {};
+  var noop = function() {
+  };
 
   /**
    * @class Engine
    * @constructor
-   *  
+   *
    * @param {Object} templateConnector
    */
   var TemplateEngine = function(templateConnector) {
-    if ( templateConnector instanceof Lyria.TemplateConnector) {
+    if ( templateConnector instanceof TemplateConnector) {
       for (var i = 0, j = templateMethods.length; i &lt; j; i++) {
         (function(iterator) {
           if ((templateConnector[iterator] != null) &amp;&amp; ( typeof templateConnector[iterator] === &#x27;function&#x27;)) {
-            Lyria.TemplateEngine[iterator] = templateConnector[iterator];
+            TemplateEngine[iterator] = templateConnector[iterator];
           } else {
-            Lyria.TemplateEngine[iterator] = noop;
+            TemplateEngine[iterator] = noop;
           }
         })(templateMethods[i]);
       }
@@ -127,7 +128,7 @@ define(&#x27;lyria/template/engine&#x27;, [&#x27;root&#x27;, &#x27;lyria/templat
   };
 
   if (root.Handlebars) {
-    var handlebarsConnector = new Lyria.TemplateConnector({
+    var handlebarsConnector = new TemplateConnector({
       compile: function() {
         return root.Handlebars.template.apply(this, arguments);
       }

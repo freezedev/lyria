@@ -44,6 +44,15 @@
             "fors": {},
             "namespaces": {}
         },
+        "src\\template\\methods.js": {
+            "name": "src\\template\\methods.js",
+            "modules": {
+                "Lyria": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
         "src\\achievements.js": {
             "name": "src\\achievements.js",
             "modules": {},
@@ -64,9 +73,7 @@
         },
         "src\\audio.js": {
             "name": "src\\audio.js",
-            "modules": {
-                "Lyria": 1
-            },
+            "modules": {},
             "classes": {
                 "Audio": 1
             },
@@ -207,7 +214,7 @@
             "module": "Lyria",
             "namespace": "",
             "file": "src\\template\\engine.js",
-            "line": 9
+            "line": 10
         }
     },
     "classes": {
@@ -223,7 +230,7 @@
             "submodule": "Template",
             "namespace": "",
             "file": "src\\template\\connector.js",
-            "line": 12,
+            "line": 11,
             "is_constructor": 1
         },
         "Engine": {
@@ -238,7 +245,7 @@
             "submodule": "Template",
             "namespace": "",
             "file": "src\\template\\engine.js",
-            "line": 9,
+            "line": 10,
             "is_constructor": 1,
             "params": [
                 {
