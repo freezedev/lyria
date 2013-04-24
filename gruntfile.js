@@ -68,22 +68,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-dependo');
   
-  var createAssetArray = require('./createassetarray').createAssetArray;
-  var prepareScenes = require('./preparescenes').prepareScenes;
-  var path = require('path');
-
-  grunt.registerTask('build', 'Updates asset array and prepares scenes', function() {
-    var dir = './';
-    
-    createAssetArray(dir, function() {
-      prepareScenes(path.join(dir, 'assets', 'scenes'), path.join(dir, 'js', 'scenes.js'), function() {
-        grunt.log.writeln('Project built');
-      });    
-    });
-  });
-
   grunt.registerTask('test', 'Lints and unit tests', ['jshint']);
   grunt.registerTask('doc', 'Generated documentation', ['yuidoc', 'dependo']);
-  grunt.registerTask('default', 'Default task', ['test', 'concat', 'uglify', 'less', 'build', 'doc']);
+  grunt.registerTask('default', 'Default task', ['test', 'concat', 'uglify', 'less', 'doc']);
 
 };
