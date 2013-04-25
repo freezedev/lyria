@@ -34,9 +34,9 @@ define('lyria/template/engine', ['root', 'lyria/template/connector', 'lyria/temp
       }
     });
 
-    return TemplateEngine(handlebarsConnector);
-  } else {
-    return TemplateEngine;
+    TemplateEngine(handlebarsConnector);
   }
+  
+  return TemplateEngine;
 
 });
