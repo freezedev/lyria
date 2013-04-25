@@ -134,10 +134,10 @@ define(&#x27;lyria/template/engine&#x27;, [&#x27;root&#x27;, &#x27;lyria/templat
       }
     });
 
-    return TemplateEngine(handlebarsConnector);
-  } else {
-    return TemplateEngine;
+    TemplateEngine(handlebarsConnector);
   }
+  
+  return TemplateEngine;
 
 });
 
