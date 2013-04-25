@@ -1,3 +1,9 @@
+(function(root) {
+  define('root', function() {
+    return root;
+  });
+})(this);
+
 define('requestAnimationFrame', ['root'], function(root) {
   // frameRate is only used if requestAnimationFrame is not available
   var frameRate = 60;
