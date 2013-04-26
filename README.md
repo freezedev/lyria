@@ -2,6 +2,8 @@ Lyria.js
 ========
 Lightweight prototyping javascript game framework based on jQuery. 
 
+The Lyria template can be found here: https://github.com/freezedev/lyria-template
+
 What do I need?
 ---------------
 All libraries are included in the repository, so you don't need to worry about browsing the internet and downloading the libraries you need.
