@@ -2,7 +2,7 @@
  * @namespace Lyria
  * Lyria namespace decleration
  */
-define('lyria/localization', ['checkt', 'jquery', 'lyria/language'], function(check, $, language) {'use strict';
+define('lyria/localization', ['check', 'jquery', 'lyria/language'], function(check, $, language) {'use strict';
 
   //Lyria.Localization
   return (function() {
