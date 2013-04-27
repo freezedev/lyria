@@ -18,6 +18,9 @@ define('lyria/scene', ['jquery', 'lyria/eventmap', 'lyria/gameobject'], function
       // We need a reference to the scene not being this
       var self = this;
       
+      // Collect all template values
+      var templateVals = {};
+      
       // Set name
       this.name = sceneName;
       
@@ -27,11 +30,24 @@ define('lyria/scene', ['jquery', 'lyria/eventmap', 'lyria/gameobject'], function
       // Default values
       this.localization = {};
       
+      // Expose function for template values
+      this.expose = function(obj) {
+        if (!obj || $.isEmptyObject(obj)) {
+          return;
+        }
+        
+        templateVals = $.extend(true, templateVals, obj);
+      };
+      
       // Set a context object for sceneFunction to be called in
       var context = {};
       
       // Call scene
-      var retValue = sceneFunction.call(context, this);
+      var retValue = sceneFunction.call(this, this);
+      
+      if (retValue && !$.isEmptyObject(retValue)) {
+        this.expose(retValue);
+      }
       
       // Mix in keys from context to the scene object
       $.each(context, function(key, value) {
@@ -50,7 +66,7 @@ define('lyria/scene', ['jquery', 'lyria/eventmap', 'lyria/gameobject'], function
       }*/
 
       if (this.template) {
-        this.content = this.template(retValue);
+        this.content = this.template(templateVals);
       }
       
       
