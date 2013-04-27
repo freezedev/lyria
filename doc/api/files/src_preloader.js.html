@@ -102,7 +102,7 @@
  * @namespace Lyria
  * Lyria namespace decleration
  */
-define(&#x27;lyria/preloader&#x27;, [&#x27;checkt&#x27;, &#x27;jquery&#x27;], function(checkt, $) {
+define(&#x27;lyria/preloader&#x27;, [&#x27;check&#x27;, &#x27;jquery&#x27;], function(check, $) {
   &#x27;use strict&#x27;;
 
   /**
@@ -150,7 +150,7 @@ define(&#x27;lyria/preloader&#x27;, [&#x27;checkt&#x27;, &#x27;jquery&#x27;], fu
   
         $.each(assetArray, function(key, value) {
           
-          global.check(value, {
+          check(value, {
             object: function() {},
             string: function(arg) {
               if (arg.contains(&#x27;/&#x27; + Lyria.Resource.path.image + &#x27;/&#x27;)) {

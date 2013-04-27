@@ -102,7 +102,7 @@
  * @namespace Lyria
  * Lyria namespace decleration
  */
-define(&#x27;lyria/game&#x27;, [&#x27;lyria/viewport&#x27;, &#x27;lyria/scene/director&#x27;], function(Viewport, Director) {
+define(&#x27;lyria/game&#x27;, [&#x27;lyria/viewport&#x27;, &#x27;lyria/scene/director&#x27;, &#x27;lyria/preloader&#x27;], function(Viewport, Director, Preloader) {
   &#x27;use strict&#x27;;
   
   // Lyria.Game
@@ -113,7 +113,7 @@ define(&#x27;lyria/game&#x27;, [&#x27;lyria/viewport&#x27;, &#x27;lyria/scene/di
     
     Game.prototype.viewport = new Viewport();
     Game.prototype.director = new Director(Game.prototype.viewport);
-    Game.prototype.preloader = null;
+    Game.prototype.preloader = Preloader;
     
     return Game;
     

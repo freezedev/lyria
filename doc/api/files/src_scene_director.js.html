@@ -128,13 +128,13 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;jquery&#x27;, 
 
     // Properties
     SceneDirector.prototype.sceneClassName = &#x27;scene&#x27;;
-
+    
     // Methods
     SceneDirector.prototype.add = function(scene, options) {
 
       if (!( scene instanceof Scene)) {
-        if (Lyria &amp;&amp; Lyria.Scenes &amp;&amp; Lyria.Scenes[scene]) {
-          scene = Lyria.Scenes[scene];
+        if (this.precompiledScenes) {
+          scene = this.precompiledScenes[scene];
         } else {
           throw &#x27;No valid scene found.&#x27;;
         }
