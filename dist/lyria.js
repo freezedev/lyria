@@ -679,7 +679,7 @@ define('lyria/events', ['lyria/eventmap'], function(EventMap) {
  * @namespace Lyria
  * Lyria namespace decleration
  */
-define('lyria/game', ['lyria/viewport', 'lyria/scene/director'], function(Viewport, Director) {
+define('lyria/game', ['lyria/viewport', 'lyria/scene/director', 'lyria/preloader'], function(Viewport, Director, Preloader) {
   'use strict';
   
   // Lyria.Game
@@ -690,7 +690,7 @@ define('lyria/game', ['lyria/viewport', 'lyria/scene/director'], function(Viewpo
     
     Game.prototype.viewport = new Viewport();
     Game.prototype.director = new Director(Game.prototype.viewport);
-    Game.prototype.preloader = null;
+    Game.prototype.preloader = Preloader;
     
     return Game;
     
@@ -756,7 +756,7 @@ define('lyria/layer', ['lyria/gameobject'], function(GameObject) {
  * @namespace Lyria
  * Lyria namespace decleration
  */
-define('lyria/localization', ['checkt', 'jquery', 'lyria/language'], function(check, $, language) {'use strict';
+define('lyria/localization', ['check', 'jquery', 'lyria/language'], function(check, $, language) {'use strict';
 
   //Lyria.Localization
   return (function() {
@@ -1040,7 +1040,7 @@ define('lyria/prefab', ['lyria/scene', 'jquery'], function(scene, $) {
  * @namespace Lyria
  * Lyria namespace decleration
  */
-define('lyria/preloader', ['checkt', 'jquery'], function(checkt, $) {
+define('lyria/preloader', ['check', 'jquery'], function(check, $) {
   'use strict';
 
   /**
@@ -1088,7 +1088,7 @@ define('lyria/preloader', ['checkt', 'jquery'], function(checkt, $) {
   
         $.each(assetArray, function(key, value) {
           
-          global.check(value, {
+          check(value, {
             object: function() {},
             string: function(arg) {
               if (arg.contains('/' + Lyria.Resource.path.image + '/')) {
@@ -1165,13 +1165,13 @@ define('lyria/scene/director', ['root', 'jquery', 'lyria/scene', 'lyria/viewport
 
     // Properties
     SceneDirector.prototype.sceneClassName = 'scene';
-
+    
     // Methods
     SceneDirector.prototype.add = function(scene, options) {
 
       if (!( scene instanceof Scene)) {
-        if (Lyria && Lyria.Scenes && Lyria.Scenes[scene]) {
-          scene = Lyria.Scenes[scene];
+        if (this.precompiledScenes) {
+          scene = this.precompiledScenes[scene];
         } else {
           throw 'No valid scene found.';
         }
