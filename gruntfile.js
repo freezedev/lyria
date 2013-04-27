@@ -44,12 +44,12 @@ module.exports = function(grunt) {
     },
     less: {
       options: {
-        paths: ['style', 'style/lib', 'style/lib/lyria'],
+        paths: ['style'],
         yuicompress: true
       },
       dist: {
         files: {
-          'css/main.css': 'style/main.less'
+          'css/lyria.css': 'style/*.less'
         }        
       }
     },
