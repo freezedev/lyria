@@ -24,7 +24,7 @@ define('lyria/localization', ['check', 'jquery', 'lyria/language'], function(che
 
       var localizeObject = {};
       
-      global.check(localization, {
+      check(localization, {
         object: function(arg) {
           localizeObject = arg;
         },
