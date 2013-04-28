@@ -374,14 +374,14 @@
         },
         {
             "file": "src\\assets.js",
-            "line": 6,
+            "line": 8,
             "class": "Audio",
             "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
         },
         {
             "file": "src\\assets.js",
-            "line": 19,
+            "line": 21,
             "class": "Audio",
             "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
@@ -812,11 +812,11 @@
         },
         {
             "message": "Missing item type",
-            "line": " src\\assets.js:6"
+            "line": " src\\assets.js:8"
         },
         {
             "message": "Missing item type",
-            "line": " src\\assets.js:19"
+            "line": " src\\assets.js:21"
         },
         {
             "message": "Missing item type\nPrivate audio elements",

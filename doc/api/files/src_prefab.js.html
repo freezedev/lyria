@@ -102,7 +102,7 @@
  * @namespace Lyria
  * Lyria namespace decleration
  */
-define(&#x27;lyria/prefab&#x27;, [&#x27;lyria/scene&#x27;, &#x27;jquery&#x27;], function(scene, $) {
+define(&#x27;lyria/prefab&#x27;, [&#x27;jquery&#x27;, &#x27;lyria/scene&#x27;], function($, Scene) {
 	&#x27;use strict&#x27;;
 
 	//Lyria.Prefab
@@ -118,7 +118,7 @@ define(&#x27;lyria/prefab&#x27;, [&#x27;lyria/scene&#x27;, &#x27;jquery&#x27;], 
 		
 		options = $.extend(true, defaultOptions, options);
 		
-		return Lyria.Scene(prefabName, options);
+		return new Scene(prefabName, options);
 		
 	};
   

@@ -163,7 +163,7 @@ define(&#x27;lyria/utils&#x27;, [&#x27;jquery&#x27;], function($) {
             
             switch (typeof anyObject[p]) {
               case &#x27;object&#x27;: {
-                str += p + &#x27;: &#x27; + Lyria.Utils.serializeObject(anyObject[p]) + commaStr + &#x27;\n&#x27;;
+                str += p + &#x27;: &#x27; + Utils.serializeObject(anyObject[p]) + commaStr + &#x27;\n&#x27;;
               }
                 break;
               case &#x27;string&#x27;: {

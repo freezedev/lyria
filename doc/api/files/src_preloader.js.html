@@ -102,7 +102,7 @@
  * @namespace Lyria
  * Lyria namespace decleration
  */
-define(&#x27;lyria/preloader&#x27;, [&#x27;check&#x27;, &#x27;jquery&#x27;], function(check, $) {
+define(&#x27;lyria/preloader&#x27;, [&#x27;root&#x27;, &#x27;check&#x27;, &#x27;jquery&#x27;, &#x27;lyria/resource&#x27;, &#x27;lyria/log&#x27;], function(root, check, $, Resource, Log) {
   &#x27;use strict&#x27;;
 
   /**
@@ -153,8 +153,8 @@ define(&#x27;lyria/preloader&#x27;, [&#x27;check&#x27;, &#x27;jquery&#x27;], fun
           check(value, {
             object: function() {},
             string: function(arg) {
-              if (arg.contains(&#x27;/&#x27; + Lyria.Resource.path.image + &#x27;/&#x27;)) {
-                var img = new global.Image();
+              if (arg.contains(&#x27;/&#x27; + Resource.path.image + &#x27;/&#x27;)) {
+                var img = new root.Image();
                 img.onload = function() {
                   Preloader.assetsLoaded++;
                   
@@ -162,7 +162,7 @@ define(&#x27;lyria/preloader&#x27;, [&#x27;check&#x27;, &#x27;jquery&#x27;], fun
                 };
                 
                 img.onerror = function(err) {
-                  global.Log.e(&#x27;Error while loading &#x27; + arg);
+                  Log.e(&#x27;Error while loading &#x27; + arg);
                 };
                 
                 img.src = arg;
@@ -172,7 +172,7 @@ define(&#x27;lyria/preloader&#x27;, [&#x27;check&#x27;, &#x27;jquery&#x27;], fun
                   
                   loadingProgress();
                 }).error(function(err) {
-                  global.Log.e(&#x27;Error while loading &#x27; + arg + &#x27;: &#x27; + err);
+                  Log.e(&#x27;Error while loading &#x27; + arg + &#x27;: &#x27; + err);
                 });
               }              
             }

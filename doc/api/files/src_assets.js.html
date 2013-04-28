@@ -102,44 +102,50 @@
  * @namespace Lyria
  * Lyria namespace decleration
  */
-define(&#x27;lyria/resource&#x27;, {
-  /**
-   *
-   */
-  path: {
-    assets: &quot;assets&quot;,
-    audio: &quot;audio&quot;,
-    data: &quot;data&quot;,
-    image: &quot;images&quot;,
-    scene: &quot;scenes&quot;,
-    video: &quot;video&quot;,
-    prefab: &quot;prefabs&quot;
-  },
-
-  /**
-   *
-   *
-   */
-  name: function(filename, type) {
-    if (!filename) {
-      return;
+define(&#x27;lyria/resource&#x27;, function() {
+  
+  var Resource = {
+    /**
+     *
+     */
+    path: {
+      assets: &quot;assets&quot;,
+      audio: &quot;audio&quot;,
+      data: &quot;data&quot;,
+      image: &quot;images&quot;,
+      scene: &quot;scenes&quot;,
+      video: &quot;video&quot;,
+      prefab: &quot;prefabs&quot;
+    },
+  
+    /**
+     *
+     *
+     */
+    name: function(filename, type) {
+      if (!filename) {
+        return;
+      }
+  
+      var assetPath = Resource.path[&#x27;assets&#x27;];
+      var typePath = &quot;&quot;;
+  
+      if (Resource.path[type]) {
+        typePath = Resource.path[type];
+      } else {
+        typePath = type;
+      }
+  
+      if (typePath) {
+        return [assetPath, typePath.split(&#x27;.&#x27;).join(&#x27;/&#x27;), filename].join(&#x27;/&#x27;);
+      } else {
+        return [assetPath, filename].join(&#x27;/&#x27;);
+      }
     }
-
-    var assetPath = Lyria.Resource.path[&#x27;assets&#x27;];
-    var typePath = &quot;&quot;;
-
-    if (Lyria.Resource.path[type]) {
-      typePath = Lyria.Resource.path[type];
-    } else {
-      typePath = type;
-    }
-
-    if (typePath) {
-      return [assetPath, typePath.split(&#x27;.&#x27;).join(&#x27;/&#x27;), filename].join(&#x27;/&#x27;);
-    } else {
-      return [assetPath, filename].join(&#x27;/&#x27;);
-    }
-  }
+    
+  };
+  
+  return Resource;
 }); 
     </pre>
 </div>
