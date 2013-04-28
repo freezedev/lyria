@@ -72,7 +72,7 @@ define('lyria/log', ['root'], function(root) {
   })();
 
   // Map shorthand functions to Log.i
-  root.log = root.out = Lyria.Log.i;
+  root.log = root.out = Log.i;
   
   return Log;
 });
