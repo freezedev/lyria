@@ -1097,7 +1097,7 @@ define('lyria/preloader', ['root', 'check', 'jquery', 'lyria/resource', 'lyria/l
           check(value, {
             object: function() {},
             string: function(arg) {
-              if (arg.contains('/' + Resource.path.image + '/')) {
+              if (arg.indexOf('/' + Resource.path.image + '/') >= 0) {
                 var img = new root.Image();
                 img.onload = function() {
                   Preloader.assetsLoaded++;
