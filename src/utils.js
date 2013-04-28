@@ -63,7 +63,7 @@ define('lyria/utils', ['jquery'], function($) {
             
             switch (typeof anyObject[p]) {
               case 'object': {
-                str += p + ': ' + Lyria.Utils.serializeObject(anyObject[p]) + commaStr + '\n';
+                str += p + ': ' + Utils.serializeObject(anyObject[p]) + commaStr + '\n';
               }
                 break;
               case 'string': {
