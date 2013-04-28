@@ -111,44 +111,50 @@ define('lyria/achievements', ['root', 'jquery'], function(root, $) {
  * @namespace Lyria
  * Lyria namespace decleration
  */
-define('lyria/resource', {
-  /**
-   *
-   */
-  path: {
-    assets: "assets",
-    audio: "audio",
-    data: "data",
-    image: "images",
-    scene: "scenes",
-    video: "video",
-    prefab: "prefabs"
-  },
-
-  /**
-   *
-   *
-   */
-  name: function(filename, type) {
-    if (!filename) {
-      return;
+define('lyria/resource', function() {
+  
+  var Resource = {
+    /**
+     *
+     */
+    path: {
+      assets: "assets",
+      audio: "audio",
+      data: "data",
+      image: "images",
+      scene: "scenes",
+      video: "video",
+      prefab: "prefabs"
+    },
+  
+    /**
+     *
+     *
+     */
+    name: function(filename, type) {
+      if (!filename) {
+        return;
+      }
+  
+      var assetPath = Resource.path['assets'];
+      var typePath = "";
+  
+      if (Resource.path[type]) {
+        typePath = Resource.path[type];
+      } else {
+        typePath = type;
+      }
+  
+      if (typePath) {
+        return [assetPath, typePath.split('.').join('/'), filename].join('/');
+      } else {
+        return [assetPath, filename].join('/');
+      }
     }
-
-    var assetPath = Lyria.Resource.path['assets'];
-    var typePath = "";
-
-    if (Lyria.Resource.path[type]) {
-      typePath = Lyria.Resource.path[type];
-    } else {
-      typePath = type;
-    }
-
-    if (typePath) {
-      return [assetPath, typePath.split('.').join('/'), filename].join('/');
-    } else {
-      return [assetPath, filename].join('/');
-    }
-  }
+    
+  };
+  
+  return Resource;
 }); 
 /**
  * @module Lyria
@@ -778,7 +784,7 @@ define('lyria/localization', ['check', 'jquery', 'lyria/language'], function(che
 
       var localizeObject = {};
       
-      global.check(localization, {
+      check(localization, {
         object: function(arg) {
           localizeObject = arg;
         },
@@ -923,7 +929,7 @@ define('lyria/log', ['root'], function(root) {
   })();
 
   // Map shorthand functions to Log.i
-  root.log = root.out = Lyria.Log.i;
+  root.log = root.out = Log.i;
   
   return Log;
 });
@@ -1015,7 +1021,7 @@ define('lyria/loop', ['root', 'requestAnimationFrame'], function(root, requestAn
  * @namespace Lyria
  * Lyria namespace decleration
  */
-define('lyria/prefab', ['lyria/scene', 'jquery'], function(scene, $) {
+define('lyria/prefab', ['jquery', 'lyria/scene'], function($, Scene) {
 	'use strict';
 
 	//Lyria.Prefab
@@ -1031,7 +1037,7 @@ define('lyria/prefab', ['lyria/scene', 'jquery'], function(scene, $) {
 		
 		options = $.extend(true, defaultOptions, options);
 		
-		return Lyria.Scene(prefabName, options);
+		return new Scene(prefabName, options);
 		
 	};
   
@@ -1040,7 +1046,7 @@ define('lyria/prefab', ['lyria/scene', 'jquery'], function(scene, $) {
  * @namespace Lyria
  * Lyria namespace decleration
  */
-define('lyria/preloader', ['check', 'jquery'], function(check, $) {
+define('lyria/preloader', ['root', 'check', 'jquery', 'lyria/resource', 'lyria/log'], function(root, check, $, Resource, Log) {
   'use strict';
 
   /**
@@ -1091,8 +1097,8 @@ define('lyria/preloader', ['check', 'jquery'], function(check, $) {
           check(value, {
             object: function() {},
             string: function(arg) {
-              if (arg.contains('/' + Lyria.Resource.path.image + '/')) {
-                var img = new global.Image();
+              if (arg.contains('/' + Resource.path.image + '/')) {
+                var img = new root.Image();
                 img.onload = function() {
                   Preloader.assetsLoaded++;
                   
@@ -1100,7 +1106,7 @@ define('lyria/preloader', ['check', 'jquery'], function(check, $) {
                 };
                 
                 img.onerror = function(err) {
-                  global.Log.e('Error while loading ' + arg);
+                  Log.e('Error while loading ' + arg);
                 };
                 
                 img.src = arg;
@@ -1110,7 +1116,7 @@ define('lyria/preloader', ['check', 'jquery'], function(check, $) {
                   
                   loadingProgress();
                 }).error(function(err) {
-                  global.Log.e('Error while loading ' + arg + ': ' + err);
+                  Log.e('Error while loading ' + arg + ': ' + err);
                 });
               }              
             }
@@ -1529,7 +1535,7 @@ define('lyria/utils', ['jquery'], function($) {
             
             switch (typeof anyObject[p]) {
               case 'object': {
-                str += p + ': ' + Lyria.Utils.serializeObject(anyObject[p]) + commaStr + '\n';
+                str += p + ': ' + Utils.serializeObject(anyObject[p]) + commaStr + '\n';
               }
                 break;
               case 'string': {
