@@ -153,7 +153,7 @@ define(&#x27;lyria/preloader&#x27;, [&#x27;root&#x27;, &#x27;check&#x27;, &#x27;
           check(value, {
             object: function() {},
             string: function(arg) {
-              if (arg.contains(&#x27;/&#x27; + Resource.path.image + &#x27;/&#x27;)) {
+              if (arg.indexOf(&#x27;/&#x27; + Resource.path.image + &#x27;/&#x27;) &gt;= 0) {
                 var img = new root.Image();
                 img.onload = function() {
                   Preloader.assetsLoaded++;
