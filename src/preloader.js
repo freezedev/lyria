@@ -2,7 +2,7 @@
  * @namespace Lyria
  * Lyria namespace decleration
  */
-define('lyria/preloader', ['check', 'jquery'], function(check, $) {
+define('lyria/preloader', ['root', 'check', 'jquery', 'lyria/resource', 'lyria/log'], function(root, check, $, Resource, Log) {
   'use strict';
 
   /**
@@ -53,8 +53,8 @@ define('lyria/preloader', ['check', 'jquery'], function(check, $) {
           check(value, {
             object: function() {},
             string: function(arg) {
-              if (arg.contains('/' + Lyria.Resource.path.image + '/')) {
-                var img = new global.Image();
+              if (arg.contains('/' + Resource.path.image + '/')) {
+                var img = new root.Image();
                 img.onload = function() {
                   Preloader.assetsLoaded++;
                   
@@ -62,7 +62,7 @@ define('lyria/preloader', ['check', 'jquery'], function(check, $) {
                 };
                 
                 img.onerror = function(err) {
-                  global.Log.e('Error while loading ' + arg);
+                  Log.e('Error while loading ' + arg);
                 };
                 
                 img.src = arg;
@@ -72,7 +72,7 @@ define('lyria/preloader', ['check', 'jquery'], function(check, $) {
                   
                   loadingProgress();
                 }).error(function(err) {
-                  global.Log.e('Error while loading ' + arg + ': ' + err);
+                  Log.e('Error while loading ' + arg + ': ' + err);
                 });
               }              
             }
