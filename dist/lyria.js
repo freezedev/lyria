@@ -408,15 +408,17 @@ define('lyria/debug', function() {
 });
 
 // General constants
-define('lyria/constants', {
-  animSpeed: 300
+define('lyria/constants', function() {
+  return {
+    animSpeed: 300
+  };
 });
 
 define('lyria/language', ['detectr'], function(detectr) {
   // Fallback language
   var defaultLanguage = 'en';
-  
-  return detectr.Browser.language() || defaultLanguage;  
+
+  return detectr.Browser.language() || defaultLanguage;
 });
 
 (function(root) {
@@ -424,6 +426,43 @@ define('lyria/language', ['detectr'], function(detectr) {
     return root;
   });
 })(this);
+
+define('mixin', function() {
+  var mixin, __slice = [].slice;
+
+  mixin = function() {
+    var key, oldRef, s, source, target, value, _i, _len;
+
+    target = arguments[0], source = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+    if (!(target || source)) {
+      return;
+    }
+    for ( _i = 0, _len = source.length; _i < _len; _i++) {
+      s = source[_i];
+      for (key in s) {
+        value = s[key];
+        if (!Object.hasOwnProperty.call(target, key)) {
+          target[key] = value;
+        } /* else {
+          oldRef = target[key];
+          target[key] = (function() {
+            if ( typeof oldRef === 'function' && typeof value === 'function') {
+              return function() {
+                oldRef.apply(this, arguments);
+                return value.apply(this, arguments);
+              };
+            } else {
+              return [oldRef, value];
+            }
+          })();
+        } */
+      }
+    }
+    return null;
+  };
+
+  return mixin;
+});
 
 define('requestAnimationFrame', ['root'], function(root) {
   // frameRate is only used if requestAnimationFrame is not available
@@ -435,7 +474,7 @@ define('requestAnimationFrame', ['root'], function(root) {
 
   for (var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
     requestAnimationFrame = root[vendors[x] + 'RequestAnimationFrame'];
-    
+
     if (requestAnimationFrame) {
       break;
     }
@@ -458,7 +497,7 @@ define('cancelAnimationFrame', ['root'], function(root) {
 
   for (var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
     cancelRequestAnimationFrame = root[vendors[x] + 'CancelRequestAnimationFrame'];
-  
+
     if (cancelAnimationFrame) {
       break;
     }
@@ -579,23 +618,24 @@ define('lyria/eventmap', function() {'use strict';
    */
   var __slice = [].slice;
 
-  // Lyria.EventMap
   return (function() {
     var eventFunctions, eventMap;
-
+  
     eventMap = {};
-
+  
     eventFunctions = {};
-
-    function EventMap() {
+  
+    function EventMap(sender) {
+      this.sender = sender;
       eventMap = {};
       eventFunctions = {};
     }
-
-
+  
     EventMap.prototype.validEvents = [];
-
+  
     EventMap.prototype.on = function(eventName, eventFunction) {
+      var eventDesc;
+  
       if (!eventFunction) {
         return;
       }
@@ -604,14 +644,20 @@ define('lyria/eventmap', function() {'use strict';
           return;
         }
       }
-      eventMap[eventName] = {
+      eventDesc = {
         event: eventFunction,
         id: -1,
-        type: ''
+        type: '',
+        sender: this.sender
       };
+      if (!eventMap[eventName]) {
+        eventMap[eventName] = [eventDesc];
+      } else {
+        eventMap[eventName].push(eventDesc);
+      }
       return this;
     };
-
+  
     EventMap.prototype.off = function(eventName) {
       if (!eventName) {
         return;
@@ -629,17 +675,21 @@ define('lyria/eventmap', function() {'use strict';
       }
       return this;
     };
-
+  
     EventMap.prototype.trigger = function() {
-      var args, context, eventName, interval, name, repeat, triggerFunction;
+      var args, context, eventName, i, interval, name, repeat, triggerFunction, _i, _len, _ref;
+  
       eventName = arguments[0], args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
       if (eventName == null) {
         return;
       }
-      if ( typeof eventName === 'object') {
+      if (typeof eventName === 'object') {
         name = eventName.name, interval = eventName.interval, repeat = eventName.repeat, context = eventName.context;
       } else {
         name = eventName;
+      }
+      if (!eventMap[name]) {
+        return;
       }
       if (interval == null) {
         interval = 0;
@@ -650,31 +700,34 @@ define('lyria/eventmap', function() {'use strict';
       if (context == null) {
         context = this;
       }
-      triggerFunction = function() {
-        if (eventMap[name]) {
-          return eventMap[name].event.apply(context, args);
-        }
-      };
-      if (interval) {
-        if (repeat) {
-          eventMap[name].type = 'repeat';
-          eventMap[name].id = window.setInterval(triggerFunction, interval);
+      _ref = eventMap[name];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        i = _ref[_i];
+        triggerFunction = function(evObject) {
+          return i.event.apply(context, [[i.sender], args].reduce(function(a, b) {
+            return a.concat(b);
+          }));
+        };
+        if (interval) {
+          if (repeat) {
+            i.type = 'repeat';
+            i.id = window.setInterval(triggerFunction, interval);
+          } else {
+            i.type = 'once';
+            i.id = window.setTimeout(triggerFunction, interval);
+          }
         } else {
-          eventMap[name].type = 'once';
-          eventMap[name].id = window.setTimeout(triggerFunction, interval);
+          i.type = 'direct';
+          triggerFunction.call(this);
         }
-      } else {
-        eventMap[name].type = 'direct';
-        triggerFunction.call(this);
       }
       return this;
     };
-
+  
     return EventMap;
-
+  
   })();
 });
-
 define('lyria/events', ['lyria/eventmap'], function(EventMap) {
   var instance = instance || new EventMap();
 
@@ -696,7 +749,7 @@ define('lyria/game', ['lyria/viewport', 'lyria/scene/director', 'lyria/preloader
     
     Game.prototype.viewport = new Viewport();
     Game.prototype.director = new Director(Game.prototype.viewport);
-    Game.prototype.preloader = Preloader;
+    Game.prototype.preloader = new Preloader();
     
     return Game;
     
@@ -707,7 +760,7 @@ define('lyria/game', ['lyria/viewport', 'lyria/scene/director', 'lyria/preloader
  * @namespace Lyria
  * Lyria namespace decleration
  */
-define('lyria/gameobject', function() {
+define('lyria/gameobject', ['mixin', 'lyria/eventmap', 'lyria/component'], function(mixin, EventMap, Component) {
   'use strict';
   
   //Lyria.GameObject
@@ -715,6 +768,7 @@ define('lyria/gameobject', function() {
     
     // Constructor
     var GameObject = function() {
+      mixin(GameObject.prototype, new EventMap());
       
     };
     
@@ -727,6 +781,10 @@ define('lyria/gameobject', function() {
     };
     
     GameObject.prototype.log = function() {
+      
+    };
+    
+    GameObject.prototype.update = function(dt) {
       
     };
     
@@ -1046,106 +1104,115 @@ define('lyria/prefab', ['jquery', 'lyria/scene'], function($, Scene) {
  * @namespace Lyria
  * Lyria namespace decleration
  */
-define('lyria/preloader', ['root', 'check', 'jquery', 'lyria/resource', 'lyria/log'], function(root, check, $, Resource, Log) {
-  'use strict';
+define('lyria/preloader', ['root', 'check', 'mixin', 'jquery', 'lyria/resource', 'lyria/log', 'lyria/eventmap'], function(root, check, mixin, $, Resource, Log, EventMap) {'use strict';
 
   /**
-   * 
+   *
    */
-  var Preloader = {
-    maxAssets: 0,
-    assetsLoaded: 0,
-    percentLoaded: 0,
-    init: function(assetArray, options) {
+  var Preloader = (function() {
+
+    var Preloader = function(assetArray) {
+      mixin(Preloader.prototype, new EventMap('Preloader'));
+
+      if (assetArray != null) {
+        this.assets = assetArray;
+      } else {
+        this.assets = [];
+      }
+
+      this.maxAssets = 0;
+      this.assetsLoaded = 0;
+      this.percentLoaded = 0;
+    };
+
+    Preloader.prototype.start = function(options) {
+      // Check if it's an array
+      if (!Array.isArray(this.assets) || this.assets.length === 0) {
+        return;
+      }
+
+      this.trigger('start');
+
       var defaultOptions = {
         showLoadingScreen: true,
         loadingScreenClass: 'loading-screen',
         loadingBarClass: 'loading-bar'
       };
       options = $.extend(true, defaultOptions, options);
-      
-      
-      function loadingProgress() {
-  
-        Preloader.percentLoaded = Preloader.assetsLoaded / Preloader.maxAssets;
-        if (Preloader.onProgressChange) {
-          Preloader.onProgressChange(Preloader.percentLoaded);
-        }
-  
-        if (options.showLoadingScreen) {
-          
-        }
-  
-        if(Preloader.assetsLoaded === Preloader.maxAssets) {
-          if (options.showLoadingScreen) {
-            
-          }
-          
-          if(Preloader.complete && ( typeof Preloader.complete === "function")) {
-            // Callback
-            Preloader.complete();
-          }
-        }
-      }
-  
-      // Check if it's an array
-      if(assetArray.length) {
-        Preloader.maxAssets = assetArray.length;
-  
-        $.each(assetArray, function(key, value) {
-          
-          check(value, {
-            object: function() {},
-            string: function(arg) {
-              if (arg.indexOf('/' + Resource.path.image + '/') >= 0) {
-                var img = new root.Image();
-                img.onload = function() {
-                  Preloader.assetsLoaded++;
-                  
-                  loadingProgress();
-                };
-                
-                img.onerror = function(err) {
-                  Log.e('Error while loading ' + arg);
-                };
-                
-                img.src = arg;
-              } else {
-                $.ajax({url: arg, dataType: 'text'}).always(function() {
-                  Preloader.assetsLoaded++;
-                  
-                  loadingProgress();
-                }).error(function(err) {
-                  Log.e('Error while loading ' + arg + ': ' + err);
-                });
-              }              
-            }
-          });
 
-        });
+      var self = this;
+
+      function loadingProgress() {
+
+        self.percentLoaded = self.assetsLoaded / self.maxAssets;
+
+        self.trigger('progresschange', self.percentLoaded);
+
+        if (options.showLoadingScreen) {
+
+        }
+
+        if (self.assetsLoaded === self.maxAssets) {
+          if (options.showLoadingScreen) {
+
+          }
+
+          self.trigger('complete');
+        }
       }
-    },
-    /**
-     * 
-     */
-    onProgressChange: function(value) {
-      
-    },
-    /**
-     * 
-     */
-    complete: function() {
-  
-    }
-  };
-  
+
+
+      this.maxAssets = this.assets.length;
+
+      $.each(this.assets, function(key, value) {
+
+        check(value, {
+          object: function() {
+          },
+          string: function(arg) {
+            if (arg.indexOf('/' + Resource.path.image + '/') >= 0) {
+              var img = new root.Image();
+              img.onload = function() {
+                self.assetsLoaded++;
+
+                loadingProgress();
+              };
+
+              img.onerror = function(err) {
+                Log.e('Error while loading ' + arg);
+              };
+
+              img.src = arg;
+            } else {
+              $.ajax({
+                url: arg,
+                dataType: 'text'
+              }).always(function() {
+                self.assetsLoaded++;
+
+                loadingProgress();
+              }).error(function(err) {
+                Log.e('Error while loading ' + arg + ': ' + err);
+              });
+            }
+          }
+        });
+
+      });
+    };
+
+    return Preloader;
+
+  })();
+
   return Preloader;
 });
+
 /**
  * @namespace Lyria
  * Lyria namespace decleration
  */
-define('lyria/scene/director', ['root', 'jquery', 'lyria/scene', 'lyria/viewport'], function(root, $, Scene, Viewport) {
+define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'lyria/scene', 'lyria/viewport'], function(root, mixin, $, EventMap, Scene, Viewport) {
   'use strict';
   
   /**
@@ -1155,6 +1222,7 @@ define('lyria/scene/director', ['root', 'jquery', 'lyria/scene', 'lyria/viewport
   return (function() {
 
     function SceneDirector(container, parent) {
+      mixin(SceneDirector.prototype, new EventMap('SceneDirector'));
 
       if ( container instanceof Viewport) {
         this.viewport = container;
@@ -1164,9 +1232,6 @@ define('lyria/scene/director', ['root', 'jquery', 'lyria/scene', 'lyria/viewport
 
       this.sceneList = {};
       this.currentScene = null;
-      this.onSceneChange = function(scene) {
-      };
-
     }
 
     // Properties
@@ -1211,10 +1276,7 @@ define('lyria/scene/director', ['root', 'jquery', 'lyria/scene', 'lyria/viewport
     };
 
     SceneDirector.prototype.show = function(scene, options, callback) {
-
-      if (this.onSceneChange) {
-        this.onSceneChange(scene);
-      }
+      this.trigger('scenechange', scene);
 
       // More than one scene visible at the same time
       if ($('.' + SceneDirector.prototype.sceneClassName + ':visible')) {
@@ -1230,11 +1292,10 @@ define('lyria/scene/director', ['root', 'jquery', 'lyria/scene', 'lyria/viewport
           $('.' + SceneDirector.prototype.sceneClassName).hide();
         }
 
-        if (this.currentScene.onDeactivated) {
-          this.currentScene.onDeactivated(options);
-        }
-
+        this.currentScene.trigger('deactivate', options);
       }
+      
+      var self = this;
 
       $.each(this.sceneList, function(key, value) {
         if (key === scene) {
@@ -1244,13 +1305,14 @@ define('lyria/scene/director', ['root', 'jquery', 'lyria/scene', 'lyria/viewport
           } else {
             $('#' + scene).show();
           }
-          this.currentScene = value;
-          if (this.currentScene.onActive) {
-            this.currentScene.onActive(options);
-          }
+          
+          self.currentScene = value;
+          
+          self.currentScene.trigger('active');
 
-          if (callback)
-            callback(scene);
+          if (callback) {
+            callback(scene);            
+          }
 
           return false;
         }
@@ -1258,17 +1320,11 @@ define('lyria/scene/director', ['root', 'jquery', 'lyria/scene', 'lyria/viewport
     };
 
     SceneDirector.prototype.render = function() {
-      if (!this.currentScene.render) {
-        return;
-      }
-      this.currentScene.render();
+      this.currentScene.trigger('render');
     };
 
     SceneDirector.prototype.update = function(dt) {
-      if (!this.currentScene.update) {
-        return;
-      }
-      this.currentScene.update(dt);
+      this.currentScene.trigger('update', dt);
     };
 
     return SceneDirector;
@@ -1280,7 +1336,7 @@ define('lyria/scene/director', ['root', 'jquery', 'lyria/scene', 'lyria/viewport
  * @namespace Lyria
  * Lyria namespace decleration
  */
-define('lyria/scene', ['jquery', 'lyria/eventmap', 'lyria/gameobject'], function($, EventMap, GameObject) {
+define('lyria/scene', ['jquery', 'mixin', 'lyria/eventmap', 'lyria/gameobject'], function($, mixin, EventMap, GameObject) {
   'use strict';
 
   var sceneCache = {};
@@ -1292,6 +1348,9 @@ define('lyria/scene', ['jquery', 'lyria/eventmap', 'lyria/gameobject'], function
       if (!sceneName) {
         return;
       }
+      
+      // Mixin event map into Scene
+      mixin(Scene.prototype, new EventMap('scene:' + sceneName));
       
       // We need a reference to the scene not being this
       var self = this;
@@ -1364,16 +1423,6 @@ define('lyria/scene', ['jquery', 'lyria/eventmap', 'lyria/gameobject'], function
         
       }
     };
-    
-    var methods = Object.keys(EventMap.prototype);
-    
-    for (var i = 0, j = methods.length; i < j; i++) {
-      (function(iterator) {
-        Scene.prototype[iterator] = function() {
-          this.eventMap[iterator].apply(this, arguments);
-        };
-      })(methods[i]);
-    }
     
     return Scene;
     
