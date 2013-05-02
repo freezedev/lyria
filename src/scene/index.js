@@ -2,7 +2,7 @@
  * @namespace Lyria
  * Lyria namespace decleration
  */
-define('lyria/scene', ['jquery', 'lyria/eventmap', 'lyria/gameobject'], function($, EventMap, GameObject) {
+define('lyria/scene', ['jquery', 'mixin', 'lyria/eventmap', 'lyria/gameobject'], function($, mixin, EventMap, GameObject) {
   'use strict';
 
   var sceneCache = {};
@@ -14,6 +14,9 @@ define('lyria/scene', ['jquery', 'lyria/eventmap', 'lyria/gameobject'], function
       if (!sceneName) {
         return;
       }
+      
+      // Mixin event map into Scene
+      mixin(Scene.prototype, new EventMap('scene:' + sceneName));
       
       // We need a reference to the scene not being this
       var self = this;
@@ -86,16 +89,6 @@ define('lyria/scene', ['jquery', 'lyria/eventmap', 'lyria/gameobject'], function
         
       }
     };
-    
-    var methods = Object.keys(EventMap.prototype);
-    
-    for (var i = 0, j = methods.length; i < j; i++) {
-      (function(iterator) {
-        Scene.prototype[iterator] = function() {
-          this.eventMap[iterator].apply(this, arguments);
-        };
-      })(methods[i]);
-    }
     
     return Scene;
     
