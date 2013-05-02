@@ -102,101 +102,110 @@
  * @namespace Lyria
  * Lyria namespace decleration
  */
-define(&#x27;lyria/preloader&#x27;, [&#x27;root&#x27;, &#x27;check&#x27;, &#x27;jquery&#x27;, &#x27;lyria/resource&#x27;, &#x27;lyria/log&#x27;], function(root, check, $, Resource, Log) {
-  &#x27;use strict&#x27;;
+define(&#x27;lyria/preloader&#x27;, [&#x27;root&#x27;, &#x27;check&#x27;, &#x27;mixin&#x27;, &#x27;jquery&#x27;, &#x27;lyria/resource&#x27;, &#x27;lyria/log&#x27;, &#x27;lyria/eventmap&#x27;], function(root, check, mixin, $, Resource, Log, EventMap) {&#x27;use strict&#x27;;
 
   /**
-   * 
+   *
    */
-  var Preloader = {
-    maxAssets: 0,
-    assetsLoaded: 0,
-    percentLoaded: 0,
-    init: function(assetArray, options) {
+  var Preloader = (function() {
+
+    var Preloader = function(assetArray) {
+      mixin(Preloader.prototype, new EventMap(&#x27;Preloader&#x27;));
+
+      if (assetArray != null) {
+        this.assets = assetArray;
+      } else {
+        this.assets = [];
+      }
+
+      this.maxAssets = 0;
+      this.assetsLoaded = 0;
+      this.percentLoaded = 0;
+    };
+
+    Preloader.prototype.start = function(options) {
+      // Check if it&#x27;s an array
+      if (!Array.isArray(this.assets) || this.assets.length === 0) {
+        return;
+      }
+
+      this.trigger(&#x27;start&#x27;);
+
       var defaultOptions = {
         showLoadingScreen: true,
         loadingScreenClass: &#x27;loading-screen&#x27;,
         loadingBarClass: &#x27;loading-bar&#x27;
       };
       options = $.extend(true, defaultOptions, options);
-      
-      
-      function loadingProgress() {
-  
-        Preloader.percentLoaded = Preloader.assetsLoaded / Preloader.maxAssets;
-        if (Preloader.onProgressChange) {
-          Preloader.onProgressChange(Preloader.percentLoaded);
-        }
-  
-        if (options.showLoadingScreen) {
-          
-        }
-  
-        if(Preloader.assetsLoaded === Preloader.maxAssets) {
-          if (options.showLoadingScreen) {
-            
-          }
-          
-          if(Preloader.complete &amp;&amp; ( typeof Preloader.complete === &quot;function&quot;)) {
-            // Callback
-            Preloader.complete();
-          }
-        }
-      }
-  
-      // Check if it&#x27;s an array
-      if(assetArray.length) {
-        Preloader.maxAssets = assetArray.length;
-  
-        $.each(assetArray, function(key, value) {
-          
-          check(value, {
-            object: function() {},
-            string: function(arg) {
-              if (arg.indexOf(&#x27;/&#x27; + Resource.path.image + &#x27;/&#x27;) &gt;= 0) {
-                var img = new root.Image();
-                img.onload = function() {
-                  Preloader.assetsLoaded++;
-                  
-                  loadingProgress();
-                };
-                
-                img.onerror = function(err) {
-                  Log.e(&#x27;Error while loading &#x27; + arg);
-                };
-                
-                img.src = arg;
-              } else {
-                $.ajax({url: arg, dataType: &#x27;text&#x27;}).always(function() {
-                  Preloader.assetsLoaded++;
-                  
-                  loadingProgress();
-                }).error(function(err) {
-                  Log.e(&#x27;Error while loading &#x27; + arg + &#x27;: &#x27; + err);
-                });
-              }              
-            }
-          });
 
-        });
+      var self = this;
+
+      function loadingProgress() {
+
+        self.percentLoaded = self.assetsLoaded / self.maxAssets;
+
+        self.trigger(&#x27;progresschange&#x27;, self.percentLoaded);
+
+        if (options.showLoadingScreen) {
+
+        }
+
+        if (self.assetsLoaded === self.maxAssets) {
+          if (options.showLoadingScreen) {
+
+          }
+
+          self.trigger(&#x27;complete&#x27;);
+        }
       }
-    },
-    /**
-     * 
-     */
-    onProgressChange: function(value) {
-      
-    },
-    /**
-     * 
-     */
-    complete: function() {
-  
-    }
-  };
-  
+
+
+      this.maxAssets = this.assets.length;
+
+      $.each(this.assets, function(key, value) {
+
+        check(value, {
+          object: function() {
+          },
+          string: function(arg) {
+            if (arg.indexOf(&#x27;/&#x27; + Resource.path.image + &#x27;/&#x27;) &gt;= 0) {
+              var img = new root.Image();
+              img.onload = function() {
+                self.assetsLoaded++;
+
+                loadingProgress();
+              };
+
+              img.onerror = function(err) {
+                Log.e(&#x27;Error while loading &#x27; + arg);
+              };
+
+              img.src = arg;
+            } else {
+              $.ajax({
+                url: arg,
+                dataType: &#x27;text&#x27;
+              }).always(function() {
+                self.assetsLoaded++;
+
+                loadingProgress();
+              }).error(function(err) {
+                Log.e(&#x27;Error while loading &#x27; + arg + &#x27;: &#x27; + err);
+              });
+            }
+          }
+        });
+
+      });
+    };
+
+    return Preloader;
+
+  })();
+
   return Preloader;
 });
+
     </pre>
 </div>
 

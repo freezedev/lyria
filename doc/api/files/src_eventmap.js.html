@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src\events.js - lyria</title>
+    <title>src\eventmap.js - lyria</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -94,7 +94,7 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: src\events.js</h1>
+                        <h1 class="file-heading">File: src\eventmap.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
@@ -111,23 +111,24 @@ define(&#x27;lyria/eventmap&#x27;, function() {&#x27;use strict&#x27;;
    */
   var __slice = [].slice;
 
-  // Lyria.EventMap
   return (function() {
     var eventFunctions, eventMap;
-
+  
     eventMap = {};
-
+  
     eventFunctions = {};
-
-    function EventMap() {
+  
+    function EventMap(sender) {
+      this.sender = sender;
       eventMap = {};
       eventFunctions = {};
     }
-
-
+  
     EventMap.prototype.validEvents = [];
-
+  
     EventMap.prototype.on = function(eventName, eventFunction) {
+      var eventDesc;
+  
       if (!eventFunction) {
         return;
       }
@@ -136,14 +137,20 @@ define(&#x27;lyria/eventmap&#x27;, function() {&#x27;use strict&#x27;;
           return;
         }
       }
-      eventMap[eventName] = {
+      eventDesc = {
         event: eventFunction,
         id: -1,
-        type: &#x27;&#x27;
+        type: &#x27;&#x27;,
+        sender: this.sender
       };
+      if (!eventMap[eventName]) {
+        eventMap[eventName] = [eventDesc];
+      } else {
+        eventMap[eventName].push(eventDesc);
+      }
       return this;
     };
-
+  
     EventMap.prototype.off = function(eventName) {
       if (!eventName) {
         return;
@@ -161,17 +168,21 @@ define(&#x27;lyria/eventmap&#x27;, function() {&#x27;use strict&#x27;;
       }
       return this;
     };
-
+  
     EventMap.prototype.trigger = function() {
-      var args, context, eventName, interval, name, repeat, triggerFunction;
+      var args, context, eventName, i, interval, name, repeat, triggerFunction, _i, _len, _ref;
+  
       eventName = arguments[0], args = 2 &lt;= arguments.length ? __slice.call(arguments, 1) : [];
       if (eventName == null) {
         return;
       }
-      if ( typeof eventName === &#x27;object&#x27;) {
+      if (typeof eventName === &#x27;object&#x27;) {
         name = eventName.name, interval = eventName.interval, repeat = eventName.repeat, context = eventName.context;
       } else {
         name = eventName;
+      }
+      if (!eventMap[name]) {
+        return;
       }
       if (interval == null) {
         interval = 0;
@@ -182,37 +193,34 @@ define(&#x27;lyria/eventmap&#x27;, function() {&#x27;use strict&#x27;;
       if (context == null) {
         context = this;
       }
-      triggerFunction = function() {
-        if (eventMap[name]) {
-          return eventMap[name].event.apply(context, args);
-        }
-      };
-      if (interval) {
-        if (repeat) {
-          eventMap[name].type = &#x27;repeat&#x27;;
-          eventMap[name].id = window.setInterval(triggerFunction, interval);
+      _ref = eventMap[name];
+      for (_i = 0, _len = _ref.length; _i &lt; _len; _i++) {
+        i = _ref[_i];
+        triggerFunction = function(evObject) {
+          return i.event.apply(context, [[i.sender], args].reduce(function(a, b) {
+            return a.concat(b);
+          }));
+        };
+        if (interval) {
+          if (repeat) {
+            i.type = &#x27;repeat&#x27;;
+            i.id = window.setInterval(triggerFunction, interval);
+          } else {
+            i.type = &#x27;once&#x27;;
+            i.id = window.setTimeout(triggerFunction, interval);
+          }
         } else {
-          eventMap[name].type = &#x27;once&#x27;;
-          eventMap[name].id = window.setTimeout(triggerFunction, interval);
+          i.type = &#x27;direct&#x27;;
+          triggerFunction.call(this);
         }
-      } else {
-        eventMap[name].type = &#x27;direct&#x27;;
-        triggerFunction.call(this);
       }
       return this;
     };
-
+  
     return EventMap;
-
+  
   })();
 });
-
-define(&#x27;lyria/events&#x27;, [&#x27;lyria/eventmap&#x27;], function(EventMap) {
-  var instance = instance || new EventMap();
-
-  return instance;
-});
-
     </pre>
 </div>
 

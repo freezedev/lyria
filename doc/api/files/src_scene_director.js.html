@@ -102,7 +102,7 @@
  * @namespace Lyria
  * Lyria namespace decleration
  */
-define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;jquery&#x27;, &#x27;lyria/scene&#x27;, &#x27;lyria/viewport&#x27;], function(root, $, Scene, Viewport) {
+define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;mixin&#x27;, &#x27;jquery&#x27;, &#x27;lyria/eventmap&#x27;, &#x27;lyria/scene&#x27;, &#x27;lyria/viewport&#x27;], function(root, mixin, $, EventMap, Scene, Viewport) {
   &#x27;use strict&#x27;;
   
   /**
@@ -112,6 +112,7 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;jquery&#x27;, 
   return (function() {
 
     function SceneDirector(container, parent) {
+      mixin(SceneDirector.prototype, new EventMap(&#x27;SceneDirector&#x27;));
 
       if ( container instanceof Viewport) {
         this.viewport = container;
@@ -121,9 +122,6 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;jquery&#x27;, 
 
       this.sceneList = {};
       this.currentScene = null;
-      this.onSceneChange = function(scene) {
-      };
-
     }
 
     // Properties
@@ -168,10 +166,7 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;jquery&#x27;, 
     };
 
     SceneDirector.prototype.show = function(scene, options, callback) {
-
-      if (this.onSceneChange) {
-        this.onSceneChange(scene);
-      }
+      this.trigger(&#x27;scenechange&#x27;, scene);
 
       // More than one scene visible at the same time
       if ($(&#x27;.&#x27; + SceneDirector.prototype.sceneClassName + &#x27;:visible&#x27;)) {
@@ -187,11 +182,10 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;jquery&#x27;, 
           $(&#x27;.&#x27; + SceneDirector.prototype.sceneClassName).hide();
         }
 
-        if (this.currentScene.onDeactivated) {
-          this.currentScene.onDeactivated(options);
-        }
-
+        this.currentScene.trigger(&#x27;deactivate&#x27;, options);
       }
+      
+      var self = this;
 
       $.each(this.sceneList, function(key, value) {
         if (key === scene) {
@@ -201,13 +195,14 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;jquery&#x27;, 
           } else {
             $(&#x27;#&#x27; + scene).show();
           }
-          this.currentScene = value;
-          if (this.currentScene.onActive) {
-            this.currentScene.onActive(options);
-          }
+          
+          self.currentScene = value;
+          
+          self.currentScene.trigger(&#x27;active&#x27;);
 
-          if (callback)
-            callback(scene);
+          if (callback) {
+            callback(scene);            
+          }
 
           return false;
         }
@@ -215,17 +210,11 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;jquery&#x27;, 
     };
 
     SceneDirector.prototype.render = function() {
-      if (!this.currentScene.render) {
-        return;
-      }
-      this.currentScene.render();
+      this.currentScene.trigger(&#x27;render&#x27;);
     };
 
     SceneDirector.prototype.update = function(dt) {
-      if (!this.currentScene.update) {
-        return;
-      }
-      this.currentScene.update(dt);
+      this.currentScene.trigger(&#x27;update&#x27;, dt);
     };
 
     return SceneDirector;

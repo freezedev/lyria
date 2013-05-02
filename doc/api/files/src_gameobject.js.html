@@ -102,7 +102,7 @@
  * @namespace Lyria
  * Lyria namespace decleration
  */
-define(&#x27;lyria/gameobject&#x27;, function() {
+define(&#x27;lyria/gameobject&#x27;, [&#x27;mixin&#x27;, &#x27;lyria/eventmap&#x27;, &#x27;lyria/component&#x27;], function(mixin, EventMap, Component) {
   &#x27;use strict&#x27;;
   
   //Lyria.GameObject
@@ -110,6 +110,7 @@ define(&#x27;lyria/gameobject&#x27;, function() {
     
     // Constructor
     var GameObject = function() {
+      mixin(GameObject.prototype, new EventMap());
       
     };
     
@@ -122,6 +123,10 @@ define(&#x27;lyria/gameobject&#x27;, function() {
     };
     
     GameObject.prototype.log = function() {
+      
+    };
+    
+    GameObject.prototype.update = function(dt) {
       
     };
     
