@@ -13,7 +13,7 @@ define('lyria/game', ['lyria/viewport', 'lyria/scene/director', 'lyria/preloader
     
     Game.prototype.viewport = new Viewport();
     Game.prototype.director = new Director(Game.prototype.viewport);
-    Game.prototype.preloader = Preloader;
+    Game.prototype.preloader = new Preloader();
     
     return Game;
     
