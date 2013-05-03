@@ -510,137 +510,32 @@ define('cancelAnimationFrame', ['root'], function(root) {
   }
 });
 
-define('lyria/entity', function() {
-  
-  //Lyria.Entity
-  return (function() {
-    var functionList;
-  
-    functionList = {};
-  
-    function Entity(name) {
-      this.name = name != null ? name : this.constructor.name;
-      this.components = {};
-      functionList = {};
-    }
-  
-    Entity.prototype.add = function(component) {
-      var componentInstance, componentName, key, value;
-      if (!component) {
-        return this;
-      }
-      componentName = component.name;
-      componentInstance = this.components[componentName];
-      if (!componentInstance) {
-        componentInstance = component;
-        if (typeof componentInstance.register === "function") {
-          componentInstance.register();
-        }
-        for (key in componentInstance) {
-          value = componentInstance[key];
-          if (key === 'constructor') {
-            continue;
-          }
-          if (typeof value === 'function') {
-            if (!functionList[key]) {
-              functionList[key] = [];
-            }
-            functionList[key].push(value);
-            if (!this[key]) {
-              this[key] = (function(key) {
-                return function() {
-                  var functions, _i, _len, _ref;
-                  _ref = functionList[key];
-                  for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                    functions = _ref[_i];
-                    functions.apply(this, arguments);
-                  }
-                  return this;
-                };
-              })(key);
-            }
-          }
-        }
-      }
-      return this;
-    };
-  
-    Entity.prototype.remove = function(componentName) {
-      var _base;
-      if (this.components[componentName]) {
-        if (typeof (_base = this.components[componentName]).unregister === "function") {
-          _base.unregister();
-        }
-        delete this.components[componentName];
-      }
-      return this;
-    };
-  
-    Entity.prototype.render = function() {
-      var key, value, _ref;
-      _ref = this.components;
-      for (key in _ref) {
-        value = _ref[key];
-        if (typeof value.render === "function") {
-          value.render();
-        }
-      }
-      return this;
-    };
-  
-    Entity.prototype.update = function(dt) {
-      var key, value, _ref;
-      _ref = this.components;
-      for (key in _ref) {
-        value = _ref[key];
-        if (typeof value.update === "function") {
-          value.update(dt);
-        }
-      }
-      return this;
-    };
-  
-    return Entity;
-  
-  })();
-  
-});
 /**
  * @namespace Lyria
  * Lyria namespace decleration
  */
-define('lyria/eventmap', function() {'use strict';
+define('lyria/eventmap', ['root'], function(root) {'use strict';
 
   /**
    * This is directly taken from
    * https://github.com/elysion-powered/elyssa/blob/master/src/core/events.coffee
    * Just using a different namespace
    */
-  var __slice = [].slice;
-
-  return (function() {
-    var eventFunctions, eventMap;
-  
-    eventMap = {};
-  
-    eventFunctions = {};
-  
+  var EventMap = (function() {
     function EventMap(sender) {
       this.sender = sender;
-      eventMap = {};
-      eventFunctions = {};
+      this.events = {};
+      this.validEvents = [];
     }
-  
-    EventMap.prototype.validEvents = [];
-  
+
     EventMap.prototype.on = function(eventName, eventFunction) {
       var eventDesc;
-  
+
       if (!eventFunction) {
         return;
       }
       if (this.validEvents.length > 0) {
-        if (validEvents.indexOf(eventName) === -1) {
+        if (this.validEvents.indexOf(eventName) === -1) {
           return;
         }
       }
@@ -650,45 +545,45 @@ define('lyria/eventmap', function() {'use strict';
         type: '',
         sender: this.sender
       };
-      if (!eventMap[eventName]) {
-        eventMap[eventName] = [eventDesc];
+      if (!this.events[eventName]) {
+        this.events[eventName] = [eventDesc];
       } else {
-        eventMap[eventName].push(eventDesc);
+        this.events[eventName].push(eventDesc);
       }
       return this;
     };
-  
+
     EventMap.prototype.off = function(eventName) {
       if (!eventName) {
         return;
       }
-      if (eventMap[eventName].type === 'once' || eventMap[eventName].type === 'repeat') {
-        if (eventMap[eventName].type === 'repeat') {
-          window.clearInterval(eventMap[eventName].id);
+      if (this.events[eventName].type === 'once' || this.events[eventName].type === 'repeat') {
+        if (this.events[eventName].type === 'repeat') {
+          root.clearInterval(this.events[eventName].id);
         }
-        if (eventMap[eventName].type === 'once') {
-          window.clearTimeout(eventMap[eventName].id);
+        if (this.events[eventName].type === 'once') {
+          root.clearTimeout(this.events[eventName].id);
         }
       }
-      if (eventMap[eventName]) {
-        delete eventMap[eventName];
+      if (this.events[eventName]) {
+        delete this.events[eventName];
       }
       return this;
     };
-  
+
     EventMap.prototype.trigger = function() {
-      var args, context, eventName, i, interval, name, repeat, triggerFunction, _i, _len, _ref;
-  
-      eventName = arguments[0], args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+      var args, context, delay, eventName, i, interval, name, repeat, timeoutId, triggerEvent, triggerFunction, _i, _len, _ref;
+
+      eventName = arguments[0], args = 2 <= arguments.length ? [].slice.call(arguments, 1) : [];
       if (eventName == null) {
         return;
       }
       if (typeof eventName === 'object') {
-        name = eventName.name, interval = eventName.interval, repeat = eventName.repeat, context = eventName.context;
+        name = eventName.name, interval = eventName.interval, repeat = eventName.repeat, context = eventName.context, delay = eventName.delay;
       } else {
         name = eventName;
       }
-      if (!eventMap[name]) {
+      if (!this.events[name]) {
         return;
       }
       if (interval == null) {
@@ -700,34 +595,52 @@ define('lyria/eventmap', function() {'use strict';
       if (context == null) {
         context = this;
       }
-      _ref = eventMap[name];
+      if (delay == null) {
+        delay = 0;
+      }
+      _ref = this.events[name];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         i = _ref[_i];
-        triggerFunction = function(evObject) {
-          return i.event.apply(context, [[i.sender], args].reduce(function(a, b) {
-            return a.concat(b);
-          }));
-        };
-        if (interval) {
-          if (repeat) {
-            i.type = 'repeat';
-            i.id = window.setInterval(triggerFunction, interval);
+        triggerFunction = function() {
+          if (i.sender) {
+            return i.event.apply(context, [].concat.apply([], [[i.sender], args]));
           } else {
-            i.type = 'once';
-            i.id = window.setTimeout(triggerFunction, interval);
+            return i.event.apply(context, args);
           }
+        };
+        triggerEvent = function() {
+          if (interval) {
+            if (repeat) {
+              i.type = 'repeat';
+              i.id = root.setInterval(triggerFunction, interval);
+            } else {
+              i.type = 'once';
+              i.id = root.setTimeout(triggerFunction, interval);
+            }
+          } else {
+            i.type = 'direct';
+            triggerFunction.call(this);
+          }
+          return null;
+        };
+        if (delay) {
+          timeoutId = root.setTimeout(function() {
+            triggerEvent.call(this);
+            return root.clearTimeout(timeoutId);
+          });
         } else {
-          i.type = 'direct';
-          triggerFunction.call(this);
+          triggerEvent.call(this);
         }
       }
       return this;
     };
-  
+
     return EventMap;
-  
+
   })();
-});
+  
+  return EventMap;
+}); 
 define('lyria/events', ['lyria/eventmap'], function(EventMap) {
   var instance = instance || new EventMap();
 
@@ -745,11 +658,12 @@ define('lyria/game', ['lyria/viewport', 'lyria/scene/director', 'lyria/preloader
   return (function() {
     
     // Constructor
-    var Game = function() {};
+    var Game = function() {
+      this.viewport = new Viewport();
+      this.director = new Director(this.viewport);
+      this.preloader = new Preloader();      
+    };
     
-    Game.prototype.viewport = new Viewport();
-    Game.prototype.director = new Director(Game.prototype.viewport);
-    Game.prototype.preloader = new Preloader();
     
     return Game;
     
@@ -760,7 +674,7 @@ define('lyria/game', ['lyria/viewport', 'lyria/scene/director', 'lyria/preloader
  * @namespace Lyria
  * Lyria namespace decleration
  */
-define('lyria/gameobject', ['mixin', 'lyria/eventmap', 'lyria/component'], function(mixin, EventMap, Component) {
+define('lyria/gameobject', ['mixin', 'lyria/eventmap', 'lyria/component', 'lyria/log'], function(mixin, EventMap, Component, Log) {
   'use strict';
   
   //Lyria.GameObject
@@ -773,19 +687,17 @@ define('lyria/gameobject', ['mixin', 'lyria/eventmap', 'lyria/component'], funct
     };
     
     GameObject.prototype.add = function(component) {
-      
+      if (component instanceof Component) {
+        
+      }
     };
     
     GameObject.prototype.execute = function(functionBody) {
-      
+      functionBody.apply(this, this);
     };
     
-    GameObject.prototype.log = function() {
-      
-    };
-    
-    GameObject.prototype.update = function(dt) {
-      
+    GameObject.prototype.log = function(text) {
+      Log.i('GameObject: ' + text);
     };
     
     return GameObject;
@@ -1112,7 +1024,7 @@ define('lyria/preloader', ['root', 'check', 'mixin', 'jquery', 'lyria/resource',
   var Preloader = (function() {
 
     var Preloader = function(assetArray) {
-      mixin(Preloader.prototype, new EventMap('Preloader'));
+      mixin(Preloader.prototype, new EventMap());
 
       if (assetArray != null) {
         this.assets = assetArray;
@@ -1222,7 +1134,7 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'ly
   return (function() {
 
     function SceneDirector(container, parent) {
-      mixin(SceneDirector.prototype, new EventMap('SceneDirector'));
+      mixin(SceneDirector.prototype, new EventMap());
 
       if ( container instanceof Viewport) {
         this.viewport = container;
@@ -1308,7 +1220,7 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'ly
           
           self.currentScene = value;
           
-          self.currentScene.trigger('active');
+          self.currentScene.trigger('active', options);
 
           if (callback) {
             callback(scene);            
@@ -1341,8 +1253,7 @@ define('lyria/scene', ['jquery', 'mixin', 'lyria/eventmap', 'lyria/gameobject'],
 
   var sceneCache = {};
 
-  //Lyria.Scene
-  return (function() {
+  var Scene = (function() {
     
     var Scene = function(sceneName, sceneFunction, options) {
       if (!sceneName) {
@@ -1360,9 +1271,6 @@ define('lyria/scene', ['jquery', 'mixin', 'lyria/eventmap', 'lyria/gameobject'],
       
       // Set name
       this.name = sceneName;
-      
-      // Create new event map
-      this.eventMap = new EventMap();
       
       // Default values
       this.localization = {};
@@ -1427,6 +1335,8 @@ define('lyria/scene', ['jquery', 'mixin', 'lyria/eventmap', 'lyria/gameobject'],
     return Scene;
     
   })();
+  
+  return Scene;
   
 });
 /**
