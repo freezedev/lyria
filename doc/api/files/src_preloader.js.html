@@ -110,7 +110,7 @@ define(&#x27;lyria/preloader&#x27;, [&#x27;root&#x27;, &#x27;check&#x27;, &#x27;
   var Preloader = (function() {
 
     var Preloader = function(assetArray) {
-      mixin(Preloader.prototype, new EventMap(&#x27;Preloader&#x27;));
+      mixin(Preloader.prototype, new EventMap());
 
       if (assetArray != null) {
         this.assets = assetArray;

@@ -102,7 +102,7 @@
  * @namespace Lyria
  * Lyria namespace decleration
  */
-define(&#x27;lyria/gameobject&#x27;, [&#x27;mixin&#x27;, &#x27;lyria/eventmap&#x27;, &#x27;lyria/component&#x27;], function(mixin, EventMap, Component) {
+define(&#x27;lyria/gameobject&#x27;, [&#x27;mixin&#x27;, &#x27;lyria/eventmap&#x27;, &#x27;lyria/component&#x27;, &#x27;lyria/log&#x27;], function(mixin, EventMap, Component, Log) {
   &#x27;use strict&#x27;;
   
   //Lyria.GameObject
@@ -115,19 +115,17 @@ define(&#x27;lyria/gameobject&#x27;, [&#x27;mixin&#x27;, &#x27;lyria/eventmap&#x
     };
     
     GameObject.prototype.add = function(component) {
-      
+      if (component instanceof Component) {
+        
+      }
     };
     
     GameObject.prototype.execute = function(functionBody) {
-      
+      functionBody.apply(this, this);
     };
     
-    GameObject.prototype.log = function() {
-      
-    };
-    
-    GameObject.prototype.update = function(dt) {
-      
+    GameObject.prototype.log = function(text) {
+      Log.i(&#x27;GameObject: &#x27; + text);
     };
     
     return GameObject;

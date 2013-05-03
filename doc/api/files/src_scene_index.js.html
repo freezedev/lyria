@@ -107,8 +107,7 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixin&#x27;, &#x27;ly
 
   var sceneCache = {};
 
-  //Lyria.Scene
-  return (function() {
+  var Scene = (function() {
     
     var Scene = function(sceneName, sceneFunction, options) {
       if (!sceneName) {
@@ -126,9 +125,6 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixin&#x27;, &#x27;ly
       
       // Set name
       this.name = sceneName;
-      
-      // Create new event map
-      this.eventMap = new EventMap();
       
       // Default values
       this.localization = {};
@@ -193,6 +189,8 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixin&#x27;, &#x27;ly
     return Scene;
     
   })();
+  
+  return Scene;
   
 });
     </pre>

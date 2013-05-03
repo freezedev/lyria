@@ -112,7 +112,7 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;mixin&#x27;, &
   return (function() {
 
     function SceneDirector(container, parent) {
-      mixin(SceneDirector.prototype, new EventMap(&#x27;SceneDirector&#x27;));
+      mixin(SceneDirector.prototype, new EventMap());
 
       if ( container instanceof Viewport) {
         this.viewport = container;
@@ -198,7 +198,7 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;mixin&#x27;, &
           
           self.currentScene = value;
           
-          self.currentScene.trigger(&#x27;active&#x27;);
+          self.currentScene.trigger(&#x27;active&#x27;, options);
 
           if (callback) {
             callback(scene);            
