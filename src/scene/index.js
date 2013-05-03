@@ -7,8 +7,7 @@ define('lyria/scene', ['jquery', 'mixin', 'lyria/eventmap', 'lyria/gameobject'],
 
   var sceneCache = {};
 
-  //Lyria.Scene
-  return (function() {
+  var Scene = (function() {
     
     var Scene = function(sceneName, sceneFunction, options) {
       if (!sceneName) {
@@ -26,9 +25,6 @@ define('lyria/scene', ['jquery', 'mixin', 'lyria/eventmap', 'lyria/gameobject'],
       
       // Set name
       this.name = sceneName;
-      
-      // Create new event map
-      this.eventMap = new EventMap();
       
       // Default values
       this.localization = {};
@@ -93,5 +89,7 @@ define('lyria/scene', ['jquery', 'mixin', 'lyria/eventmap', 'lyria/gameobject'],
     return Scene;
     
   })();
+  
+  return Scene;
   
 });
