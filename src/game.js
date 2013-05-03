@@ -9,11 +9,12 @@ define('lyria/game', ['lyria/viewport', 'lyria/scene/director', 'lyria/preloader
   return (function() {
     
     // Constructor
-    var Game = function() {};
+    var Game = function() {
+      this.viewport = new Viewport();
+      this.director = new Director(this.viewport);
+      this.preloader = new Preloader();      
+    };
     
-    Game.prototype.viewport = new Viewport();
-    Game.prototype.director = new Director(Game.prototype.viewport);
-    Game.prototype.preloader = new Preloader();
     
     return Game;
     
