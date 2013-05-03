@@ -12,7 +12,7 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'ly
   return (function() {
 
     function SceneDirector(container, parent) {
-      mixin(SceneDirector.prototype, new EventMap('SceneDirector'));
+      mixin(SceneDirector.prototype, new EventMap());
 
       if ( container instanceof Viewport) {
         this.viewport = container;
