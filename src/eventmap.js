@@ -2,38 +2,28 @@
  * @namespace Lyria
  * Lyria namespace decleration
  */
-define('lyria/eventmap', function() {'use strict';
+define('lyria/eventmap', ['root'], function(root) {'use strict';
 
   /**
    * This is directly taken from
    * https://github.com/elysion-powered/elyssa/blob/master/src/core/events.coffee
    * Just using a different namespace
    */
-  var __slice = [].slice;
-
-  return (function() {
-    var eventFunctions, eventMap;
-  
-    eventMap = {};
-  
-    eventFunctions = {};
-  
+  var EventMap = (function() {
     function EventMap(sender) {
       this.sender = sender;
-      eventMap = {};
-      eventFunctions = {};
+      this.events = {};
+      this.validEvents = [];
     }
-  
-    EventMap.prototype.validEvents = [];
-  
+
     EventMap.prototype.on = function(eventName, eventFunction) {
       var eventDesc;
-  
+
       if (!eventFunction) {
         return;
       }
       if (this.validEvents.length > 0) {
-        if (validEvents.indexOf(eventName) === -1) {
+        if (this.validEvents.indexOf(eventName) === -1) {
           return;
         }
       }
@@ -43,45 +33,45 @@ define('lyria/eventmap', function() {'use strict';
         type: '',
         sender: this.sender
       };
-      if (!eventMap[eventName]) {
-        eventMap[eventName] = [eventDesc];
+      if (!this.events[eventName]) {
+        this.events[eventName] = [eventDesc];
       } else {
-        eventMap[eventName].push(eventDesc);
+        this.events[eventName].push(eventDesc);
       }
       return this;
     };
-  
+
     EventMap.prototype.off = function(eventName) {
       if (!eventName) {
         return;
       }
-      if (eventMap[eventName].type === 'once' || eventMap[eventName].type === 'repeat') {
-        if (eventMap[eventName].type === 'repeat') {
-          window.clearInterval(eventMap[eventName].id);
+      if (this.events[eventName].type === 'once' || this.events[eventName].type === 'repeat') {
+        if (this.events[eventName].type === 'repeat') {
+          root.clearInterval(this.events[eventName].id);
         }
-        if (eventMap[eventName].type === 'once') {
-          window.clearTimeout(eventMap[eventName].id);
+        if (this.events[eventName].type === 'once') {
+          root.clearTimeout(this.events[eventName].id);
         }
       }
-      if (eventMap[eventName]) {
-        delete eventMap[eventName];
+      if (this.events[eventName]) {
+        delete this.events[eventName];
       }
       return this;
     };
-  
+
     EventMap.prototype.trigger = function() {
-      var args, context, eventName, i, interval, name, repeat, triggerFunction, _i, _len, _ref;
-  
-      eventName = arguments[0], args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+      var args, context, delay, eventName, i, interval, name, repeat, timeoutId, triggerEvent, triggerFunction, _i, _len, _ref;
+
+      eventName = arguments[0], args = 2 <= arguments.length ? [].slice.call(arguments, 1) : [];
       if (eventName == null) {
         return;
       }
       if (typeof eventName === 'object') {
-        name = eventName.name, interval = eventName.interval, repeat = eventName.repeat, context = eventName.context;
+        name = eventName.name, interval = eventName.interval, repeat = eventName.repeat, context = eventName.context, delay = eventName.delay;
       } else {
         name = eventName;
       }
-      if (!eventMap[name]) {
+      if (!this.events[name]) {
         return;
       }
       if (interval == null) {
@@ -93,31 +83,49 @@ define('lyria/eventmap', function() {'use strict';
       if (context == null) {
         context = this;
       }
-      _ref = eventMap[name];
+      if (delay == null) {
+        delay = 0;
+      }
+      _ref = this.events[name];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         i = _ref[_i];
-        triggerFunction = function(evObject) {
-          return i.event.apply(context, [[i.sender], args].reduce(function(a, b) {
-            return a.concat(b);
-          }));
-        };
-        if (interval) {
-          if (repeat) {
-            i.type = 'repeat';
-            i.id = window.setInterval(triggerFunction, interval);
+        triggerFunction = function() {
+          if (i.sender) {
+            return i.event.apply(context, [].concat.apply([], [[i.sender], args]));
           } else {
-            i.type = 'once';
-            i.id = window.setTimeout(triggerFunction, interval);
+            return i.event.apply(context, args);
           }
+        };
+        triggerEvent = function() {
+          if (interval) {
+            if (repeat) {
+              i.type = 'repeat';
+              i.id = root.setInterval(triggerFunction, interval);
+            } else {
+              i.type = 'once';
+              i.id = root.setTimeout(triggerFunction, interval);
+            }
+          } else {
+            i.type = 'direct';
+            triggerFunction.call(this);
+          }
+          return null;
+        };
+        if (delay) {
+          timeoutId = root.setTimeout(function() {
+            triggerEvent.call(this);
+            return root.clearTimeout(timeoutId);
+          });
         } else {
-          i.type = 'direct';
-          triggerFunction.call(this);
+          triggerEvent.call(this);
         }
       }
       return this;
     };
-  
+
     return EventMap;
-  
+
   })();
-});
+  
+  return EventMap;
+}); 
