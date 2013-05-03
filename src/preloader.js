@@ -10,7 +10,7 @@ define('lyria/preloader', ['root', 'check', 'mixin', 'jquery', 'lyria/resource',
   var Preloader = (function() {
 
     var Preloader = function(assetArray) {
-      mixin(Preloader.prototype, new EventMap('Preloader'));
+      mixin(Preloader.prototype, new EventMap());
 
       if (assetArray != null) {
         this.assets = assetArray;
