@@ -88,9 +88,3 @@ define('lyria/localization', ['check', 'jquery', 'lyria/language'], function(che
   })();
   
 });
-
-define('lyria/globallocalization', ['lyria/localization', 'lyria/resource'], function(Localization, Resource) {
-  var instance = instance || new Localization(Resource.name("i18n.json"));
-  
-  return instance;
-});
