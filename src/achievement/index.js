@@ -58,7 +58,7 @@ define('lyria/achievement', function() {
     Achievement.prototype.toJSON = function() {
       var achObject = {};
 
-      for (key in this) {
+      for (var key in this) {
         if (Object.hasOwnProperty.call(this, key)) {
           continue;
         }
