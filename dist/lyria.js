@@ -1,3 +1,78 @@
+define('lyria/achievement', function() {
+  
+  var achievementId = 0;
+  
+  var Achievement = (function() {
+    var Achievement = function(options) {
+      if (!options.name) {
+        // Break if no name has been specified
+        return;
+      } else {
+        this.name = options.name;        
+      }
+      
+      achievementId++;
+      
+      this.id = achievementId;
+      
+      if (options.description != null) {
+        this.description = options.description;
+      }
+      
+      if (options.icon != null) {
+        this.icon = options.icon;
+      }
+      
+      this.active = false;
+    };
+    
+    Achievement.prototype.toJSON = function() {
+      return {
+        active: active,
+        name: name,
+        description: description,
+        icon: icon
+      };
+    };
+    
+    Achievement.prototype.toString = function() {
+      return JSON.stringify(this.toJSON());
+    };
+    
+    return Achievement;
+  })();
+  
+  return Achievement;
+  
+});
+
+define('lyria/achievement/manager', ['root', 'jquery', 'lyria/achievement'], function(root, $, Achievement) {
+  
+  var achievementStore = {};
+  
+  var AchievementManager = {
+    add: function(achievement) {
+      if (achievement instanceof Achievement) {
+        achievementStore[achievement.name] = achievement;
+      }
+    },
+    remove: function(achName) {
+      if (Object.hasOwnProperty.call(achievementStore, achName)) {
+        delete achievementStore[achName];
+      }
+    },
+    list: function() {
+      
+    },
+    show: function(achName) {
+      
+    }
+  };
+  
+  return AchievementManager;
+  
+});
+
 /**
  * @namespace Lyria
  * Lyria namespace decleration
@@ -118,13 +193,13 @@ define('lyria/resource', function() {
      *
      */
     path: {
-      assets: "assets",
-      audio: "audio",
-      data: "data",
-      image: "images",
-      scene: "scenes",
-      video: "video",
-      prefab: "prefabs"
+      assets: 'assets',
+      audio: 'audio',
+      data: 'data',
+      image: 'images',
+      scene: 'scenes',
+      video: 'video',
+      prefab: 'prefabs'
     },
   
     /**
@@ -137,7 +212,7 @@ define('lyria/resource', function() {
       }
   
       var assetPath = Resource.path['assets'];
-      var typePath = "";
+      var typePath = '';
   
       if (Resource.path[type]) {
         typePath = Resource.path[type];
@@ -728,6 +803,11 @@ define('lyria/layer', ['lyria/gameobject'], function(GameObject) {
 
   })(GameObject);
 }); 
+define('lyria/localization/global', ['lyria/localization', 'lyria/resource'], function(Localization, Resource) {
+  var instance = instance || new Localization(Resource.name("i18n.json"));
+  
+  return instance;
+});
 /**
  * @namespace Lyria
  * Lyria namespace decleration
@@ -818,13 +898,6 @@ define('lyria/localization', ['check', 'jquery', 'lyria/language'], function(che
   })();
   
 });
-
-define('lyria/globallocalization', ['lyria/localization', 'lyria/resource'], function(Localization, Resource) {
-  var instance = instance || new Localization(Resource.name("i18n.json"));
-  
-  return instance;
-});
-
 /**
  * @namespace Lyria
  * Lyria namespace decleration
@@ -1016,7 +1089,7 @@ define('lyria/prefab', ['jquery', 'lyria/scene'], function($, Scene) {
  * @namespace Lyria
  * Lyria namespace decleration
  */
-define('lyria/preloader', ['root', 'check', 'mixin', 'jquery', 'lyria/resource', 'lyria/log', 'lyria/eventmap'], function(root, check, mixin, $, Resource, Log, EventMap) {'use strict';
+define('lyria/preloader', ['root', 'mixin', 'jquery', 'lyria/resource', 'lyria/log', 'lyria/eventmap'], function(root, mixin, $, Resource, Log, EventMap) {'use strict';
 
   /**
    *
@@ -1046,11 +1119,46 @@ define('lyria/preloader', ['root', 'check', 'mixin', 'jquery', 'lyria/resource',
       this.trigger('start');
 
       var defaultOptions = {
+        steps: ['image', 'audio'],
         showLoadingScreen: true,
         loadingScreenClass: 'loading-screen',
         loadingBarClass: 'loading-bar'
       };
       options = $.extend(true, defaultOptions, options);
+
+      var assetSteps = {
+        queue: {
+          assets: [],
+          maxAssets: 0,
+          assetsLoaded: 0,
+          percentLoaded: 0
+        }
+      };
+      
+      for (var i = 0, j = this.assets.length; i < j; i++) {
+        for (var k = 0, l = options.steps.length; k < l; k++) {
+          
+        }
+      }
+      
+      /*for (var k = 0, l = options.steps.length; k < l; k++) {
+        for (var i = 0, j = this.assets.length; i < j; i++) {
+          (function(iterator) {
+              if (iterator.indexOf('/' + Resource.path[options.steps[k]] + '/') >= 0) {
+                assetSteps[options.steps[k]] = assetSteps[options.steps[k]] || {};
+                assetSteps[options.steps[k]].assets = assetSteps[options.steps[k]].assets || [];
+                assetSteps[options.steps[k]].assets.push(iterator);
+                return;
+              }
+              
+              assetSteps.queue.assets.push(iterator);
+            })(this.assets[i]);
+          }
+        }*/
+      
+        
+      
+      console.log(assetSteps);
 
       var self = this;
 
@@ -1078,37 +1186,31 @@ define('lyria/preloader', ['root', 'check', 'mixin', 'jquery', 'lyria/resource',
 
       $.each(this.assets, function(key, value) {
 
-        check(value, {
-          object: function() {
-          },
-          string: function(arg) {
-            if (arg.indexOf('/' + Resource.path.image + '/') >= 0) {
-              var img = new root.Image();
-              img.onload = function() {
-                self.assetsLoaded++;
+        if (arg.indexOf('/' + Resource.path.image + '/') >= 0) {
+          var img = new root.Image();
+          img.onload = function() {
+            self.assetsLoaded++;
 
-                loadingProgress();
-              };
+            loadingProgress();
+          };
 
-              img.onerror = function(err) {
-                Log.e('Error while loading ' + arg);
-              };
+          img.onerror = function(err) {
+            Log.e('Error while loading ' + arg);
+          };
 
-              img.src = arg;
-            } else {
-              $.ajax({
-                url: arg,
-                dataType: 'text'
-              }).always(function() {
-                self.assetsLoaded++;
+          img.src = arg;
+        } else {
+          $.ajax({
+            url: arg,
+            dataType: 'text'
+          }).always(function() {
+            self.assetsLoaded++;
 
-                loadingProgress();
-              }).error(function(err) {
-                Log.e('Error while loading ' + arg + ': ' + err);
-              });
-            }
-          }
-        });
+            loadingProgress();
+          }).error(function(err) {
+            Log.e('Error while loading ' + arg + ': ' + err);
+          });
+        }
 
       });
     };
@@ -1330,6 +1432,10 @@ define('lyria/scene', ['jquery', 'mixin', 'lyria/eventmap', 'lyria/gameobject'],
       if (gameObject instanceof GameObject) {
         
       }
+    };
+    
+    Scene.prototype.compileTemplate = function(val) {
+      this.content = this.template(val);
     };
     
     return Scene;
