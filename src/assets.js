@@ -9,13 +9,13 @@ define('lyria/resource', function() {
      *
      */
     path: {
-      assets: "assets",
-      audio: "audio",
-      data: "data",
-      image: "images",
-      scene: "scenes",
-      video: "video",
-      prefab: "prefabs"
+      assets: 'assets',
+      audio: 'audio',
+      data: 'data',
+      image: 'images',
+      scene: 'scenes',
+      video: 'video',
+      prefab: 'prefabs'
     },
   
     /**
@@ -28,7 +28,7 @@ define('lyria/resource', function() {
       }
   
       var assetPath = Resource.path['assets'];
-      var typePath = "";
+      var typePath = '';
   
       if (Resource.path[type]) {
         typePath = Resource.path[type];
