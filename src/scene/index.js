@@ -86,6 +86,10 @@ define('lyria/scene', ['jquery', 'mixin', 'lyria/eventmap', 'lyria/gameobject'],
       }
     };
     
+    Scene.prototype.compileTemplate = function(val) {
+      this.content = this.template(val);
+    };
+    
     return Scene;
     
   })();
