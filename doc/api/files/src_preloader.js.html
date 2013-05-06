@@ -102,7 +102,7 @@
  * @namespace Lyria
  * Lyria namespace decleration
  */
-define(&#x27;lyria/preloader&#x27;, [&#x27;root&#x27;, &#x27;check&#x27;, &#x27;mixin&#x27;, &#x27;jquery&#x27;, &#x27;lyria/resource&#x27;, &#x27;lyria/log&#x27;, &#x27;lyria/eventmap&#x27;], function(root, check, mixin, $, Resource, Log, EventMap) {&#x27;use strict&#x27;;
+define(&#x27;lyria/preloader&#x27;, [&#x27;root&#x27;, &#x27;mixin&#x27;, &#x27;jquery&#x27;, &#x27;lyria/resource&#x27;, &#x27;lyria/log&#x27;, &#x27;lyria/eventmap&#x27;], function(root, mixin, $, Resource, Log, EventMap) {&#x27;use strict&#x27;;
 
   /**
    *
@@ -132,11 +132,46 @@ define(&#x27;lyria/preloader&#x27;, [&#x27;root&#x27;, &#x27;check&#x27;, &#x27;
       this.trigger(&#x27;start&#x27;);
 
       var defaultOptions = {
+        steps: [&#x27;image&#x27;, &#x27;audio&#x27;],
         showLoadingScreen: true,
         loadingScreenClass: &#x27;loading-screen&#x27;,
         loadingBarClass: &#x27;loading-bar&#x27;
       };
       options = $.extend(true, defaultOptions, options);
+
+      var assetSteps = {
+        queue: {
+          assets: [],
+          maxAssets: 0,
+          assetsLoaded: 0,
+          percentLoaded: 0
+        }
+      };
+      
+      for (var i = 0, j = this.assets.length; i &lt; j; i++) {
+        for (var k = 0, l = options.steps.length; k &lt; l; k++) {
+          
+        }
+      }
+      
+      /*for (var k = 0, l = options.steps.length; k &lt; l; k++) {
+        for (var i = 0, j = this.assets.length; i &lt; j; i++) {
+          (function(iterator) {
+              if (iterator.indexOf(&#x27;/&#x27; + Resource.path[options.steps[k]] + &#x27;/&#x27;) &gt;= 0) {
+                assetSteps[options.steps[k]] = assetSteps[options.steps[k]] || {};
+                assetSteps[options.steps[k]].assets = assetSteps[options.steps[k]].assets || [];
+                assetSteps[options.steps[k]].assets.push(iterator);
+                return;
+              }
+              
+              assetSteps.queue.assets.push(iterator);
+            })(this.assets[i]);
+          }
+        }*/
+      
+        
+      
+      console.log(assetSteps);
 
       var self = this;
 
@@ -164,37 +199,31 @@ define(&#x27;lyria/preloader&#x27;, [&#x27;root&#x27;, &#x27;check&#x27;, &#x27;
 
       $.each(this.assets, function(key, value) {
 
-        check(value, {
-          object: function() {
-          },
-          string: function(arg) {
-            if (arg.indexOf(&#x27;/&#x27; + Resource.path.image + &#x27;/&#x27;) &gt;= 0) {
-              var img = new root.Image();
-              img.onload = function() {
-                self.assetsLoaded++;
+        if (arg.indexOf(&#x27;/&#x27; + Resource.path.image + &#x27;/&#x27;) &gt;= 0) {
+          var img = new root.Image();
+          img.onload = function() {
+            self.assetsLoaded++;
 
-                loadingProgress();
-              };
+            loadingProgress();
+          };
 
-              img.onerror = function(err) {
-                Log.e(&#x27;Error while loading &#x27; + arg);
-              };
+          img.onerror = function(err) {
+            Log.e(&#x27;Error while loading &#x27; + arg);
+          };
 
-              img.src = arg;
-            } else {
-              $.ajax({
-                url: arg,
-                dataType: &#x27;text&#x27;
-              }).always(function() {
-                self.assetsLoaded++;
+          img.src = arg;
+        } else {
+          $.ajax({
+            url: arg,
+            dataType: &#x27;text&#x27;
+          }).always(function() {
+            self.assetsLoaded++;
 
-                loadingProgress();
-              }).error(function(err) {
-                Log.e(&#x27;Error while loading &#x27; + arg + &#x27;: &#x27; + err);
-              });
-            }
-          }
-        });
+            loadingProgress();
+          }).error(function(err) {
+            Log.e(&#x27;Error while loading &#x27; + arg + &#x27;: &#x27; + err);
+          });
+        }
 
       });
     };

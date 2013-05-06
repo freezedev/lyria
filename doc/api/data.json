@@ -6,6 +6,15 @@
         "url": ""
     },
     "files": {
+        "src\\localization\\index.js": {
+            "name": "src\\localization\\index.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {
+                "Lyria\nLyria namespace decleration": 1
+            }
+        },
         "src\\scene\\director.js": {
             "name": "src\\scene\\director.js",
             "modules": {},
@@ -115,15 +124,6 @@
             },
             "fors": {},
             "namespaces": {}
-        },
-        "src\\localization.js": {
-            "name": "src\\localization.js",
-            "modules": {},
-            "classes": {},
-            "fors": {},
-            "namespaces": {
-                "Lyria\nLyria namespace decleration": 1
-            }
         },
         "src\\logger.js": {
             "name": "src\\logger.js",
@@ -300,6 +300,48 @@
         }
     },
     "classitems": [
+        {
+            "file": "src\\localization\\index.js",
+            "line": 1,
+            "class": "Connector",
+            "namespace": "Lyria\nLyria namespace decleration"
+        },
+        {
+            "file": "src\\localization\\index.js",
+            "line": 9,
+            "params": [
+                {
+                    "name": "localization",
+                    "description": "",
+                    "type": "Object"
+                },
+                {
+                    "name": "options",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "Connector",
+            "namespace": "Lyria\nLyria namespace decleration"
+        },
+        {
+            "file": "src\\localization\\index.js",
+            "line": 55,
+            "params": [
+                {
+                    "name": "name",
+                    "description": "",
+                    "type": "Object"
+                },
+                {
+                    "name": "fallback",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "Connector",
+            "namespace": "Lyria\nLyria namespace decleration"
+        },
         {
             "file": "src\\scene\\director.js",
             "line": 1,
@@ -586,51 +628,6 @@
             "namespace": "Lyria\nLyria namespace decleration"
         },
         {
-            "file": "src\\localization.js",
-            "line": 1,
-            "class": "Loop",
-            "module": "Lyria",
-            "namespace": "Lyria\nLyria namespace decleration"
-        },
-        {
-            "file": "src\\localization.js",
-            "line": 9,
-            "params": [
-                {
-                    "name": "localization",
-                    "description": "",
-                    "type": "Object"
-                },
-                {
-                    "name": "options",
-                    "description": "",
-                    "type": "Object"
-                }
-            ],
-            "class": "Loop",
-            "module": "Lyria",
-            "namespace": "Lyria\nLyria namespace decleration"
-        },
-        {
-            "file": "src\\localization.js",
-            "line": 55,
-            "params": [
-                {
-                    "name": "name",
-                    "description": "",
-                    "type": "Object"
-                },
-                {
-                    "name": "fallback",
-                    "description": "",
-                    "type": "Object"
-                }
-            ],
-            "class": "Loop",
-            "module": "Lyria",
-            "namespace": "Lyria\nLyria namespace decleration"
-        },
-        {
             "file": "src\\logger.js",
             "line": 1,
             "class": "Loop",
@@ -766,6 +763,18 @@
         },
         {
             "message": "Missing item type",
+            "line": " src\\localization\\index.js:1"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src\\localization\\index.js:9"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src\\localization\\index.js:55"
+        },
+        {
+            "message": "Missing item type",
             "line": " src\\scene\\director.js:1"
         },
         {
@@ -863,18 +872,6 @@
         {
             "message": "Missing item type",
             "line": " src\\gameobject.js:1"
-        },
-        {
-            "message": "Missing item type",
-            "line": " src\\localization.js:1"
-        },
-        {
-            "message": "Missing item type",
-            "line": " src\\localization.js:9"
-        },
-        {
-            "message": "Missing item type",
-            "line": " src\\localization.js:55"
         },
         {
             "message": "Missing item type",

@@ -186,6 +186,10 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixin&#x27;, &#x27;ly
       }
     };
     
+    Scene.prototype.compileTemplate = function(val) {
+      this.content = this.template(val);
+    };
+    
     return Scene;
     
   })();
