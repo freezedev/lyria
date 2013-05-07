@@ -101,10 +101,10 @@
 /**
  * @module Lyria
  */
-define(&#x27;lyria/layer&#x27;, [&#x27;lyria/gameobject&#x27;], function(GameObject) {
+define(&#x27;lyria/layer&#x27;, [&#x27;mixin&#x27;, &#x27;lyria/gameobject&#x27;], function(mixin, GameObject) {
   &#x27;use strict&#x27;;
 
-  return (function(parent) {
+  return (function() {
 
     /**
      * @class Layer
@@ -112,14 +112,12 @@ define(&#x27;lyria/layer&#x27;, [&#x27;lyria/gameobject&#x27;], function(GameObj
      * @constructor
      */
     var Layer = function() {
-
+      mixin(this.prototype, new GameObject());
     };
-
-    Layer.prototype = parent.prototype;
 
     return Layer;
 
-  })(GameObject);
+  })();
 }); 
     </pre>
 </div>

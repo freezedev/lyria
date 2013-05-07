@@ -6,6 +6,17 @@
         "url": ""
     },
     "files": {
+        "src\\audio\\index.js": {
+            "name": "src\\audio\\index.js",
+            "modules": {
+                "Lyria": 1
+            },
+            "classes": {
+                "Audio": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "src\\localization\\index.js": {
             "name": "src\\localization\\index.js",
             "modules": {},
@@ -55,9 +66,7 @@
         },
         "src\\template\\methods.js": {
             "name": "src\\template\\methods.js",
-            "modules": {
-                "Lyria": 1
-            },
+            "modules": {},
             "classes": {},
             "fors": {},
             "namespaces": {}
@@ -79,15 +88,6 @@
             "namespaces": {
                 "Lyria\nLyria namespace decleration": 1
             }
-        },
-        "src\\audio.js": {
-            "name": "src\\audio.js",
-            "modules": {},
-            "classes": {
-                "Audio": 1
-            },
-            "fors": {},
-            "namespaces": {}
         },
         "src\\eventmap.js": {
             "name": "src\\eventmap.js",
@@ -187,9 +187,9 @@
                 "Template": 1
             },
             "classes": {
+                "Audio": 1,
                 "Connector": 1,
                 "Engine": 1,
-                "Audio": 1,
                 "Layer": 1,
                 "Loop": 1
             },
@@ -218,6 +218,20 @@
         }
     },
     "classes": {
+        "Audio": {
+            "name": "Audio",
+            "shortname": "Audio",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Lyria",
+            "namespace": "",
+            "file": "src\\audio\\index.js",
+            "line": 6,
+            "static": 1
+        },
         "Connector": {
             "name": "Connector",
             "shortname": "Connector",
@@ -255,20 +269,6 @@
                 }
             ]
         },
-        "Audio": {
-            "name": "Audio",
-            "shortname": "Audio",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "module": "Lyria",
-            "namespace": "",
-            "file": "src\\audio.js",
-            "line": 6,
-            "static": 1
-        },
         "Layer": {
             "name": "Layer",
             "shortname": "Layer",
@@ -301,135 +301,7 @@
     },
     "classitems": [
         {
-            "file": "src\\localization\\index.js",
-            "line": 1,
-            "class": "Connector",
-            "namespace": "Lyria\nLyria namespace decleration"
-        },
-        {
-            "file": "src\\localization\\index.js",
-            "line": 9,
-            "params": [
-                {
-                    "name": "localization",
-                    "description": "",
-                    "type": "Object"
-                },
-                {
-                    "name": "options",
-                    "description": "",
-                    "type": "Object"
-                }
-            ],
-            "class": "Connector",
-            "namespace": "Lyria\nLyria namespace decleration"
-        },
-        {
-            "file": "src\\localization\\index.js",
-            "line": 55,
-            "params": [
-                {
-                    "name": "name",
-                    "description": "",
-                    "type": "Object"
-                },
-                {
-                    "name": "fallback",
-                    "description": "",
-                    "type": "Object"
-                }
-            ],
-            "class": "Connector",
-            "namespace": "Lyria\nLyria namespace decleration"
-        },
-        {
-            "file": "src\\scene\\director.js",
-            "line": 1,
-            "class": "Connector",
-            "namespace": "Lyria\nLyria namespace decleration"
-        },
-        {
-            "file": "src\\scene\\director.js",
-            "line": 8,
-            "description": "The scene director is the manager for all scenes",
-            "class": "Connector",
-            "namespace": "Lyria\nLyria namespace decleration"
-        },
-        {
-            "file": "src\\scene\\index.js",
-            "line": 1,
-            "class": "Connector",
-            "namespace": "Lyria\nLyria namespace decleration"
-        },
-        {
-            "file": "src\\achievements.js",
-            "line": 1,
-            "class": "Audio",
-            "module": "Lyria",
-            "namespace": "Lyria\nLyria namespace decleration"
-        },
-        {
-            "file": "src\\achievements.js",
-            "line": 36,
-            "description": "Gets the number of how many achievements have been unlocked",
-            "return": {
-                "description": "The exact number of unlocked achievements",
-                "type": "Number"
-            },
-            "class": "Audio",
-            "module": "Lyria",
-            "namespace": "Lyria\nLyria namespace decleration"
-        },
-        {
-            "file": "src\\achievements.js",
-            "line": 49,
-            "description": "Lists all achievements in a list of <div>s",
-            "return": {
-                "description": "The markup for the list",
-                "type": "String"
-            },
-            "class": "Audio",
-            "module": "Lyria",
-            "namespace": "Lyria\nLyria namespace decleration"
-        },
-        {
-            "file": "src\\achievements.js",
-            "line": 66,
-            "description": "Displays an achievement if it hasn't been displayed yet",
-            "params": [
-                {
-                    "name": "text",
-                    "description": "",
-                    "type": "String"
-                }
-            ],
-            "class": "Audio",
-            "module": "Lyria",
-            "namespace": "Lyria\nLyria namespace decleration"
-        },
-        {
-            "file": "src\\assets.js",
-            "line": 1,
-            "class": "Audio",
-            "module": "Lyria",
-            "namespace": "Lyria\nLyria namespace decleration"
-        },
-        {
-            "file": "src\\assets.js",
-            "line": 8,
-            "class": "Audio",
-            "module": "Lyria",
-            "namespace": "Lyria\nLyria namespace decleration"
-        },
-        {
-            "file": "src\\assets.js",
-            "line": 21,
-            "class": "Audio",
-            "module": "Lyria",
-            "namespace": "Lyria\nLyria namespace decleration"
-        },
-        {
-            "file": "src\\audio.js",
+            "file": "src\\audio\\index.js",
             "line": 12,
             "description": "Private audio elements",
             "example": [
@@ -439,7 +311,7 @@
             "module": "Lyria"
         },
         {
-            "file": "src\\audio.js",
+            "file": "src\\audio\\index.js",
             "line": 23,
             "description": "Loads one or multiple audio files",
             "params": [
@@ -458,7 +330,7 @@
             "module": "Lyria"
         },
         {
-            "file": "src\\audio.js",
+            "file": "src\\audio\\index.js",
             "line": 51,
             "description": "Plays the audio file",
             "params": [
@@ -472,7 +344,7 @@
             "module": "Lyria"
         },
         {
-            "file": "src\\audio.js",
+            "file": "src\\audio\\index.js",
             "line": 81,
             "description": "Get the audio file object",
             "params": [
@@ -486,7 +358,7 @@
             "module": "Lyria"
         },
         {
-            "file": "src\\audio.js",
+            "file": "src\\audio\\index.js",
             "line": 89,
             "description": "Pauses the audio file",
             "params": [
@@ -500,7 +372,7 @@
             "module": "Lyria"
         },
         {
-            "file": "src\\audio.js",
+            "file": "src\\audio\\index.js",
             "line": 101,
             "description": "Stops playing the audio file",
             "params": [
@@ -514,7 +386,7 @@
             "module": "Lyria"
         },
         {
-            "file": "src\\audio.js",
+            "file": "src\\audio\\index.js",
             "line": 112,
             "description": "Get the length of the sound file",
             "params": [
@@ -528,7 +400,7 @@
             "module": "Lyria"
         },
         {
-            "file": "src\\audio.js",
+            "file": "src\\audio\\index.js",
             "line": 120,
             "description": "Sets or gets the volume of the audio file",
             "params": [
@@ -547,7 +419,7 @@
             "module": "Lyria"
         },
         {
-            "file": "src\\audio.js",
+            "file": "src\\audio\\index.js",
             "line": 137,
             "description": "Sets or gets the position of the audio file",
             "params": [
@@ -566,7 +438,7 @@
             "module": "Lyria"
         },
         {
-            "file": "src\\audio.js",
+            "file": "src\\audio\\index.js",
             "line": 149,
             "description": "Sets or gets properties of the audio object\nTODO: Method chaining",
             "params": [
@@ -585,7 +457,7 @@
             "module": "Lyria"
         },
         {
-            "file": "src\\audio.js",
+            "file": "src\\audio\\index.js",
             "line": 185,
             "description": "Mute all sound of the game",
             "params": [
@@ -597,6 +469,140 @@
             ],
             "class": "Audio",
             "module": "Lyria"
+        },
+        {
+            "file": "src\\localization\\index.js",
+            "line": 1,
+            "class": "Connector",
+            "module": "Lyria",
+            "namespace": "Lyria\nLyria namespace decleration"
+        },
+        {
+            "file": "src\\localization\\index.js",
+            "line": 9,
+            "params": [
+                {
+                    "name": "localization",
+                    "description": "",
+                    "type": "Object"
+                },
+                {
+                    "name": "options",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "Connector",
+            "module": "Lyria",
+            "namespace": "Lyria\nLyria namespace decleration"
+        },
+        {
+            "file": "src\\localization\\index.js",
+            "line": 55,
+            "params": [
+                {
+                    "name": "name",
+                    "description": "",
+                    "type": "Object"
+                },
+                {
+                    "name": "fallback",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "Connector",
+            "module": "Lyria",
+            "namespace": "Lyria\nLyria namespace decleration"
+        },
+        {
+            "file": "src\\scene\\director.js",
+            "line": 1,
+            "class": "Connector",
+            "module": "Lyria",
+            "namespace": "Lyria\nLyria namespace decleration"
+        },
+        {
+            "file": "src\\scene\\director.js",
+            "line": 8,
+            "description": "The scene director is the manager for all scenes",
+            "class": "Connector",
+            "module": "Lyria",
+            "namespace": "Lyria\nLyria namespace decleration"
+        },
+        {
+            "file": "src\\scene\\index.js",
+            "line": 1,
+            "class": "Connector",
+            "module": "Lyria",
+            "namespace": "Lyria\nLyria namespace decleration"
+        },
+        {
+            "file": "src\\achievements.js",
+            "line": 1,
+            "class": "Layer",
+            "module": "Lyria",
+            "namespace": "Lyria\nLyria namespace decleration"
+        },
+        {
+            "file": "src\\achievements.js",
+            "line": 36,
+            "description": "Gets the number of how many achievements have been unlocked",
+            "return": {
+                "description": "The exact number of unlocked achievements",
+                "type": "Number"
+            },
+            "class": "Layer",
+            "module": "Lyria",
+            "namespace": "Lyria\nLyria namespace decleration"
+        },
+        {
+            "file": "src\\achievements.js",
+            "line": 49,
+            "description": "Lists all achievements in a list of <div>s",
+            "return": {
+                "description": "The markup for the list",
+                "type": "String"
+            },
+            "class": "Layer",
+            "module": "Lyria",
+            "namespace": "Lyria\nLyria namespace decleration"
+        },
+        {
+            "file": "src\\achievements.js",
+            "line": 66,
+            "description": "Displays an achievement if it hasn't been displayed yet",
+            "params": [
+                {
+                    "name": "text",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "Layer",
+            "module": "Lyria",
+            "namespace": "Lyria\nLyria namespace decleration"
+        },
+        {
+            "file": "src\\assets.js",
+            "line": 1,
+            "class": "Layer",
+            "module": "Lyria",
+            "namespace": "Lyria\nLyria namespace decleration"
+        },
+        {
+            "file": "src\\assets.js",
+            "line": 8,
+            "class": "Layer",
+            "module": "Lyria",
+            "namespace": "Lyria\nLyria namespace decleration"
+        },
+        {
+            "file": "src\\assets.js",
+            "line": 21,
+            "class": "Layer",
+            "module": "Lyria",
+            "namespace": "Lyria\nLyria namespace decleration"
         },
         {
             "file": "src\\eventmap.js",
@@ -762,6 +768,50 @@
             "line": " src\\utils.js:42"
         },
         {
+            "message": "Missing item type\nPrivate audio elements",
+            "line": " src\\audio\\index.js:12"
+        },
+        {
+            "message": "Missing item type\nLoads one or multiple audio files",
+            "line": " src\\audio\\index.js:23"
+        },
+        {
+            "message": "Missing item type\nPlays the audio file",
+            "line": " src\\audio\\index.js:51"
+        },
+        {
+            "message": "Missing item type\nGet the audio file object",
+            "line": " src\\audio\\index.js:81"
+        },
+        {
+            "message": "Missing item type\nPauses the audio file",
+            "line": " src\\audio\\index.js:89"
+        },
+        {
+            "message": "Missing item type\nStops playing the audio file",
+            "line": " src\\audio\\index.js:101"
+        },
+        {
+            "message": "Missing item type\nGet the length of the sound file",
+            "line": " src\\audio\\index.js:112"
+        },
+        {
+            "message": "Missing item type\nSets or gets the volume of the audio file",
+            "line": " src\\audio\\index.js:120"
+        },
+        {
+            "message": "Missing item type\nSets or gets the position of the audio file",
+            "line": " src\\audio\\index.js:137"
+        },
+        {
+            "message": "Missing item type\nSets or gets properties of the audio object\nTODO: Method chaining",
+            "line": " src\\audio\\index.js:149"
+        },
+        {
+            "message": "Missing item type\nMute all sound of the game",
+            "line": " src\\audio\\index.js:185"
+        },
+        {
             "message": "Missing item type",
             "line": " src\\localization\\index.js:1"
         },
@@ -812,50 +862,6 @@
         {
             "message": "Missing item type",
             "line": " src\\assets.js:21"
-        },
-        {
-            "message": "Missing item type\nPrivate audio elements",
-            "line": " src\\audio.js:12"
-        },
-        {
-            "message": "Missing item type\nLoads one or multiple audio files",
-            "line": " src\\audio.js:23"
-        },
-        {
-            "message": "Missing item type\nPlays the audio file",
-            "line": " src\\audio.js:51"
-        },
-        {
-            "message": "Missing item type\nGet the audio file object",
-            "line": " src\\audio.js:81"
-        },
-        {
-            "message": "Missing item type\nPauses the audio file",
-            "line": " src\\audio.js:89"
-        },
-        {
-            "message": "Missing item type\nStops playing the audio file",
-            "line": " src\\audio.js:101"
-        },
-        {
-            "message": "Missing item type\nGet the length of the sound file",
-            "line": " src\\audio.js:112"
-        },
-        {
-            "message": "Missing item type\nSets or gets the volume of the audio file",
-            "line": " src\\audio.js:120"
-        },
-        {
-            "message": "Missing item type\nSets or gets the position of the audio file",
-            "line": " src\\audio.js:137"
-        },
-        {
-            "message": "Missing item type\nSets or gets properties of the audio object\nTODO: Method chaining",
-            "line": " src\\audio.js:149"
-        },
-        {
-            "message": "Missing item type\nMute all sound of the game",
-            "line": " src\\audio.js:185"
         },
         {
             "message": "Missing item type",
