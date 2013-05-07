@@ -483,6 +483,14 @@ define('lyria/audio', ['root', 'jquery'], function(root, $) {'use strict';
   return Audio;
 });
 
+define('lyria/audio/manager', function() {
+  var AudioManager = {
+
+  };
+
+  return AudioManager;
+});
+
 define('lyria/component', function() {
 
   //Lyria.Component
@@ -817,10 +825,10 @@ define('lyria/gameobject', ['mixin', 'lyria/eventmap', 'lyria/component', 'lyria
 /**
  * @module Lyria
  */
-define('lyria/layer', ['lyria/gameobject'], function(GameObject) {
+define('lyria/layer', ['mixin', 'lyria/gameobject'], function(mixin, GameObject) {
   'use strict';
 
-  return (function(parent) {
+  return (function() {
 
     /**
      * @class Layer
@@ -828,14 +836,12 @@ define('lyria/layer', ['lyria/gameobject'], function(GameObject) {
      * @constructor
      */
     var Layer = function() {
-
+      mixin(this.prototype, new GameObject());
     };
-
-    Layer.prototype = parent.prototype;
 
     return Layer;
 
-  })(GameObject);
+  })();
 }); 
 define('lyria/localization/global', ['lyria/localization', 'lyria/resource'], function(Localization, Resource) {
   var instance = instance || new Localization(Resource.name("i18n.json"));
@@ -1145,8 +1151,8 @@ define('lyria/preloader', ['root', 'mixin', 'jquery', 'lyria/resource', 'lyria/l
     };
 
     Preloader.prototype.start = function(options) {
-      // Check if it's an array
-      if (!Array.isArray(this.assets) || this.assets.length === 0) {
+      // Check if it's valid
+      if (this.assets == null || Object.keys(this.assets).length === 0) {
         return;
       }
 
@@ -1160,20 +1166,20 @@ define('lyria/preloader', ['root', 'mixin', 'jquery', 'lyria/resource', 'lyria/l
       };
       options = $.extend(true, defaultOptions, options);
 
-      var assetSteps = {
-        queue: {
-          assets: [],
-          maxAssets: 0,
-          assetsLoaded: 0,
-          percentLoaded: 0
-        }
-      };
+      var totalSize = this.assets.totalSize;
+      var currentProgress = 0;
       
-      for (var i = 0, j = this.assets.length; i < j; i++) {
+      if ((options.steps == null) || (options.steps.length === 0)) {
+        
+      }
+      
+      
+      
+      /*for (var i = 0, j = this.assets.length; i < j; i++) {
         for (var k = 0, l = options.steps.length; k < l; k++) {
           
         }
-      }
+      }*/
       
       /*for (var k = 0, l = options.steps.length; k < l; k++) {
         for (var i = 0, j = this.assets.length; i < j; i++) {
@@ -1192,21 +1198,21 @@ define('lyria/preloader', ['root', 'mixin', 'jquery', 'lyria/resource', 'lyria/l
       
         
       
-      console.log(assetSteps);
+      //console.log(assetSteps);
 
       var self = this;
 
       function loadingProgress() {
 
-        self.percentLoaded = self.assetsLoaded / self.maxAssets;
+        var percentLoaded = currentProgress / totalSize;
 
-        self.trigger('progresschange', self.percentLoaded);
+        self.trigger('progresschange', percentLoaded);
 
         if (options.showLoadingScreen) {
 
         }
 
-        if (self.assetsLoaded === self.maxAssets) {
+        if (currentProgress === totalSize) {
           if (options.showLoadingScreen) {
 
           }
@@ -1216,35 +1222,44 @@ define('lyria/preloader', ['root', 'mixin', 'jquery', 'lyria/resource', 'lyria/l
       }
 
 
-      this.maxAssets = this.assets.length;
-
       $.each(this.assets, function(key, value) {
-
-        if (arg.indexOf('/' + Resource.path.image + '/') >= 0) {
-          var img = new root.Image();
-          img.onload = function() {
-            self.assetsLoaded++;
-
-            loadingProgress();
-          };
-
-          img.onerror = function(err) {
-            Log.e('Error while loading ' + arg);
-          };
-
-          img.src = arg;
-        } else {
-          $.ajax({
-            url: arg,
-            dataType: 'text'
-          }).always(function() {
-            self.assetsLoaded++;
-
-            loadingProgress();
-          }).error(function(err) {
-            Log.e('Error while loading ' + arg + ': ' + err);
-          });
+        
+        if (value.files == null || !Array.isArray(value.files) || value.files.length === 0) {
+          return false;
         }
+        
+        for (var i = 0, j = value.files.length; i < j; i++) {
+          (function(iterator) {
+            
+            if (iterator.name.indexOf('/' + Resource.path.image + '/') >= 0) {
+              var img = new root.Image();
+              img.onload = function() {
+                currentProgress += iterator.size;
+    
+                loadingProgress();
+              };
+    
+              img.onerror = function(err) {
+                Log.e('Error while loading ' + iterator.name);
+              };
+    
+              img.src = iterator.name;
+            } else {
+              $.ajax({
+                url: iterator.name,
+                dataType: 'text'
+              }).always(function() {
+                currentProgress += iterator.size;
+    
+                loadingProgress();
+              }).error(function(err) {
+                Log.e('Error while loading ' + iterator.name + ': ' + err);
+              });
+            }
+            
+          })(value.files[i]);
+        }
+
 
       });
     };
@@ -1255,7 +1270,6 @@ define('lyria/preloader', ['root', 'mixin', 'jquery', 'lyria/resource', 'lyria/l
 
   return Preloader;
 });
-
 /**
  * @namespace Lyria
  * Lyria namespace decleration
