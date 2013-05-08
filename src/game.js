@@ -13,6 +13,7 @@ define('lyria/game', ['lyria/viewport', 'lyria/scene/director', 'lyria/preloader
       this.viewport = new Viewport();
       this.director = new Director(this.viewport);
       this.preloader = new Preloader();      
+      this.preloader.sceneDirector = this.director;
     };
     
     
