@@ -779,6 +779,7 @@ define('lyria/game', ['lyria/viewport', 'lyria/scene/director', 'lyria/preloader
       this.viewport = new Viewport();
       this.director = new Director(this.viewport);
       this.preloader = new Preloader();      
+      this.preloader.sceneDirector = this.director;
     };
     
     
@@ -1148,9 +1149,10 @@ define('lyria/preloader', ['root', 'mixin', 'jquery', 'lyria/resource', 'lyria/l
       this.maxAssets = 0;
       this.assetsLoaded = 0;
       this.percentLoaded = 0;
+      this.steps = [];
     };
 
-    Preloader.prototype.start = function(options) {
+    Preloader.prototype.start = function() {
       // Check if it's valid
       if (this.assets == null || Object.keys(this.assets).length === 0) {
         return;
@@ -1158,48 +1160,20 @@ define('lyria/preloader', ['root', 'mixin', 'jquery', 'lyria/resource', 'lyria/l
 
       this.trigger('start');
 
-      var defaultOptions = {
-        steps: ['image', 'audio'],
-        showLoadingScreen: true,
-        loadingScreenClass: 'loading-screen',
-        loadingBarClass: 'loading-bar'
-      };
-      options = $.extend(true, defaultOptions, options);
-
       var totalSize = this.assets.totalSize;
       var currentProgress = 0;
       
-      if ((options.steps == null) || (options.steps.length === 0)) {
+      if ((this.steps == null) || (this.steps.length === 0)) {
         
       }
       
+      var hasLoadingScene = this.sceneDirector != null && this.loadingScene != null;
+      
+      if (hasLoadingScene) {
+        this.sceneDirector.show(this.loadingScene);
+      }
       
       
-      /*for (var i = 0, j = this.assets.length; i < j; i++) {
-        for (var k = 0, l = options.steps.length; k < l; k++) {
-          
-        }
-      }*/
-      
-      /*for (var k = 0, l = options.steps.length; k < l; k++) {
-        for (var i = 0, j = this.assets.length; i < j; i++) {
-          (function(iterator) {
-              if (iterator.indexOf('/' + Resource.path[options.steps[k]] + '/') >= 0) {
-                assetSteps[options.steps[k]] = assetSteps[options.steps[k]] || {};
-                assetSteps[options.steps[k]].assets = assetSteps[options.steps[k]].assets || [];
-                assetSteps[options.steps[k]].assets.push(iterator);
-                return;
-              }
-              
-              assetSteps.queue.assets.push(iterator);
-            })(this.assets[i]);
-          }
-        }*/
-      
-        
-      
-      //console.log(assetSteps);
-
       var self = this;
 
       function loadingProgress() {
@@ -1207,14 +1181,14 @@ define('lyria/preloader', ['root', 'mixin', 'jquery', 'lyria/resource', 'lyria/l
         var percentLoaded = currentProgress / totalSize;
 
         self.trigger('progresschange', percentLoaded);
-
-        if (options.showLoadingScreen) {
-
+        
+        if (hasLoadingScene) {
+          self.sceneDirector.currentScene.trigger('progresschange', percentLoaded);
         }
 
         if (currentProgress === totalSize) {
-          if (options.showLoadingScreen) {
-
+          if (hasLoadingScene) {
+            self.sceneDirector.currentScene.trigger('complete');
           }
 
           self.trigger('complete');
