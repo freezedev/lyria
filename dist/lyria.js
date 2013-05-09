@@ -217,55 +217,6 @@ define('lyria/achievements', ['root', 'jquery'], function(root, $) {
   return Achievements;
 });
 /**
- * @namespace Lyria
- * Lyria namespace decleration
- */
-define('lyria/resource', function() {
-  
-  var Resource = {
-    /**
-     *
-     */
-    path: {
-      assets: 'assets',
-      audio: 'audio',
-      data: 'data',
-      image: 'images',
-      scene: 'scenes',
-      video: 'video',
-      prefab: 'prefabs'
-    },
-  
-    /**
-     *
-     *
-     */
-    name: function(filename, type) {
-      if (!filename) {
-        return;
-      }
-  
-      var assetPath = Resource.path['assets'];
-      var typePath = '';
-  
-      if (Resource.path[type]) {
-        typePath = Resource.path[type];
-      } else {
-        typePath = type;
-      }
-  
-      if (typePath) {
-        return [assetPath, typePath.split('.').join('/'), filename].join('/');
-      } else {
-        return [assetPath, filename].join('/');
-      }
-    }
-    
-  };
-  
-  return Resource;
-}); 
-/**
  * @module Lyria
  */
 define('lyria/audio', ['root', 'jquery'], function(root, $) {'use strict';
@@ -1266,6 +1217,55 @@ define('lyria/preloader', ['root', 'mixin', 'jquery', 'lyria/resource', 'lyria/l
 
   return Preloader;
 });
+/**
+ * @namespace Lyria
+ * Lyria namespace decleration
+ */
+define('lyria/resource', function() {
+  
+  var Resource = {
+    /**
+     *
+     */
+    path: {
+      assets: 'assets',
+      audio: 'audio',
+      data: 'data',
+      image: 'images',
+      scene: 'scenes',
+      video: 'video',
+      prefab: 'prefabs'
+    },
+  
+    /**
+     *
+     *
+     */
+    name: function(filename, type) {
+      if (!filename) {
+        return;
+      }
+  
+      var assetPath = Resource.path['assets'];
+      var typePath = '';
+  
+      if (Resource.path[type]) {
+        typePath = Resource.path[type];
+      } else {
+        typePath = type;
+      }
+  
+      if (typePath) {
+        return [assetPath, typePath.split('.').join('/'), filename].join('/');
+      } else {
+        return [assetPath, filename].join('/');
+      }
+    }
+    
+  };
+  
+  return Resource;
+}); 
 /**
  * @namespace Lyria
  * Lyria namespace decleration
