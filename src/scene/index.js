@@ -2,7 +2,7 @@
  * @namespace Lyria
  * Lyria namespace decleration
  */
-define('lyria/scene', ['jquery', 'mixin', 'lyria/eventmap', 'lyria/gameobject'], function($, mixin, EventMap, GameObject) {
+define('lyria/scene', ['isEmptyObject', 'extend', 'mixin', 'lyria/eventmap', 'lyria/gameobject'], function(isEmptyObject, extend, mixin, EventMap, GameObject) {
   'use strict';
 
   var sceneCache = {};
@@ -21,7 +21,7 @@ define('lyria/scene', ['jquery', 'mixin', 'lyria/eventmap', 'lyria/gameobject'],
       var self = this;
       
       // Collect all template values
-      var templateVals = {};
+      this.templateData = {};
       
       // Set name
       this.name = sceneName;
@@ -31,42 +31,17 @@ define('lyria/scene', ['jquery', 'mixin', 'lyria/eventmap', 'lyria/gameobject'],
       
       // Expose function for template values
       this.expose = function(obj) {
-        if (!obj || $.isEmptyObject(obj)) {
+        if (!obj || isEmptyObject(obj)) {
           return;
         }
         
-        templateVals = $.extend(true, templateVals, obj);
+        self.templateData = extend(true, self.templateData, obj);
       };
       
-      // Set a context object for sceneFunction to be called in
-      var context = {};
-      
       // Call scene
-      var retValue = sceneFunction.call(this, this);
-      
-      if (retValue && !$.isEmptyObject(retValue)) {
-        this.expose(retValue);
-      }
-      
-      // Mix in keys from context to the scene object
-      $.each(context, function(key, value) {
-        if (self[key]) {
-          
-        } else {
-          self[key] = value;           
-        }
-      });
-      
-      
-      /*if (this.localization) {
-        var currentLocalization = this.localization['de'];
-        
-        retValue = $.extend(retValue, currentLocalization);
-      }*/
+      sceneFunction.call(this, this);
 
-      if (this.template) {
-        this.content = this.template(templateVals);
-      }
+      this.compileTemplate();
       
       
       
@@ -87,7 +62,13 @@ define('lyria/scene', ['jquery', 'mixin', 'lyria/eventmap', 'lyria/gameobject'],
     };
     
     Scene.prototype.compileTemplate = function(val) {
-      this.content = this.template(val);
+      if (val == null) {
+        val = this.templateData;
+      }
+      
+      if (this.template) {
+        this.content = this.template(val);        
+      }
     };
     
     return Scene;
