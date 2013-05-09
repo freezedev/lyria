@@ -26,6 +26,15 @@
                 "Lyria\nLyria namespace decleration": 1
             }
         },
+        "src\\prefab\\index.js": {
+            "name": "src\\prefab\\index.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {
+                "Lyria\nLyria namespace decleration": 1
+            }
+        },
         "src\\scene\\director.js": {
             "name": "src\\scene\\director.js",
             "modules": {},
@@ -125,8 +134,8 @@
             "fors": {},
             "namespaces": {}
         },
-        "src\\logger.js": {
-            "name": "src\\logger.js",
+        "src\\log.js": {
+            "name": "src\\log.js",
             "modules": {},
             "classes": {},
             "fors": {},
@@ -142,15 +151,6 @@
             },
             "fors": {},
             "namespaces": {}
-        },
-        "src\\prefab.js": {
-            "name": "src\\prefab.js",
-            "modules": {},
-            "classes": {},
-            "fors": {},
-            "namespaces": {
-                "Lyria\nLyria namespace decleration": 1
-            }
         },
         "src\\preloader.js": {
             "name": "src\\preloader.js",
@@ -516,6 +516,13 @@
             "namespace": "Lyria\nLyria namespace decleration"
         },
         {
+            "file": "src\\prefab\\index.js",
+            "line": 1,
+            "class": "Connector",
+            "module": "Lyria",
+            "namespace": "Lyria\nLyria namespace decleration"
+        },
+        {
             "file": "src\\scene\\director.js",
             "line": 1,
             "class": "Connector",
@@ -634,7 +641,7 @@
             "namespace": "Lyria\nLyria namespace decleration"
         },
         {
-            "file": "src\\logger.js",
+            "file": "src\\log.js",
             "line": 1,
             "class": "Loop",
             "module": "Lyria",
@@ -655,13 +662,6 @@
             "name": "stop",
             "class": "Loop",
             "module": "Lyria"
-        },
-        {
-            "file": "src\\prefab.js",
-            "line": 1,
-            "class": "",
-            "module": "Lyria",
-            "namespace": "Lyria\nLyria namespace decleration"
         },
         {
             "file": "src\\preloader.js",
@@ -825,6 +825,10 @@
         },
         {
             "message": "Missing item type",
+            "line": " src\\prefab\\index.js:1"
+        },
+        {
+            "message": "Missing item type",
             "line": " src\\scene\\director.js:1"
         },
         {
@@ -881,11 +885,7 @@
         },
         {
             "message": "Missing item type",
-            "line": " src\\logger.js:1"
-        },
-        {
-            "message": "Missing item type",
-            "line": " src\\prefab.js:1"
+            "line": " src\\log.js:1"
         },
         {
             "message": "Missing item type",
