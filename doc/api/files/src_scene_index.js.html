@@ -102,7 +102,7 @@
  * @namespace Lyria
  * Lyria namespace decleration
  */
-define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixin&#x27;, &#x27;lyria/eventmap&#x27;, &#x27;lyria/gameobject&#x27;], function($, mixin, EventMap, GameObject) {
+define(&#x27;lyria/scene&#x27;, [&#x27;isEmptyObject&#x27;, &#x27;extend&#x27;, &#x27;mixin&#x27;, &#x27;lyria/eventmap&#x27;, &#x27;lyria/gameobject&#x27;], function(isEmptyObject, extend, mixin, EventMap, GameObject) {
   &#x27;use strict&#x27;;
 
   var sceneCache = {};
@@ -121,7 +121,7 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixin&#x27;, &#x27;ly
       var self = this;
       
       // Collect all template values
-      var templateVals = {};
+      this.templateData = {};
       
       // Set name
       this.name = sceneName;
@@ -131,42 +131,17 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixin&#x27;, &#x27;ly
       
       // Expose function for template values
       this.expose = function(obj) {
-        if (!obj || $.isEmptyObject(obj)) {
+        if (!obj || isEmptyObject(obj)) {
           return;
         }
         
-        templateVals = $.extend(true, templateVals, obj);
+        self.templateData = extend(true, self.templateData, obj);
       };
       
-      // Set a context object for sceneFunction to be called in
-      var context = {};
-      
       // Call scene
-      var retValue = sceneFunction.call(this, this);
-      
-      if (retValue &amp;&amp; !$.isEmptyObject(retValue)) {
-        this.expose(retValue);
-      }
-      
-      // Mix in keys from context to the scene object
-      $.each(context, function(key, value) {
-        if (self[key]) {
-          
-        } else {
-          self[key] = value;           
-        }
-      });
-      
-      
-      /*if (this.localization) {
-        var currentLocalization = this.localization[&#x27;de&#x27;];
-        
-        retValue = $.extend(retValue, currentLocalization);
-      }*/
+      sceneFunction.call(this, this);
 
-      if (this.template) {
-        this.content = this.template(templateVals);
-      }
+      this.compileTemplate();
       
       
       
@@ -187,7 +162,13 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixin&#x27;, &#x27;ly
     };
     
     Scene.prototype.compileTemplate = function(val) {
-      this.content = this.template(val);
+      if (val == null) {
+        val = this.templateData;
+      }
+      
+      if (this.template) {
+        this.content = this.template(val);        
+      }
     };
     
     return Scene;

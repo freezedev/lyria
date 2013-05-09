@@ -166,7 +166,7 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;mixin&#x27;, &
     };
 
     SceneDirector.prototype.show = function(scene, options, callback) {
-      this.trigger(&#x27;scenechange&#x27;, scene);
+      this.trigger(&#x27;scene:change&#x27;, scene);
 
       // More than one scene visible at the same time
       if ($(&#x27;.&#x27; + SceneDirector.prototype.sceneClassName + &#x27;:visible&#x27;)) {
@@ -207,6 +207,17 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;mixin&#x27;, &
           return false;
         }
       });
+    };
+    
+    SceneDirector.prototype.refresh = function(scene) {
+      var sceneObj = (scene) ? this.sceneList[scene] : this.currentScene;
+      
+      // Re-compile scene template
+      sceneObj.compileTemplate();
+      
+      if (sceneObj.content) {
+        $(&#x27;#&#x27; + sceneObj.name).html(sceneObj.content);
+      }
     };
 
     SceneDirector.prototype.render = function() {
