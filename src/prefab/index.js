@@ -2,7 +2,7 @@
  * @namespace Lyria
  * Lyria namespace decleration
  */
-define('lyria/prefab', ['jquery', 'lyria/scene'], function($, Scene) {
+define('lyria/prefab', ['extend', 'lyria/scene'], function(extend, Scene) {
 	'use strict';
 
 	//Lyria.Prefab
@@ -16,7 +16,7 @@ define('lyria/prefab', ['jquery', 'lyria/scene'], function($, Scene) {
 			isPrefab: true
 		};
 		
-		options = $.extend(true, defaultOptions, options);
+		options = extend(true, defaultOptions, options);
 		
 		return new Scene(prefabName, options);
 		
