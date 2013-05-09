@@ -2,7 +2,7 @@
  * @namespace Lyria
  * Lyria namespace decleration
  */
-define('lyria/viewport', ['root'], function(root) {
+define('lyria/viewport', ['root', 'jquery'], function(root, $) {
   'use strict';
 
   // Lyria.Viewport
