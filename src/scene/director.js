@@ -66,7 +66,7 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'ly
     };
 
     SceneDirector.prototype.show = function(scene, options, callback) {
-      this.trigger('scenechange', scene);
+      this.trigger('scene:change', scene);
 
       // More than one scene visible at the same time
       if ($('.' + SceneDirector.prototype.sceneClassName + ':visible')) {
@@ -107,6 +107,17 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'ly
           return false;
         }
       });
+    };
+    
+    SceneDirector.prototype.refresh = function(scene) {
+      var sceneObj = (scene) ? this.sceneList[scene] : this.currentScene;
+      
+      // Re-compile scene template
+      sceneObj.compileTemplate();
+      
+      if (sceneObj.content) {
+        $('#' + sceneObj.name).html(sceneObj.content);
+      }
     };
 
     SceneDirector.prototype.render = function() {
