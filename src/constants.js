@@ -10,9 +10,25 @@ define('lyria/constants', function() {
   };
 });
 
-define('lyria/language', ['detectr'], function(detectr) {
+define('lyria/language', ['detectr', 'lyria/events'], function(detectr, Events) {
   // Fallback language
-  var defaultLanguage = 'en';
+  var langObject = {
+    defaultLanguage: 'en'
+  };
 
-  return detectr.Browser.language() || defaultLanguage;
+  var langProp = detectr.Browser.language() || langObject.defaultLanguage;
+
+  Object.defineProperty(langObject, 'language', {
+    get: function() {
+      return langProp;
+    },
+    set: function(value) {
+      langProp = value;
+      Events.trigger('language:change', langProp);
+    },
+    configurable: true,
+    enumarable: true
+  });
+
+  return langObject;
 });
