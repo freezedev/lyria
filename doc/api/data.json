@@ -89,15 +89,6 @@
                 "Lyria\nLyria namespace decleration": 1
             }
         },
-        "src\\assets.js": {
-            "name": "src\\assets.js",
-            "modules": {},
-            "classes": {},
-            "fors": {},
-            "namespaces": {
-                "Lyria\nLyria namespace decleration": 1
-            }
-        },
         "src\\eventmap.js": {
             "name": "src\\eventmap.js",
             "modules": {},
@@ -154,6 +145,15 @@
         },
         "src\\preloader.js": {
             "name": "src\\preloader.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {
+                "Lyria\nLyria namespace decleration": 1
+            }
+        },
+        "src\\resource.js": {
+            "name": "src\\resource.js",
             "modules": {},
             "classes": {},
             "fors": {},
@@ -591,27 +591,6 @@
             "namespace": "Lyria\nLyria namespace decleration"
         },
         {
-            "file": "src\\assets.js",
-            "line": 1,
-            "class": "Layer",
-            "module": "Lyria",
-            "namespace": "Lyria\nLyria namespace decleration"
-        },
-        {
-            "file": "src\\assets.js",
-            "line": 8,
-            "class": "Layer",
-            "module": "Lyria",
-            "namespace": "Lyria\nLyria namespace decleration"
-        },
-        {
-            "file": "src\\assets.js",
-            "line": 21,
-            "class": "Layer",
-            "module": "Lyria",
-            "namespace": "Lyria\nLyria namespace decleration"
-        },
-        {
             "file": "src\\eventmap.js",
             "line": 1,
             "class": "Layer",
@@ -673,6 +652,27 @@
         {
             "file": "src\\preloader.js",
             "line": 7,
+            "class": "",
+            "module": "Lyria",
+            "namespace": "Lyria\nLyria namespace decleration"
+        },
+        {
+            "file": "src\\resource.js",
+            "line": 1,
+            "class": "",
+            "module": "Lyria",
+            "namespace": "Lyria\nLyria namespace decleration"
+        },
+        {
+            "file": "src\\resource.js",
+            "line": 8,
+            "class": "",
+            "module": "Lyria",
+            "namespace": "Lyria\nLyria namespace decleration"
+        },
+        {
+            "file": "src\\resource.js",
+            "line": 21,
             "class": "",
             "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
@@ -857,18 +857,6 @@
         },
         {
             "message": "Missing item type",
-            "line": " src\\assets.js:1"
-        },
-        {
-            "message": "Missing item type",
-            "line": " src\\assets.js:8"
-        },
-        {
-            "message": "Missing item type",
-            "line": " src\\assets.js:21"
-        },
-        {
-            "message": "Missing item type",
             "line": " src\\eventmap.js:1"
         },
         {
@@ -894,6 +882,18 @@
         {
             "message": "Missing item type",
             "line": " src\\preloader.js:7"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src\\resource.js:1"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src\\resource.js:8"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src\\resource.js:21"
         },
         {
             "message": "Missing item type",
