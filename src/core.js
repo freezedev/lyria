@@ -41,7 +41,7 @@ define('mixin', function() {
   return mixin;
 });
 
-define('extend', function() {
+/*define('extend', function() {
   var __slice = [].slice, __hasProp = {}.hasOwnProperty;
 
   var extend = function() {
@@ -81,6 +81,10 @@ define('extend', function() {
   };
 
   return extend;
+});*/
+
+define('extend', ['jquery'], function($) {
+  return $.extend;
 });
 
 define('each', function() {
