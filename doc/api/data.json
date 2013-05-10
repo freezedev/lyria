@@ -545,6 +545,38 @@
             "namespace": "Lyria\nLyria namespace decleration"
         },
         {
+            "file": "src\\scene\\index.js",
+            "line": 12,
+            "description": "Scene constructor",
+            "is_constructor": 1,
+            "class": "Connector",
+            "module": "Lyria",
+            "namespace": "Lyria\nLyria namespace decleration"
+        },
+        {
+            "file": "src\\scene\\index.js",
+            "line": 65,
+            "description": "Adds a gameobject to the scene",
+            "class": "Connector",
+            "module": "Lyria",
+            "namespace": "Lyria\nLyria namespace decleration"
+        },
+        {
+            "file": "src\\scene\\index.js",
+            "line": 74,
+            "description": "Refreshes the scene (Re-renders the template)",
+            "params": [
+                {
+                    "name": "val",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "Connector",
+            "module": "Lyria",
+            "namespace": "Lyria\nLyria namespace decleration"
+        },
+        {
             "file": "src\\achievements.js",
             "line": 1,
             "class": "Layer",
@@ -838,6 +870,18 @@
         {
             "message": "Missing item type",
             "line": " src\\scene\\index.js:1"
+        },
+        {
+            "message": "Missing item type\nScene constructor",
+            "line": " src\\scene\\index.js:12"
+        },
+        {
+            "message": "Missing item type\nAdds a gameobject to the scene",
+            "line": " src\\scene\\index.js:65"
+        },
+        {
+            "message": "Missing item type\nRefreshes the scene (Re-renders the template)",
+            "line": " src\\scene\\index.js:74"
         },
         {
             "message": "Missing item type",

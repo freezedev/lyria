@@ -213,7 +213,7 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;mixin&#x27;, &
       var sceneObj = (scene) ? this.sceneList[scene] : this.currentScene;
       
       // Re-compile scene template
-      sceneObj.compileTemplate();
+      sceneObj.template.compile();
       
       if (sceneObj.content) {
         $(&#x27;#&#x27; + sceneObj.name).html(sceneObj.content);
