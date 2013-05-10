@@ -113,7 +113,7 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'ly
       var sceneObj = (scene) ? this.sceneList[scene] : this.currentScene;
       
       // Re-compile scene template
-      sceneObj.compileTemplate();
+      sceneObj.template.compile();
       
       if (sceneObj.content) {
         $('#' + sceneObj.name).html(sceneObj.content);

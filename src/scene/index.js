@@ -9,6 +9,11 @@ define('lyria/scene', ['isEmptyObject', 'extend', 'mixin', 'lyria/eventmap', 'ly
 
   var Scene = (function() {
     
+    /**
+     * Scene constructor
+     * 
+     * @constructor
+     */
     var Scene = function(sceneName, sceneFunction, options) {
       if (!sceneName) {
         return;
@@ -29,21 +34,23 @@ define('lyria/scene', ['isEmptyObject', 'extend', 'mixin', 'lyria/eventmap', 'ly
       // Default values
       this.localization = {};
       
+      this.template = {};
+      this.template.source = '';
+      this.template.data = null;
+      
       // Expose function for template values
       this.expose = function(obj) {
         if (!obj || isEmptyObject(obj)) {
           return;
         }
         
-        self.templateData = extend(true, self.templateData, obj);
+        self.template.data = extend(true, self.template.data, obj);
       };
       
       // Call scene
       sceneFunction.call(this, this);
 
-      this.compileTemplate();
-      
-      
+      this.refresh();
       
       if (this.events) {
         if (options && options.isPrefab) {
@@ -55,21 +62,29 @@ define('lyria/scene', ['isEmptyObject', 'extend', 'mixin', 'lyria/eventmap', 'ly
       
     };
     
+    /**
+     * Adds a gameobject to the scene 
+     */
     Scene.prototype.add = function(gameObject) {
       if (gameObject instanceof GameObject) {
         
       }
     };
     
-    Scene.prototype.compileTemplate = function(val) {
-      if (val == null) {
-        val = this.templateData;
-      }
-      
-      if (this.template) {
-        this.content = this.template(val);        
-      }
-    };
+    /**
+     * Refreshes the scene (Re-renders the template)
+     * 
+     * @param {Object} val
+     */
+    Scene.prototype.refresh = function(val) {
+        if (val == null && this.template) {
+          val = this.template.data;
+        }
+        
+        if (this.template && this.template.source) {
+          this.content = this.template.source(val);        
+        }
+      };
     
     return Scene;
     
