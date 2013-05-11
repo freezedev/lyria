@@ -51,6 +51,8 @@
             
                 <li><a href="../classes/Loop.html">Loop</a></li>
             
+                <li><a href="../classes/Scene.html">Scene</a></li>
+            
             </ul>
 
             <ul id="api-modules" class="apis modules">
@@ -99,8 +101,7 @@
 <div class="file">
     <pre class="code prettyprint linenums">
 /**
- * @namespace Lyria
- * Lyria namespace decleration
+ * @module Lyria
  */
 define(&#x27;lyria/scene&#x27;, [&#x27;isEmptyObject&#x27;, &#x27;extend&#x27;, &#x27;mixin&#x27;, &#x27;lyria/eventmap&#x27;, &#x27;lyria/gameobject&#x27;], function(isEmptyObject, extend, mixin, EventMap, GameObject) {
   &#x27;use strict&#x27;;
@@ -112,6 +113,7 @@ define(&#x27;lyria/scene&#x27;, [&#x27;isEmptyObject&#x27;, &#x27;extend&#x27;, 
     /**
      * Scene constructor
      * 
+     * @class Scene
      * @constructor
      */
     var Scene = function(sceneName, sceneFunction, options) {
@@ -164,6 +166,8 @@ define(&#x27;lyria/scene&#x27;, [&#x27;isEmptyObject&#x27;, &#x27;extend&#x27;, 
     
     /**
      * Adds a gameobject to the scene 
+     * 
+     * @param {Object} gameObject
      */
     Scene.prototype.add = function(gameObject) {
       if (gameObject instanceof GameObject) {

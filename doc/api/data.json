@@ -47,11 +47,11 @@
         "src\\scene\\index.js": {
             "name": "src\\scene\\index.js",
             "modules": {},
-            "classes": {},
+            "classes": {
+                "Scene": 1
+            },
             "fors": {},
-            "namespaces": {
-                "Lyria\nLyria namespace decleration": 1
-            }
+            "namespaces": {}
         },
         "src\\template\\connector.js": {
             "name": "src\\template\\connector.js",
@@ -104,7 +104,7 @@
             "classes": {},
             "fors": {},
             "namespaces": {
-                "Lyria\nLyria namespace decleration": 1
+                "Lyria": 1
             }
         },
         "src\\gameobject.js": {
@@ -188,6 +188,7 @@
             },
             "classes": {
                 "Audio": 1,
+                "Scene": 1,
                 "Connector": 1,
                 "Engine": 1,
                 "Layer": 1,
@@ -195,7 +196,8 @@
             },
             "fors": {},
             "namespaces": {
-                "Lyria\nLyria namespace decleration": 1
+                "Lyria\nLyria namespace decleration": 1,
+                "Lyria": 1
             },
             "tag": "module",
             "file": "src\\loop.js",
@@ -231,6 +233,21 @@
             "file": "src\\audio\\index.js",
             "line": 6,
             "static": 1
+        },
+        "Scene": {
+            "name": "Scene",
+            "shortname": "Scene",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Lyria",
+            "namespace": "",
+            "file": "src\\scene\\index.js",
+            "line": 11,
+            "description": "Scene constructor",
+            "is_constructor": 1
         },
         "Connector": {
             "name": "Connector",
@@ -280,7 +297,7 @@
             "module": "Lyria",
             "namespace": "",
             "file": "src\\layer.js",
-            "line": 9,
+            "line": 11,
             "extends": "Lyria.GameObject",
             "is_constructor": 1
         },
@@ -473,7 +490,7 @@
         {
             "file": "src\\localization\\index.js",
             "line": 1,
-            "class": "Connector",
+            "class": "Scene",
             "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
         },
@@ -492,7 +509,7 @@
                     "type": "Object"
                 }
             ],
-            "class": "Connector",
+            "class": "Scene",
             "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
         },
@@ -511,21 +528,21 @@
                     "type": "Object"
                 }
             ],
-            "class": "Connector",
+            "class": "Scene",
             "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
         },
         {
             "file": "src\\prefab\\index.js",
             "line": 1,
-            "class": "Connector",
+            "class": "Scene",
             "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
         },
         {
             "file": "src\\scene\\director.js",
             "line": 1,
-            "class": "Connector",
+            "class": "Scene",
             "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
         },
@@ -533,23 +550,7 @@
             "file": "src\\scene\\director.js",
             "line": 8,
             "description": "The scene director is the manager for all scenes",
-            "class": "Connector",
-            "module": "Lyria",
-            "namespace": "Lyria\nLyria namespace decleration"
-        },
-        {
-            "file": "src\\scene\\index.js",
-            "line": 1,
-            "class": "Connector",
-            "module": "Lyria",
-            "namespace": "Lyria\nLyria namespace decleration"
-        },
-        {
-            "file": "src\\scene\\index.js",
-            "line": 12,
-            "description": "Scene constructor",
-            "is_constructor": 1,
-            "class": "Connector",
+            "class": "Scene",
             "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
         },
@@ -557,13 +558,19 @@
             "file": "src\\scene\\index.js",
             "line": 65,
             "description": "Adds a gameobject to the scene",
-            "class": "Connector",
-            "module": "Lyria",
-            "namespace": "Lyria\nLyria namespace decleration"
+            "params": [
+                {
+                    "name": "gameObject",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "Scene",
+            "module": "Lyria"
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 74,
+            "line": 76,
             "description": "Refreshes the scene (Re-renders the template)",
             "params": [
                 {
@@ -572,9 +579,8 @@
                     "type": "Object"
                 }
             ],
-            "class": "Connector",
-            "module": "Lyria",
-            "namespace": "Lyria\nLyria namespace decleration"
+            "class": "Scene",
+            "module": "Lyria"
         },
         {
             "file": "src\\achievements.js",
@@ -640,9 +646,10 @@
         {
             "file": "src\\game.js",
             "line": 1,
+            "description": "Lyria namespace decleration",
             "class": "Layer",
             "module": "Lyria",
-            "namespace": "Lyria\nLyria namespace decleration"
+            "namespace": "Lyria"
         },
         {
             "file": "src\\gameobject.js",
@@ -868,20 +875,12 @@
             "line": " src\\scene\\director.js:8"
         },
         {
-            "message": "Missing item type",
-            "line": " src\\scene\\index.js:1"
-        },
-        {
-            "message": "Missing item type\nScene constructor",
-            "line": " src\\scene\\index.js:12"
-        },
-        {
             "message": "Missing item type\nAdds a gameobject to the scene",
             "line": " src\\scene\\index.js:65"
         },
         {
             "message": "Missing item type\nRefreshes the scene (Re-renders the template)",
-            "line": " src\\scene\\index.js:74"
+            "line": " src\\scene\\index.js:76"
         },
         {
             "message": "Missing item type",
@@ -908,7 +907,7 @@
             "line": " src\\eventmap.js:7"
         },
         {
-            "message": "Missing item type",
+            "message": "Missing item type\nLyria namespace decleration",
             "line": " src\\game.js:1"
         },
         {

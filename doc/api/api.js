@@ -5,7 +5,8 @@ YUI.add("yuidoc-meta", function(Y) {
         "Connector",
         "Engine",
         "Layer",
-        "Loop"
+        "Loop",
+        "Scene"
     ],
     "modules": [
         "Lyria",
