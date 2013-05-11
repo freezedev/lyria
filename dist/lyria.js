@@ -1492,7 +1492,7 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'ly
 /**
  * @module Lyria
  */
-define('lyria/scene', ['isEmptyObject', 'extend', 'mixin', 'lyria/eventmap', 'lyria/gameobject'], function(isEmptyObject, extend, mixin, EventMap, GameObject) {
+define('lyria/scene', ['isEmptyObject', 'each', 'extend', 'mixin', 'lyria/eventmap', 'lyria/gameobject'], function(isEmptyObject, each, extend, mixin, EventMap, GameObject) {
   'use strict';
 
   var sceneCache = {};
@@ -1527,7 +1527,11 @@ define('lyria/scene', ['isEmptyObject', 'extend', 'mixin', 'lyria/eventmap', 'ly
       
       this.template = {};
       this.template.source = '';
-      this.template.data = null;
+      this.template.data = {};
+      
+      this.children = this.children || {};
+      this.children.gameObjects = {};
+      this.children.prefabs = {};
       
       // Expose function for template values
       this.expose = function(obj) {
@@ -1556,12 +1560,45 @@ define('lyria/scene', ['isEmptyObject', 'extend', 'mixin', 'lyria/eventmap', 'ly
     /**
      * Adds a gameobject to the scene 
      * 
-     * @param {Object} gameObject
+     * @param {Object} child
      */
-    Scene.prototype.add = function(gameObject) {
-      if (gameObject instanceof GameObject) {
+    Scene.prototype.add = function(child) {
+      var self = this;
+      
+      
+      if (child instanceof GameObject) {
+        this.children.gameObjects[child.name] = child;
         
+        this.template.data.gameobject = (function() {
+          var array = [];
+          
+          each(self.children.gameObjects, function(key, value) {
+            array.push(value);
+          });
+          
+          return array;
+        })();
+        
+        return true;
       }
+      
+      if (child instanceof GameObject) {
+        this.children.prefabs[child.name] = child;
+        
+        this.template.data.gameobject = (function() {
+          var array = [];
+          
+          each(self.children.gameObjects, function(key, value) {
+            array.push(value);
+          });
+          
+          return array;
+        })();
+        
+        return true;
+      }
+      
+      return false;
     };
     
     /**
