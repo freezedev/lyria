@@ -103,7 +103,7 @@
 /**
  * @module Lyria
  */
-define(&#x27;lyria/scene&#x27;, [&#x27;isEmptyObject&#x27;, &#x27;extend&#x27;, &#x27;mixin&#x27;, &#x27;lyria/eventmap&#x27;, &#x27;lyria/gameobject&#x27;], function(isEmptyObject, extend, mixin, EventMap, GameObject) {
+define(&#x27;lyria/scene&#x27;, [&#x27;isEmptyObject&#x27;, &#x27;each&#x27;, &#x27;extend&#x27;, &#x27;mixin&#x27;, &#x27;lyria/eventmap&#x27;, &#x27;lyria/gameobject&#x27;], function(isEmptyObject, each, extend, mixin, EventMap, GameObject) {
   &#x27;use strict&#x27;;
 
   var sceneCache = {};
@@ -138,7 +138,11 @@ define(&#x27;lyria/scene&#x27;, [&#x27;isEmptyObject&#x27;, &#x27;extend&#x27;, 
       
       this.template = {};
       this.template.source = &#x27;&#x27;;
-      this.template.data = null;
+      this.template.data = {};
+      
+      this.children = this.children || {};
+      this.children.gameObjects = {};
+      this.children.prefabs = {};
       
       // Expose function for template values
       this.expose = function(obj) {
@@ -167,12 +171,45 @@ define(&#x27;lyria/scene&#x27;, [&#x27;isEmptyObject&#x27;, &#x27;extend&#x27;, 
     /**
      * Adds a gameobject to the scene 
      * 
-     * @param {Object} gameObject
+     * @param {Object} child
      */
-    Scene.prototype.add = function(gameObject) {
-      if (gameObject instanceof GameObject) {
+    Scene.prototype.add = function(child) {
+      var self = this;
+      
+      
+      if (child instanceof GameObject) {
+        this.children.gameObjects[child.name] = child;
         
+        this.template.data.gameobject = (function() {
+          var array = [];
+          
+          each(self.children.gameObjects, function(key, value) {
+            array.push(value);
+          });
+          
+          return array;
+        })();
+        
+        return true;
       }
+      
+      if (child instanceof GameObject) {
+        this.children.prefabs[child.name] = child;
+        
+        this.template.data.gameobject = (function() {
+          var array = [];
+          
+          each(self.children.gameObjects, function(key, value) {
+            array.push(value);
+          });
+          
+          return array;
+        })();
+        
+        return true;
+      }
+      
+      return false;
     };
     
     /**
