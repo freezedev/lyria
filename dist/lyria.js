@@ -817,8 +817,9 @@ define('lyria/events', ['lyria/eventmap'], function(EventMap) {
 });
 
 /**
- * @namespace Lyria
  * Lyria namespace decleration
+ * 
+ * @namespace Lyria
  */
 define('lyria/game', ['lyria/viewport', 'lyria/scene/director', 'lyria/preloader'], function(Viewport, Director, Preloader) {
   'use strict';
@@ -876,6 +877,8 @@ define('lyria/gameobject', ['mixin', 'lyria/eventmap', 'lyria/component', 'lyria
   
 });
 /**
+ * Lyria module
+ *
  * @module Lyria
  */
 define('lyria/layer', ['mixin', 'lyria/gameobject'], function(mixin, GameObject) {
@@ -1487,8 +1490,7 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'ly
 });
 
 /**
- * @namespace Lyria
- * Lyria namespace decleration
+ * @module Lyria
  */
 define('lyria/scene', ['isEmptyObject', 'extend', 'mixin', 'lyria/eventmap', 'lyria/gameobject'], function(isEmptyObject, extend, mixin, EventMap, GameObject) {
   'use strict';
@@ -1500,6 +1502,7 @@ define('lyria/scene', ['isEmptyObject', 'extend', 'mixin', 'lyria/eventmap', 'ly
     /**
      * Scene constructor
      * 
+     * @class Scene
      * @constructor
      */
     var Scene = function(sceneName, sceneFunction, options) {
@@ -1552,6 +1555,8 @@ define('lyria/scene', ['isEmptyObject', 'extend', 'mixin', 'lyria/eventmap', 'ly
     
     /**
      * Adds a gameobject to the scene 
+     * 
+     * @param {Object} gameObject
      */
     Scene.prototype.add = function(gameObject) {
       if (gameObject instanceof GameObject) {
