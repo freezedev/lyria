@@ -1,6 +1,7 @@
 /**
- * @namespace Lyria
  * Lyria namespace decleration
+ * 
+ * @namespace Lyria
  */
 define('lyria/game', ['lyria/viewport', 'lyria/scene/director', 'lyria/preloader'], function(Viewport, Director, Preloader) {
   'use strict';

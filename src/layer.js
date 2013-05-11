@@ -1,4 +1,6 @@
 /**
+ * Lyria module
+ *
  * @module Lyria
  */
 define('lyria/layer', ['mixin', 'lyria/gameobject'], function(mixin, GameObject) {
