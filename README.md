@@ -8,10 +8,11 @@ What do I need?
 ---------------
 All libraries are included in the repository, so you don't need to worry about browsing the internet and downloading the libraries you need.
 
-* [jQuery](http://jquery.com/) 1.6 or higher
-* [LESS](http://lesscss.org/) 1.3 or higher
+* [jQuery](http://jquery.com/) 2.0 or higher
 * [Modernizr](http://modernizr.com/)
 * [Handlebars.js](http://handlebarsjs.com/)
+* detectr
+* checkt
 
 
 What does it look like?
