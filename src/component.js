@@ -1,23 +1,16 @@
-define('lyria/component', function() {
+define('lyria/component', ['mixin', 'lyria/eventmap'], function(mixin, EventMap) {
 
   //Lyria.Component
   return (function() {
 
     function Component(name) {
+      mixin(Component.prototype, new EventMap());
+      
       this.name = name != null ? name : this.constructor.name;
     }
-
-
-    Component.prototype.register = function() {
-    };
-
-    Component.prototype.unregister = function() {
-    };
-
-    Component.prototype.render = function() {
-    };
-
+    
     Component.prototype.update = function(dt) {
+      this.trigger('update', dt);
     };
 
     return Component;
