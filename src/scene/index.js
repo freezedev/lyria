@@ -64,6 +64,16 @@ define('lyria/scene', ['isEmptyObject', 'each', 'extend', 'mixin', 'lyria/eventm
         }        
       }
       
+      this.on('update', function(dt) {
+        each(self.children, function(childKey, childValue) {
+          if (!isEmptyObject(childValue)) {
+            each(childValue, function(key, value) {
+              value.trigger('update', dt);
+            });
+          }
+        });
+      });
+      
     };
     
     /**
