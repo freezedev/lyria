@@ -105,7 +105,7 @@
  * 
  * @namespace Lyria
  */
-define(&#x27;lyria/game&#x27;, [&#x27;lyria/viewport&#x27;, &#x27;lyria/scene/director&#x27;, &#x27;lyria/preloader&#x27;], function(Viewport, Director, Preloader) {
+define(&#x27;lyria/game&#x27;, [&#x27;lyria/viewport&#x27;, &#x27;lyria/scene/director&#x27;, &#x27;lyria/preloader&#x27;, &#x27;lyria/loop&#x27;], function(Viewport, Director, Preloader, Loop) {
   &#x27;use strict&#x27;;
   
   // Lyria.Game
@@ -113,11 +113,20 @@ define(&#x27;lyria/game&#x27;, [&#x27;lyria/viewport&#x27;, &#x27;lyria/scene/di
     
     // Constructor
     var Game = function() {
+      var self = this;
+      
       this.viewport = new Viewport();
       this.director = new Director(this.viewport);
       this.preloader = new Preloader();      
       this.preloader.sceneDirector = this.director;
+      this.loop = Loop;
+      
+      Game.Loop.addTask(&#x27;update&#x27;, function(dt) {
+        self.director.trigger(&#x27;update&#x27;, dt);
+      });      
     };
+    
+    Game.Loop = Loop;
     
     
     return Game;

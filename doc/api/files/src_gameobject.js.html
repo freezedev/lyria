@@ -104,7 +104,7 @@
  * @namespace Lyria
  * Lyria namespace decleration
  */
-define(&#x27;lyria/gameobject&#x27;, [&#x27;mixin&#x27;, &#x27;lyria/eventmap&#x27;, &#x27;lyria/component&#x27;, &#x27;lyria/log&#x27;], function(mixin, EventMap, Component, Log) {
+define(&#x27;lyria/gameobject&#x27;, [&#x27;mixin&#x27;, &#x27;isEmptyObject&#x27;, &#x27;each&#x27;, &#x27;lyria/eventmap&#x27;, &#x27;lyria/component&#x27;, &#x27;lyria/log&#x27;], function(mixin, isEmptyObject, each, EventMap, Component, Log) {
   &#x27;use strict&#x27;;
   
   //Lyria.GameObject
@@ -114,11 +114,24 @@ define(&#x27;lyria/gameobject&#x27;, [&#x27;mixin&#x27;, &#x27;lyria/eventmap&#x
     var GameObject = function() {
       mixin(GameObject.prototype, new EventMap());
       
+      var self = this;
+      
+      this.components = {};
+      
+      this.on(&#x27;update&#x27;, function(dt) {
+        if (isEmptyObject(self.components)) {
+          return;
+        }
+        
+        each(self.components, function(key, value) {
+          value.trigger(&#x27;update&#x27;, dt);
+        });
+      });
     };
     
     GameObject.prototype.add = function(component) {
       if (component instanceof Component) {
-        
+        this.components[component.name] = component;
       }
     };
     

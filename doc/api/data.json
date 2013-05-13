@@ -556,7 +556,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 69,
+            "line": 79,
             "description": "Adds a gameobject to the scene",
             "params": [
                 {
@@ -570,7 +570,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 113,
+            "line": 123,
             "description": "Refreshes the scene (Re-renders the template)",
             "params": [
                 {
@@ -876,11 +876,11 @@
         },
         {
             "message": "Missing item type\nAdds a gameobject to the scene",
-            "line": " src\\scene\\index.js:69"
+            "line": " src\\scene\\index.js:79"
         },
         {
             "message": "Missing item type\nRefreshes the scene (Re-renders the template)",
-            "line": " src\\scene\\index.js:113"
+            "line": " src\\scene\\index.js:123"
         },
         {
             "message": "Missing item type",

@@ -166,6 +166,16 @@ define(&#x27;lyria/scene&#x27;, [&#x27;isEmptyObject&#x27;, &#x27;each&#x27;, &#
         }        
       }
       
+      this.on(&#x27;update&#x27;, function(dt) {
+        each(self.children, function(childKey, childValue) {
+          if (!isEmptyObject(childValue)) {
+            each(childValue, function(key, value) {
+              value.trigger(&#x27;update&#x27;, dt);
+            });
+          }
+        });
+      });
+      
     };
     
     /**
