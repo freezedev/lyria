@@ -442,12 +442,14 @@ define('lyria/audio/manager', function() {
   return AudioManager;
 });
 
-define('lyria/component', function() {
+define('lyria/component', ['mixin', 'lyria/eventmap'], function(mixin, EventMap) {
 
   //Lyria.Component
   return (function() {
 
     function Component(name) {
+      mixin(Component.prototype, new EventMap());
+      
       this.name = name != null ? name : this.constructor.name;
     }
 
@@ -456,12 +458,6 @@ define('lyria/component', function() {
     };
 
     Component.prototype.unregister = function() {
-    };
-
-    Component.prototype.render = function() {
-    };
-
-    Component.prototype.update = function(dt) {
     };
 
     return Component;
@@ -821,7 +817,7 @@ define('lyria/events', ['lyria/eventmap'], function(EventMap) {
  * 
  * @namespace Lyria
  */
-define('lyria/game', ['lyria/viewport', 'lyria/scene/director', 'lyria/preloader'], function(Viewport, Director, Preloader) {
+define('lyria/game', ['lyria/viewport', 'lyria/scene/director', 'lyria/preloader', 'lyria/loop'], function(Viewport, Director, Preloader, Loop) {
   'use strict';
   
   // Lyria.Game
@@ -829,11 +825,20 @@ define('lyria/game', ['lyria/viewport', 'lyria/scene/director', 'lyria/preloader
     
     // Constructor
     var Game = function() {
+      var self = this;
+      
       this.viewport = new Viewport();
       this.director = new Director(this.viewport);
       this.preloader = new Preloader();      
       this.preloader.sceneDirector = this.director;
+      this.loop = Loop;
+      
+      Game.Loop.addTask('update', function(dt) {
+        self.director.trigger('update', dt);
+      });      
     };
+    
+    Game.Loop = Loop;
     
     
     return Game;
@@ -845,7 +850,7 @@ define('lyria/game', ['lyria/viewport', 'lyria/scene/director', 'lyria/preloader
  * @namespace Lyria
  * Lyria namespace decleration
  */
-define('lyria/gameobject', ['mixin', 'lyria/eventmap', 'lyria/component', 'lyria/log'], function(mixin, EventMap, Component, Log) {
+define('lyria/gameobject', ['mixin', 'isEmptyObject', 'each', 'lyria/eventmap', 'lyria/component', 'lyria/log'], function(mixin, isEmptyObject, each, EventMap, Component, Log) {
   'use strict';
   
   //Lyria.GameObject
@@ -855,11 +860,24 @@ define('lyria/gameobject', ['mixin', 'lyria/eventmap', 'lyria/component', 'lyria
     var GameObject = function() {
       mixin(GameObject.prototype, new EventMap());
       
+      var self = this;
+      
+      this.components = {};
+      
+      this.on('update', function(dt) {
+        if (isEmptyObject(self.components)) {
+          return;
+        }
+        
+        each(self.components, function(key, value) {
+          value.trigger('update', dt);
+        });
+      });
     };
     
     GameObject.prototype.add = function(component) {
       if (component instanceof Component) {
-        
+        this.components[component.name] = component;
       }
     };
     
@@ -1554,6 +1572,16 @@ define('lyria/scene', ['isEmptyObject', 'each', 'extend', 'mixin', 'lyria/eventm
           this.events.delegate = '#' + sceneName;
         }        
       }
+      
+      this.on('update', function(dt) {
+        each(self.children, function(childKey, childValue) {
+          if (!isEmptyObject(childValue)) {
+            each(childValue, function(key, value) {
+              value.trigger('update', dt);
+            });
+          }
+        });
+      });
       
     };
     
