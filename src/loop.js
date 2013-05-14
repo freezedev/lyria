@@ -1,7 +1,7 @@
 /**
  * @module Lyria
  */
-define('lyria/loop', ['root', 'requestAnimationFrame'], function(root, requestAnimationFrame) {
+define('lyria/loop', ['root', 'each', 'requestAnimationFrame'], function(root, each, requestAnimationFrame) {
   'use strict';
   
   /**
@@ -31,7 +31,7 @@ define('lyria/loop', ['root', 'requestAnimationFrame'], function(root, requestAn
           return;
         }
 
-        $.each(taskList, function(key, value) {
+        each(taskList, function(key, value) {
           if (!value.paused) {
             value.value(dt);
           }
