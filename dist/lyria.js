@@ -452,12 +452,9 @@ define('lyria/component', ['mixin', 'lyria/eventmap'], function(mixin, EventMap)
       
       this.name = name != null ? name : this.constructor.name;
     }
-
-
-    Component.prototype.register = function() {
-    };
-
-    Component.prototype.unregister = function() {
+    
+    Component.prototype.update = function(dt) {
+      this.trigger('update', dt);
     };
 
     return Component;
@@ -595,6 +592,10 @@ define('each', function() {
     var i, num, objKeys, val, _i, _j, _len, _len1;
 
     if (Array.isArray(obj)) {
+      if (obj.length === 0) {
+        return;
+      }
+      
       for ( num = _i = 0, _len = obj.length; _i < _len; num = ++_i) {
         i = obj[num];
         if (callback(num, i)) {
@@ -605,10 +606,14 @@ define('each', function() {
       }
     } else {
       objKeys = Object.keys(obj);
+      if (objKeys.length === 0) {
+        return;
+      }
+      
       for ( num = _j = 0, _len1 = objKeys.length; _j < _len1; num = ++_j) {
         i = objKeys[num];
-        val = obj[j];
-        if (callback(j, val)) {
+        val = obj[i];
+        if (callback(i, val)) {
           continue;
         } else {
           break;
@@ -1093,7 +1098,7 @@ define('lyria/log', ['root'], function(root) {
 /**
  * @module Lyria
  */
-define('lyria/loop', ['root', 'requestAnimationFrame'], function(root, requestAnimationFrame) {
+define('lyria/loop', ['root', 'each', 'requestAnimationFrame'], function(root, each, requestAnimationFrame) {
   'use strict';
   
   /**
@@ -1123,7 +1128,7 @@ define('lyria/loop', ['root', 'requestAnimationFrame'], function(root, requestAn
           return;
         }
 
-        $.each(taskList, function(key, value) {
+        each(taskList, function(key, value) {
           if (!value.paused) {
             value.value(dt);
           }
