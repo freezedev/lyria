@@ -1,7 +1,9 @@
 JavaScript style guide
 * Two spaces for indentation
-* Semicolons where semicolons should
-* Commas at the end  
+* Semicolons where semicolons should be
+* Commas at the end
+* Single quotes are prefered
+* Variables should not have underscores (expect for CoffeeScript-generated code)
 
 Configuration can be found at `.jshintrc`.  
 
