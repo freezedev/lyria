@@ -1,6 +1,5 @@
 {
 	"loopfunc": true,
 	"sub": true,
-	"eqnull": true,
-	"es5": true
+	"eqnull": true
 }
