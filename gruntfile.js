@@ -23,12 +23,7 @@ module.exports = function(grunt) {
     },
     jshint: {
       files: ['gruntfile.js', lyriaOrigin],
-      options: {
-        loopfunc: true,
-        sub: true,
-        eqnull: true,
-        es5: true
-      }
+      options: grunt.file.readJSON('.jshintrc')
     },
     yuidoc: {
       compile: {
