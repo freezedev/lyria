@@ -2,7 +2,7 @@
   Cloning objects
 */
 define('clone', function() {
-  return function(obj) {
+  var clone = function(obj) {
     var flags, key, newInstance;
 
     if ((obj == null) || typeof obj !== 'object') {
@@ -33,4 +33,6 @@ define('clone', function() {
     }
     return newInstance;
   };
+  
+  return clone;
 });
