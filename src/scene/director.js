@@ -2,9 +2,8 @@
  * @namespace Lyria
  * Lyria namespace decleration
  */
-define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'lyria/scene', 'lyria/viewport'], function(root, mixin, $, EventMap, Scene, Viewport) {
-  'use strict';
-  
+define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'lyria/scene', 'lyria/viewport'], function(root, mixin, $, EventMap, Scene, Viewport) {'use strict';
+
   /**
    * The scene director is the manager for all scenes
    *
@@ -26,7 +25,7 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'ly
 
     // Properties
     SceneDirector.prototype.sceneClassName = 'scene';
-    
+
     // Methods
     SceneDirector.prototype.add = function(scene, options) {
 
@@ -59,6 +58,25 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'ly
               }
             });
           }
+
+          // Data binding
+          if (scene.template.data && !$.isEmptyObject(scene.template.data)) {
+            $('#' + scene.name + ' [data-bind]').each(function() {
+              var prop = $(this).data('bind');
+
+              scene.template.data.watch(prop, function(id, oldval, newval) {
+                if (oldval !== newval) {
+                  scene.refresh();
+                  
+                  if (scene.content) {
+                    $('#' + scene.name).html(scene.content);
+                  }
+                }
+
+                return newval;
+              });
+            });
+          }
         }
       }
 
@@ -84,7 +102,7 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'ly
 
         this.currentScene.trigger('deactivate', options);
       }
-      
+
       var self = this;
 
       $.each(this.sceneList, function(key, value) {
@@ -95,26 +113,26 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'ly
           } else {
             $('#' + scene).show();
           }
-          
+
           self.currentScene = value;
-          
+
           self.currentScene.trigger('active', options);
 
           if (callback) {
-            callback(scene);            
+            callback(scene);
           }
 
           return false;
         }
       });
     };
-    
+
     SceneDirector.prototype.refresh = function(scene) {
       var sceneObj = (scene) ? this.sceneList[scene] : this.currentScene;
-      
+
       // Re-compile scene template
       sceneObj.template.compile();
-      
+
       if (sceneObj.content) {
         $('#' + sceneObj.name).html(sceneObj.content);
       }
