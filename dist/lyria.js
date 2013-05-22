@@ -543,6 +543,44 @@ define('cancelAnimationFrame', ['root'], function(root) {
     };
   }
 });
+/*
+  Cloning objects
+*/
+define('clone', function() {
+  var clone = function(obj) {
+    var flags, key, newInstance;
+
+    if ((obj == null) || typeof obj !== 'object') {
+      return obj;
+    }
+    if (obj instanceof Date) {
+      return new Date(obj.getTime());
+    }
+    if (obj instanceof RegExp) {
+      flags = '';
+      if (obj.global != null) {
+        flags += 'g';
+      }
+      if (obj.ignoreCase != null) {
+        flags += 'i';
+      }
+      if (obj.multiline != null) {
+        flags += 'm';
+      }
+      if (obj.sticky != null) {
+        flags += 'y';
+      }
+      return new RegExp(obj.source, flags);
+    }
+    newInstance = new obj.constructor();
+    for (key in obj) {
+      newInstance[key] = clone(obj[key]);
+    }
+    return newInstance;
+  };
+  
+  return clone;
+});
 define('each', function() {
   return function(obj, callback) {
     var i, num, objKeys, val, _i, _j, _len, _len1;
@@ -674,6 +712,58 @@ define('mixin', function() {
     return root;
   });
 })(this);
+/*
+* object.watch polyfill
+*
+* 2012-04-03
+*
+* By Eli Grey, http://eligrey.com
+* Public Domain.
+* NO WARRANTY EXPRESSED OR IMPLIED. USE AT YOUR OWN RISK.
+*/
+
+// object.watch
+if (!Object.prototype.watch) {
+  Object.defineProperty(Object.prototype, "watch", {
+    enumerable: false,
+    configurable: true,
+    writable: false,
+    value: function(prop, handler) {
+      var oldval = this[prop], newval = oldval, getter = function() {
+        return newval;
+      }, setter = function(val) {
+        oldval = newval;
+        newval = handler.call(this, prop, oldval, val);
+        return newval;
+      };
+
+      if (
+      delete this[prop]) {// can't watch constants
+        Object.defineProperty(this, prop, {
+          get: getter,
+          set: setter,
+          enumerable: true,
+          configurable: true
+        });
+      }
+    }
+  });
+}
+
+// object.unwatch
+if (!Object.prototype.unwatch) {
+  Object.defineProperty(Object.prototype, "unwatch", {
+    enumerable: false,
+    configurable: true,
+    writable: false,
+    value: function(prop) {
+      var val = this[prop];
+      delete this[prop];
+      // remove accessors
+      this[prop] = val;
+    }
+  });
+}
 /**
  * @namespace Lyria
  * Lyria namespace decleration
@@ -1375,9 +1465,8 @@ define('lyria/resource', function() {
  * @namespace Lyria
  * Lyria namespace decleration
  */
-define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'lyria/scene', 'lyria/viewport'], function(root, mixin, $, EventMap, Scene, Viewport) {
-  'use strict';
-  
+define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'lyria/scene', 'lyria/viewport'], function(root, mixin, $, EventMap, Scene, Viewport) {'use strict';
+
   /**
    * The scene director is the manager for all scenes
    *
@@ -1399,7 +1488,7 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'ly
 
     // Properties
     SceneDirector.prototype.sceneClassName = 'scene';
-    
+
     // Methods
     SceneDirector.prototype.add = function(scene, options) {
 
@@ -1432,6 +1521,25 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'ly
               }
             });
           }
+
+          // Data binding
+          if (scene.template.data && !$.isEmptyObject(scene.template.data)) {
+            $('#' + scene.name + ' [data-bind]').each(function() {
+              var prop = $(this).data('bind');
+
+              scene.template.data.watch(prop, function(id, oldval, newval) {
+                if (oldval !== newval) {
+                  scene.refresh();
+                  
+                  if (scene.content) {
+                    $('#' + scene.name).html(scene.content);
+                  }
+                }
+
+                return newval;
+              });
+            });
+          }
         }
       }
 
@@ -1457,7 +1565,7 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'ly
 
         this.currentScene.trigger('deactivate', options);
       }
-      
+
       var self = this;
 
       $.each(this.sceneList, function(key, value) {
@@ -1468,26 +1576,26 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'ly
           } else {
             $('#' + scene).show();
           }
-          
+
           self.currentScene = value;
-          
+
           self.currentScene.trigger('active', options);
 
           if (callback) {
-            callback(scene);            
+            callback(scene);
           }
 
           return false;
         }
       });
     };
-    
+
     SceneDirector.prototype.refresh = function(scene) {
       var sceneObj = (scene) ? this.sceneList[scene] : this.currentScene;
-      
+
       // Re-compile scene template
       sceneObj.template.compile();
-      
+
       if (sceneObj.content) {
         $('#' + sceneObj.name).html(sceneObj.content);
       }
@@ -1509,7 +1617,7 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'ly
 /**
  * @module Lyria
  */
-define('lyria/scene', ['isEmptyObject', 'each', 'extend', 'mixin', 'lyria/eventmap', 'lyria/gameobject'], function(isEmptyObject, each, extend, mixin, EventMap, GameObject) {
+define('lyria/scene', ['isEmptyObject', 'each', 'extend', 'clone', 'mixin', 'lyria/eventmap', 'lyria/gameobject'], function(isEmptyObject, each, extend, clone, mixin, EventMap, GameObject) {
   'use strict';
 
   var sceneCache = {};
@@ -1533,9 +1641,6 @@ define('lyria/scene', ['isEmptyObject', 'each', 'extend', 'mixin', 'lyria/eventm
       // We need a reference to the scene not being this
       var self = this;
       
-      // Collect all template values
-      this.templateData = {};
-      
       // Set name
       this.name = sceneName;
       
@@ -1544,6 +1649,7 @@ define('lyria/scene', ['isEmptyObject', 'each', 'extend', 'mixin', 'lyria/eventm
       
       this.template = {};
       this.template.source = '';
+      // Collect all template values
       this.template.data = {};
       
       this.children = this.children || {};
@@ -1560,9 +1666,20 @@ define('lyria/scene', ['isEmptyObject', 'each', 'extend', 'mixin', 'lyria/eventm
       };
       
       // Call scene
-      sceneFunction.call(this, this);
+      require(['lyria/achievements', 'lyria/log', 'lyria/component', 'lyria/gameobject', 'lyria/events'], function(Achievements, Log, Component, GameObject, Events) {
+        var Lyria = {
+          Achievements: Achievements,
+          Log: Log,
+          Component: Component,
+          GameObject: GameObject,
+          Events: Events
+        };
+        
+        sceneFunction.call(self, self, Lyria);
+        
+        self.refresh();
+      });
 
-      this.refresh();
       
       if (this.events) {
         if (options && options.isPrefab) {
