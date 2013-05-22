@@ -1594,7 +1594,7 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'ly
       var sceneObj = (scene) ? this.sceneList[scene] : this.currentScene;
 
       // Re-compile scene template
-      sceneObj.template.compile();
+      sceneObj.refresh();
 
       if (sceneObj.content) {
         $('#' + sceneObj.name).html(sceneObj.content);
@@ -1678,26 +1678,28 @@ define('lyria/scene', ['isEmptyObject', 'each', 'extend', 'clone', 'mixin', 'lyr
         sceneFunction.call(self, self, Lyria);
         
         self.refresh();
+        
+        
+        if (self.events) {
+          if (options && options.isPrefab) {
+            self.events.delegate = (options.target) ? options.target : 'body';              
+          } else {
+            self.events.delegate = '#' + sceneName;
+          }        
+        }
+        
+        self.on('update', function(dt) {
+          each(self.children, function(childKey, childValue) {
+            if (!isEmptyObject(childValue)) {
+              each(childValue, function(key, value) {
+                value.trigger('update', dt);
+              });
+            }
+          });
+        });
       });
 
       
-      if (this.events) {
-        if (options && options.isPrefab) {
-          this.events.delegate = (options.target) ? options.target : 'body';              
-        } else {
-          this.events.delegate = '#' + sceneName;
-        }        
-      }
-      
-      this.on('update', function(dt) {
-        each(self.children, function(childKey, childValue) {
-          if (!isEmptyObject(childValue)) {
-            each(childValue, function(key, value) {
-              value.trigger('update', dt);
-            });
-          }
-        });
-      });
       
     };
     
