@@ -103,7 +103,7 @@
 /**
  * @module Lyria
  */
-define(&#x27;lyria/scene&#x27;, [&#x27;isEmptyObject&#x27;, &#x27;each&#x27;, &#x27;extend&#x27;, &#x27;mixin&#x27;, &#x27;lyria/eventmap&#x27;, &#x27;lyria/gameobject&#x27;], function(isEmptyObject, each, extend, mixin, EventMap, GameObject) {
+define(&#x27;lyria/scene&#x27;, [&#x27;isEmptyObject&#x27;, &#x27;each&#x27;, &#x27;extend&#x27;, &#x27;clone&#x27;, &#x27;mixin&#x27;, &#x27;lyria/eventmap&#x27;, &#x27;lyria/gameobject&#x27;], function(isEmptyObject, each, extend, clone, mixin, EventMap, GameObject) {
   &#x27;use strict&#x27;;
 
   var sceneCache = {};
@@ -127,9 +127,6 @@ define(&#x27;lyria/scene&#x27;, [&#x27;isEmptyObject&#x27;, &#x27;each&#x27;, &#
       // We need a reference to the scene not being this
       var self = this;
       
-      // Collect all template values
-      this.templateData = {};
-      
       // Set name
       this.name = sceneName;
       
@@ -138,6 +135,7 @@ define(&#x27;lyria/scene&#x27;, [&#x27;isEmptyObject&#x27;, &#x27;each&#x27;, &#
       
       this.template = {};
       this.template.source = &#x27;&#x27;;
+      // Collect all template values
       this.template.data = {};
       
       this.children = this.children || {};
@@ -154,9 +152,20 @@ define(&#x27;lyria/scene&#x27;, [&#x27;isEmptyObject&#x27;, &#x27;each&#x27;, &#
       };
       
       // Call scene
-      sceneFunction.call(this, this);
+      require([&#x27;lyria/achievements&#x27;, &#x27;lyria/log&#x27;, &#x27;lyria/component&#x27;, &#x27;lyria/gameobject&#x27;, &#x27;lyria/events&#x27;], function(Achievements, Log, Component, GameObject, Events) {
+        var Lyria = {
+          Achievements: Achievements,
+          Log: Log,
+          Component: Component,
+          GameObject: GameObject,
+          Events: Events
+        };
+        
+        sceneFunction.call(self, self, Lyria);
+        
+        self.refresh();
+      });
 
-      this.refresh();
       
       if (this.events) {
         if (options &amp;&amp; options.isPrefab) {

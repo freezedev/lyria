@@ -548,7 +548,7 @@
         },
         {
             "file": "src\\scene\\director.js",
-            "line": 8,
+            "line": 7,
             "description": "The scene director is the manager for all scenes",
             "class": "Scene",
             "module": "Lyria",
@@ -556,7 +556,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 79,
+            "line": 88,
             "description": "Adds a gameobject to the scene",
             "params": [
                 {
@@ -570,7 +570,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 123,
+            "line": 132,
             "description": "Refreshes the scene (Re-renders the template)",
             "params": [
                 {
@@ -872,15 +872,15 @@
         },
         {
             "message": "Missing item type\nThe scene director is the manager for all scenes",
-            "line": " src\\scene\\director.js:8"
+            "line": " src\\scene\\director.js:7"
         },
         {
             "message": "Missing item type\nAdds a gameobject to the scene",
-            "line": " src\\scene\\index.js:79"
+            "line": " src\\scene\\index.js:88"
         },
         {
             "message": "Missing item type\nRefreshes the scene (Re-renders the template)",
-            "line": " src\\scene\\index.js:123"
+            "line": " src\\scene\\index.js:132"
         },
         {
             "message": "Missing item type",
