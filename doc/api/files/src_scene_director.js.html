@@ -164,15 +164,13 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;mixin&#x27;, &
           // Data binding
           if (scene.template.data &amp;&amp; !$.isEmptyObject(scene.template.data)) {
             $(&#x27;#&#x27; + scene.name + &#x27; [data-bind]&#x27;).each(function() {
-              var prop = $(this).data(&#x27;bind&#x27;);
+              var $dataElem = $(this);
+              
+              var prop = $dataElem.data(&#x27;bind&#x27;);
 
               scene.template.data.watch(prop, function(id, oldval, newval) {
                 if (oldval !== newval) {
-                  scene.refresh();
-                  
-                  if (scene.content) {
-                    $(&#x27;#&#x27; + scene.name).html(scene.content);
-                  }
+                  $dataElem.html(newval);
                 }
 
                 return newval;
