@@ -1,8 +1,11 @@
-Lyria.js
-========
+Lyria
+=====
 Lightweight prototyping javascript game framework based on jQuery. 
 
 The Lyria template can be found here: https://github.com/freezedev/lyria-template
+
+If you are looking for something more CoffeeScript, take a look at [Elyssa](https://github.com/elysion-powered/elyssa).  
+If you are looking for something less game-related, take a look at [MilkSugar](https://github.com/freezedev/milksugar).
 
 What do I need?
 ---------------
@@ -11,8 +14,8 @@ All libraries are included in the repository, so you don't need to worry about b
 * [jQuery](http://jquery.com/) 2.0 or higher
 * [Modernizr](http://modernizr.com/)
 * [Handlebars.js](http://handlebarsjs.com/)
-* detectr
-* checkt
+* [detectr](https://github.com/Stoney-FD/detectr.js)
+* [checkt](https://github.com/Stoney-FD/checkt)
 
 
 What does it look like?
