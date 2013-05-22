@@ -164,26 +164,28 @@ define(&#x27;lyria/scene&#x27;, [&#x27;isEmptyObject&#x27;, &#x27;each&#x27;, &#
         sceneFunction.call(self, self, Lyria);
         
         self.refresh();
+        
+        
+        if (self.events) {
+          if (options &amp;&amp; options.isPrefab) {
+            self.events.delegate = (options.target) ? options.target : &#x27;body&#x27;;              
+          } else {
+            self.events.delegate = &#x27;#&#x27; + sceneName;
+          }        
+        }
+        
+        self.on(&#x27;update&#x27;, function(dt) {
+          each(self.children, function(childKey, childValue) {
+            if (!isEmptyObject(childValue)) {
+              each(childValue, function(key, value) {
+                value.trigger(&#x27;update&#x27;, dt);
+              });
+            }
+          });
+        });
       });
 
       
-      if (this.events) {
-        if (options &amp;&amp; options.isPrefab) {
-          this.events.delegate = (options.target) ? options.target : &#x27;body&#x27;;              
-        } else {
-          this.events.delegate = &#x27;#&#x27; + sceneName;
-        }        
-      }
-      
-      this.on(&#x27;update&#x27;, function(dt) {
-        each(self.children, function(childKey, childValue) {
-          if (!isEmptyObject(childValue)) {
-            each(childValue, function(key, value) {
-              value.trigger(&#x27;update&#x27;, dt);
-            });
-          }
-        });
-      });
       
     };
     
