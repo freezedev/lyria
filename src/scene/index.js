@@ -1,7 +1,7 @@
 /**
  * @module Lyria
  */
-define('lyria/scene', ['isEmptyObject', 'each', 'extend', 'mixin', 'lyria/eventmap', 'lyria/gameobject'], function(isEmptyObject, each, extend, mixin, EventMap, GameObject) {
+define('lyria/scene', ['isEmptyObject', 'each', 'extend', 'clone', 'mixin', 'lyria/eventmap', 'lyria/gameobject'], function(isEmptyObject, each, extend, clone, mixin, EventMap, GameObject) {
   'use strict';
 
   var sceneCache = {};
@@ -50,9 +50,20 @@ define('lyria/scene', ['isEmptyObject', 'each', 'extend', 'mixin', 'lyria/eventm
       };
       
       // Call scene
-      sceneFunction.call(this, this);
+      require(['lyria/achievements', 'lyria/log', 'lyria/component', 'lyria/gameobject', 'lyria/events'], function(Achievements, Log, Component, GameObject, Events) {
+        var Lyria = {
+          Achievements: Achievements,
+          Log: Log,
+          Component: Component,
+          GameObject: GameObject,
+          Events: Events
+        };
+        
+        sceneFunction.call(self, self, Lyria);
+        
+        self.refresh();
+      });
 
-      this.refresh();
       
       if (this.events) {
         if (options && options.isPrefab) {
