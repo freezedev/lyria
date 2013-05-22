@@ -62,15 +62,13 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'ly
           // Data binding
           if (scene.template.data && !$.isEmptyObject(scene.template.data)) {
             $('#' + scene.name + ' [data-bind]').each(function() {
-              var prop = $(this).data('bind');
+              var $dataElem = $(this);
+              
+              var prop = $dataElem.data('bind');
 
               scene.template.data.watch(prop, function(id, oldval, newval) {
                 if (oldval !== newval) {
-                  scene.refresh();
-                  
-                  if (scene.content) {
-                    $('#' + scene.name).html(scene.content);
-                  }
+                  $dataElem.html(newval);
                 }
 
                 return newval;
