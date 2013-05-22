@@ -25,9 +25,6 @@ define('lyria/scene', ['isEmptyObject', 'each', 'extend', 'mixin', 'lyria/eventm
       // We need a reference to the scene not being this
       var self = this;
       
-      // Collect all template values
-      this.templateData = {};
-      
       // Set name
       this.name = sceneName;
       
@@ -36,6 +33,7 @@ define('lyria/scene', ['isEmptyObject', 'each', 'extend', 'mixin', 'lyria/eventm
       
       this.template = {};
       this.template.source = '';
+      // Collect all template values
       this.template.data = {};
       
       this.children = this.children || {};
