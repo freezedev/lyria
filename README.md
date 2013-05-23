@@ -107,6 +107,13 @@ Of course, this only a simple example of what you can do with scenes. You can al
 
 If you are already have worked with the [CouchDB eventlys](https://github.com/jchris/evently), this concept might feel very familiar to you.
 
+Features
+--------
+
+Here is the plain old feature list:
+
+* Scene management
+* Data bindings
 
 How do I get started?
 ---------------------
