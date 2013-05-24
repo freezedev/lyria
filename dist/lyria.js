@@ -1291,6 +1291,12 @@ define('lyria/prefab', ['extend', 'lyria/scene'], function(extend, Scene) {
 define('lyria/prefab/manager', function() {
   var PrefabManager = {};
   
+  PrefabManager.create = function(name) {
+    if (PrefabManager.precompiledPrefabs) {
+      return PrefabManager.precompiledPrefabs[name];
+    }
+  };
+  
   return PrefabManager;
 });
 
