@@ -58,7 +58,7 @@ define('lyria/preloader', ['root', 'mixin', 'jquery', 'lyria/resource', 'lyria/l
           self.sceneDirector.currentScene.trigger('progresschange', percentLoaded);
         }
 
-        if (currentProgress === totalSize) {
+        if (currentProgress >= totalSize) {
           if (hasLoadingScene) {
             self.sceneDirector.currentScene.trigger('complete');
           }
