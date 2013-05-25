@@ -50,16 +50,17 @@ define('lyria/scene', ['isEmptyObject', 'each', 'extend', 'clone', 'mixin', 'lyr
       };
       
       // Call scene
-      require(['lyria/achievements', 'lyria/log', 'lyria/component', 'lyria/gameobject', 'lyria/events'], function(Achievements, Log, Component, GameObject, Events) {
-        var Lyria = {
+      require(['lyria/achievements', 'lyria/log', 'lyria/component', 'lyria/gameobject', 'lyria/events', 'lyria/resource'], function(Achievements, Log, Component, GameObject, Events, Resource) {
+        var LyriaObject = {
           Achievements: Achievements,
           Log: Log,
           Component: Component,
           GameObject: GameObject,
-          Events: Events
+          Events: Events,
+          Resource: Resource
         };
         
-        sceneFunction.call(self, self, Lyria);
+        sceneFunction.apply(self, [self, LyriaObject]);
         
         self.refresh();
         
