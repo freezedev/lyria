@@ -1360,7 +1360,7 @@ define('lyria/preloader', ['root', 'mixin', 'jquery', 'lyria/resource', 'lyria/l
           self.sceneDirector.currentScene.trigger('progresschange', percentLoaded);
         }
 
-        if (currentProgress === totalSize) {
+        if (currentProgress >= totalSize) {
           if (hasLoadingScene) {
             self.sceneDirector.currentScene.trigger('complete');
           }
@@ -1730,6 +1730,8 @@ define('lyria/scene', ['isEmptyObject', 'each', 'extend', 'clone', 'mixin', 'lyr
           return array;
         })();
         
+        this.trigger('add');
+        
         return true;
       }
       
@@ -1745,6 +1747,8 @@ define('lyria/scene', ['isEmptyObject', 'each', 'extend', 'clone', 'mixin', 'lyr
           
           return array;
         })();
+        
+        this.trigger('add');
         
         return true;
       }
@@ -1765,6 +1769,8 @@ define('lyria/scene', ['isEmptyObject', 'each', 'extend', 'clone', 'mixin', 'lyr
         if (this.template && this.template.source) {
           this.content = this.template.source(val);        
         }
+        
+        this.trigger('refresh');
       };
     
     return Scene;
