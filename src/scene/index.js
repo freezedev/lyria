@@ -110,6 +110,8 @@ define('lyria/scene', ['isEmptyObject', 'each', 'extend', 'clone', 'mixin', 'lyr
           return array;
         })();
         
+        this.trigger('add');
+        
         return true;
       }
       
@@ -125,6 +127,8 @@ define('lyria/scene', ['isEmptyObject', 'each', 'extend', 'clone', 'mixin', 'lyr
           
           return array;
         })();
+        
+        this.trigger('add');
         
         return true;
       }
@@ -145,6 +149,8 @@ define('lyria/scene', ['isEmptyObject', 'each', 'extend', 'clone', 'mixin', 'lyr
         if (this.template && this.template.source) {
           this.content = this.template.source(val);        
         }
+        
+        this.trigger('refresh');
       };
     
     return Scene;
