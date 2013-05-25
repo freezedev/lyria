@@ -570,7 +570,7 @@
         },
         {
             "file": "src/scene/index.js",
-            "line": 135,
+            "line": 139,
             "description": "Refreshes the scene (Re-renders the template)",
             "params": [
                 {
@@ -880,7 +880,7 @@
         },
         {
             "message": "Missing item type\nRefreshes the scene (Re-renders the template)",
-            "line": " src/scene/index.js:135"
+            "line": " src/scene/index.js:139"
         },
         {
             "message": "Missing item type",

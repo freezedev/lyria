@@ -212,6 +212,8 @@ define(&#x27;lyria/scene&#x27;, [&#x27;isEmptyObject&#x27;, &#x27;each&#x27;, &#
           return array;
         })();
         
+        this.trigger(&#x27;add&#x27;);
+        
         return true;
       }
       
@@ -227,6 +229,8 @@ define(&#x27;lyria/scene&#x27;, [&#x27;isEmptyObject&#x27;, &#x27;each&#x27;, &#
           
           return array;
         })();
+        
+        this.trigger(&#x27;add&#x27;);
         
         return true;
       }
@@ -247,6 +251,8 @@ define(&#x27;lyria/scene&#x27;, [&#x27;isEmptyObject&#x27;, &#x27;each&#x27;, &#
         if (this.template &amp;&amp; this.template.source) {
           this.content = this.template.source(val);        
         }
+        
+        this.trigger(&#x27;refresh&#x27;);
       };
     
     return Scene;
