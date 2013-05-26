@@ -44,8 +44,10 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'ly
         if ($('#' + scene.name).length === 0) {
           this.viewport.$container.prepend($(root.document.createElement('div')).attr('id', scene.name).attr('class', SceneDirector.prototype.sceneClassName));
 
-          if (scene.content) {
-            $('#' + scene.name).html(scene.content);
+          if (!scene.async) {
+            if (scene.content) {
+              $('#' + scene.name).html(scene.content);
+            }
           }
 
           // Bind events

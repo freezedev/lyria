@@ -28,6 +28,8 @@ define('lyria/scene', ['isEmptyObject', 'each', 'extend', 'clone', 'mixin', 'lyr
       // Set name
       this.name = sceneName;
       
+      this.async = false;
+      
       // Default values
       this.localization = {};
       
