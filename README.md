@@ -21,13 +21,26 @@ All libraries are included in the repository, so you don't need to worry about b
 What does it look like?
 -----------------------
 
-The core of it all is the scene manger. (The scene manger in Lyria.js is quite similar to the one in [Elysion](https://github.com/freezedev/elysion).)  
+First create a new game object.
+
+```javascript
+define('mygame', ['lyria/game'], function(Game) {
+  var myGame = new Game();
+});
+```
+
+Lyria uses AMD modules extensively and it is very recommended to use that for organizing your game as well.
+
+Every game object has a scene manager, a viewport and a preloader. The core of it all is the scene manger. (The scene manger in Lyria.js is quite similar to the one in [Elysion](https://github.com/freezedev/elysion).)  
 If you are coming from a game developer background, you may already know what a scene is. A scene in a game enviroment can be a main menu, a settings screen or the game itself. Or in 2D point-and-click-adventure, a scene can by any location the character is traveling to.  
 So in Lyria.js a scene is that as well, but seperated in a markup file, a data file and localization JSON file. Templating is build in through Handlebars.js.
 
 ```javascript
-Lyria.SceneManager.add('myScene');
-Lyria.SceneManager.show('myScene');
+define('mygame', ['lyria/game'], function(Game) {
+  var myGame = new Game();
+  
+  myGame.director.add('myScene');
+});
 ```
 
 Our scene called myScene might look this:  
