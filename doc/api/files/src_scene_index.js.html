@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/scene/index.js - lyria</title>
+    <title>src\scene\index.js - lyria</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -96,7 +96,7 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: src/scene/index.js</h1>
+                        <h1 class="file-heading">File: src\scene\index.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
@@ -130,6 +130,8 @@ define(&#x27;lyria/scene&#x27;, [&#x27;isEmptyObject&#x27;, &#x27;each&#x27;, &#
       // Set name
       this.name = sceneName;
       
+      this.async = false;
+      
       // Default values
       this.localization = {};
       
@@ -152,14 +154,15 @@ define(&#x27;lyria/scene&#x27;, [&#x27;isEmptyObject&#x27;, &#x27;each&#x27;, &#
       };
       
       // Call scene
-      require([&#x27;lyria/achievements&#x27;, &#x27;lyria/log&#x27;, &#x27;lyria/component&#x27;, &#x27;lyria/gameobject&#x27;, &#x27;lyria/events&#x27;, &#x27;lyria/resource&#x27;], function(Achievements, Log, Component, GameObject, Events, Resource) {
+      require([&#x27;lyria/achievements&#x27;, &#x27;lyria/log&#x27;, &#x27;lyria/component&#x27;, &#x27;lyria/gameobject&#x27;, &#x27;lyria/events&#x27;, &#x27;lyria/resource&#x27;, &#x27;lyria/data/store&#x27;], function(Achievements, Log, Component, GameObject, Events, Resource, DataStore) {
         var LyriaObject = {
           Achievements: Achievements,
           Log: Log,
           Component: Component,
           GameObject: GameObject,
           Events: Events,
-          Resource: Resource
+          Resource: Resource,
+          DataStore: DataStore
         };
         
         sceneFunction.apply(self, [self, LyriaObject]);
