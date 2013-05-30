@@ -764,6 +764,31 @@ if (!Object.prototype.unwatch) {
     }
   });
 }
+define('lyria/data/layer', function() {
+  
+});
+
+define('lyria/data/store', ['lyria/eventmap'], function(EventMap) {
+
+  var data = {};
+  var eventMap = new EventMap();
+
+  var DataStore = {
+    has: function(key) {
+      return data.hasOwnProperty('key');
+    },
+    get: function(key) {
+      return data[key];
+    },
+    set: function(key, value) {
+      data[key] = value;
+    }
+  };
+
+  return DataStore;
+
+});
+
 /**
  * @namespace Lyria
  * Lyria namespace decleration
@@ -1263,6 +1288,40 @@ define('lyria/loop', ['root', 'each', 'requestAnimationFrame'], function(root, e
   })();
   
 });
+define('lyria/math', function() {
+
+  var Math = {
+    clamp: function(value, min, max) {
+      var _ref, _ref1;
+
+      if ( typeof value === 'object') {
+        _ref = value, min = _ref.min, max = _ref.max, value = _ref.value;
+      }
+      if (min == null) {
+        min = 0.0;
+      }
+      if (max == null) {
+        max = 1.0;
+      }
+      if (min > max) {
+        _ref1 = [max, min], min = _ref1[0], max = _ref1[1];
+      }
+      if ((min <= value && value <= max)) {
+        return value;
+      } else {
+        if (value > max) {
+          return max;
+        } else {
+          return min;
+        }
+      }
+    }
+  };
+
+  return Math;
+
+});
+
 /**
  * @namespace Lyria
  * Lyria namespace decleration
@@ -1513,8 +1572,10 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'ly
         if ($('#' + scene.name).length === 0) {
           this.viewport.$container.prepend($(root.document.createElement('div')).attr('id', scene.name).attr('class', SceneDirector.prototype.sceneClassName));
 
-          if (scene.content) {
-            $('#' + scene.name).html(scene.content);
+          if (!scene.async) {
+            if (scene.content) {
+              $('#' + scene.name).html(scene.content);
+            }
           }
 
           // Bind events
@@ -1648,6 +1709,8 @@ define('lyria/scene', ['isEmptyObject', 'each', 'extend', 'clone', 'mixin', 'lyr
       // Set name
       this.name = sceneName;
       
+      this.async = false;
+      
       // Default values
       this.localization = {};
       
@@ -1670,14 +1733,15 @@ define('lyria/scene', ['isEmptyObject', 'each', 'extend', 'clone', 'mixin', 'lyr
       };
       
       // Call scene
-      require(['lyria/achievements', 'lyria/log', 'lyria/component', 'lyria/gameobject', 'lyria/events', 'lyria/resource'], function(Achievements, Log, Component, GameObject, Events, Resource) {
+      require(['lyria/achievements', 'lyria/log', 'lyria/component', 'lyria/gameobject', 'lyria/events', 'lyria/resource', 'lyria/data/store'], function(Achievements, Log, Component, GameObject, Events, Resource, DataStore) {
         var LyriaObject = {
           Achievements: Achievements,
           Log: Log,
           Component: Component,
           GameObject: GameObject,
           Events: Events,
-          Resource: Resource
+          Resource: Resource,
+          DataStore: DataStore
         };
         
         sceneFunction.apply(self, [self, LyriaObject]);
