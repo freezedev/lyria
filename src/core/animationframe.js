@@ -6,7 +6,7 @@ define('requestAnimationFrame', ['root'], function(root) {
 
   var vendors = ['ms', 'moz', 'webkit', 'o'];
 
-  for (var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+  for (var x = 0; x < vendors.length && !root.requestAnimationFrame; ++x) {
     requestAnimationFrame = root[vendors[x] + 'RequestAnimationFrame'];
 
     if (requestAnimationFrame) {
@@ -16,7 +16,7 @@ define('requestAnimationFrame', ['root'], function(root) {
 
   if (!requestAnimationFrame) {
     requestAnimationFrame = function(callback) {
-      window.setTimeout(callback, ~~(1000 / window.frameRate));
+      root.setTimeout(callback, ~~(1000 / root.frameRate));
     };
   }
 
@@ -29,7 +29,7 @@ define('cancelAnimationFrame', ['root'], function(root) {
 
   var vendors = ['ms', 'moz', 'webkit', 'o'];
 
-  for (var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+  for (var x = 0; x < vendors.length && !root.requestAnimationFrame; ++x) {
     cancelRequestAnimationFrame = root[vendors[x] + 'CancelRequestAnimationFrame'];
 
     if (cancelAnimationFrame) {
