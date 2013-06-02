@@ -17,6 +17,15 @@
             "fors": {},
             "namespaces": {}
         },
+        "src\\events\\eventmap.js": {
+            "name": "src\\events\\eventmap.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {
+                "Lyria\nLyria namespace decleration": 1
+            }
+        },
         "src\\localization\\index.js": {
             "name": "src\\localization\\index.js",
             "modules": {},
@@ -82,15 +91,6 @@
         },
         "src\\achievements.js": {
             "name": "src\\achievements.js",
-            "modules": {},
-            "classes": {},
-            "fors": {},
-            "namespaces": {
-                "Lyria\nLyria namespace decleration": 1
-            }
-        },
-        "src\\eventmap.js": {
-            "name": "src\\eventmap.js",
             "modules": {},
             "classes": {},
             "fors": {},
@@ -488,6 +488,21 @@
             "module": "Lyria"
         },
         {
+            "file": "src\\events\\eventmap.js",
+            "line": 1,
+            "class": "Scene",
+            "module": "Lyria",
+            "namespace": "Lyria\nLyria namespace decleration"
+        },
+        {
+            "file": "src\\events\\eventmap.js",
+            "line": 7,
+            "description": "This is directly taken from\nhttps://github.com/elysion-powered/elyssa/blob/master/src/core/events.coffee\nJust using a different namespace",
+            "class": "Scene",
+            "module": "Lyria",
+            "namespace": "Lyria\nLyria namespace decleration"
+        },
+        {
             "file": "src\\localization\\index.js",
             "line": 1,
             "class": "Scene",
@@ -624,21 +639,6 @@
                     "type": "String"
                 }
             ],
-            "class": "Layer",
-            "module": "Lyria",
-            "namespace": "Lyria\nLyria namespace decleration"
-        },
-        {
-            "file": "src\\eventmap.js",
-            "line": 1,
-            "class": "Layer",
-            "module": "Lyria",
-            "namespace": "Lyria\nLyria namespace decleration"
-        },
-        {
-            "file": "src\\eventmap.js",
-            "line": 7,
-            "description": "This is directly taken from\nhttps://github.com/elysion-powered/elyssa/blob/master/src/core/events.coffee\nJust using a different namespace",
             "class": "Layer",
             "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
@@ -852,6 +852,14 @@
         },
         {
             "message": "Missing item type",
+            "line": " src\\events\\eventmap.js:1"
+        },
+        {
+            "message": "Missing item type\nThis is directly taken from\nhttps://github.com/elysion-powered/elyssa/blob/master/src/core/events.coffee\nJust using a different namespace",
+            "line": " src\\events\\eventmap.js:7"
+        },
+        {
+            "message": "Missing item type",
             "line": " src\\localization\\index.js:1"
         },
         {
@@ -897,14 +905,6 @@
         {
             "message": "Missing item type\nDisplays an achievement if it hasn't been displayed yet",
             "line": " src\\achievements.js:66"
-        },
-        {
-            "message": "Missing item type",
-            "line": " src\\eventmap.js:1"
-        },
-        {
-            "message": "Missing item type\nThis is directly taken from\nhttps://github.com/elysion-powered/elyssa/blob/master/src/core/events.coffee\nJust using a different namespace",
-            "line": " src\\eventmap.js:7"
         },
         {
             "message": "Missing item type\nLyria namespace decleration",
