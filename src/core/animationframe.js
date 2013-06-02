@@ -1,45 +1,54 @@
-define('requestAnimationFrame', ['root'], function(root) {
-  // frameRate is only used if requestAnimationFrame is not available
-  var frameRate = 60;
+(function() {
+  var vendors;
 
-  var requestAnimationFrame = root.requestAnimationFrame;
+  vendors = ['ms', 'moz', 'webkit', 'o'];
+  define('requestAnimationFrame', ['root'], function(root) {
+    var lastTime, requestAnimationFrame, x, _i, _len;
 
-  var vendors = ['ms', 'moz', 'webkit', 'o'];
-
-  for (var x = 0; x < vendors.length && !root.requestAnimationFrame; ++x) {
-    requestAnimationFrame = root[vendors[x] + 'RequestAnimationFrame'];
-
-    if (requestAnimationFrame) {
-      break;
+    lastTime = 0;
+    requestAnimationFrame = root.requestAnimationFrame;
+    if (!requestAnimationFrame) {
+      for (_i = 0, _len = vendors.length; _i < _len; _i++) {
+        x = vendors[_i];
+        requestAnimationFrame = root["" + x + "RequestAnimationFrame"];
+        if (requestAnimationFrame) {
+          break;
+        }
+      }
     }
-  }
+    if (!requestAnimationFrame) {
+      requestAnimationFrame = function(callback, element) {
+        var currTime, id, timeToCall;
 
-  if (!requestAnimationFrame) {
-    requestAnimationFrame = function(callback) {
-      root.setTimeout(callback, ~~(1000 / root.frameRate));
-    };
-  }
-
-  return requestAnimationFrame;
-});
-
-define('cancelAnimationFrame', ['root'], function(root) {
-
-  var cancelAnimationFrame = root.cancelAnimationFrame;
-
-  var vendors = ['ms', 'moz', 'webkit', 'o'];
-
-  for (var x = 0; x < vendors.length && !root.requestAnimationFrame; ++x) {
-    cancelRequestAnimationFrame = root[vendors[x] + 'CancelRequestAnimationFrame'];
-
-    if (cancelAnimationFrame) {
-      break;
+        currTime = Date.now();
+        timeToCall = Math.max(0, 16 - (currTime - lastTime));
+        id = root.setTimeout((function() {
+          return callback(currTime + timeToCall);
+        }), timeToCall);
+        lastTime = currTime + timeToCall;
+        return id;
+      };
     }
-  }
+    return requestAnimationFrame;
+  });
+  return define('cancelAnimationFrame', ['root'], function(root) {
+    var cancelAnimationFrame, x, _i, _len;
 
-  if (!cancelAnimationFrame) {
-    cancelAnimationFrame = function(id) {
-      clearTimeout(id);
-    };
-  }
-});
+    cancelAnimationFrame = root.cancelAnimationFrame;
+    if (!cancelAnimationFrame) {
+      for (_i = 0, _len = vendors.length; _i < _len; _i++) {
+        x = vendors[_i];
+        cancelAnimationFrame = root["" + x + "CancelAnimationFrame"] || root["" + x + "CancelRequestAnimationFrame"];
+        if (cancelAnimationFrame) {
+          break;
+        }
+      }
+    }
+    if (!cancelAnimationFrame) {
+      cancelAnimationFrame = function(id) {
+        return root.clearTimeout(id);
+      };
+    }
+    return cancelAnimationFrame;
+  });
+})();
