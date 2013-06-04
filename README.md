@@ -7,6 +7,11 @@ The Lyria template can be found here: https://github.com/freezedev/lyria-templat
 If you are looking for something more CoffeeScript, take a look at [Elyssa](https://github.com/elysion-powered/elyssa).  
 If you are looking for something less game-related, take a look at [MilkSugar](https://github.com/freezedev/milksugar).
 
+Warning
+-------
+
+Lyria is currently being reworked and the API changed and still changes a lot. There are bugs. Documentation is incomplete.
+
 What do I need?
 ---------------
 All libraries are included in the repository, so you don't need to worry about browsing the internet and downloading the libraries you need.
