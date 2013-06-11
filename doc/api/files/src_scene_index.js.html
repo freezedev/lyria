@@ -103,16 +103,15 @@
 /**
  * @module Lyria
  */
-define(&#x27;lyria/scene&#x27;, [&#x27;isEmptyObject&#x27;, &#x27;each&#x27;, &#x27;extend&#x27;, &#x27;clone&#x27;, &#x27;mixin&#x27;, &#x27;lyria/eventmap&#x27;, &#x27;lyria/gameobject&#x27;], function(isEmptyObject, each, extend, clone, mixin, EventMap, GameObject) {
-  &#x27;use strict&#x27;;
+define(&#x27;lyria/scene&#x27;, [&#x27;isEmptyObject&#x27;, &#x27;each&#x27;, &#x27;extend&#x27;, &#x27;clone&#x27;, &#x27;mixin&#x27;, &#x27;lyria/eventmap&#x27;, &#x27;lyria/gameobject&#x27;], function(isEmptyObject, each, extend, clone, mixin, EventMap, GameObject) {&#x27;use strict&#x27;;
 
   var sceneCache = {};
 
   var Scene = (function() {
-    
+
     /**
      * Scene constructor
-     * 
+     *
      * @class Scene
      * @constructor
      */
@@ -120,39 +119,39 @@ define(&#x27;lyria/scene&#x27;, [&#x27;isEmptyObject&#x27;, &#x27;each&#x27;, &#
       if (!sceneName) {
         return;
       }
-      
+
       // Mixin event map into Scene
       mixin(Scene.prototype, new EventMap(&#x27;scene:&#x27; + sceneName));
-      
+
       // We need a reference to the scene not being this
       var self = this;
-      
+
       // Set name
       this.name = sceneName;
-      
+
       this.async = false;
-      
+
       // Default values
       this.localization = {};
-      
+
       this.template = {};
       this.template.source = &#x27;&#x27;;
       // Collect all template values
       this.template.data = {};
-      
+
       this.children = this.children || {};
       this.children.gameObjects = {};
       this.children.prefabs = {};
-      
+
       // Expose function for template values
       this.expose = function(obj) {
         if (!obj || isEmptyObject(obj)) {
           return;
         }
-        
+
         self.template.data = extend(true, self.template.data, obj);
       };
-      
+
       // Call scene
       require([&#x27;lyria/achievements&#x27;, &#x27;lyria/log&#x27;, &#x27;lyria/component&#x27;, &#x27;lyria/gameobject&#x27;, &#x27;lyria/events&#x27;, &#x27;lyria/resource&#x27;, &#x27;lyria/data/store&#x27;], function(Achievements, Log, Component, GameObject, Events, Resource, DataStore) {
         var LyriaObject = {
@@ -164,20 +163,19 @@ define(&#x27;lyria/scene&#x27;, [&#x27;isEmptyObject&#x27;, &#x27;each&#x27;, &#
           Resource: Resource,
           DataStore: DataStore
         };
-        
+
         sceneFunction.apply(self, [self, LyriaObject]);
-        
+
         self.refresh();
-        
-        
+
         if (self.events) {
           if (options &amp;&amp; options.isPrefab) {
-            self.events.delegate = (options.target) ? options.target : &#x27;body&#x27;;              
+            self.events.delegate = (options.target) ? options.target : &#x27;body&#x27;;
           } else {
             self.events.delegate = &#x27;#&#x27; + sceneName;
-          }        
+          }
         }
-        
+
         self.on(&#x27;update&#x27;, function(dt) {
           each(self.children, function(childKey, childValue) {
             if (!isEmptyObject(childValue)) {
@@ -189,82 +187,103 @@ define(&#x27;lyria/scene&#x27;, [&#x27;isEmptyObject&#x27;, &#x27;each&#x27;, &#
         });
       });
 
-      
-      
     };
-    
+
     /**
-     * Adds a gameobject to the scene 
-     * 
+     * Adds a gameobject to the scene
+     *
      * @param {Object} child
      */
     Scene.prototype.add = function(child) {
       var self = this;
-      
-      
-      if (child instanceof GameObject) {
+
+      if ( child instanceof GameObject) {
         this.children.gameObjects[child.name] = child;
-        
+
         this.template.data.gameobject = (function() {
           var array = [];
-          
+
           each(self.children.gameObjects, function(key, value) {
             array.push(value);
           });
-          
+
           return array;
         })();
-        
+
         this.trigger(&#x27;add&#x27;);
-        
+
         return true;
       }
-      
-      if (child instanceof GameObject) {
+
+      if ( child instanceof GameObject) {
         this.children.prefabs[child.name] = child;
-        
+
         this.template.data.gameobject = (function() {
           var array = [];
-          
+
           each(self.children.gameObjects, function(key, value) {
             array.push(value);
           });
-          
+
           return array;
         })();
-        
+
         this.trigger(&#x27;add&#x27;);
-        
+
         return true;
       }
-      
+
       return false;
     };
-    
+
     /**
      * Refreshes the scene (Re-renders the template)
-     * 
+     *
      * @param {Object} val
      */
     Scene.prototype.refresh = function(val) {
-        if (val == null &amp;&amp; this.template) {
-          val = this.template.data;
+      if (val == null &amp;&amp; this.template) {
+        val = this.template.data;
+      }
+
+      if (this.template &amp;&amp; this.template.source) {
+        this.content = this.template.source(val);
+      }
+
+      this.trigger(&#x27;refresh&#x27;);
+    };
+
+    /**
+     *  Sets an event to the event object or returns a specified event
+     *  
+     * @param {String} selector
+     * @param {String} eventName
+     * @param {Function} eventFunction
+     */
+    Scene.prototype.event = function(selector, eventName, eventFunction) {
+      if (selector == null) {
+        return;
+      }
+      
+      if (eventName == null) {
+        return this.events[selector];
+      } else {
+        if (typeof eventFunction === &#x27;function&#x27;) {
+          this.events[selector] = {};
+          this.events[selector][eventName] = eventFunction;
+        } else {
+          return this.events[selector][eventName];
         }
-        
-        if (this.template &amp;&amp; this.template.source) {
-          this.content = this.template.source(val);        
-        }
-        
-        this.trigger(&#x27;refresh&#x27;);
-      };
-    
+      }
+    };
+
     return Scene;
-    
+
   })();
-  
+
   return Scene;
-  
-});
+
+}); 
     </pre>
 </div>
 

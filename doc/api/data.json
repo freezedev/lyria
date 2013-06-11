@@ -245,7 +245,7 @@
             "module": "Lyria",
             "namespace": "",
             "file": "src\\scene\\index.js",
-            "line": 11,
+            "line": 10,
             "description": "Scene constructor",
             "is_constructor": 1
         },
@@ -571,7 +571,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 94,
+            "line": 90,
             "description": "Adds a gameobject to the scene",
             "params": [
                 {
@@ -585,13 +585,37 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 142,
+            "line": 137,
             "description": "Refreshes the scene (Re-renders the template)",
             "params": [
                 {
                     "name": "val",
                     "description": "",
                     "type": "Object"
+                }
+            ],
+            "class": "Scene",
+            "module": "Lyria"
+        },
+        {
+            "file": "src\\scene\\index.js",
+            "line": 154,
+            "description": "Sets an event to the event object or returns a specified event",
+            "params": [
+                {
+                    "name": "selector",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "eventName",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "eventFunction",
+                    "description": "",
+                    "type": "Function"
                 }
             ],
             "class": "Scene",
@@ -884,11 +908,15 @@
         },
         {
             "message": "Missing item type\nAdds a gameobject to the scene",
-            "line": " src\\scene\\index.js:94"
+            "line": " src\\scene\\index.js:90"
         },
         {
             "message": "Missing item type\nRefreshes the scene (Re-renders the template)",
-            "line": " src\\scene\\index.js:142"
+            "line": " src\\scene\\index.js:137"
+        },
+        {
+            "message": "Missing item type\nSets an event to the event object or returns a specified event",
+            "line": " src\\scene\\index.js:154"
         },
         {
             "message": "Missing item type",
