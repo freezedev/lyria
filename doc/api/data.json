@@ -736,6 +736,19 @@
         {
             "file": "src\\resource.js",
             "line": 21,
+            "description": "Returns the relative filename to an asset by filename and type",
+            "params": [
+                {
+                    "name": "filename",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "type",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
             "class": "",
             "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
@@ -963,7 +976,7 @@
             "line": " src\\resource.js:8"
         },
         {
-            "message": "Missing item type",
+            "message": "Missing item type\nReturns the relative filename to an asset by filename and type",
             "line": " src\\resource.js:21"
         },
         {

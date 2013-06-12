@@ -115,17 +115,25 @@ define(&#x27;lyria/game&#x27;, [&#x27;lyria/viewport&#x27;, &#x27;lyria/scene/di
     var Game = function() {
       var self = this;
       
+      // Set up a viewport
       this.viewport = new Viewport();
-      this.director = new Director(this.viewport);
-      this.preloader = new Preloader();      
-      this.preloader.sceneDirector = this.director;
-      this.loop = Loop;
       
+      // Add a scene director
+      this.director = new Director(this.viewport);
+      
+      // Add a preloader
+      this.preloader = new Preloader(); 
+      
+      // Bind the scene director to the preloader reference     
+      this.preloader.sceneDirector = this.director;
+      
+      // Add an update task to the loop with updates the scene director on each frame
       Game.Loop.addTask(&#x27;update&#x27;, function(dt) {
         self.director.trigger(&#x27;update&#x27;, dt);
       });      
     };
     
+    // Store the reference to the Lyria Loop at the Game object
     Game.Loop = Loop;
     
     
