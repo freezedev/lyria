@@ -19,8 +19,10 @@ define('lyria/resource', function() {
     },
   
     /**
-     *
-     *
+     * Returns the relative filename to an asset by filename and type
+     * 
+     * @param {String} filename
+     * @param {String} type
      */
     name: function(filename, type) {
       if (!filename) {
