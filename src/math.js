@@ -1,6 +1,17 @@
-define('lyria/math', function() {
+define('lyria/math', ['root'], function(root) {
 
   var Math = {
+    random: function(max, min) {
+      if (max == null) {
+        max = 1.0;
+      }
+      
+      if (min == null) {
+        min = 0.0;
+      }
+      
+      return root.Math.random() * max + min;
+    },
     clamp: function(value, min, max) {
       var _ref, _ref1;
 
