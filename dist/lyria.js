@@ -2173,6 +2173,10 @@ define('lyria/viewport', ['root', 'jquery'], function(root, $) {
       this.$container.css('transform', 'scale(' + scaleX + ',' + scaleY + ')');
     };
     
+    Viewport.prototype.origin = function(originX, originY) {
+      
+    };
+    
     Viewport.prototype.center = function() {
       
     };
