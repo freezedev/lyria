@@ -15,6 +15,10 @@ define('lyria/gameobject', ['mixin', 'isEmptyObject', 'each', 'lyria/eventmap', 
       var self = this;
       
       this.components = {};
+      this.className = 'gameobject';
+      
+      this.template = {};
+      this.template.source = '<div id="{{id}}" class="{{className}}"></div>';
       
       this.on('update', function(dt) {
         if (isEmptyObject(self.components)) {
@@ -25,6 +29,23 @@ define('lyria/gameobject', ['mixin', 'isEmptyObject', 'each', 'lyria/eventmap', 
           value.trigger('update', dt);
         });
       });
+    };
+    
+    /**
+     * Refreshes the game object
+     *
+     * @param {Object} val
+     */
+    GameObject.prototype.refresh = function(val) {
+      if (val == null && this.template) {
+        val = this.template.data;
+      }
+
+      if (this.template && this.template.source) {
+        this.content = this.template.source(val);
+      }
+
+      this.trigger('refresh');
     };
     
     GameObject.prototype.add = function(component) {
