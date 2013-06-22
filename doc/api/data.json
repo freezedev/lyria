@@ -683,6 +683,21 @@
             "namespace": "Lyria\nLyria namespace decleration"
         },
         {
+            "file": "src\\gameobject.js",
+            "line": 34,
+            "description": "Refreshes the game object",
+            "params": [
+                {
+                    "name": "val",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "Layer",
+            "module": "Lyria",
+            "namespace": "Lyria\nLyria namespace decleration"
+        },
+        {
             "file": "src\\log.js",
             "line": 1,
             "class": "Loop",
@@ -954,6 +969,10 @@
         {
             "message": "Missing item type",
             "line": " src\\gameobject.js:1"
+        },
+        {
+            "message": "Missing item type\nRefreshes the game object",
+            "line": " src\\gameobject.js:34"
         },
         {
             "message": "Missing item type",

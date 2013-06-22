@@ -117,6 +117,10 @@ define(&#x27;lyria/gameobject&#x27;, [&#x27;mixin&#x27;, &#x27;isEmptyObject&#x2
       var self = this;
       
       this.components = {};
+      this.className = &#x27;gameobject&#x27;;
+      
+      this.template = {};
+      this.template.source = &#x27;&lt;div id=&quot;{{id}}&quot; class=&quot;{{className}}&quot;&gt;&lt;/div&gt;&#x27;;
       
       this.on(&#x27;update&#x27;, function(dt) {
         if (isEmptyObject(self.components)) {
@@ -127,6 +131,23 @@ define(&#x27;lyria/gameobject&#x27;, [&#x27;mixin&#x27;, &#x27;isEmptyObject&#x2
           value.trigger(&#x27;update&#x27;, dt);
         });
       });
+    };
+    
+    /**
+     * Refreshes the game object
+     *
+     * @param {Object} val
+     */
+    GameObject.prototype.refresh = function(val) {
+      if (val == null &amp;&amp; this.template) {
+        val = this.template.data;
+      }
+
+      if (this.template &amp;&amp; this.template.source) {
+        this.content = this.template.source(val);
+      }
+
+      this.trigger(&#x27;refresh&#x27;);
     };
     
     GameObject.prototype.add = function(component) {
