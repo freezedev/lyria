@@ -161,6 +161,13 @@
                 "Lyria\nLyria namespace decleration": 1
             }
         },
+        "src\\serialize.js": {
+            "name": "src\\serialize.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
         "src\\utils.js": {
             "name": "src\\utils.js",
             "modules": {},
@@ -245,7 +252,7 @@
             "module": "Lyria",
             "namespace": "",
             "file": "src\\scene\\index.js",
-            "line": 10,
+            "line": 8,
             "description": "Scene constructor",
             "is_constructor": 1
         },
@@ -571,7 +578,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 90,
+            "line": 88,
             "description": "Adds a gameobject to the scene",
             "params": [
                 {
@@ -585,7 +592,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 137,
+            "line": 135,
             "description": "Refreshes the scene (Re-renders the template)",
             "params": [
                 {
@@ -599,7 +606,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 154,
+            "line": 152,
             "description": "Sets an event to the event object or returns a specified event",
             "params": [
                 {
@@ -769,6 +776,24 @@
             "namespace": "Lyria\nLyria namespace decleration"
         },
         {
+            "file": "src\\serialize.js",
+            "line": 2,
+            "params": [
+                {
+                    "name": "anyObject",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "",
+            "module": "Lyria",
+            "namespace": "Lyria\nLyria namespace decleration"
+        },
+        {
             "file": "src\\utils.js",
             "line": 1,
             "class": "",
@@ -794,42 +819,6 @@
             "namespace": "Lyria\nLyria namespace decleration"
         },
         {
-            "file": "src\\utils.js",
-            "line": 32,
-            "params": [
-                {
-                    "name": "anyObject",
-                    "description": "",
-                    "type": "Object"
-                }
-            ],
-            "return": {
-                "description": "",
-                "type": "Object"
-            },
-            "class": "",
-            "module": "Lyria",
-            "namespace": "Lyria\nLyria namespace decleration"
-        },
-        {
-            "file": "src\\utils.js",
-            "line": 42,
-            "params": [
-                {
-                    "name": "anyObject",
-                    "description": "",
-                    "type": "Object"
-                }
-            ],
-            "return": {
-                "description": "",
-                "type": "String"
-            },
-            "class": "",
-            "module": "Lyria",
-            "namespace": "Lyria\nLyria namespace decleration"
-        },
-        {
             "file": "src\\viewport.js",
             "line": 1,
             "class": "",
@@ -848,15 +837,11 @@
         },
         {
             "message": "replacing incorrect tag: returns with return",
+            "line": " src\\serialize.js:2"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
             "line": " src\\utils.js:10"
-        },
-        {
-            "message": "replacing incorrect tag: returns with return",
-            "line": " src\\utils.js:32"
-        },
-        {
-            "message": "replacing incorrect tag: returns with return",
-            "line": " src\\utils.js:42"
         },
         {
             "message": "Missing item type\nPrivate audio elements",
@@ -936,15 +921,15 @@
         },
         {
             "message": "Missing item type\nAdds a gameobject to the scene",
-            "line": " src\\scene\\index.js:90"
+            "line": " src\\scene\\index.js:88"
         },
         {
             "message": "Missing item type\nRefreshes the scene (Re-renders the template)",
-            "line": " src\\scene\\index.js:137"
+            "line": " src\\scene\\index.js:135"
         },
         {
             "message": "Missing item type\nSets an event to the event object or returns a specified event",
-            "line": " src\\scene\\index.js:154"
+            "line": " src\\scene\\index.js:152"
         },
         {
             "message": "Missing item type",
@@ -1000,19 +985,15 @@
         },
         {
             "message": "Missing item type",
+            "line": " src\\serialize.js:2"
+        },
+        {
+            "message": "Missing item type",
             "line": " src\\utils.js:1"
         },
         {
             "message": "Missing item type",
             "line": " src\\utils.js:10"
-        },
-        {
-            "message": "Missing item type",
-            "line": " src\\utils.js:32"
-        },
-        {
-            "message": "Missing item type",
-            "line": " src\\utils.js:42"
         },
         {
             "message": "Missing item type",

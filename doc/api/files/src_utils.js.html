@@ -131,58 +131,6 @@ define(&#x27;lyria/utils&#x27;, [&#x27;jquery&#x27;], function($) {
       return false;
     }
   };
-  /**
-   *
-   * @param {Object} anyObject
-   *
-   * @returns {Object}
-   */
-  Utils.cloneObject = function(anyObject) {
-    return $.extend(true, {}, anyObject);
-  };
-  
-  /**
-   * 
-   * @param {Object} anyObject
-   * 
-   * @returns {String}
-   */
-  Utils.serializeObject = function(anyObject) {
-    if ((typeof anyObject !== &#x27;object&#x27;) || (anyObject instanceof $)) {
-      return;
-    }
-    
-      var str = &#x27;{&#x27;;        
-      
-      for (var p in anyObject) {
-          if (anyObject.hasOwnProperty(p)) {
-            if (anyObject[p] instanceof $) {
-              continue;
-            }
-            
-            var objKeys = Object.keys(anyObject);
-            var commaStr = (objKeys.indexOf(p) === (objKeys.length - 1)) ? &#x27;&#x27; : &#x27;,&#x27;;
-            
-            switch (typeof anyObject[p]) {
-              case &#x27;object&#x27;: {
-                str += p + &#x27;: &#x27; + Utils.serializeObject(anyObject[p]) + commaStr + &#x27;\n&#x27;;
-              }
-                break;
-              case &#x27;string&#x27;: {
-                str += p + &#x27;: &quot;&#x27; + anyObject[p] + &#x27;&quot;&#x27; + commaStr + &#x27;\n&#x27;;
-              }
-                break;
-              default: {
-                str += p + &#x27;: &#x27; + anyObject[p] + commaStr + &#x27;\n&#x27;;
-              }
-                break;
-            }
-          }
-      }
-      str += &#x27;}&#x27;;
-      
-      return str;
-  };
   
   return Utils;
   

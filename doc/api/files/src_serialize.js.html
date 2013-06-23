@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Scene - lyria</title>
+    <title>src\serialize.js - lyria</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -96,123 +96,61 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1>Scene Class</h1>
-<div class="box meta">
-    
+                        <h1 class="file-heading">File: src\serialize.js</h1>
 
-    
+<div class="file">
+    <pre class="code prettyprint linenums">
+define(&#x27;lyria/serialize&#x27;, [&#x27;jquery&#x27;], function($) {
+  /**
+   *
+   * @param {Object} anyObject
+   *
+   * @returns {String}
+   */
+  var serialize = function(anyObject) {
+    if (( typeof anyObject !== &#x27;object&#x27;) || ( anyObject instanceof $)) {
+      return;
+    }
 
-    
-        <div class="foundat">
-            Defined in: <a href="../files/src_scene_index.js.html#l8"><code>src\scene\index.js:8</code></a>
-        </div>
-    
+    var str = &#x27;{&#x27;;
 
-    
-        
-            Module: <a href="../modules/Lyria.html">Lyria</a>
-        
-    
+    for (var p in anyObject) {
+      if (anyObject.hasOwnProperty(p)) {
+        if (anyObject[p] instanceof $) {
+          continue;
+        }
 
-    
-</div>
+        var objKeys = Object.keys(anyObject);
+        var commaStr = (objKeys.indexOf(p) === (objKeys.length - 1)) ? &#x27;&#x27; : &#x27;,&#x27;;
 
+        switch (typeof anyObject[p]) {
+          case &#x27;object&#x27;:
+            {
+              str += p + &#x27;: &#x27; + serialize(anyObject[p]) + commaStr + &#x27;\n&#x27;;
+            }
+            break;
+          case &#x27;string&#x27;:
+            {
+              str += p + &#x27;: &quot;&#x27; + anyObject[p] + &#x27;&quot;&#x27; + commaStr + &#x27;\n&#x27;;
+            }
+            break;
+          default:
+            {
+              str += p + &#x27;: &#x27; + anyObject[p] + commaStr + &#x27;\n&#x27;;
+            }
+            break;
+        }
+      }
+    }
+    str += &#x27;}&#x27;;
 
+    return str;
+  };
 
-<div class="box intro">
-    <p>Scene constructor</p>
-</div>
+  return serialize;
+});
 
-
-    <div class="constructor">
-        <h2>Constructor</h2>
-        <div id="method_Scene" class="method item">
-    <h3 class="name"><code>Scene</code></h3>
-
-    
-        <span class="paren">()</span>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/src_scene_index.js.html#l8"><code>src\scene\index.js:8</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-    
-
-    
-
-    
-</div>
-
-    </div>
-
-
-<div id="classdocs" class="tabview">
-    <ul class="api-class-tabs">
-        <li class="api-class-tab index"><a href="#index">Index</a></li>
-
-        
-        
-        
-        
-    </ul>
-
-    <div>
-        <div id="index" class="api-class-tabpanel index">
-            <h2 class="off-left">Item Index</h2>
-
-            
-
-            
-
-            
-
-            
-        </div>
-
-        
-
-        
-
-        
-
-        
-    </div>
+    </pre>
 </div>
 
                     </div>
