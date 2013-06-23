@@ -3,8 +3,6 @@
  */
 define('lyria/scene', ['isEmptyObject', 'each', 'extend', 'clone', 'mixin', 'lyria/eventmap', 'lyria/gameobject'], function(isEmptyObject, each, extend, clone, mixin, EventMap, GameObject) {'use strict';
 
-  var sceneCache = {};
-
   var Scene = (function() {
 
     /**
