@@ -29,15 +29,6 @@ define('lyria/utils', ['jquery'], function($) {
       return false;
     }
   };
-  /**
-   *
-   * @param {Object} anyObject
-   *
-   * @returns {Object}
-   */
-  Utils.cloneObject = function(anyObject) {
-    return $.extend(true, {}, anyObject);
-  };
   
   /**
    * 
