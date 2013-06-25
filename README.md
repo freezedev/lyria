@@ -46,13 +46,13 @@ Our scene called myScene might look this:
 The markup of the scene  
 
 ```html
-{{#someText}}
+{{#if someText}}
 	<span>{{someText}}</span>
-{{/someText}}
+{{/if someText}}
 
-{{#buttons}}
+{{#each buttons}}
 	<div id="{{id}}">{{caption}}</div>
-{{/buttons}}
+{{/each buttons}}
 ```
 
 **2) scene.js**  
