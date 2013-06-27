@@ -26,11 +26,11 @@ define('mygame', ['lyria/game'], function(Game) {
 });
 ```
 
-Lyria uses AMD modules extensively and it is very recommended to use that for organizing your game as well.
+Lyria uses AMD modules extensively and it is very much recommended to use the AMD pattern for organizing your game as well.
 
-Every game object has a scene manager, a viewport and a preloader. The core of it all is the scene manger. (The scene manger in Lyria.js is quite similar to the one in [Elysion](https://github.com/freezedev/elysion).)  
+Every game object (as in a `lyria/game` instance, not an actual game object) has a scene manager, a viewport and a preloader. The core of it all is the scene manger. (The scene manger in Lyria.js is quite similar to the one in [Elysion](https://github.com/freezedev/elysion).)  
 If you are coming from a game developer background, you may already know what a scene is. A scene in a game enviroment can be a main menu, a settings screen or the game itself. Or in 2D point-and-click-adventure, a scene can by any location the character is traveling to.  
-So in Lyria.js a scene is that as well, but seperated in a markup file, a data file and localization JSON file. Templating is build in through Handlebars.js.
+So in Lyria a scene is that as well, but seperated in a markup file, a data file and localization JSON file. Templating is build in through Handlebars.
 
 ```javascript
 define('mygame', ['lyria/game'], function(Game) {
@@ -46,13 +46,13 @@ Our scene called myScene might look this:
 The markup of the scene  
 
 ```html
-{{#someText}}
+{{#if someText}}
 	<span>{{someText}}</span>
-{{/someText}}
+{{/if someText}}
 
-{{#buttons}}
+{{#each buttons}}
 	<div id="{{id}}">{{caption}}</div>
-{{/buttons}}
+{{/each buttons}}
 ```
 
 **2) scene.js**  
