@@ -1,4 +1,6 @@
 define('lyria/serialize', ['jquery'], function($) {
+  
+  // TODO: Use JSON.parse + reviver instead
   /**
    *
    * @param {Object} anyObject
