@@ -770,6 +770,11 @@ define('path', function() {
 
       var completeArr = baseArray.concat(relativeStr);
 
+      // Last identifier should not be ..
+      if (completeArr[completeArr.length - 1] === '..') {
+        completeArr[completeArr.length - 1] = '';
+      }
+
       for (var i = 0, j = completeArr.length; i < j; i++) {
         if (completeArr[i] != null && completeArr[i] !== '') {
           if (completeArr[i] === '.') {
@@ -777,9 +782,7 @@ define('path', function() {
           }
 
           if (completeArr[i + 1] === '..') {
-            if (i + 1 !== j) {
-              completeArr[i] = '';       
-            }
+            completeArr[i] = '';
             completeArr[i + 1] = '';
 
             continue;
