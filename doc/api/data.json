@@ -17,6 +17,13 @@
             "fors": {},
             "namespaces": {}
         },
+        "src\\core\\fisheryates.js": {
+            "name": "src\\core\\fisheryates.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
         "src\\events\\eventmap.js": {
             "name": "src\\events\\eventmap.js",
             "modules": {},
@@ -495,6 +502,13 @@
             "module": "Lyria"
         },
         {
+            "file": "src\\core\\fisheryates.js",
+            "line": 2,
+            "description": "Randomize array element order in-place.\nUsing Fisher-Yates shuffle algorithm.",
+            "class": "Scene",
+            "module": "Lyria"
+        },
+        {
             "file": "src\\events\\eventmap.js",
             "line": 1,
             "class": "Scene",
@@ -886,6 +900,10 @@
         {
             "message": "Missing item type\nMute all sound of the game",
             "line": " src\\audio\\index.js:185"
+        },
+        {
+            "message": "Missing item type\nRandomize array element order in-place.\nUsing Fisher-Yates shuffle algorithm.",
+            "line": " src\\core\\fisheryates.js:2"
         },
         {
             "message": "Missing item type",
