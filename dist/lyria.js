@@ -697,6 +697,22 @@ define('each', function() {
 define('extend', ['jquery'], function($) {
   return $.extend;
 });
+define('fisheryates', ['random'], function(random) {
+  /**
+   * Randomize array element order in-place.
+   * Using Fisher-Yates shuffle algorithm.
+   */
+  return function(array) {
+    for (var i = array.length - 1; i > 0; i--) {
+      var j = random(i + 1);
+      var temp = array[i];
+      array[i] = array[j];
+      array[j] = temp;
+    }
+    return array;
+  };
+});
+
 define('isEmptyObject', function() {
   return function(obj) {
     if ( typeof obj !== 'object') {
@@ -801,6 +817,19 @@ define('path', function() {
   return Path;
 });
 
+define('random', function() {
+  return function(max, min) {
+    if (max == null) {
+      max = 1.0;
+    }
+    
+    if (min == null) {
+      min = 0.0;
+    }
+    
+    return Math.floor(Math.random() * max) + min;
+  };
+});
 (function(root) {
   define('root', function() {
     return root;
