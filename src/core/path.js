@@ -53,7 +53,16 @@ define('path', function() {
       return Path.join(result);
     },
     dotToPath: function(str) {
-      return Path.join(str.split('.'));
+      if (!str) {
+        return;
+      }
+      
+      if (~str.indexOf('.')) {
+        return Path.join(str.split('.'));        
+      } else {
+        return str;
+      }
+      
     }
   };
 
