@@ -104,7 +104,7 @@
  * @namespace Lyria
  * Lyria namespace decleration
  */
-define(&#x27;lyria/resource&#x27;, function() {
+define(&#x27;lyria/resource&#x27;, [&#x27;path&#x27;], function(Path) {
   
   var Resource = {
     /**
@@ -132,19 +132,9 @@ define(&#x27;lyria/resource&#x27;, function() {
       }
   
       var assetPath = Resource.path[&#x27;assets&#x27;];
-      var typePath = &#x27;&#x27;;
-  
-      if (Resource.path[type]) {
-        typePath = Resource.path[type];
-      } else {
-        typePath = type;
-      }
-  
-      if (typePath) {
-        return [assetPath, typePath.split(&#x27;.&#x27;).join(&#x27;/&#x27;), filename].join(&#x27;/&#x27;);
-      } else {
-        return [assetPath, filename].join(&#x27;/&#x27;);
-      }
+      var typePath = (Resource.path[type]) ? (Resource.path[type]) : type;
+      
+      return Path.resolve(assetPath, [Path.dotToPath(typePath), filename]);
     }
     
   };
