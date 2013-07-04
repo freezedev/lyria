@@ -51,6 +51,9 @@ define('path', function() {
       }
 
       return Path.join(result);
+    },
+    dotToPath: function(str) {
+      return Path.join(str.split('.'));
     }
   };
 
