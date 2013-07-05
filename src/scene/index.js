@@ -11,9 +11,14 @@ define('lyria/scene', ['isEmptyObject', 'each', 'extend', 'clone', 'mixin', 'lyr
      * @class Scene
      * @constructor
      */
-    var Scene = function(sceneName, sceneFunction, options) {
+    var Scene = function(sceneName, sceneDeps, sceneFunction, options) {
       if (!sceneName) {
         return;
+      }
+      
+      if (typeof sceneDeps === 'function') {
+        sceneFunction = sceneDeps;
+        sceneDeps = [];
       }
 
       // Mixin event map into Scene
@@ -59,7 +64,7 @@ define('lyria/scene', ['isEmptyObject', 'each', 'extend', 'clone', 'mixin', 'lyr
           Resource: Resource,
           DataStore: DataStore
         };
-
+        
         sceneFunction.apply(self, [self, LyriaObject]);
 
         self.refresh();
