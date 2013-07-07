@@ -11,40 +11,18 @@ define('lyria/serialize', ['jquery'], function($) {
     if (( typeof anyObject !== 'object') || ( anyObject instanceof $)) {
       return;
     }
-
-    var str = '{';
-
-    for (var p in anyObject) {
-      if (anyObject.hasOwnProperty(p)) {
-        if (anyObject[p] instanceof $) {
-          continue;
-        }
-
-        var objKeys = Object.keys(anyObject);
-        var commaStr = (objKeys.indexOf(p) === (objKeys.length - 1)) ? '' : ',';
-
-        switch (typeof anyObject[p]) {
-          case 'object':
-            {
-              str += p + ': ' + serialize(anyObject[p]) + commaStr + '\n';
-            }
-            break;
-          case 'string':
-            {
-              str += p + ': "' + anyObject[p] + '"' + commaStr + '\n';
-            }
-            break;
-          default:
-            {
-              str += p + ': ' + anyObject[p] + commaStr + '\n';
-            }
-            break;
-        }
+    
+    return JSON.stringify(anyObject, function(key, value) {
+      if (value instanceof $) {
+        return null;
       }
-    }
-    str += '}';
-
-    return str;
+      
+      if (typeof value === 'function') {
+        value = value.toString();
+      }
+      
+      return value;
+    });
   };
 
   return serialize;
