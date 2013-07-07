@@ -592,7 +592,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 88,
+            "line": 93,
             "description": "Adds a gameobject to the scene",
             "params": [
                 {
@@ -606,7 +606,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 135,
+            "line": 140,
             "description": "Refreshes the scene (Re-renders the template)",
             "params": [
                 {
@@ -620,7 +620,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 152,
+            "line": 157,
             "description": "Sets an event to the event object or returns a specified event",
             "params": [
                 {
@@ -939,15 +939,15 @@
         },
         {
             "message": "Missing item type\nAdds a gameobject to the scene",
-            "line": " src\\scene\\index.js:88"
+            "line": " src\\scene\\index.js:93"
         },
         {
             "message": "Missing item type\nRefreshes the scene (Re-renders the template)",
-            "line": " src\\scene\\index.js:135"
+            "line": " src\\scene\\index.js:140"
         },
         {
             "message": "Missing item type\nSets an event to the event object or returns a specified event",
-            "line": " src\\scene\\index.js:152"
+            "line": " src\\scene\\index.js:157"
         },
         {
             "message": "Missing item type",
