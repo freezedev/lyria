@@ -518,7 +518,7 @@
         {
             "file": "src\\events\\eventmap.js",
             "line": 7,
-            "description": "This is directly taken from\nhttps://github.com/elysion-powered/elyssa/blob/master/src/core/events.coffee\nJust using a different namespace",
+            "description": "This is directly taken from\nhttps://github.com/elysion-powered/elyssa/blob/master/src/core/events.coffee",
             "class": "Scene",
             "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
@@ -910,7 +910,7 @@
             "line": " src\\events\\eventmap.js:1"
         },
         {
-            "message": "Missing item type\nThis is directly taken from\nhttps://github.com/elysion-powered/elyssa/blob/master/src/core/events.coffee\nJust using a different namespace",
+            "message": "Missing item type\nThis is directly taken from\nhttps://github.com/elysion-powered/elyssa/blob/master/src/core/events.coffee",
             "line": " src\\events\\eventmap.js:7"
         },
         {
