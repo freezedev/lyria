@@ -14,29 +14,29 @@ define('lyria/log', ['root'], function(root) {
     Log.Plugins = {};
 
     Log.Plugins.Console = {
-      e: function(text) {
+      e: function() {
         if (root.console && root.console.error) {
-          root.console.error(text);
+          return root.console.error.apply(null, arguments);
         }
       },
-      w: function(text) {
+      w: function() {
         if (root.console && root.console.warn) {
-          root.console.warn(text);
+          return root.console.warn.apply(null, arguments);
         }
       },
-      i: function(text) {
+      i: function() {
         if (root.console && root.console.info) {
-          root.console.info(text);
+          return root.console.info.apply(null, arguments);
         }
       },
-      d: function(text) {
+      d: function() {
         if (root.console && root.console.log) {
-          root.console.log(text);
+          return root.console.log.apply(null, arguments);
         }
       },
-      v: function(text) {
+      v: function() {
         if (root.console && root.console.log) {
-          root.console.log(text);
+          return root.console.log.apply(null, arguments);
         }
       }
     };
