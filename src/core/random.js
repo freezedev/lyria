@@ -8,6 +8,6 @@ define('random', function() {
       min = 0.0;
     }
     
-    return Math.floor(Math.random() * max) + min;
+    return Math.floor(Math.random() * (max - min)) + min;
   };
 });
