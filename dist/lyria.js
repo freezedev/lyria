@@ -871,7 +871,7 @@ define('random', function() {
       min = 0.0;
     }
     
-    return Math.floor(Math.random() * max) + min;
+    return Math.floor(Math.random() * (max - min)) + min;
   };
 });
 (function(root) {
@@ -1356,29 +1356,29 @@ define('lyria/log', ['root'], function(root) {
     Log.Plugins = {};
 
     Log.Plugins.Console = {
-      e: function(text) {
+      e: function() {
         if (root.console && root.console.error) {
-          root.console.error(text);
+          return root.console.error.apply(null, arguments);
         }
       },
-      w: function(text) {
+      w: function() {
         if (root.console && root.console.warn) {
-          root.console.warn(text);
+          return root.console.warn.apply(null, arguments);
         }
       },
-      i: function(text) {
+      i: function() {
         if (root.console && root.console.info) {
-          root.console.info(text);
+          return root.console.info.apply(null, arguments);
         }
       },
-      d: function(text) {
+      d: function() {
         if (root.console && root.console.log) {
-          root.console.log(text);
+          return root.console.log.apply(null, arguments);
         }
       },
-      v: function(text) {
+      v: function() {
         if (root.console && root.console.log) {
-          root.console.log(text);
+          return root.console.log.apply(null, arguments);
         }
       }
     };
@@ -1502,45 +1502,12 @@ define('lyria/loop', ['root', 'each', 'requestAnimationFrame'], function(root, e
   })();
   
 });
-define('lyria/math', ['root'], function(root) {
+define('lyria/math', ['root', 'random', 'clamp', 'fisheryates'], function(root, random, clamp, fisheryates) {
 
   var Math = {
-    random: function(max, min) {
-      if (max == null) {
-        max = 1.0;
-      }
-      
-      if (min == null) {
-        min = 0.0;
-      }
-      
-      return root.Math.random() * max + min;
-    },
-    clamp: function(value, min, max) {
-      var _ref, _ref1;
-
-      if ( typeof value === 'object') {
-        _ref = value, min = _ref.min, max = _ref.max, value = _ref.value;
-      }
-      if (min == null) {
-        min = 0.0;
-      }
-      if (max == null) {
-        max = 1.0;
-      }
-      if (min > max) {
-        _ref1 = [max, min], min = _ref1[0], max = _ref1[1];
-      }
-      if ((min <= value && value <= max)) {
-        return value;
-      } else {
-        if (value > max) {
-          return max;
-        } else {
-          return min;
-        }
-      }
-    }
+    random: random,
+    clamp: clamp,
+    fisherYates: fisheryates
   };
 
   return Math;
