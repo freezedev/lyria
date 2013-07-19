@@ -1,7 +1,7 @@
 /**
  * @module Lyria
  */
-define('lyria/scene', ['isEmptyObject', 'each', 'extend', 'clone', 'mixin', 'lyria/eventmap', 'lyria/gameobject'], function(isEmptyObject, each, extend, clone, mixin, EventMap, GameObject) {'use strict';
+define('lyria/scene', ['isemptyobject', 'each', 'extend', 'clone', 'mixin', 'lyria/eventmap', 'lyria/gameobject'], function(isEmptyObject, each, extend, clone, mixin, EventMap, GameObject) {'use strict';
 
   var Scene = (function() {
 
@@ -93,6 +93,7 @@ define('lyria/scene', ['isEmptyObject', 'each', 'extend', 'clone', 'mixin', 'lyr
     /**
      * Adds a gameobject to the scene
      *
+     * @method add
      * @param {Object} child
      */
     Scene.prototype.add = function(child) {
@@ -140,6 +141,7 @@ define('lyria/scene', ['isEmptyObject', 'each', 'extend', 'clone', 'mixin', 'lyr
     /**
      * Refreshes the scene (Re-renders the template)
      *
+     * @method refresh
      * @param {Object} val
      */
     Scene.prototype.refresh = function(val) {
@@ -157,6 +159,7 @@ define('lyria/scene', ['isEmptyObject', 'each', 'extend', 'clone', 'mixin', 'lyr
     /**
      *  Sets an event to the event object or returns a specified event
      *  
+     * @method event
      * @param {String} selector
      * @param {String} eventName
      * @param {Function} eventFunction
