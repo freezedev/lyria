@@ -1,4 +1,4 @@
-define('isEmptyObject', function() {
+define('isemptyobject', function() {
   return function(obj) {
     if ( typeof obj !== 'object') {
       return;
