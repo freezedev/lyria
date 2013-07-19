@@ -32,6 +32,7 @@ module.exports = function(grunt) {
         version: '<%= pkg.version %>',
         url: '<%= pkg.homepage %>',
         options: {
+          linkNatives: true,
           paths: 'src/',
           outdir: 'doc/api'
         }
@@ -45,7 +46,7 @@ module.exports = function(grunt) {
       dist: {
         files: {
           'css/lyria.css': 'style/*.less'
-        }        
+        }
       }
     },
     dependo: {
@@ -62,7 +63,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-dependo');
-  
+
   grunt.registerTask('test', 'Lints and unit tests', ['jshint']);
   grunt.registerTask('doc', 'Generated documentation', ['yuidoc', 'dependo']);
   grunt.registerTask('default', 'Default task', ['test', 'concat', 'uglify', 'less', 'doc']);
