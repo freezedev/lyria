@@ -1,29 +1,67 @@
 /**
- * @namespace Lyria
- * Lyria namespace decleration
+ * @module Lyria
  */
 define('lyria/preloader', ['root', 'mixin', 'jquery', 'lyria/resource', 'lyria/log', 'lyria/eventmap'], function(root, mixin, $, Resource, Log, EventMap) {'use strict';
 
   /**
-   *
+   * Provides a preloader to load assets before they are needed
+   * 
+   * @class Preloader
    */
   var Preloader = (function() {
 
+    /**
+     * @constructor
+     * 
+     * @param {Object} assetArray
+     */
     var Preloader = function(assetArray) {
       mixin(Preloader.prototype, new EventMap());
 
+      /**
+       * @property assets
+       * @type {Array} 
+       */
       if (assetArray != null) {
         this.assets = assetArray;
       } else {
         this.assets = [];
       }
-
+  
+      /**
+       * @property maxAssets
+       * @type {Number}
+       * @default 0 
+       */
       this.maxAssets = 0;
+      
+      /**
+       * @property assetsLoaded
+       * @type {Number}
+       * @default 0 
+       */
       this.assetsLoaded = 0;
+      
+      /**
+       * @property percentLoaded
+       * @type {Number}
+       * @default 0 
+       */
       this.percentLoaded = 0;
+      
+      /**
+       * @property steps
+       * @type {Array} 
+       */
       this.steps = [];
     };
 
+    /**
+     * Starts the preloader and loads all assets asynchronously. Triggers
+     * events when necessary.
+     * 
+     * @method start 
+     */
     Preloader.prototype.start = function() {
       // Check if it's valid
       if (this.assets == null || Object.keys(this.assets).length === 0) {
