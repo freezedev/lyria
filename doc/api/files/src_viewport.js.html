@@ -45,19 +45,29 @@
             
                 <li><a href="../classes/Connector.html">Connector</a></li>
             
+                <li><a href="../classes/Director.html">Director</a></li>
+            
                 <li><a href="../classes/Engine.html">Engine</a></li>
+            
+                <li><a href="../classes/Game.html">Game</a></li>
             
                 <li><a href="../classes/Layer.html">Layer</a></li>
             
                 <li><a href="../classes/Loop.html">Loop</a></li>
             
+                <li><a href="../classes/Preloader.html">Preloader</a></li>
+            
                 <li><a href="../classes/Scene.html">Scene</a></li>
+            
+                <li><a href="../classes/Viewport.html">Viewport</a></li>
             
             </ul>
 
             <ul id="api-modules" class="apis modules">
             
                 <li><a href="../modules/Lyria.html">Lyria</a></li>
+            
+                <li><a href="../modules/Scene.html">Scene</a></li>
             
                 <li><a href="../modules/Template.html">Template</a></li>
             
@@ -101,26 +111,55 @@
 <div class="file">
     <pre class="code prettyprint linenums">
 /**
- * @namespace Lyria
- * Lyria namespace decleration
+ * @module Lyria
  */
-define(&#x27;lyria/viewport&#x27;, [&#x27;root&#x27;, &#x27;jquery&#x27;], function(root, $) {
+define(&#x27;lyria/viewport&#x27;, [&#x27;root&#x27;, &#x27;jquery&#x27;, &#x27;isemptyobject&#x27;], function(root, $, isEmptyObject) {
   &#x27;use strict&#x27;;
 
-  // Lyria.Viewport
+  /**
+   * @class Viewport
+   */
   return (function() {
     
+  /**
+   * @constructor
+   */
     function Viewport(container, parent) {
+      /**
+       * The viewport width
+       *
+       * @property width
+       * @type {Number} 
+       * @default 800
+       */
+      this.width = 800;
+      
+      /**
+       * The viewport height
+       * 
+       * @property height
+       * @type {Number}
+       * @default 600 
+       */
+      this.height = 600;
+      
+      this.transforms = {};
       
       // Defaults container to the string &#x27;viewport&#x27;
       if (container == null) {
         container = &#x27;viewport&#x27;;
       }
 
+      /**
+       * The viewport element (jQuery object)
+       *
+       * @property $element
+       * @type {jQuery} 
+       */
       if ($(&#x27;#&#x27; + container).length &gt; 0) {
-        this.$container = $(&#x27;#&#x27; + container);
+        this.$element = $(&#x27;#&#x27; + container);
       } else {
-        var createdElement = $(root.document.createElement(&#x27;div&#x27;)).attr(&#x27;id&#x27;, container);
+        var createdElement = $(root.document.createElement(&#x27;div&#x27;)).attr(&#x27;id&#x27;, container).attr(&#x27;class&#x27;, &#x27;viewport&#x27;);
         
         if (parent) {
           $(parent).prepend(createdElement);
@@ -128,11 +167,50 @@ define(&#x27;lyria/viewport&#x27;, [&#x27;root&#x27;, &#x27;jquery&#x27;], funct
           $(&#x27;body&#x27;).prepend(createdElement);
         }
         
-        this.$container = $(&#x27;#&#x27; + container);
+        this.$element = $(&#x27;#&#x27; + container);
       }
       
     }
     
+    /**
+     * Adds a behaviour which will be triggered on certain events
+     * 
+     * @method behaviour
+     * @param {Object} fn
+     */
+    Viewport.prototype.behaviour = function(fn) {
+      
+    };
+    
+    /**
+     * Reset all CSS transforms on the viewport
+     * 
+     * @method resetTransforms 
+     */
+    Viewport.prototype.resetTransforms = function() {
+      this.transforms = {};
+    };
+    
+    /**
+     * Updated CSS transforms on the viewport
+     *  
+     * @method updateTransforms
+     */
+    Viewport.prototype.updateTransforms = function() {
+      if (isEmptyObject(this.transforms)) {
+        return;
+      }
+      
+      this.$element.css(&#x27;transform&#x27;, this.transforms.join(&#x27; &#x27;));
+    };
+    
+    /**
+     * Scales the viewport
+     * 
+     * @method scale
+     * @param {Object} scaleX
+     * @param {Object} scaleY
+     */
     Viewport.prototype.scale = function(scaleX, scaleY) {
       if (scaleX == null) {
         return;
@@ -142,23 +220,47 @@ define(&#x27;lyria/viewport&#x27;, [&#x27;root&#x27;, &#x27;jquery&#x27;], funct
         scaleY = scaleX;
       }
       
-      this.$container.css(&#x27;transform&#x27;, &#x27;scale(&#x27; + scaleX + &#x27;,&#x27; + scaleY + &#x27;)&#x27;);
+      this.transforms.scale = this.transforms.scale || {};
+      this.transforms.scale.x = scaleX;
+      this.transforms.scale.y = scaleY;
+      
+      this.$element.css(&#x27;transform&#x27;, &#x27;&#x27;);
     };
     
+    /**
+     * Sets an origin for the viewport
+     * 
+     * @method origin
+     * @param {Number} originX
+     * @param {Number} originY
+     */
     Viewport.prototype.origin = function(originX, originY) {
       
     };
     
+    /**
+     * Centers the viewport
+     *  
+     * @method center
+     */
     Viewport.prototype.center = function() {
       
     };
     
+    /**
+     * Rotate the viewport
+     * 
+     * @method rotate
+     * @param {Number} angle
+     */
     Viewport.prototype.rotate = function(angle) {
       if (angle == null) {
         return;
       }
       
-      this.$container.css(&#x27;transform&#x27;, &#x27;rotate(&#x27; + angle + &#x27;)&#x27;);
+      this.transforms.rotate = angle;
+      
+      this.$element.css(&#x27;transform&#x27;, &#x27;rotate(&#x27; + angle + &#x27;)&#x27;);
     };
     
     return Viewport;

@@ -45,19 +45,29 @@
             
                 <li><a href="../classes/Connector.html">Connector</a></li>
             
+                <li><a href="../classes/Director.html">Director</a></li>
+            
                 <li><a href="../classes/Engine.html">Engine</a></li>
+            
+                <li><a href="../classes/Game.html">Game</a></li>
             
                 <li><a href="../classes/Layer.html">Layer</a></li>
             
                 <li><a href="../classes/Loop.html">Loop</a></li>
             
+                <li><a href="../classes/Preloader.html">Preloader</a></li>
+            
                 <li><a href="../classes/Scene.html">Scene</a></li>
+            
+                <li><a href="../classes/Viewport.html">Viewport</a></li>
             
             </ul>
 
             <ul id="api-modules" class="apis modules">
             
                 <li><a href="../modules/Lyria.html">Lyria</a></li>
+            
+                <li><a href="../modules/Scene.html">Scene</a></li>
             
                 <li><a href="../modules/Template.html">Template</a></li>
             
@@ -101,31 +111,69 @@
 <div class="file">
     <pre class="code prettyprint linenums">
 /**
- * @namespace Lyria
- * Lyria namespace decleration
+ * @module Lyria
  */
 define(&#x27;lyria/preloader&#x27;, [&#x27;root&#x27;, &#x27;mixin&#x27;, &#x27;jquery&#x27;, &#x27;lyria/resource&#x27;, &#x27;lyria/log&#x27;, &#x27;lyria/eventmap&#x27;], function(root, mixin, $, Resource, Log, EventMap) {&#x27;use strict&#x27;;
 
   /**
-   *
+   * Provides a preloader to load assets before they are needed
+   * 
+   * @class Preloader
    */
   var Preloader = (function() {
 
+    /**
+     * @constructor
+     * 
+     * @param {Object} assetArray
+     */
     var Preloader = function(assetArray) {
       mixin(Preloader.prototype, new EventMap());
 
+      /**
+       * @property assets
+       * @type {Array} 
+       */
       if (assetArray != null) {
         this.assets = assetArray;
       } else {
         this.assets = [];
       }
-
+  
+      /**
+       * @property maxAssets
+       * @type {Number}
+       * @default 0 
+       */
       this.maxAssets = 0;
+      
+      /**
+       * @property assetsLoaded
+       * @type {Number}
+       * @default 0 
+       */
       this.assetsLoaded = 0;
+      
+      /**
+       * @property percentLoaded
+       * @type {Number}
+       * @default 0 
+       */
       this.percentLoaded = 0;
+      
+      /**
+       * @property steps
+       * @type {Array} 
+       */
       this.steps = [];
     };
 
+    /**
+     * Starts the preloader and loads all assets asynchronously. Triggers
+     * events when necessary.
+     * 
+     * @method start 
+     */
     Preloader.prototype.start = function() {
       // Check if it&#x27;s valid
       if (this.assets == null || Object.keys(this.assets).length === 0) {

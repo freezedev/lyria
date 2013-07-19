@@ -45,19 +45,29 @@
             
                 <li><a href="../classes/Connector.html">Connector</a></li>
             
+                <li><a href="../classes/Director.html">Director</a></li>
+            
                 <li><a href="../classes/Engine.html">Engine</a></li>
+            
+                <li><a href="../classes/Game.html">Game</a></li>
             
                 <li><a href="../classes/Layer.html">Layer</a></li>
             
                 <li><a href="../classes/Loop.html">Loop</a></li>
             
+                <li><a href="../classes/Preloader.html">Preloader</a></li>
+            
                 <li><a href="../classes/Scene.html">Scene</a></li>
+            
+                <li><a href="../classes/Viewport.html">Viewport</a></li>
             
             </ul>
 
             <ul id="api-modules" class="apis modules">
             
                 <li><a href="../modules/Lyria.html">Lyria</a></li>
+            
+                <li><a href="../modules/Scene.html">Scene</a></li>
             
                 <li><a href="../modules/Template.html">Template</a></li>
             
@@ -101,8 +111,8 @@
 <div class="file">
     <pre class="code prettyprint linenums">
 /**
- * @namespace Lyria
- * Lyria namespace decleration
+ * @module Lyria
+ * @submodule Scene
  */
 define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;mixin&#x27;, &#x27;jquery&#x27;, &#x27;lyria/eventmap&#x27;, &#x27;lyria/scene&#x27;, &#x27;lyria/viewport&#x27;], function(root, mixin, $, EventMap, Scene, Viewport) {&#x27;use strict&#x27;;
 
@@ -112,6 +122,16 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;mixin&#x27;, &
    */
   return (function() {
 
+    /**
+     * The scene director constructor
+     * Attaches a scene director to a container, the parent is optional
+     * 
+     * @class Director
+     * @constructor
+     * 
+     * @param {Object} container
+     * @param {Object} parent
+     */
     function SceneDirector(container, parent) {
       mixin(SceneDirector.prototype, new EventMap());
 
@@ -121,7 +141,20 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;mixin&#x27;, &
         this.viewport = new Viewport(container, parent);
       }
 
+      /**
+       * All scenes
+       * 
+       * @property sceneList
+       * @type {Object} 
+       */
       this.sceneList = {};
+      
+      /**
+       * The current scene 
+       *
+       * @property currentScene
+       * @type {Scene}
+       */
       this.currentScene = null;
     }
 
@@ -129,12 +162,21 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;mixin&#x27;, &
     SceneDirector.prototype.sceneClassName = &#x27;scene&#x27;;
 
     // Methods
+    
+    /**
+     * Adds a scene to the scene director
+     * 
+     * @method add
+     * @param {Object} scene
+     * @param {Object} options
+     */
     SceneDirector.prototype.add = function(scene, options) {
 
       if (!( scene instanceof Scene)) {
-        if (this.precompiledScenes) {
-          scene = this.precompiledScenes[scene];
+        if (this.scenes &amp;&amp; !$.isEmptyObject(this.scenes)) {
+          scene = this.scenes[scene];
         } else {
+          // TODO: Don&#x27;t throw a string. Throw an error
           throw &#x27;No valid scene found.&#x27;;
         }
       }
@@ -142,9 +184,9 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;mixin&#x27;, &
       scene.parent = this;
       this.sceneList[scene.name] = scene;
 
-      if (this.viewport.$container) {
+      if (this.viewport.$element) {
         if ($(&#x27;#&#x27; + scene.name).length === 0) {
-          this.viewport.$container.prepend($(root.document.createElement(&#x27;div&#x27;)).attr(&#x27;id&#x27;, scene.name).attr(&#x27;class&#x27;, SceneDirector.prototype.sceneClassName));
+          this.viewport.$element.prepend($(root.document.createElement(&#x27;div&#x27;)).attr(&#x27;id&#x27;, scene.name).attr(&#x27;class&#x27;, SceneDirector.prototype.sceneClassName));
 
           if (!scene.async) {
             if (scene.content) {
@@ -185,6 +227,14 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;mixin&#x27;, &
       return this;
     };
 
+    /**
+     * Shows a specified scene
+     * 
+     * @method show
+     * @param {String} scene
+     * @param {Object} options
+     * @param {Function} callback
+     */
     SceneDirector.prototype.show = function(scene, options, callback) {
       this.trigger(&#x27;scene:change&#x27;, scene);
 
@@ -229,6 +279,12 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;mixin&#x27;, &
       });
     };
 
+    /**
+     * Refreshes a scene
+     * 
+     * @method refresh
+     * @param {String} scene
+     */
     SceneDirector.prototype.refresh = function(scene) {
       var sceneObj = (scene) ? this.sceneList[scene] : this.currentScene;
 
@@ -240,10 +296,20 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;mixin&#x27;, &
       }
     };
 
+    /**
+     * Triggers the render event of the current scene
+     * 
+     * @method render
+     */
     SceneDirector.prototype.render = function() {
       this.currentScene.trigger(&#x27;render&#x27;);
     };
 
+    /**
+     * Triggers the update event of the current scene
+     * 
+     * @param {Number} dt
+     */
     SceneDirector.prototype.update = function(dt) {
       this.currentScene.trigger(&#x27;update&#x27;, dt);
     };

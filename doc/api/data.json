@@ -53,12 +53,14 @@
         },
         "src\\scene\\director.js": {
             "name": "src\\scene\\director.js",
-            "modules": {},
-            "classes": {},
+            "modules": {
+                "Scene": 1
+            },
+            "classes": {
+                "Director": 1
+            },
             "fors": {},
-            "namespaces": {
-                "Lyria\nLyria namespace decleration": 1
-            }
+            "namespaces": {}
         },
         "src\\scene\\index.js": {
             "name": "src\\scene\\index.js",
@@ -108,11 +110,11 @@
         "src\\game.js": {
             "name": "src\\game.js",
             "modules": {},
-            "classes": {},
+            "classes": {
+                "Game": 1
+            },
             "fors": {},
-            "namespaces": {
-                "Lyria": 1
-            }
+            "namespaces": {}
         },
         "src\\gameobject.js": {
             "name": "src\\gameobject.js",
@@ -153,11 +155,11 @@
         "src\\preloader.js": {
             "name": "src\\preloader.js",
             "modules": {},
-            "classes": {},
+            "classes": {
+                "Preloader": 1
+            },
             "fors": {},
-            "namespaces": {
-                "Lyria\nLyria namespace decleration": 1
-            }
+            "namespaces": {}
         },
         "src\\resource.js": {
             "name": "src\\resource.js",
@@ -187,35 +189,54 @@
         "src\\viewport.js": {
             "name": "src\\viewport.js",
             "modules": {},
-            "classes": {},
+            "classes": {
+                "Viewport": 1
+            },
             "fors": {},
-            "namespaces": {
-                "Lyria\nLyria namespace decleration": 1
-            }
+            "namespaces": {}
         }
     },
     "modules": {
         "Lyria": {
             "name": "Lyria",
             "submodules": {
+                "Scene": 1,
                 "Template": 1
             },
             "classes": {
                 "Audio": 1,
+                "Director": 1,
                 "Scene": 1,
                 "Connector": 1,
                 "Engine": 1,
+                "Game": 1,
                 "Layer": 1,
-                "Loop": 1
+                "Loop": 1,
+                "Preloader": 1,
+                "Viewport": 1
             },
             "fors": {},
             "namespaces": {
-                "Lyria\nLyria namespace decleration": 1,
-                "Lyria": 1
+                "Lyria\nLyria namespace decleration": 1
             },
             "tag": "module",
-            "file": "src\\loop.js",
+            "file": "src\\viewport.js",
             "line": 7
+        },
+        "Scene": {
+            "name": "Scene",
+            "submodules": {},
+            "classes": {
+                "Director": 1
+            },
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "Lyria",
+            "namespace": "",
+            "file": "src\\scene\\director.js",
+            "line": 13,
+            "description": "The scene director constructor\nAttaches a scene director to a container, the parent is optional"
         },
         "Template": {
             "name": "Template",
@@ -247,6 +268,34 @@
             "file": "src\\audio\\index.js",
             "line": 6,
             "static": 1
+        },
+        "Director": {
+            "name": "Director",
+            "shortname": "Director",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Lyria",
+            "submodule": "Scene",
+            "namespace": "",
+            "file": "src\\scene\\director.js",
+            "line": 13,
+            "description": "The scene director constructor\nAttaches a scene director to a container, the parent is optional",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "container",
+                    "description": "",
+                    "type": "Object"
+                },
+                {
+                    "name": "parent",
+                    "description": "",
+                    "type": "Object"
+                }
+            ]
         },
         "Scene": {
             "name": "Scene",
@@ -300,6 +349,20 @@
                 }
             ]
         },
+        "Game": {
+            "name": "Game",
+            "shortname": "Game",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Lyria",
+            "namespace": "",
+            "file": "src\\game.js",
+            "line": 7,
+            "description": "Game class which has a viewport, scene director and preloader by\ndefault."
+        },
         "Layer": {
             "name": "Layer",
             "shortname": "Layer",
@@ -328,6 +391,33 @@
             "file": "src\\loop.js",
             "line": 7,
             "static": 1
+        },
+        "Preloader": {
+            "name": "Preloader",
+            "shortname": "Preloader",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Lyria",
+            "namespace": "",
+            "file": "src\\preloader.js",
+            "line": 6,
+            "description": "Provides a preloader to load assets before they are needed"
+        },
+        "Viewport": {
+            "name": "Viewport",
+            "shortname": "Viewport",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Lyria",
+            "namespace": "",
+            "file": "src\\viewport.js",
+            "line": 7
         }
     },
     "classitems": [
@@ -505,13 +595,13 @@
             "file": "src\\core\\fisheryates.js",
             "line": 2,
             "description": "Randomize array element order in-place.\nUsing Fisher-Yates shuffle algorithm.",
-            "class": "Scene",
+            "class": "Director",
             "module": "Lyria"
         },
         {
             "file": "src\\events\\eventmap.js",
             "line": 1,
-            "class": "Scene",
+            "class": "Director",
             "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
         },
@@ -519,14 +609,14 @@
             "file": "src\\events\\eventmap.js",
             "line": 7,
             "description": "This is directly taken from\nhttps://github.com/elysion-powered/elyssa/blob/master/src/core/events.coffee",
-            "class": "Scene",
+            "class": "Director",
             "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
         },
         {
             "file": "src\\localization\\index.js",
             "line": 1,
-            "class": "Scene",
+            "class": "Director",
             "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
         },
@@ -545,7 +635,7 @@
                     "type": "Object"
                 }
             ],
-            "class": "Scene",
+            "class": "Director",
             "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
         },
@@ -564,21 +654,14 @@
                     "type": "Object"
                 }
             ],
-            "class": "Scene",
+            "class": "Director",
             "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
         },
         {
             "file": "src\\prefab\\index.js",
             "line": 1,
-            "class": "Scene",
-            "module": "Lyria",
-            "namespace": "Lyria\nLyria namespace decleration"
-        },
-        {
-            "file": "src\\scene\\director.js",
-            "line": 1,
-            "class": "Scene",
+            "class": "Director",
             "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
         },
@@ -586,14 +669,129 @@
             "file": "src\\scene\\director.js",
             "line": 7,
             "description": "The scene director is the manager for all scenes",
-            "class": "Scene",
+            "class": "Director",
             "module": "Lyria",
-            "namespace": "Lyria\nLyria namespace decleration"
+            "submodule": "Scene"
+        },
+        {
+            "file": "src\\scene\\director.js",
+            "line": 32,
+            "description": "All scenes",
+            "itemtype": "property",
+            "name": "sceneList",
+            "type": "{Object}",
+            "class": "Director",
+            "module": "Lyria",
+            "submodule": "Scene"
+        },
+        {
+            "file": "src\\scene\\director.js",
+            "line": 40,
+            "description": "The current scene",
+            "itemtype": "property",
+            "name": "currentScene",
+            "type": "{Scene}",
+            "class": "Director",
+            "module": "Lyria",
+            "submodule": "Scene"
+        },
+        {
+            "file": "src\\scene\\director.js",
+            "line": 54,
+            "description": "Adds a scene to the scene director",
+            "itemtype": "method",
+            "name": "add",
+            "params": [
+                {
+                    "name": "scene",
+                    "description": "",
+                    "type": "Object"
+                },
+                {
+                    "name": "options",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "Director",
+            "module": "Lyria",
+            "submodule": "Scene"
+        },
+        {
+            "file": "src\\scene\\director.js",
+            "line": 118,
+            "description": "Shows a specified scene",
+            "itemtype": "method",
+            "name": "show",
+            "params": [
+                {
+                    "name": "scene",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "options",
+                    "description": "",
+                    "type": "Object"
+                },
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "class": "Director",
+            "module": "Lyria",
+            "submodule": "Scene"
+        },
+        {
+            "file": "src\\scene\\director.js",
+            "line": 170,
+            "description": "Refreshes a scene",
+            "itemtype": "method",
+            "name": "refresh",
+            "params": [
+                {
+                    "name": "scene",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "Director",
+            "module": "Lyria",
+            "submodule": "Scene"
+        },
+        {
+            "file": "src\\scene\\director.js",
+            "line": 187,
+            "description": "Triggers the render event of the current scene",
+            "itemtype": "method",
+            "name": "render",
+            "class": "Director",
+            "module": "Lyria",
+            "submodule": "Scene"
+        },
+        {
+            "file": "src\\scene\\director.js",
+            "line": 196,
+            "description": "Triggers the update event of the current scene",
+            "params": [
+                {
+                    "name": "dt",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "class": "Director",
+            "module": "Lyria",
+            "submodule": "Scene"
         },
         {
             "file": "src\\scene\\index.js",
             "line": 93,
             "description": "Adds a gameobject to the scene",
+            "itemtype": "method",
+            "name": "add",
             "params": [
                 {
                     "name": "child",
@@ -606,8 +804,10 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 140,
+            "line": 141,
             "description": "Refreshes the scene (Re-renders the template)",
+            "itemtype": "method",
+            "name": "refresh",
             "params": [
                 {
                     "name": "val",
@@ -620,8 +820,10 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 157,
+            "line": 159,
             "description": "Sets an event to the event object or returns a specified event",
+            "itemtype": "method",
+            "name": "event",
             "params": [
                 {
                     "name": "selector",
@@ -645,7 +847,7 @@
         {
             "file": "src\\achievements.js",
             "line": 1,
-            "class": "Layer",
+            "class": "Game",
             "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
         },
@@ -657,7 +859,7 @@
                 "description": "The exact number of unlocked achievements",
                 "type": "Number"
             },
-            "class": "Layer",
+            "class": "Game",
             "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
         },
@@ -669,7 +871,7 @@
                 "description": "The markup for the list",
                 "type": "String"
             },
-            "class": "Layer",
+            "class": "Game",
             "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
         },
@@ -684,17 +886,53 @@
                     "type": "String"
                 }
             ],
-            "class": "Layer",
+            "class": "Game",
             "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
         },
         {
             "file": "src\\game.js",
-            "line": 1,
-            "description": "Lyria namespace decleration",
-            "class": "Layer",
-            "module": "Lyria",
-            "namespace": "Lyria"
+            "line": 15,
+            "is_constructor": 1,
+            "class": "Game",
+            "module": "Lyria"
+        },
+        {
+            "file": "src\\game.js",
+            "line": 21,
+            "itemtype": "property",
+            "name": "viewport",
+            "type": "{Viewport}",
+            "class": "Game",
+            "module": "Lyria"
+        },
+        {
+            "file": "src\\game.js",
+            "line": 28,
+            "itemtype": "property",
+            "name": "director",
+            "type": "{Director}",
+            "class": "Game",
+            "module": "Lyria"
+        },
+        {
+            "file": "src\\game.js",
+            "line": 35,
+            "itemtype": "property",
+            "name": "preloader",
+            "type": "{Preloader}",
+            "class": "Game",
+            "module": "Lyria"
+        },
+        {
+            "file": "src\\game.js",
+            "line": 51,
+            "itemtype": "property",
+            "name": "Loop",
+            "static": 1,
+            "type": "{Loop}",
+            "class": "Game",
+            "module": "Lyria"
         },
         {
             "file": "src\\gameobject.js",
@@ -743,29 +981,86 @@
         },
         {
             "file": "src\\preloader.js",
-            "line": 1,
-            "class": "",
-            "module": "Lyria",
-            "namespace": "Lyria\nLyria namespace decleration"
+            "line": 13,
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "assetArray",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "Preloader",
+            "module": "Lyria"
         },
         {
             "file": "src\\preloader.js",
-            "line": 7,
-            "class": "",
-            "module": "Lyria",
-            "namespace": "Lyria\nLyria namespace decleration"
+            "line": 21,
+            "itemtype": "property",
+            "name": "assets",
+            "type": "{Array}",
+            "class": "Preloader",
+            "module": "Lyria"
+        },
+        {
+            "file": "src\\preloader.js",
+            "line": 31,
+            "itemtype": "property",
+            "name": "maxAssets",
+            "type": "{Number}",
+            "default": "0",
+            "class": "Preloader",
+            "module": "Lyria"
+        },
+        {
+            "file": "src\\preloader.js",
+            "line": 38,
+            "itemtype": "property",
+            "name": "assetsLoaded",
+            "type": "{Number}",
+            "default": "0",
+            "class": "Preloader",
+            "module": "Lyria"
+        },
+        {
+            "file": "src\\preloader.js",
+            "line": 45,
+            "itemtype": "property",
+            "name": "percentLoaded",
+            "type": "{Number}",
+            "default": "0",
+            "class": "Preloader",
+            "module": "Lyria"
+        },
+        {
+            "file": "src\\preloader.js",
+            "line": 52,
+            "itemtype": "property",
+            "name": "steps",
+            "type": "{Array}",
+            "class": "Preloader",
+            "module": "Lyria"
+        },
+        {
+            "file": "src\\preloader.js",
+            "line": 59,
+            "description": "Starts the preloader and loads all assets asynchronously. Triggers\nevents when necessary.",
+            "itemtype": "method",
+            "name": "start",
+            "class": "Preloader",
+            "module": "Lyria"
         },
         {
             "file": "src\\resource.js",
             "line": 1,
-            "class": "",
+            "class": "Viewport",
             "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
         },
         {
             "file": "src\\resource.js",
             "line": 8,
-            "class": "",
+            "class": "Viewport",
             "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
         },
@@ -785,7 +1080,7 @@
                     "type": "String"
                 }
             ],
-            "class": "",
+            "class": "Viewport",
             "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
         },
@@ -803,14 +1098,14 @@
                 "description": "",
                 "type": "String"
             },
-            "class": "",
+            "class": "Viewport",
             "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
         },
         {
             "file": "src\\utils.js",
             "line": 1,
-            "class": "",
+            "class": "Viewport",
             "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
         },
@@ -828,16 +1123,149 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": "",
+            "class": "Viewport",
             "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
         },
         {
             "file": "src\\viewport.js",
-            "line": 1,
-            "class": "",
-            "module": "Lyria",
-            "namespace": "Lyria\nLyria namespace decleration"
+            "line": 12,
+            "is_constructor": 1,
+            "class": "Viewport",
+            "module": "Lyria"
+        },
+        {
+            "file": "src\\viewport.js",
+            "line": 16,
+            "description": "The viewport width",
+            "itemtype": "property",
+            "name": "width",
+            "type": "{Number}",
+            "default": "800",
+            "class": "Viewport",
+            "module": "Lyria"
+        },
+        {
+            "file": "src\\viewport.js",
+            "line": 25,
+            "description": "The viewport height",
+            "itemtype": "property",
+            "name": "height",
+            "type": "{Number}",
+            "default": "600",
+            "class": "Viewport",
+            "module": "Lyria"
+        },
+        {
+            "file": "src\\viewport.js",
+            "line": 41,
+            "description": "The viewport element (jQuery object)",
+            "itemtype": "property",
+            "name": "$element",
+            "type": "{jQuery}",
+            "class": "Viewport",
+            "module": "Lyria"
+        },
+        {
+            "file": "src\\viewport.js",
+            "line": 63,
+            "description": "Adds a behaviour which will be triggered on certain events",
+            "itemtype": "method",
+            "name": "behaviour",
+            "params": [
+                {
+                    "name": "fn",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "Viewport",
+            "module": "Lyria"
+        },
+        {
+            "file": "src\\viewport.js",
+            "line": 73,
+            "description": "Reset all CSS transforms on the viewport",
+            "itemtype": "method",
+            "name": "resetTransforms",
+            "class": "Viewport",
+            "module": "Lyria"
+        },
+        {
+            "file": "src\\viewport.js",
+            "line": 82,
+            "description": "Updated CSS transforms on the viewport",
+            "itemtype": "method",
+            "name": "updateTransforms",
+            "class": "Viewport",
+            "module": "Lyria"
+        },
+        {
+            "file": "src\\viewport.js",
+            "line": 95,
+            "description": "Scales the viewport",
+            "itemtype": "method",
+            "name": "scale",
+            "params": [
+                {
+                    "name": "scaleX",
+                    "description": "",
+                    "type": "Object"
+                },
+                {
+                    "name": "scaleY",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "Viewport",
+            "module": "Lyria"
+        },
+        {
+            "file": "src\\viewport.js",
+            "line": 118,
+            "description": "Sets an origin for the viewport",
+            "itemtype": "method",
+            "name": "origin",
+            "params": [
+                {
+                    "name": "originX",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "originY",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "class": "Viewport",
+            "module": "Lyria"
+        },
+        {
+            "file": "src\\viewport.js",
+            "line": 129,
+            "description": "Centers the viewport",
+            "itemtype": "method",
+            "name": "center",
+            "class": "Viewport",
+            "module": "Lyria"
+        },
+        {
+            "file": "src\\viewport.js",
+            "line": 138,
+            "description": "Rotate the viewport",
+            "itemtype": "method",
+            "name": "rotate",
+            "params": [
+                {
+                    "name": "angle",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "class": "Viewport",
+            "module": "Lyria"
         }
     ],
     "warnings": [
@@ -930,24 +1358,12 @@
             "line": " src\\prefab\\index.js:1"
         },
         {
-            "message": "Missing item type",
-            "line": " src\\scene\\director.js:1"
-        },
-        {
             "message": "Missing item type\nThe scene director is the manager for all scenes",
             "line": " src\\scene\\director.js:7"
         },
         {
-            "message": "Missing item type\nAdds a gameobject to the scene",
-            "line": " src\\scene\\index.js:93"
-        },
-        {
-            "message": "Missing item type\nRefreshes the scene (Re-renders the template)",
-            "line": " src\\scene\\index.js:140"
-        },
-        {
-            "message": "Missing item type\nSets an event to the event object or returns a specified event",
-            "line": " src\\scene\\index.js:157"
+            "message": "Missing item type\nTriggers the update event of the current scene",
+            "line": " src\\scene\\director.js:196"
         },
         {
             "message": "Missing item type",
@@ -966,8 +1382,8 @@
             "line": " src\\achievements.js:66"
         },
         {
-            "message": "Missing item type\nLyria namespace decleration",
-            "line": " src\\game.js:1"
+            "message": "Missing item type",
+            "line": " src\\game.js:15"
         },
         {
             "message": "Missing item type",
@@ -983,11 +1399,7 @@
         },
         {
             "message": "Missing item type",
-            "line": " src\\preloader.js:1"
-        },
-        {
-            "message": "Missing item type",
-            "line": " src\\preloader.js:7"
+            "line": " src\\preloader.js:13"
         },
         {
             "message": "Missing item type",
@@ -1015,7 +1427,7 @@
         },
         {
             "message": "Missing item type",
-            "line": " src\\viewport.js:1"
+            "line": " src\\viewport.js:12"
         }
     ]
 }

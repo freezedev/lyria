@@ -45,19 +45,29 @@
             
                 <li><a href="../classes/Connector.html">Connector</a></li>
             
+                <li><a href="../classes/Director.html">Director</a></li>
+            
                 <li><a href="../classes/Engine.html">Engine</a></li>
+            
+                <li><a href="../classes/Game.html">Game</a></li>
             
                 <li><a href="../classes/Layer.html">Layer</a></li>
             
                 <li><a href="../classes/Loop.html">Loop</a></li>
             
+                <li><a href="../classes/Preloader.html">Preloader</a></li>
+            
                 <li><a href="../classes/Scene.html">Scene</a></li>
+            
+                <li><a href="../classes/Viewport.html">Viewport</a></li>
             
             </ul>
 
             <ul id="api-modules" class="apis modules">
             
                 <li><a href="../modules/Lyria.html">Lyria</a></li>
+            
+                <li><a href="../modules/Scene.html">Scene</a></li>
             
                 <li><a href="../modules/Template.html">Template</a></li>
             
@@ -101,26 +111,43 @@
 <div class="file">
     <pre class="code prettyprint linenums">
 /**
- * Lyria namespace decleration
- * 
- * @namespace Lyria
+ * @module Lyria
  */
 define(&#x27;lyria/game&#x27;, [&#x27;lyria/viewport&#x27;, &#x27;lyria/scene/director&#x27;, &#x27;lyria/preloader&#x27;, &#x27;lyria/loop&#x27;], function(Viewport, Director, Preloader, Loop) {
   &#x27;use strict&#x27;;
   
-  // Lyria.Game
+  /**
+   * Game class which has a viewport, scene director and preloader by
+   * default.
+   *
+   * @class Game 
+   */
   return (function() {
     
-    // Constructor
+    /**
+     * @constructor 
+     */
     var Game = function() {
       var self = this;
       
+      /**
+       * @property viewport
+       * @type {Viewport} 
+       */
       // Set up a viewport
       this.viewport = new Viewport();
-      
+
+      /**
+       * @property director
+       * @type {Director} 
+       */      
       // Add a scene director
       this.director = new Director(this.viewport);
       
+      /**
+       * @property preloader
+       * @type {Preloader} 
+       */
       // Add a preloader
       this.preloader = new Preloader(); 
       
@@ -133,6 +160,11 @@ define(&#x27;lyria/game&#x27;, [&#x27;lyria/viewport&#x27;, &#x27;lyria/scene/di
       });      
     };
     
+    /**
+     * @property Loop
+     * @static
+     * @type {Loop} 
+     */
     // Store the reference to the Lyria Loop at the Game object
     Game.Loop = Loop;
     

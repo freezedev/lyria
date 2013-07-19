@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src\prefab\index.js - lyria</title>
+    <title>Scene - lyria</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -106,36 +106,50 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: src\prefab\index.js</h1>
+                        <h1>Scene Module</h1>
+<div class="box clearfix meta">
+    
 
-<div class="file">
-    <pre class="code prettyprint linenums">
-/**
- * @namespace Lyria
- * Lyria namespace decleration
- */
-define(&#x27;lyria/prefab&#x27;, [&#x27;extend&#x27;, &#x27;lyria/scene&#x27;], function(extend, Scene) {
-	&#x27;use strict&#x27;;
+    
 
-	//Lyria.Prefab
-	return function(prefabName, options) {
-		
-		var defaultOptions = {
-			target: null,
-			template: &#x27;prefab.html&#x27;,
-			data: &#x27;prefab.js&#x27;,
-			path: &#x27;prefab&#x27;,
-			isPrefab: true
-		};
-		
-		options = extend(true, defaultOptions, options);
-		
-		return new Scene(prefabName, options);
-		
-	};
-  
-});
-    </pre>
+    
+        <div class="foundat">
+            Defined in: <a href="../files/src_scene_director.js.html#l13"><code>src\scene\director.js:13</code></a>
+        </div>
+    
+
+    
+</div>
+
+
+
+<div class="box intro">
+    <p>The scene director constructor
+Attaches a scene director to a container, the parent is optional</p>
+</div>
+
+
+
+<div class="yui3-g">
+    <div class="yui3-u-1-2">
+        
+            <p>This module provides the following classes:</p>
+
+            <ul class="module-classes">
+            
+                <li class="module-class">
+                    <a href="../classes/Director.html">
+                        Director
+                    </a>
+                </li>
+            
+            </ul>
+        
+    </div>
+
+    <div class="yui3-u-1-2">
+        
+    </div>
 </div>
 
                     </div>

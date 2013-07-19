@@ -45,19 +45,29 @@
             
                 <li><a href="../classes/Connector.html">Connector</a></li>
             
+                <li><a href="../classes/Director.html">Director</a></li>
+            
                 <li><a href="../classes/Engine.html">Engine</a></li>
+            
+                <li><a href="../classes/Game.html">Game</a></li>
             
                 <li><a href="../classes/Layer.html">Layer</a></li>
             
                 <li><a href="../classes/Loop.html">Loop</a></li>
             
+                <li><a href="../classes/Preloader.html">Preloader</a></li>
+            
                 <li><a href="../classes/Scene.html">Scene</a></li>
+            
+                <li><a href="../classes/Viewport.html">Viewport</a></li>
             
             </ul>
 
             <ul id="api-modules" class="apis modules">
             
                 <li><a href="../modules/Lyria.html">Lyria</a></li>
+            
+                <li><a href="../modules/Scene.html">Scene</a></li>
             
                 <li><a href="../modules/Template.html">Template</a></li>
             
@@ -103,7 +113,7 @@
 /**
  * @module Lyria
  */
-define(&#x27;lyria/scene&#x27;, [&#x27;isEmptyObject&#x27;, &#x27;each&#x27;, &#x27;extend&#x27;, &#x27;clone&#x27;, &#x27;mixin&#x27;, &#x27;lyria/eventmap&#x27;, &#x27;lyria/gameobject&#x27;], function(isEmptyObject, each, extend, clone, mixin, EventMap, GameObject) {&#x27;use strict&#x27;;
+define(&#x27;lyria/scene&#x27;, [&#x27;isemptyobject&#x27;, &#x27;each&#x27;, &#x27;extend&#x27;, &#x27;clone&#x27;, &#x27;mixin&#x27;, &#x27;lyria/eventmap&#x27;, &#x27;lyria/gameobject&#x27;], function(isEmptyObject, each, extend, clone, mixin, EventMap, GameObject) {&#x27;use strict&#x27;;
 
   var Scene = (function() {
 
@@ -195,6 +205,7 @@ define(&#x27;lyria/scene&#x27;, [&#x27;isEmptyObject&#x27;, &#x27;each&#x27;, &#
     /**
      * Adds a gameobject to the scene
      *
+     * @method add
      * @param {Object} child
      */
     Scene.prototype.add = function(child) {
@@ -242,6 +253,7 @@ define(&#x27;lyria/scene&#x27;, [&#x27;isEmptyObject&#x27;, &#x27;each&#x27;, &#
     /**
      * Refreshes the scene (Re-renders the template)
      *
+     * @method refresh
      * @param {Object} val
      */
     Scene.prototype.refresh = function(val) {
@@ -259,6 +271,7 @@ define(&#x27;lyria/scene&#x27;, [&#x27;isEmptyObject&#x27;, &#x27;each&#x27;, &#
     /**
      *  Sets an event to the event object or returns a specified event
      *  
+     * @method event
      * @param {String} selector
      * @param {String} eventName
      * @param {Function} eventFunction

@@ -1,8 +1,7 @@
 /**
- * @namespace Lyria
- * Lyria namespace decleration
+ * @module Lyria
  */
-define('lyria/gameobject', ['mixin', 'isEmptyObject', 'each', 'lyria/eventmap', 'lyria/component', 'lyria/log'], function(mixin, isEmptyObject, each, EventMap, Component, Log) {
+define('lyria/gameobject', ['mixin', 'isemptyobject', 'each', 'lyria/eventmap', 'lyria/component', 'lyria/log'], function(mixin, isEmptyObject, each, EventMap, Component, Log) {
   'use strict';
   
   //Lyria.GameObject
