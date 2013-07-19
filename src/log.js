@@ -1,10 +1,12 @@
 /**
- * @namespace Lyria
- * Lyria namespace decleration
+ * @module Lyria
  */
 define('lyria/log', ['root'], function(root) {
   'use strict';
   
+  /**
+   * @class Log 
+   */
   var Log = (function() {
 
     var Log = {};
