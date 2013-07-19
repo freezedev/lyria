@@ -745,13 +745,18 @@ define('fisheryates', ['random'], function(random) {
   };
 });
 
-define('isEmptyObject', function() {
+define('isemptyobject', function() {
   return function(obj) {
     if ( typeof obj !== 'object') {
       return;
     }
 
     return (Object.keys(obj).length === 0);
+  };
+});
+define('jqueryify', ['jquery'], function($) {
+  return function(sel) {
+    return (sel instanceof $) ? sel : $(sel);
   };
 });
 define('mixin', function() {
@@ -1112,26 +1117,43 @@ define('lyria/events', ['lyria/eventmap'], function(EventMap) {
 });
 
 /**
- * Lyria namespace decleration
- * 
- * @namespace Lyria
+ * @module Lyria
  */
 define('lyria/game', ['lyria/viewport', 'lyria/scene/director', 'lyria/preloader', 'lyria/loop'], function(Viewport, Director, Preloader, Loop) {
   'use strict';
   
-  // Lyria.Game
+  /**
+   * Game class which has a viewport, scene director and preloader by
+   * default.
+   *
+   * @class Game 
+   */
   return (function() {
     
-    // Constructor
+    /**
+     * @constructor 
+     */
     var Game = function() {
       var self = this;
       
+      /**
+       * @property viewport
+       * @type {Viewport} 
+       */
       // Set up a viewport
       this.viewport = new Viewport();
-      
+
+      /**
+       * @property director
+       * @type {Director} 
+       */      
       // Add a scene director
       this.director = new Director(this.viewport);
       
+      /**
+       * @property preloader
+       * @type {Preloader} 
+       */
       // Add a preloader
       this.preloader = new Preloader(); 
       
@@ -1144,6 +1166,11 @@ define('lyria/game', ['lyria/viewport', 'lyria/scene/director', 'lyria/preloader
       });      
     };
     
+    /**
+     * @property Loop
+     * @static
+     * @type {Loop} 
+     */
     // Store the reference to the Lyria Loop at the Game object
     Game.Loop = Loop;
     
@@ -1157,7 +1184,7 @@ define('lyria/game', ['lyria/viewport', 'lyria/scene/director', 'lyria/preloader
  * @namespace Lyria
  * Lyria namespace decleration
  */
-define('lyria/gameobject', ['mixin', 'isEmptyObject', 'each', 'lyria/eventmap', 'lyria/component', 'lyria/log'], function(mixin, isEmptyObject, each, EventMap, Component, Log) {
+define('lyria/gameobject', ['mixin', 'isemptyobject', 'each', 'lyria/eventmap', 'lyria/component', 'lyria/log'], function(mixin, isEmptyObject, each, EventMap, Component, Log) {
   'use strict';
   
   //Lyria.GameObject
@@ -1552,31 +1579,69 @@ define('lyria/prefab/manager', function() {
 });
 
 /**
- * @namespace Lyria
- * Lyria namespace decleration
+ * @module Lyria
  */
 define('lyria/preloader', ['root', 'mixin', 'jquery', 'lyria/resource', 'lyria/log', 'lyria/eventmap'], function(root, mixin, $, Resource, Log, EventMap) {'use strict';
 
   /**
-   *
+   * Provides a preloader to load assets before they are needed
+   * 
+   * @class Preloader
    */
   var Preloader = (function() {
 
+    /**
+     * @constructor
+     * 
+     * @param {Object} assetArray
+     */
     var Preloader = function(assetArray) {
       mixin(Preloader.prototype, new EventMap());
 
+      /**
+       * @property assets
+       * @type {Array} 
+       */
       if (assetArray != null) {
         this.assets = assetArray;
       } else {
         this.assets = [];
       }
-
+  
+      /**
+       * @property maxAssets
+       * @type {Number}
+       * @default 0 
+       */
       this.maxAssets = 0;
+      
+      /**
+       * @property assetsLoaded
+       * @type {Number}
+       * @default 0 
+       */
       this.assetsLoaded = 0;
+      
+      /**
+       * @property percentLoaded
+       * @type {Number}
+       * @default 0 
+       */
       this.percentLoaded = 0;
+      
+      /**
+       * @property steps
+       * @type {Array} 
+       */
       this.steps = [];
     };
 
+    /**
+     * Starts the preloader and loads all assets asynchronously. Triggers
+     * events when necessary.
+     * 
+     * @method start 
+     */
     Preloader.prototype.start = function() {
       // Check if it's valid
       if (this.assets == null || Object.keys(this.assets).length === 0) {
@@ -1711,8 +1776,8 @@ define('lyria/resource', ['path'], function(Path) {
   return Resource;
 }); 
 /**
- * @namespace Lyria
- * Lyria namespace decleration
+ * @module Lyria
+ * @submodule Scene
  */
 define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'lyria/scene', 'lyria/viewport'], function(root, mixin, $, EventMap, Scene, Viewport) {'use strict';
 
@@ -1722,6 +1787,16 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'ly
    */
   return (function() {
 
+    /**
+     * The scene director constructor
+     * Attaches a scene director to a container, the parent is optional
+     * 
+     * @class Director
+     * @constructor
+     * 
+     * @param {Object} container
+     * @param {Object} parent
+     */
     function SceneDirector(container, parent) {
       mixin(SceneDirector.prototype, new EventMap());
 
@@ -1731,7 +1806,20 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'ly
         this.viewport = new Viewport(container, parent);
       }
 
+      /**
+       * All scenes
+       * 
+       * @property sceneList
+       * @type {Object} 
+       */
       this.sceneList = {};
+      
+      /**
+       * The current scene 
+       *
+       * @property currentScene
+       * @type {Scene}
+       */
       this.currentScene = null;
     }
 
@@ -1739,12 +1827,21 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'ly
     SceneDirector.prototype.sceneClassName = 'scene';
 
     // Methods
+    
+    /**
+     * Adds a scene to the scene director
+     * 
+     * @method add
+     * @param {Object} scene
+     * @param {Object} options
+     */
     SceneDirector.prototype.add = function(scene, options) {
 
       if (!( scene instanceof Scene)) {
-        if (this.precompiledScenes) {
-          scene = this.precompiledScenes[scene];
+        if (this.scenes && !$.isEmptyObject(this.scenes)) {
+          scene = this.scenes[scene];
         } else {
+          // TODO: Don't throw a string. Throw an error
           throw 'No valid scene found.';
         }
       }
@@ -1752,9 +1849,9 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'ly
       scene.parent = this;
       this.sceneList[scene.name] = scene;
 
-      if (this.viewport.$container) {
+      if (this.viewport.$element) {
         if ($('#' + scene.name).length === 0) {
-          this.viewport.$container.prepend($(root.document.createElement('div')).attr('id', scene.name).attr('class', SceneDirector.prototype.sceneClassName));
+          this.viewport.$element.prepend($(root.document.createElement('div')).attr('id', scene.name).attr('class', SceneDirector.prototype.sceneClassName));
 
           if (!scene.async) {
             if (scene.content) {
@@ -1795,6 +1892,14 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'ly
       return this;
     };
 
+    /**
+     * Shows a specified scene
+     * 
+     * @method show
+     * @param {String} scene
+     * @param {Object} options
+     * @param {Function} callback
+     */
     SceneDirector.prototype.show = function(scene, options, callback) {
       this.trigger('scene:change', scene);
 
@@ -1839,6 +1944,12 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'ly
       });
     };
 
+    /**
+     * Refreshes a scene
+     * 
+     * @method refresh
+     * @param {String} scene
+     */
     SceneDirector.prototype.refresh = function(scene) {
       var sceneObj = (scene) ? this.sceneList[scene] : this.currentScene;
 
@@ -1850,10 +1961,20 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'ly
       }
     };
 
+    /**
+     * Triggers the render event of the current scene
+     * 
+     * @method render
+     */
     SceneDirector.prototype.render = function() {
       this.currentScene.trigger('render');
     };
 
+    /**
+     * Triggers the update event of the current scene
+     * 
+     * @param {Number} dt
+     */
     SceneDirector.prototype.update = function(dt) {
       this.currentScene.trigger('update', dt);
     };
@@ -1866,7 +1987,7 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'ly
 /**
  * @module Lyria
  */
-define('lyria/scene', ['isEmptyObject', 'each', 'extend', 'clone', 'mixin', 'lyria/eventmap', 'lyria/gameobject'], function(isEmptyObject, each, extend, clone, mixin, EventMap, GameObject) {'use strict';
+define('lyria/scene', ['isemptyobject', 'each', 'extend', 'clone', 'mixin', 'lyria/eventmap', 'lyria/gameobject'], function(isEmptyObject, each, extend, clone, mixin, EventMap, GameObject) {'use strict';
 
   var Scene = (function() {
 
@@ -1958,6 +2079,7 @@ define('lyria/scene', ['isEmptyObject', 'each', 'extend', 'clone', 'mixin', 'lyr
     /**
      * Adds a gameobject to the scene
      *
+     * @method add
      * @param {Object} child
      */
     Scene.prototype.add = function(child) {
@@ -2005,6 +2127,7 @@ define('lyria/scene', ['isEmptyObject', 'each', 'extend', 'clone', 'mixin', 'lyr
     /**
      * Refreshes the scene (Re-renders the template)
      *
+     * @method refresh
      * @param {Object} val
      */
     Scene.prototype.refresh = function(val) {
@@ -2022,6 +2145,7 @@ define('lyria/scene', ['isEmptyObject', 'each', 'extend', 'clone', 'mixin', 'lyr
     /**
      *  Sets an event to the event object or returns a specified event
      *  
+     * @method event
      * @param {String} selector
      * @param {String} eventName
      * @param {Function} eventFunction
@@ -2238,26 +2362,55 @@ define('lyria/video', function() {
 });
 
 /**
- * @namespace Lyria
- * Lyria namespace decleration
+ * @module Lyria
  */
-define('lyria/viewport', ['root', 'jquery'], function(root, $) {
+define('lyria/viewport', ['root', 'jquery', 'isemptyobject'], function(root, $, isEmptyObject) {
   'use strict';
 
-  // Lyria.Viewport
+  /**
+   * @class Viewport
+   */
   return (function() {
     
+  /**
+   * @constructor
+   */
     function Viewport(container, parent) {
+      /**
+       * The viewport width
+       *
+       * @property width
+       * @type {Number} 
+       * @default 800
+       */
+      this.width = 800;
+      
+      /**
+       * The viewport height
+       * 
+       * @property height
+       * @type {Number}
+       * @default 600 
+       */
+      this.height = 600;
+      
+      this.transforms = {};
       
       // Defaults container to the string 'viewport'
       if (container == null) {
         container = 'viewport';
       }
 
+      /**
+       * The viewport element (jQuery object)
+       *
+       * @property $element
+       * @type {jQuery} 
+       */
       if ($('#' + container).length > 0) {
-        this.$container = $('#' + container);
+        this.$element = $('#' + container);
       } else {
-        var createdElement = $(root.document.createElement('div')).attr('id', container);
+        var createdElement = $(root.document.createElement('div')).attr('id', container).attr('class', 'viewport');
         
         if (parent) {
           $(parent).prepend(createdElement);
@@ -2265,11 +2418,50 @@ define('lyria/viewport', ['root', 'jquery'], function(root, $) {
           $('body').prepend(createdElement);
         }
         
-        this.$container = $('#' + container);
+        this.$element = $('#' + container);
       }
       
     }
     
+    /**
+     * Adds a behaviour which will be triggered on certain events
+     * 
+     * @method behaviour
+     * @param {Object} fn
+     */
+    Viewport.prototype.behaviour = function(fn) {
+      
+    };
+    
+    /**
+     * Reset all CSS transforms on the viewport
+     * 
+     * @method resetTransforms 
+     */
+    Viewport.prototype.resetTransforms = function() {
+      this.transforms = {};
+    };
+    
+    /**
+     * Updated CSS transforms on the viewport
+     *  
+     * @method updateTransforms
+     */
+    Viewport.prototype.updateTransforms = function() {
+      if (isEmptyObject(this.transforms)) {
+        return;
+      }
+      
+      this.$element.css('transform', this.transforms.join(' '));
+    };
+    
+    /**
+     * Scales the viewport
+     * 
+     * @method scale
+     * @param {Object} scaleX
+     * @param {Object} scaleY
+     */
     Viewport.prototype.scale = function(scaleX, scaleY) {
       if (scaleX == null) {
         return;
@@ -2279,23 +2471,47 @@ define('lyria/viewport', ['root', 'jquery'], function(root, $) {
         scaleY = scaleX;
       }
       
-      this.$container.css('transform', 'scale(' + scaleX + ',' + scaleY + ')');
+      this.transforms.scale = this.transforms.scale || {};
+      this.transforms.scale.x = scaleX;
+      this.transforms.scale.y = scaleY;
+      
+      this.$element.css('transform', '');
     };
     
+    /**
+     * Sets an origin for the viewport
+     * 
+     * @method origin
+     * @param {Number} originX
+     * @param {Number} originY
+     */
     Viewport.prototype.origin = function(originX, originY) {
       
     };
     
+    /**
+     * Centers the viewport
+     *  
+     * @method center
+     */
     Viewport.prototype.center = function() {
       
     };
     
+    /**
+     * Rotate the viewport
+     * 
+     * @method rotate
+     * @param {Number} angle
+     */
     Viewport.prototype.rotate = function(angle) {
       if (angle == null) {
         return;
       }
       
-      this.$container.css('transform', 'rotate(' + angle + ')');
+      this.transforms.rotate = angle;
+      
+      this.$element.css('transform', 'rotate(' + angle + ')');
     };
     
     return Viewport;
