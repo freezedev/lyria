@@ -1181,8 +1181,7 @@ define('lyria/game', ['lyria/viewport', 'lyria/scene/director', 'lyria/preloader
   
 });
 /**
- * @namespace Lyria
- * Lyria namespace decleration
+ * @module Lyria
  */
 define('lyria/gameobject', ['mixin', 'isemptyobject', 'each', 'lyria/eventmap', 'lyria/component', 'lyria/log'], function(mixin, isEmptyObject, each, EventMap, Component, Log) {
   'use strict';
@@ -1368,12 +1367,14 @@ define('lyria/localization', ['check', 'jquery', 'lyria/language'], function(che
   
 });
 /**
- * @namespace Lyria
- * Lyria namespace decleration
+ * @module Lyria
  */
 define('lyria/log', ['root'], function(root) {
   'use strict';
   
+  /**
+   * @class Log 
+   */
   var Log = (function() {
 
     var Log = {};
@@ -2001,8 +2002,9 @@ define('lyria/scene', ['isemptyobject', 'each', 'extend', 'clone', 'mixin', 'lyr
       if (!sceneName) {
         return;
       }
-      
-      if (typeof sceneDeps === 'function') {
+
+      if ( typeof sceneDeps === 'function') {
+        options = sceneFunction;
         sceneFunction = sceneDeps;
         sceneDeps = [];
       }
@@ -2039,19 +2041,14 @@ define('lyria/scene', ['isemptyobject', 'each', 'extend', 'clone', 'mixin', 'lyr
         self.template.data = extend(true, self.template.data, obj);
       };
 
-      // Call scene
-      require(['lyria/achievements', 'lyria/log', 'lyria/component', 'lyria/gameobject', 'lyria/events', 'lyria/resource', 'lyria/data/store'], function(Achievements, Log, Component, GameObject, Events, Resource, DataStore) {
-        var LyriaObject = {
-          Achievements: Achievements,
-          Log: Log,
-          Component: Component,
-          GameObject: GameObject,
-          Events: Events,
-          Resource: Resource,
-          DataStore: DataStore
-        };
+      var createScene = function(LyriaObject, deps) {
+        if (deps == null) {
+          deps = [];
+        }
         
-        sceneFunction.apply(self, [self, LyriaObject]);
+        console.log(deps);
+        
+        sceneFunction.apply(self, [self, LyriaObject].concat(deps));
 
         self.refresh();
 
@@ -2072,8 +2069,29 @@ define('lyria/scene', ['isemptyobject', 'each', 'extend', 'clone', 'mixin', 'lyr
             }
           });
         });
-      });
 
+      };
+
+      // Call scene
+      require(['lyria/achievements', 'lyria/log', 'lyria/component', 'lyria/gameobject', 'lyria/events', 'lyria/resource', 'lyria/data/store'], function(Achievements, Log, Component, GameObject, Events, Resource, DataStore) {
+        var LyriaObject = {
+          Achievements: Achievements,
+          Log: Log,
+          Component: Component,
+          GameObject: GameObject,
+          Events: Events,
+          Resource: Resource,
+          DataStore: DataStore
+        };
+
+        if (sceneDeps.length > 0) {
+          require(sceneDeps, function() {
+            createScene(LyriaObject, [].slice.call(arguments, 0));
+          });
+        } else {
+          createScene(LyriaObject);
+        }
+      });
     };
 
     /**
@@ -2144,7 +2162,7 @@ define('lyria/scene', ['isemptyobject', 'each', 'extend', 'clone', 'mixin', 'lyr
 
     /**
      *  Sets an event to the event object or returns a specified event
-     *  
+     *
      * @method event
      * @param {String} selector
      * @param {String} eventName
@@ -2154,11 +2172,11 @@ define('lyria/scene', ['isemptyobject', 'each', 'extend', 'clone', 'mixin', 'lyr
       if (selector == null) {
         return;
       }
-      
+
       if (eventName == null) {
         return this.events[selector];
       } else {
-        if (typeof eventFunction === 'function') {
+        if ( typeof eventFunction === 'function') {
           this.events[selector] = {};
           this.events[selector][eventName] = eventFunction;
         } else {
@@ -2173,7 +2191,8 @@ define('lyria/scene', ['isemptyobject', 'each', 'extend', 'clone', 'mixin', 'lyr
 
   return Scene;
 
-}); 
+});
+
 define('lyria/serialize', ['jquery'], function($) {
   
   // TODO: Use JSON.parse + reviver instead
@@ -2367,12 +2386,11 @@ define('lyria/video', function() {
 define('lyria/viewport', ['root', 'jquery', 'isemptyobject'], function(root, $, isEmptyObject) {
   'use strict';
 
-  /**
-   * @class Viewport
-   */
   return (function() {
     
+    
   /**
+   * @class Viewport
    * @constructor
    */
     function Viewport(container, parent) {
