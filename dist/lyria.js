@@ -2046,8 +2046,7 @@ define('lyria/scene', ['isemptyobject', 'each', 'extend', 'clone', 'mixin', 'lyr
           deps = [];
         }
         
-        console.log(deps);
-        
+        // TODO: Evaluate how to show dependencies (concat into array, array with objects of name and value)
         sceneFunction.apply(self, [self, LyriaObject].concat(deps));
 
         self.refresh();
