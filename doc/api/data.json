@@ -121,9 +121,7 @@
             "modules": {},
             "classes": {},
             "fors": {},
-            "namespaces": {
-                "Lyria\nLyria namespace decleration": 1
-            }
+            "namespaces": {}
         },
         "src\\layer.js": {
             "name": "src\\layer.js",
@@ -137,11 +135,11 @@
         "src\\log.js": {
             "name": "src\\log.js",
             "modules": {},
-            "classes": {},
+            "classes": {
+                "Log": 1
+            },
             "fors": {},
-            "namespaces": {
-                "Lyria\nLyria namespace decleration": 1
-            }
+            "namespaces": {}
         },
         "src\\loop.js": {
             "name": "src\\loop.js",
@@ -211,6 +209,7 @@
                 "Engine": 1,
                 "Game": 1,
                 "Layer": 1,
+                "Log": 1,
                 "Loop": 1,
                 "Preloader": 1,
                 "Viewport": 1
@@ -221,7 +220,7 @@
             },
             "tag": "module",
             "file": "src\\viewport.js",
-            "line": 7
+            "line": 10
         },
         "Scene": {
             "name": "Scene",
@@ -378,6 +377,19 @@
             "extends": "Lyria.GameObject",
             "is_constructor": 1
         },
+        "Log": {
+            "name": "Log",
+            "shortname": "Log",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Lyria",
+            "namespace": "",
+            "file": "src\\log.js",
+            "line": 7
+        },
         "Loop": {
             "name": "Loop",
             "shortname": "Loop",
@@ -417,7 +429,8 @@
             "module": "Lyria",
             "namespace": "",
             "file": "src\\viewport.js",
-            "line": 7
+            "line": 10,
+            "is_constructor": 1
         }
     },
     "classitems": [
@@ -788,7 +801,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 93,
+            "line": 110,
             "description": "Adds a gameobject to the scene",
             "itemtype": "method",
             "name": "add",
@@ -804,7 +817,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 141,
+            "line": 158,
             "description": "Refreshes the scene (Re-renders the template)",
             "itemtype": "method",
             "name": "refresh",
@@ -820,7 +833,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 159,
+            "line": 176,
             "description": "Sets an event to the event object or returns a specified event",
             "itemtype": "method",
             "name": "event",
@@ -936,14 +949,7 @@
         },
         {
             "file": "src\\gameobject.js",
-            "line": 1,
-            "class": "Layer",
-            "module": "Lyria",
-            "namespace": "Lyria\nLyria namespace decleration"
-        },
-        {
-            "file": "src\\gameobject.js",
-            "line": 34,
+            "line": 33,
             "description": "Refreshes the game object",
             "params": [
                 {
@@ -953,15 +959,7 @@
                 }
             ],
             "class": "Layer",
-            "module": "Lyria",
-            "namespace": "Lyria\nLyria namespace decleration"
-        },
-        {
-            "file": "src\\log.js",
-            "line": 1,
-            "class": "Loop",
-            "module": "Lyria",
-            "namespace": "Lyria\nLyria namespace decleration"
+            "module": "Lyria"
         },
         {
             "file": "src\\loop.js",
@@ -1129,14 +1127,7 @@
         },
         {
             "file": "src\\viewport.js",
-            "line": 12,
-            "is_constructor": 1,
-            "class": "Viewport",
-            "module": "Lyria"
-        },
-        {
-            "file": "src\\viewport.js",
-            "line": 16,
+            "line": 15,
             "description": "The viewport width",
             "itemtype": "property",
             "name": "width",
@@ -1147,7 +1138,7 @@
         },
         {
             "file": "src\\viewport.js",
-            "line": 25,
+            "line": 24,
             "description": "The viewport height",
             "itemtype": "property",
             "name": "height",
@@ -1158,7 +1149,7 @@
         },
         {
             "file": "src\\viewport.js",
-            "line": 41,
+            "line": 40,
             "description": "The viewport element (jQuery object)",
             "itemtype": "property",
             "name": "$element",
@@ -1168,7 +1159,7 @@
         },
         {
             "file": "src\\viewport.js",
-            "line": 63,
+            "line": 62,
             "description": "Adds a behaviour which will be triggered on certain events",
             "itemtype": "method",
             "name": "behaviour",
@@ -1184,7 +1175,7 @@
         },
         {
             "file": "src\\viewport.js",
-            "line": 73,
+            "line": 72,
             "description": "Reset all CSS transforms on the viewport",
             "itemtype": "method",
             "name": "resetTransforms",
@@ -1193,7 +1184,7 @@
         },
         {
             "file": "src\\viewport.js",
-            "line": 82,
+            "line": 81,
             "description": "Updated CSS transforms on the viewport",
             "itemtype": "method",
             "name": "updateTransforms",
@@ -1202,7 +1193,7 @@
         },
         {
             "file": "src\\viewport.js",
-            "line": 95,
+            "line": 94,
             "description": "Scales the viewport",
             "itemtype": "method",
             "name": "scale",
@@ -1223,7 +1214,7 @@
         },
         {
             "file": "src\\viewport.js",
-            "line": 118,
+            "line": 117,
             "description": "Sets an origin for the viewport",
             "itemtype": "method",
             "name": "origin",
@@ -1244,7 +1235,7 @@
         },
         {
             "file": "src\\viewport.js",
-            "line": 129,
+            "line": 128,
             "description": "Centers the viewport",
             "itemtype": "method",
             "name": "center",
@@ -1253,7 +1244,7 @@
         },
         {
             "file": "src\\viewport.js",
-            "line": 138,
+            "line": 137,
             "description": "Rotate the viewport",
             "itemtype": "method",
             "name": "rotate",
@@ -1386,16 +1377,8 @@
             "line": " src\\game.js:15"
         },
         {
-            "message": "Missing item type",
-            "line": " src\\gameobject.js:1"
-        },
-        {
             "message": "Missing item type\nRefreshes the game object",
-            "line": " src\\gameobject.js:34"
-        },
-        {
-            "message": "Missing item type",
-            "line": " src\\log.js:1"
+            "line": " src\\gameobject.js:33"
         },
         {
             "message": "Missing item type",
@@ -1424,10 +1407,6 @@
         {
             "message": "Missing item type",
             "line": " src\\utils.js:10"
-        },
-        {
-            "message": "Missing item type",
-            "line": " src\\viewport.js:12"
         }
     ]
 }

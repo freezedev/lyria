@@ -7,6 +7,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "Engine",
         "Game",
         "Layer",
+        "Log",
         "Loop",
         "Preloader",
         "Scene",

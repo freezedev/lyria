@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src\log.js - lyria</title>
+    <title>Log - lyria</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -108,91 +108,66 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: src\log.js</h1>
+                        <h1>Log Class</h1>
+<div class="box meta">
+    
 
-<div class="file">
-    <pre class="code prettyprint linenums">
-/**
- * @module Lyria
- */
-define(&#x27;lyria/log&#x27;, [&#x27;root&#x27;], function(root) {
-  &#x27;use strict&#x27;;
-  
-  /**
-   * @class Log 
-   */
-  var Log = (function() {
+    
 
-    var Log = {};
+    
+        <div class="foundat">
+            Defined in: <a href="../files/src_log.js.html#l7"><code>src\log.js:7</code></a>
+        </div>
+    
 
-    Log.Connector = null;
+    
+        
+            Module: <a href="../modules/Lyria.html">Lyria</a>
+        
+    
 
-    Log.Plugins = {};
+    
+</div>
 
-    Log.Plugins.Console = {
-      e: function() {
-        if (root.console &amp;&amp; root.console.error) {
-          return root.console.error.apply(null, arguments);
-        }
-      },
-      w: function() {
-        if (root.console &amp;&amp; root.console.warn) {
-          return root.console.warn.apply(null, arguments);
-        }
-      },
-      i: function() {
-        if (root.console &amp;&amp; root.console.info) {
-          return root.console.info.apply(null, arguments);
-        }
-      },
-      d: function() {
-        if (root.console &amp;&amp; root.console.log) {
-          return root.console.log.apply(null, arguments);
-        }
-      },
-      v: function() {
-        if (root.console &amp;&amp; root.console.log) {
-          return root.console.log.apply(null, arguments);
-        }
-      }
-    };
 
-    Log.Connector = Log.Plugins.Console;
 
-    Log.logLevelMap = {
-      &#x27;error&#x27;: [&#x27;e&#x27;],
-      &#x27;warn&#x27;: [&#x27;w&#x27;, &#x27;e&#x27;],
-      &#x27;info&#x27;: [&#x27;i&#x27;, &#x27;w&#x27;, &#x27;e&#x27;],
-      &#x27;debug&#x27;: [&#x27;d&#x27;, &#x27;i&#x27;, &#x27;w&#x27;, &#x27;e&#x27;],
-      &#x27;verbose&#x27;: [&#x27;v&#x27;, &#x27;d&#x27;, &#x27;i&#x27;, &#x27;w&#x27;, &#x27;e&#x27;]
-    };
+<div class="box intro">
+    
+</div>
 
-    Log.logLevel = &#x27;verbose&#x27;;
 
-    var logFunctions = [&#x27;v&#x27;, &#x27;d&#x27;, &#x27;i&#x27;, &#x27;w&#x27;, &#x27;e&#x27;];
 
-    for (var i = 0, j = logFunctions.length; i &lt; j; i++) {
+<div id="classdocs" class="tabview">
+    <ul class="api-class-tabs">
+        <li class="api-class-tab index"><a href="#index">Index</a></li>
 
-      (function(iterator) {
-        Log[iterator] = function() {
-          if (Log.logLevelMap[Log.logLevel].indexOf(iterator) &gt;= 0) {
-            Log.Connector[iterator].apply(this, arguments);
-          }
-        };        
-      })(logFunctions[i]);
-      
-    }
+        
+        
+        
+        
+    </ul>
 
-    return Log;
+    <div>
+        <div id="index" class="api-class-tabpanel index">
+            <h2 class="off-left">Item Index</h2>
 
-  })();
+            
 
-  // Map shorthand functions to Log.i
-  root.log = root.out = Log.i;
-  
-  return Log;
-});
-    </pre>
+            
+
+            
+
+            
+        </div>
+
+        
+
+        
+
+        
+
+        
+    </div>
 </div>
 
                     </div>

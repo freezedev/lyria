@@ -53,6 +53,8 @@
             
                 <li><a href="../classes/Layer.html">Layer</a></li>
             
+                <li><a href="../classes/Log.html">Log</a></li>
+            
                 <li><a href="../classes/Loop.html">Loop</a></li>
             
                 <li><a href="../classes/Preloader.html">Preloader</a></li>
@@ -127,8 +129,9 @@ define(&#x27;lyria/scene&#x27;, [&#x27;isemptyobject&#x27;, &#x27;each&#x27;, &#
       if (!sceneName) {
         return;
       }
-      
-      if (typeof sceneDeps === &#x27;function&#x27;) {
+
+      if ( typeof sceneDeps === &#x27;function&#x27;) {
+        options = sceneFunction;
         sceneFunction = sceneDeps;
         sceneDeps = [];
       }
@@ -165,19 +168,14 @@ define(&#x27;lyria/scene&#x27;, [&#x27;isemptyobject&#x27;, &#x27;each&#x27;, &#
         self.template.data = extend(true, self.template.data, obj);
       };
 
-      // Call scene
-      require([&#x27;lyria/achievements&#x27;, &#x27;lyria/log&#x27;, &#x27;lyria/component&#x27;, &#x27;lyria/gameobject&#x27;, &#x27;lyria/events&#x27;, &#x27;lyria/resource&#x27;, &#x27;lyria/data/store&#x27;], function(Achievements, Log, Component, GameObject, Events, Resource, DataStore) {
-        var LyriaObject = {
-          Achievements: Achievements,
-          Log: Log,
-          Component: Component,
-          GameObject: GameObject,
-          Events: Events,
-          Resource: Resource,
-          DataStore: DataStore
-        };
+      var createScene = function(LyriaObject, deps) {
+        if (deps == null) {
+          deps = [];
+        }
         
-        sceneFunction.apply(self, [self, LyriaObject]);
+        console.log(deps);
+        
+        sceneFunction.apply(self, [self, LyriaObject].concat(deps));
 
         self.refresh();
 
@@ -198,8 +196,29 @@ define(&#x27;lyria/scene&#x27;, [&#x27;isemptyobject&#x27;, &#x27;each&#x27;, &#
             }
           });
         });
-      });
 
+      };
+
+      // Call scene
+      require([&#x27;lyria/achievements&#x27;, &#x27;lyria/log&#x27;, &#x27;lyria/component&#x27;, &#x27;lyria/gameobject&#x27;, &#x27;lyria/events&#x27;, &#x27;lyria/resource&#x27;, &#x27;lyria/data/store&#x27;], function(Achievements, Log, Component, GameObject, Events, Resource, DataStore) {
+        var LyriaObject = {
+          Achievements: Achievements,
+          Log: Log,
+          Component: Component,
+          GameObject: GameObject,
+          Events: Events,
+          Resource: Resource,
+          DataStore: DataStore
+        };
+
+        if (sceneDeps.length &gt; 0) {
+          require(sceneDeps, function() {
+            createScene(LyriaObject, [].slice.call(arguments, 0));
+          });
+        } else {
+          createScene(LyriaObject);
+        }
+      });
     };
 
     /**
@@ -270,7 +289,7 @@ define(&#x27;lyria/scene&#x27;, [&#x27;isemptyobject&#x27;, &#x27;each&#x27;, &#
 
     /**
      *  Sets an event to the event object or returns a specified event
-     *  
+     *
      * @method event
      * @param {String} selector
      * @param {String} eventName
@@ -280,11 +299,11 @@ define(&#x27;lyria/scene&#x27;, [&#x27;isemptyobject&#x27;, &#x27;each&#x27;, &#
       if (selector == null) {
         return;
       }
-      
+
       if (eventName == null) {
         return this.events[selector];
       } else {
-        if (typeof eventFunction === &#x27;function&#x27;) {
+        if ( typeof eventFunction === &#x27;function&#x27;) {
           this.events[selector] = {};
           this.events[selector][eventName] = eventFunction;
         } else {
@@ -299,7 +318,8 @@ define(&#x27;lyria/scene&#x27;, [&#x27;isemptyobject&#x27;, &#x27;each&#x27;, &#
 
   return Scene;
 
-}); 
+});
+
     </pre>
 </div>
 
