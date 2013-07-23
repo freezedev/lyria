@@ -801,7 +801,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 110,
+            "line": 109,
             "description": "Adds a gameobject to the scene",
             "itemtype": "method",
             "name": "add",
@@ -817,7 +817,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 158,
+            "line": 157,
             "description": "Refreshes the scene (Re-renders the template)",
             "itemtype": "method",
             "name": "refresh",
@@ -833,7 +833,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 176,
+            "line": 175,
             "description": "Sets an event to the event object or returns a specified event",
             "itemtype": "method",
             "name": "event",

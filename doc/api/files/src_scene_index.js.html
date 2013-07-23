@@ -173,8 +173,7 @@ define(&#x27;lyria/scene&#x27;, [&#x27;isemptyobject&#x27;, &#x27;each&#x27;, &#
           deps = [];
         }
         
-        console.log(deps);
-        
+        // TODO: Evaluate how to show dependencies (concat into array, array with objects of name and value)
         sceneFunction.apply(self, [self, LyriaObject].concat(deps));
 
         self.refresh();
