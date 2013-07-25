@@ -132,27 +132,27 @@ define(&#x27;lyria/log&#x27;, [&#x27;root&#x27;], function(root) {
     Log.Plugins.Console = {
       e: function() {
         if (root.console &amp;&amp; root.console.error) {
-          return root.console.error.apply(null, arguments);
+          return root.console.error.apply(console, arguments);
         }
       },
       w: function() {
         if (root.console &amp;&amp; root.console.warn) {
-          return root.console.warn.apply(null, arguments);
+          return root.console.warn.apply(console, arguments);
         }
       },
       i: function() {
         if (root.console &amp;&amp; root.console.info) {
-          return root.console.info.apply(null, arguments);
+          return root.console.info.apply(console, arguments);
         }
       },
       d: function() {
         if (root.console &amp;&amp; root.console.log) {
-          return root.console.log.apply(null, arguments);
+          return root.console.log.apply(console, arguments);
         }
       },
       v: function() {
         if (root.console &amp;&amp; root.console.log) {
-          return root.console.log.apply(null, arguments);
+          return root.console.log.apply(console, arguments);
         }
       }
     };
