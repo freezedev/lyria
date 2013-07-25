@@ -18,27 +18,27 @@ define('lyria/log', ['root'], function(root) {
     Log.Plugins.Console = {
       e: function() {
         if (root.console && root.console.error) {
-          return root.console.error.apply(null, arguments);
+          return root.console.error.apply(console, arguments);
         }
       },
       w: function() {
         if (root.console && root.console.warn) {
-          return root.console.warn.apply(null, arguments);
+          return root.console.warn.apply(console, arguments);
         }
       },
       i: function() {
         if (root.console && root.console.info) {
-          return root.console.info.apply(null, arguments);
+          return root.console.info.apply(console, arguments);
         }
       },
       d: function() {
         if (root.console && root.console.log) {
-          return root.console.log.apply(null, arguments);
+          return root.console.log.apply(console, arguments);
         }
       },
       v: function() {
         if (root.console && root.console.log) {
-          return root.console.log.apply(null, arguments);
+          return root.console.log.apply(console, arguments);
         }
       }
     };
