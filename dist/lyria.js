@@ -502,7 +502,7 @@ define('lyria/language', ['detectr', 'lyria/events'], function(detectr, Events) 
   var vendors;
 
   vendors = ['ms', 'moz', 'webkit', 'o'];
-  define('requestAnimationFrame', ['root'], function(root) {
+  define('requestanimationframe', ['root'], function(root) {
     var lastTime, requestAnimationFrame, x, _i, _len;
 
     lastTime = 0;
@@ -531,7 +531,7 @@ define('lyria/language', ['detectr', 'lyria/events'], function(detectr, Events) 
     }
     return requestAnimationFrame;
   });
-  return define('cancelAnimationFrame', ['root'], function(root) {
+  return define('cancelanimationframe', ['root'], function(root) {
     var cancelAnimationFrame, x, _i, _len;
 
     cancelAnimationFrame = root.cancelAnimationFrame;
@@ -795,6 +795,21 @@ define('mixin', function() {
 
   return mixin;
 });
+/**
+ * Trying to find a better alternative than setTimeout(fn, 0)
+ * requestAnimationFrame should be a better alternative
+ */
+define('nexttick', ['requestanimationframe', 'cancelanimationframe'], function(requestAnimationFrame, cancelAnimationFrame) {
+  return function(fn) {
+    var id = requestAnimationFrame(function() {
+      if (fn != null) {
+        fn();
+      }
+      cancelAnimationFrame(id);
+    });
+  };
+});
+
 define('path', function() {
   var delimiter = '/';
 
@@ -1449,7 +1464,7 @@ define('lyria/log', ['root'], function(root) {
 /**
  * @module Lyria
  */
-define('lyria/loop', ['root', 'each', 'requestAnimationFrame'], function(root, each, requestAnimationFrame) {
+define('lyria/loop', ['root', 'each', 'requestanimationframe'], function(root, each, requestAnimationFrame) {
   'use strict';
   
   /**
