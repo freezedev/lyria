@@ -1,7 +1,7 @@
 /**
  * @module Lyria
  */
-define('lyria/loop', ['root', 'each', 'requestAnimationFrame'], function(root, each, requestAnimationFrame) {
+define('lyria/loop', ['root', 'each', 'requestanimationframe'], function(root, each, requestAnimationFrame) {
   'use strict';
   
   /**
