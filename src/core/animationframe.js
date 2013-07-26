@@ -2,7 +2,7 @@
   var vendors;
 
   vendors = ['ms', 'moz', 'webkit', 'o'];
-  define('requestAnimationFrame', ['root'], function(root) {
+  define('requestanimationframe', ['root'], function(root) {
     var lastTime, requestAnimationFrame, x, _i, _len;
 
     lastTime = 0;
@@ -31,7 +31,7 @@
     }
     return requestAnimationFrame;
   });
-  return define('cancelAnimationFrame', ['root'], function(root) {
+  return define('cancelanimationframe', ['root'], function(root) {
     var cancelAnimationFrame, x, _i, _len;
 
     cancelAnimationFrame = root.cancelAnimationFrame;
