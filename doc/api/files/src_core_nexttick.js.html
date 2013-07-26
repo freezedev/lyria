@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src\loop.js - lyria</title>
+    <title>src\core\nexttick.js - lyria</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -108,94 +108,25 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: src\loop.js</h1>
+                        <h1 class="file-heading">File: src\core\nexttick.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
 /**
- * @module Lyria
+ * Trying to find a better alternative than setTimeout(fn, 0)
+ * requestAnimationFrame should be a better alternative
  */
-define(&#x27;lyria/loop&#x27;, [&#x27;root&#x27;, &#x27;each&#x27;, &#x27;requestanimationframe&#x27;], function(root, each, requestAnimationFrame) {
-  &#x27;use strict&#x27;;
-  
-  /**
-   * @class Loop
-   * @static 
-   */
-  return (function() {
-
-    var taskList = {};
-    var isRunning = true;
-
-    /**
-     * @method run 
-     */
-    var run = function() {
-      var time;
-
-      (function loop() {
-        requestAnimationFrame(loop);
-
-        var now = Date.now();
-        var dt = now - (time || now);
-
-        time = now;
-
-        if (!isRunning) {
-          return;
-        }
-
-        each(taskList, function(key, value) {
-          if (!value.paused) {
-            value.value(dt);
-          }
-        });
-      })();
-    };
-
-    /**
-     * @method stop 
-     */
-    var stop = function() {
-      isRunning = false;
-    };
-
-    var clear = function() {
-      taskList = {};
-    };
-
-    var addTask = function(taskName, taskFunction) {
-
-      taskList[taskName] = {
-        &#x27;paused&#x27;: false,
-        &#x27;value&#x27;: taskFunction
-      };
-    };
-
-    var pauseTask = function(taskName) {
-      taskList[taskName].paused = true;
-    };
-
-    var resumeTask = function(taskName) {
-      taskList[taskName].paused = false;
-    };
-
-    var removeTask = function(taskName) {
-      delete taskList[taskName];
-    };
-
-    return {
-      run: run,
-      stop: stop,
-      clear: clear,
-      addTask: addTask,
-      removeTask: removeTask,
-      pauseTask: pauseTask,
-      resumeTask: resumeTask
-    };
-  })();
-  
+define(&#x27;nexttick&#x27;, [&#x27;requestanimationframe&#x27;, &#x27;cancelanimationframe&#x27;], function(requestAnimationFrame, cancelAnimationFrame) {
+  return function(fn) {
+    var id = requestAnimationFrame(function() {
+      if (fn != null) {
+        fn();
+      }
+      cancelAnimationFrame(id);
+    });
+  };
 });
+
     </pre>
 </div>
 

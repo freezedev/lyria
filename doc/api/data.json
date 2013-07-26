@@ -24,6 +24,13 @@
             "fors": {},
             "namespaces": {}
         },
+        "src\\core\\nexttick.js": {
+            "name": "src\\core\\nexttick.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
         "src\\events\\eventmap.js": {
             "name": "src\\events\\eventmap.js",
             "modules": {},
@@ -608,6 +615,13 @@
             "file": "src\\core\\fisheryates.js",
             "line": 2,
             "description": "Randomize array element order in-place.\nUsing Fisher-Yates shuffle algorithm.",
+            "class": "Director",
+            "module": "Lyria"
+        },
+        {
+            "file": "src\\core\\nexttick.js",
+            "line": 1,
+            "description": "Trying to find a better alternative than setTimeout(fn, 0)\nrequestAnimationFrame should be a better alternative",
             "class": "Director",
             "module": "Lyria"
         },
@@ -1323,6 +1337,10 @@
         {
             "message": "Missing item type\nRandomize array element order in-place.\nUsing Fisher-Yates shuffle algorithm.",
             "line": " src\\core\\fisheryates.js:2"
+        },
+        {
+            "message": "Missing item type\nTrying to find a better alternative than setTimeout(fn, 0)\nrequestAnimationFrame should be a better alternative",
+            "line": " src\\core\\nexttick.js:1"
         },
         {
             "message": "Missing item type",
