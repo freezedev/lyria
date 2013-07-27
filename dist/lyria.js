@@ -502,10 +502,9 @@ define('lyria/language', ['detectr', 'lyria/events'], function(detectr, Events) 
   var vendors;
 
   vendors = ['ms', 'moz', 'webkit', 'o'];
-  define('requestanimationframe', ['root'], function(root) {
-    var lastTime, requestAnimationFrame, x, _i, _len;
 
-    lastTime = 0;
+  define('requestAnimationFrame', ['root'], function(root) {
+    var lastTime, requestAnimationFrame, x, _i, _len;
     requestAnimationFrame = root.requestAnimationFrame;
     if (!requestAnimationFrame) {
       for (_i = 0, _len = vendors.length; _i < _len; _i++) {
@@ -517,10 +516,10 @@ define('lyria/language', ['detectr', 'lyria/events'], function(detectr, Events) 
       }
     }
     if (!requestAnimationFrame) {
+      lastTime = 0;
       requestAnimationFrame = function(callback, element) {
-        var currTime, id, timeToCall;
-
-        currTime = Date.now();
+        var currTime, id, timeToCall, _ref;
+        currTime = (_ref = performance.now()) != null ? _ref : Date.now();
         timeToCall = Math.max(0, 16 - (currTime - lastTime));
         id = root.setTimeout((function() {
           return callback(currTime + timeToCall);
@@ -531,9 +530,9 @@ define('lyria/language', ['detectr', 'lyria/events'], function(detectr, Events) 
     }
     return requestAnimationFrame;
   });
-  return define('cancelanimationframe', ['root'], function(root) {
-    var cancelAnimationFrame, x, _i, _len;
 
+  define('cancelAnimationFrame', ['root'], function(root) {
+    var cancelAnimationFrame, x, _i, _len;
     cancelAnimationFrame = root.cancelAnimationFrame;
     if (!cancelAnimationFrame) {
       for (_i = 0, _len = vendors.length; _i < _len; _i++) {
@@ -551,7 +550,8 @@ define('lyria/language', ['detectr', 'lyria/events'], function(detectr, Events) 
     }
     return cancelAnimationFrame;
   });
-})();
+
+}).call(this);
 define('clamp', function() {
   var clamp = function(value, min, max) {
     var _ref, _ref1, _ref2;
@@ -1485,7 +1485,7 @@ define('lyria/loop', ['root', 'each', 'requestanimationframe'], function(root, e
       (function loop() {
         requestAnimationFrame(loop);
 
-        var now = Date.now();
+        var now = performance.now() || Date.now();
         var dt = now - (time || now);
 
         time = now;
