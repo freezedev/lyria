@@ -136,7 +136,7 @@ define(&#x27;lyria/loop&#x27;, [&#x27;root&#x27;, &#x27;each&#x27;, &#x27;reques
       (function loop() {
         requestAnimationFrame(loop);
 
-        var now = Date.now();
+        var now = performance.now() || Date.now();
         var dt = now - (time || now);
 
         time = now;
