@@ -1,5 +1,9 @@
 Lyria
 =====
+
+[![Dependency Status](https://david-dm.org/freezedev/lyria.png)](https://david-dm.org/freezedev/lyria)
+[![devDependency Status](https://david-dm.org/freezedev/lyria/dev-status.png)](https://david-dm.org/freezedev/lyria#info=devDependencies)
+
 Lightweight prototyping javascript game framework based on jQuery. 
 
 The Lyria template can be found here: https://github.com/freezedev/lyria-template
