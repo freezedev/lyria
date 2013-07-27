@@ -2,10 +2,9 @@
   var vendors;
 
   vendors = ['ms', 'moz', 'webkit', 'o'];
+
   define('requestanimationframe', ['root'], function(root) {
     var lastTime, requestAnimationFrame, x, _i, _len;
-
-    lastTime = 0;
     requestAnimationFrame = root.requestAnimationFrame;
     if (!requestAnimationFrame) {
       for (_i = 0, _len = vendors.length; _i < _len; _i++) {
@@ -17,10 +16,10 @@
       }
     }
     if (!requestAnimationFrame) {
+      lastTime = 0;
       requestAnimationFrame = function(callback, element) {
-        var currTime, id, timeToCall;
-
-        currTime = Date.now();
+        var currTime, id, timeToCall, _ref;
+        currTime = (_ref = performance.now()) != null ? _ref : Date.now();
         timeToCall = Math.max(0, 16 - (currTime - lastTime));
         id = root.setTimeout((function() {
           return callback(currTime + timeToCall);
@@ -31,9 +30,9 @@
     }
     return requestAnimationFrame;
   });
-  return define('cancelanimationframe', ['root'], function(root) {
-    var cancelAnimationFrame, x, _i, _len;
 
+  define('cancelanimationframe', ['root'], function(root) {
+    var cancelAnimationFrame, x, _i, _len;
     cancelAnimationFrame = root.cancelAnimationFrame;
     if (!cancelAnimationFrame) {
       for (_i = 0, _len = vendors.length; _i < _len; _i++) {
@@ -51,4 +50,5 @@
     }
     return cancelAnimationFrame;
   });
-})();
+
+}).call(this);
