@@ -22,7 +22,7 @@ define('lyria/loop', ['root', 'each', 'requestanimationframe'], function(root, e
       (function loop() {
         requestAnimationFrame(loop);
 
-        var now = Date.now();
+        var now = performance.now() || Date.now();
         var dt = now - (time || now);
 
         time = now;
