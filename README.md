@@ -11,6 +11,12 @@ The Lyria template can be found here: https://github.com/freezedev/lyria-templat
 If you are looking for something more CoffeeScript, take a look at [Elyssa](https://github.com/elysion-powered/elyssa).  
 If you are looking for something less game-related, take a look at [MilkSugar](https://github.com/freezedev/milksugar).
 
+Getting Lyria
+-------------
+
+If you have Bower installed, simply do:
+`bower install lyria`
+
 Warning
 -------
 
