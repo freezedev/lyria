@@ -1,6 +1,6 @@
 {
   "name": "lyria",
-  "version": "0.2.0",
+  "version": "0.2.0-beta1",
   "main": "dist/lyria.js",
   "ignore": [
     "**/.*",
@@ -12,6 +12,7 @@
   "dependencies": {
     "almond": "git://github.com/jrburke/almond.git#~0.2.5",
     "checkt": "git://github.com/Stoney-FD/checkt.git#~1.1.0",
+    "detectr": "git://github.com/Stoney-FD/detectr.git#~0.2.0",
     "handlebars": "git://github.com/components/handlebars.js.git#~1.0.0",
     "jquery": "git://github.com/components/jquery.git#~2.0.3",
     "modernizr": "git://github.com/Modernizr/Modernizr.git#~2.6.2"
