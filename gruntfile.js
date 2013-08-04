@@ -49,6 +49,7 @@ module.exports = function(grunt) {
         }
       }
     },
+    clean: ['dist'],
     dependo: {
       targetPath: 'src',
       outputPath: './doc/dependencies',
@@ -66,6 +67,6 @@ module.exports = function(grunt) {
 
   grunt.registerTask('test', 'Lints and unit tests', ['jshint']);
   grunt.registerTask('doc', 'Generated documentation', ['yuidoc', 'dependo']);
-  grunt.registerTask('default', 'Default task', ['test', 'concat', 'uglify', 'less', 'doc']);
+  grunt.registerTask('default', 'Default task', ['clean', 'test', 'concat', 'uglify', 'less', 'doc']);
 
 };
