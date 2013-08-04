@@ -10,6 +10,7 @@
     "grunt-contrib-yuidoc": "*",
     "grunt-contrib-less": "*",
     "grunt-contrib-watch": "*",
+    "grunt-contrib-clean": "*",
     "grunt-dependo": "*"
   },
   "repository": {
