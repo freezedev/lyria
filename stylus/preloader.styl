@@ -1,0 +1,20 @@
+.loading-bar {
+  $barWidth = 256px;
+  $barHeight = 32px;
+  
+  $barColor = rgb(36, 72, 102);
+  
+  left: 50%;
+  top: 50%;
+  width: ($barWidth / 2);
+  height: ($barHeight / 2);
+  border-radius: ($barHeight / 2);
+  
+  border: 1px solid darken($barColor, 25%);
+  background-image: linear-gradient(top, $barColor, lighten($barColor, 10%));
+  
+  .inner {
+    
+  }
+  
+}
