@@ -2,7 +2,7 @@
     "project": {
         "name": "lyria",
         "description": "",
-        "version": "0.2.0",
+        "version": "0.2.0-beta1",
         "url": ""
     },
     "files": {
@@ -815,7 +815,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 109,
+            "line": 135,
             "description": "Adds a gameobject to the scene",
             "itemtype": "method",
             "name": "add",
@@ -831,7 +831,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 157,
+            "line": 183,
             "description": "Refreshes the scene (Re-renders the template)",
             "itemtype": "method",
             "name": "refresh",
@@ -847,7 +847,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 175,
+            "line": 201,
             "description": "Sets an event to the event object or returns a specified event",
             "itemtype": "method",
             "name": "event",
