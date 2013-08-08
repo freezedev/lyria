@@ -5,9 +5,13 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     concat: {
-      dist: {
+      scripts: {
         src: [lyriaOrigin],
         dest: 'dist/<%= pkg.name %>.js'
+      },
+      styles: {
+        src: ['css/**/*.css'],
+        dest: 'css/<%= pkg.name %>.css'
       }
     },
     uglify: {
@@ -17,7 +21,7 @@ module.exports = function(grunt) {
       },
       dist: {
         files: {
-          'dist/<%= pkg.name %>.min.js': ['<%= concat.dist.dest %>']
+          'dist/<%= pkg.name %>.min.js': ['<%= concat.scripts.dest %>']
         }
       }
     },
@@ -38,15 +42,23 @@ module.exports = function(grunt) {
         }
       }
     },
-    less: {
+    stylus: {
       options: {
-        paths: ['style'],
-        yuicompress: true
+        paths: ['stylus'],
+        urlfunc: 'embedurl',
+        import: ['nib']
       },
-      dist: {
-        files: {
-          'css/lyria.css': 'style/*.less'
-        }
+      compile: {
+        options: {
+          compress: false,
+        },
+        files: [{
+          expand: true,
+          cwd: 'stylus/',
+          src: ['**/*.styl'],
+          dest: 'css/',
+          ext: '.css'
+        }]
       }
     },
     clean: ['dist'],
@@ -57,16 +69,10 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-yuidoc');
-  grunt.loadNpmTasks('grunt-contrib-less');
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-dependo');
+  require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
   grunt.registerTask('test', 'Lints and unit tests', ['jshint']);
   grunt.registerTask('doc', 'Generated documentation', ['yuidoc', 'dependo']);
-  grunt.registerTask('default', 'Default task', ['clean', 'test', 'concat', 'uglify', 'less', 'doc']);
+  grunt.registerTask('default', 'Default task', ['clean', 'test', 'stylus', 'concat', 'uglify', 'doc']);
 
 };
