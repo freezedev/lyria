@@ -7,11 +7,11 @@ module.exports = function(grunt) {
     concat: {
       scripts: {
         src: [lyriaOrigin],
-        dest: 'dist/<%= pkg.name %>.js'
+        dest: 'dist/js/<%= pkg.name %>.js'
       },
       styles: {
-        src: ['css/**/*.css'],
-        dest: 'css/<%= pkg.name %>.css'
+        src: ['dist/css/*.css'],
+        dest: 'dist/css/<%= pkg.name %>.css'
       }
     },
     uglify: {
@@ -21,8 +21,17 @@ module.exports = function(grunt) {
       },
       dist: {
         files: {
-          'dist/<%= pkg.name %>.min.js': ['<%= concat.scripts.dest %>']
+          'dist/js/<%= pkg.name %>.min.js': ['<%= concat.scripts.dest %>']
         }
+      }
+    },
+    cssmin: {
+      minify: {
+        expand: true,
+        cwd: 'dist/css/',
+        src: ['*.css', '!*.min.css'],
+        dest: 'dist/css/min',
+        ext: '.min.css'
       }
     },
     jshint: {
@@ -56,7 +65,7 @@ module.exports = function(grunt) {
           expand: true,
           cwd: 'stylus/',
           src: ['**/*.styl'],
-          dest: 'css/',
+          dest: 'dist/css/',
           ext: '.css'
         }]
       }
@@ -73,6 +82,6 @@ module.exports = function(grunt) {
 
   grunt.registerTask('test', 'Lints and unit tests', ['jshint']);
   grunt.registerTask('doc', 'Generated documentation', ['yuidoc', 'dependo']);
-  grunt.registerTask('default', 'Default task', ['clean', 'test', 'stylus', 'concat', 'uglify', 'doc']);
+  grunt.registerTask('default', 'Default task', ['clean', 'test', 'stylus', 'concat', 'uglify', 'cssmin', 'doc']);
 
 };
