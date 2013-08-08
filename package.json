@@ -1,17 +1,17 @@
 {
   "name": "lyria",
   "version": "0.2.0-beta1",
-  "private": true,
   "devDependencies": {
     "grunt": "0.4.x",
-    "grunt-contrib-uglify": "*",
-    "grunt-contrib-jshint": "*",
-    "grunt-contrib-concat": "*",
-    "grunt-contrib-yuidoc": "*",
-    "grunt-contrib-less": "*",
-    "grunt-contrib-watch": "*",
+    "grunt-contrib-uglify": "0.2.x",
+    "grunt-contrib-jshint": "0.6.x",
+    "grunt-contrib-concat": "0.3.x",
+    "grunt-contrib-yuidoc": "0.4.x",
+    "grunt-contrib-stylus": "0.7.x",
+    "grunt-contrib-watch": "0.5.x",
     "grunt-contrib-clean": "*",
-    "grunt-dependo": "*"
+    "grunt-dependo": "0.1.x",
+    "matchdep": "0.1.x"
   },
   "repository": {
     "type": "git",
