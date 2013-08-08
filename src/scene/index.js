@@ -1,7 +1,7 @@
 /**
  * @module Lyria
  */
-define('lyria/scene', ['isemptyobject', 'each', 'extend', 'clone', 'mixin', 'lyria/eventmap', 'lyria/gameobject'], function(isEmptyObject, each, extend, clone, mixin, EventMap, GameObject) {'use strict';
+define('lyria/scene', ['isemptyobject', 'each', 'extend', 'clone', 'mixin', 'nexttick', 'lyria/eventmap', 'lyria/gameobject'], function(isEmptyObject, each, extend, clone, mixin, nextTick, EventMap, GameObject) {'use strict';
 
   var Scene = (function() {
 
@@ -59,29 +59,55 @@ define('lyria/scene', ['isemptyobject', 'each', 'extend', 'clone', 'mixin', 'lyr
           deps = [];
         }
         
-        // TODO: Evaluate how to show dependencies (concat into array, array with objects of name and value)
-        sceneFunction.apply(self, [self, LyriaObject].concat(deps));
-
-        self.refresh();
-
-        if (self.events) {
-          if (options && options.isPrefab) {
-            self.events.delegate = (options.target) ? options.target : 'body';
-          } else {
-            self.events.delegate = '#' + sceneName;
+        var sceneDone = function(err, success) {
+          if (err) {
+            return console.error('Error while executing scene ' + self.name + ': ' + err);
           }
-        }
+          
+          self.refresh();
 
-        self.on('update', function(dt) {
-          each(self.children, function(childKey, childValue) {
-            if (!isEmptyObject(childValue)) {
-              each(childValue, function(key, value) {
-                value.trigger('update', dt);
-              });
+          if (self.events) {
+            if (options && options.isPrefab) {
+              self.events.delegate = (options.target) ? options.target : 'body';
+            } else {
+              self.events.delegate = '#' + sceneName;
             }
+          }
+  
+          self.on('update', function(dt) {
+            each(self.children, function(childKey, childValue) {
+              if (!isEmptyObject(childValue)) {
+                each(childValue, function(key, value) {
+                  value.trigger('update', dt);
+                });
+              }
+            });
           });
-        });
-
+        };
+        
+        var async = false;
+        
+        var context = self;
+        context.async = function() {
+          async = true;
+          
+          return function() {
+            nextTick(function() {              
+              sceneDone();
+            });
+          };
+        };
+        
+        // TODO: Evaluate how to show dependencies (concat into array, array with objects of name and value)
+        try {
+          var success = sceneFunction.apply(context, [context, LyriaObject].concat(deps));
+          
+          if (!async) {
+            sceneDone(null, success);
+          }
+        } catch (e) {
+          sceneDone(e);
+        }
       };
 
       // Call scene
