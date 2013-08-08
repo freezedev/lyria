@@ -1,0 +1,40 @@
+.status.achievement
+  display: none
+  position: absolute
+  left: 50%
+  bottom: -120px
+  margin-left: -160px
+
+.achievement
+  opacity: 1.0
+  border: 1px solid #fff
+  background-color: #000
+  color: #ddd
+  border-radius: 18px
+  box-shadow: 0px 0px 8px #ccc
+  background-image: embedurl('img/trophy.png')
+  background-size: 64px
+  background-repeat: no-repeat
+  background-position: 6px 6px
+  margin-left: 0px
+  width: 320px
+  height: 64px
+  padding-left: 80px
+  padding-bottom: 8px
+  padding-right: 12px
+  padding-top: 8px
+  z-index: 30000001
+  
+  &.locked
+    background-color: #ccc
+    color: #444
+    
+    .title
+      color: #444
+      font-weight: bold
+      text-shadow: 0px 0px 4px #888
+
+  .title
+    color: #fff
+    font-weight: bold
+    text-shadow: 0px 0px 8px #eee
