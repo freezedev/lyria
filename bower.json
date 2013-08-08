@@ -1,14 +1,8 @@
 {
   "name": "lyria",
   "version": "0.2.0-beta1",
-  "main": "dist/lyria.js",
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests"
-  ],
+  "main": ["dist/js/lyria.js", "dist/css/lyria.css"],
+  "ignore": ["**/.*", "node_modules", "bower_components", "test", "tests"],
   "dependencies": {
     "almond": "~0.2.5",
     "checkt": "~1.1.0",
