@@ -13,10 +13,10 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'ly
     /**
      * The scene director constructor
      * Attaches a scene director to a container, the parent is optional
-     * 
+     *
      * @class Director
      * @constructor
-     * 
+     *
      * @param {Object} container
      * @param {Object} parent
      */
@@ -31,14 +31,14 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'ly
 
       /**
        * All scenes
-       * 
+       *
        * @property sceneList
-       * @type {Object} 
+       * @type {Object}
        */
       this.sceneList = {};
-      
+
       /**
-       * The current scene 
+       * The current scene
        *
        * @property currentScene
        * @type {Scene}
@@ -50,10 +50,10 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'ly
     SceneDirector.prototype.sceneClassName = 'scene';
 
     // Methods
-    
+
     /**
      * Adds a scene to the scene director
-     * 
+     *
      * @method add
      * @param {Object} scene
      * @param {Object} options
@@ -76,39 +76,10 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'ly
         if ($('#' + scene.name).length === 0) {
           this.viewport.$element.prepend($(root.document.createElement('div')).attr('id', scene.name).attr('class', SceneDirector.prototype.sceneClassName));
 
-          if (!scene.async) {
-            if (scene.content) {
-              $('#' + scene.name).html(scene.content);
-            }
+          if (!scene.isAsync) {
+            scene.trigger('added');            
           }
 
-          // Bind events
-          if (scene.events && !$.isEmptyObject(scene.events)) {
-            $.each(scene.events, function(key, value) {
-              if (( typeof value === 'object') && (key !== 'delegate')) {
-                $(scene.events.delegate).on(value, key, {
-                  scene: scene
-                });
-              }
-            });
-          }
-
-          // Data binding
-          if (scene.template.data && !$.isEmptyObject(scene.template.data)) {
-            $('#' + scene.name + ' [data-bind]').each(function() {
-              var $dataElem = $(this);
-              
-              var prop = $dataElem.data('bind');
-
-              scene.template.data.watch(prop, function(id, oldval, newval) {
-                if (oldval !== newval) {
-                  $dataElem.html(newval);
-                }
-
-                return newval;
-              });
-            });
-          }
         }
       }
 
@@ -117,7 +88,7 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'ly
 
     /**
      * Shows a specified scene
-     * 
+     *
      * @method show
      * @param {String} scene
      * @param {Object} options
@@ -169,7 +140,7 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'ly
 
     /**
      * Refreshes a scene
-     * 
+     *
      * @method refresh
      * @param {String} scene
      */
@@ -178,15 +149,11 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'ly
 
       // Re-compile scene template
       sceneObj.refresh();
-
-      if (sceneObj.content) {
-        $('#' + sceneObj.name).html(sceneObj.content);
-      }
     };
 
     /**
      * Triggers the render event of the current scene
-     * 
+     *
      * @method render
      */
     SceneDirector.prototype.render = function() {
@@ -195,7 +162,7 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'ly
 
     /**
      * Triggers the update event of the current scene
-     * 
+     *
      * @param {Number} dt
      */
     SceneDirector.prototype.update = function(dt) {
