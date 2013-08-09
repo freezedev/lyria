@@ -1806,10 +1806,10 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'ly
     /**
      * The scene director constructor
      * Attaches a scene director to a container, the parent is optional
-     * 
+     *
      * @class Director
      * @constructor
-     * 
+     *
      * @param {Object} container
      * @param {Object} parent
      */
@@ -1824,14 +1824,14 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'ly
 
       /**
        * All scenes
-       * 
+       *
        * @property sceneList
-       * @type {Object} 
+       * @type {Object}
        */
       this.sceneList = {};
-      
+
       /**
-       * The current scene 
+       * The current scene
        *
        * @property currentScene
        * @type {Scene}
@@ -1843,10 +1843,10 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'ly
     SceneDirector.prototype.sceneClassName = 'scene';
 
     // Methods
-    
+
     /**
      * Adds a scene to the scene director
-     * 
+     *
      * @method add
      * @param {Object} scene
      * @param {Object} options
@@ -1869,39 +1869,40 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'ly
         if ($('#' + scene.name).length === 0) {
           this.viewport.$element.prepend($(root.document.createElement('div')).attr('id', scene.name).attr('class', SceneDirector.prototype.sceneClassName));
 
-          if (!scene.async) {
-            if (scene.content) {
-              $('#' + scene.name).html(scene.content);
-            }
-          }
+          scene.trigger('added');
 
-          // Bind events
-          if (scene.events && !$.isEmptyObject(scene.events)) {
-            $.each(scene.events, function(key, value) {
-              if (( typeof value === 'object') && (key !== 'delegate')) {
-                $(scene.events.delegate).on(value, key, {
-                  scene: scene
-                });
-              }
-            });
-          }
+          scene.on('done', function() {
+            $('#' + scene.name).html(scene.content);
 
-          // Data binding
-          if (scene.template.data && !$.isEmptyObject(scene.template.data)) {
-            $('#' + scene.name + ' [data-bind]').each(function() {
-              var $dataElem = $(this);
-              
-              var prop = $dataElem.data('bind');
-
-              scene.template.data.watch(prop, function(id, oldval, newval) {
-                if (oldval !== newval) {
-                  $dataElem.html(newval);
+            // Bind events
+            if (scene.events && !$.isEmptyObject(scene.events)) {
+              $.each(scene.events, function(key, value) {
+                if (( typeof value === 'object') && (key !== 'delegate')) {
+                  $(scene.events.delegate).on(value, key, {
+                    scene: scene
+                  });
                 }
-
-                return newval;
               });
-            });
-          }
+            }
+
+            // Data binding
+            if (scene.template.data && !$.isEmptyObject(scene.template.data)) {
+              $('#' + scene.name + ' [data-bind]').each(function() {
+                var $dataElem = $(this);
+
+                var prop = $dataElem.data('bind');
+
+                scene.template.data.watch(prop, function(id, oldval, newval) {
+                  if (oldval !== newval) {
+                    $dataElem.html(newval);
+                  }
+
+                  return newval;
+                });
+              });
+            }
+          });
+
         }
       }
 
@@ -1910,7 +1911,7 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'ly
 
     /**
      * Shows a specified scene
-     * 
+     *
      * @method show
      * @param {String} scene
      * @param {Object} options
@@ -1962,7 +1963,7 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'ly
 
     /**
      * Refreshes a scene
-     * 
+     *
      * @method refresh
      * @param {String} scene
      */
@@ -1971,15 +1972,11 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'ly
 
       // Re-compile scene template
       sceneObj.refresh();
-
-      if (sceneObj.content) {
-        $('#' + sceneObj.name).html(sceneObj.content);
-      }
     };
 
     /**
      * Triggers the render event of the current scene
-     * 
+     *
      * @method render
      */
     SceneDirector.prototype.render = function() {
@@ -1988,7 +1985,7 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'ly
 
     /**
      * Triggers the update event of the current scene
-     * 
+     *
      * @param {Number} dt
      */
     SceneDirector.prototype.update = function(dt) {
@@ -2003,7 +2000,7 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'ly
 /**
  * @module Lyria
  */
-define('lyria/scene', ['isemptyobject', 'each', 'extend', 'clone', 'mixin', 'nexttick', 'lyria/eventmap', 'lyria/gameobject'], function(isEmptyObject, each, extend, clone, mixin, nextTick, EventMap, GameObject) {'use strict';
+define('lyria/scene', ['jquery', 'isemptyobject', 'each', 'extend', 'clone', 'mixin', 'nexttick', 'lyria/eventmap', 'lyria/gameobject'], function($, isEmptyObject, each, extend, clone, mixin, nextTick, EventMap, GameObject) {'use strict';
 
   var Scene = (function() {
 
@@ -2055,55 +2052,102 @@ define('lyria/scene', ['isemptyobject', 'each', 'extend', 'clone', 'mixin', 'nex
 
         self.template.data = extend(true, self.template.data, obj);
       };
+      
+      Object.defineProperty(self, '$element', {
+        get: function() {
+          return $('#' + self.name);
+        }
+      });
+
+      self.on('added', function() {
+        self.refresh();
+
+        if (self.events) {
+          if (options && options.isPrefab) {
+            self.events.delegate = (options.target) ? options.target : 'body';
+          } else {
+            self.events.delegate = '#' + sceneName;
+          }
+        }
+
+        self.on('update', function(dt) {
+          each(self.children, function(childKey, childValue) {
+            if (!isEmptyObject(childValue)) {
+              each(childValue, function(key, value) {
+                value.trigger('update', dt);
+              });
+            }
+          });
+        });
+
+        // Bind events
+        if (self.events && !$.isEmptyObject(self.events)) {
+          $.each(self.events, function(key, value) {
+            if (( typeof value === 'object') && (key !== 'delegate')) {
+              $(self.events.delegate).on(value, key, {
+                scene: self
+              });
+            }
+          });
+        }
+
+        // Data binding
+        if (self.template.data && !$.isEmptyObject(self.template.data)) {
+          $('#' + self.name + ' [data-bind]').each(function() {
+            var $dataElem = $(this);
+
+            var prop = $dataElem.data('bind');
+
+            self.template.data.watch(prop, function(id, oldval, newval) {
+              if (oldval !== newval) {
+                $dataElem.html(newval);
+              }
+
+              return newval;
+            });
+          });
+        }
+      });
 
       var createScene = function(LyriaObject, deps) {
         if (deps == null) {
           deps = [];
         }
-        
+
         var sceneDone = function(err, success) {
           if (err) {
             return console.error('Error while executing scene ' + self.name + ': ' + err);
           }
-          
-          self.refresh();
 
-          if (self.events) {
-            if (options && options.isPrefab) {
-              self.events.delegate = (options.target) ? options.target : 'body';
-            } else {
-              self.events.delegate = '#' + sceneName;
-            }
+          if (self.isAsync) {
+            self.trigger('added');
           }
-  
-          self.on('update', function(dt) {
-            each(self.children, function(childKey, childValue) {
-              if (!isEmptyObject(childValue)) {
-                each(childValue, function(key, value) {
-                  value.trigger('update', dt);
-                });
-              }
-            });
-          });
         };
-        
+
         var async = false;
-        
+
         var context = self;
         context.async = function() {
           async = true;
-          
+
           return function() {
-            nextTick(function() {              
+            nextTick(function() {
               sceneDone();
             });
           };
         };
-        
-        // TODO: Evaluate how to show dependencies (concat into array, array with objects of name and value)
+
+        Object.defineProperty(self, 'isAsync', {
+          get: function() {
+            return async;
+          }
+        });
+
+        // TODO: Evaluate how to show dependencies (concat into array, array with
+        // objects of name and value)
         try {
           var success = sceneFunction.apply(context, [context, LyriaObject].concat(deps));
-          
+
           if (!async) {
             sceneDone(null, success);
           }
@@ -2195,6 +2239,10 @@ define('lyria/scene', ['isemptyobject', 'each', 'extend', 'clone', 'mixin', 'nex
 
       if (this.template && this.template.source) {
         this.content = this.template.source(val);
+      }
+
+      if (this.$element.length > 0) {
+        this.$element.html(this.content);
       }
 
       this.trigger('refresh');
