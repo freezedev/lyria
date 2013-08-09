@@ -1,7 +1,7 @@
 /**
  * @module Lyria
  */
-define('lyria/scene', ['isemptyobject', 'each', 'extend', 'clone', 'mixin', 'nexttick', 'lyria/eventmap', 'lyria/gameobject'], function(isEmptyObject, each, extend, clone, mixin, nextTick, EventMap, GameObject) {'use strict';
+define('lyria/scene', ['jquery', 'isemptyobject', 'each', 'extend', 'clone', 'mixin', 'nexttick', 'lyria/eventmap', 'lyria/gameobject'], function($, isEmptyObject, each, extend, clone, mixin, nextTick, EventMap, GameObject) {'use strict';
 
   var Scene = (function() {
 
@@ -53,55 +53,102 @@ define('lyria/scene', ['isemptyobject', 'each', 'extend', 'clone', 'mixin', 'nex
 
         self.template.data = extend(true, self.template.data, obj);
       };
+      
+      Object.defineProperty(self, '$element', {
+        get: function() {
+          return $('#' + self.name);
+        }
+      });
+
+      self.on('added', function() {
+        self.refresh();
+
+        if (self.events) {
+          if (options && options.isPrefab) {
+            self.events.delegate = (options.target) ? options.target : 'body';
+          } else {
+            self.events.delegate = '#' + sceneName;
+          }
+        }
+
+        self.on('update', function(dt) {
+          each(self.children, function(childKey, childValue) {
+            if (!isEmptyObject(childValue)) {
+              each(childValue, function(key, value) {
+                value.trigger('update', dt);
+              });
+            }
+          });
+        });
+
+        // Bind events
+        if (self.events && !$.isEmptyObject(self.events)) {
+          $.each(self.events, function(key, value) {
+            if (( typeof value === 'object') && (key !== 'delegate')) {
+              $(self.events.delegate).on(value, key, {
+                scene: self
+              });
+            }
+          });
+        }
+
+        // Data binding
+        if (self.template.data && !$.isEmptyObject(self.template.data)) {
+          $('#' + self.name + ' [data-bind]').each(function() {
+            var $dataElem = $(this);
+
+            var prop = $dataElem.data('bind');
+
+            self.template.data.watch(prop, function(id, oldval, newval) {
+              if (oldval !== newval) {
+                $dataElem.html(newval);
+              }
+
+              return newval;
+            });
+          });
+        }
+      });
 
       var createScene = function(LyriaObject, deps) {
         if (deps == null) {
           deps = [];
         }
-        
+
         var sceneDone = function(err, success) {
           if (err) {
             return console.error('Error while executing scene ' + self.name + ': ' + err);
           }
-          
-          self.refresh();
 
-          if (self.events) {
-            if (options && options.isPrefab) {
-              self.events.delegate = (options.target) ? options.target : 'body';
-            } else {
-              self.events.delegate = '#' + sceneName;
-            }
+          if (self.isAsync) {
+            self.trigger('added');
           }
-  
-          self.on('update', function(dt) {
-            each(self.children, function(childKey, childValue) {
-              if (!isEmptyObject(childValue)) {
-                each(childValue, function(key, value) {
-                  value.trigger('update', dt);
-                });
-              }
-            });
-          });
         };
-        
+
         var async = false;
-        
+
         var context = self;
         context.async = function() {
           async = true;
-          
+
           return function() {
-            nextTick(function() {              
+            nextTick(function() {
               sceneDone();
             });
           };
         };
-        
-        // TODO: Evaluate how to show dependencies (concat into array, array with objects of name and value)
+
+        Object.defineProperty(self, 'isAsync', {
+          get: function() {
+            return async;
+          }
+        });
+
+        // TODO: Evaluate how to show dependencies (concat into array, array with
+        // objects of name and value)
         try {
           var success = sceneFunction.apply(context, [context, LyriaObject].concat(deps));
-          
+
           if (!async) {
             sceneDone(null, success);
           }
@@ -193,6 +240,10 @@ define('lyria/scene', ['isemptyobject', 'each', 'extend', 'clone', 'mixin', 'nex
 
       if (this.template && this.template.source) {
         this.content = this.template.source(val);
+      }
+
+      if (this.$element.length > 0) {
+        this.$element.html(this.content);
       }
 
       this.trigger('refresh');
