@@ -127,10 +127,10 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;mixin&#x27;, &
     /**
      * The scene director constructor
      * Attaches a scene director to a container, the parent is optional
-     * 
+     *
      * @class Director
      * @constructor
-     * 
+     *
      * @param {Object} container
      * @param {Object} parent
      */
@@ -145,14 +145,14 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;mixin&#x27;, &
 
       /**
        * All scenes
-       * 
+       *
        * @property sceneList
-       * @type {Object} 
+       * @type {Object}
        */
       this.sceneList = {};
-      
+
       /**
-       * The current scene 
+       * The current scene
        *
        * @property currentScene
        * @type {Scene}
@@ -164,10 +164,10 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;mixin&#x27;, &
     SceneDirector.prototype.sceneClassName = &#x27;scene&#x27;;
 
     // Methods
-    
+
     /**
      * Adds a scene to the scene director
-     * 
+     *
      * @method add
      * @param {Object} scene
      * @param {Object} options
@@ -190,39 +190,40 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;mixin&#x27;, &
         if ($(&#x27;#&#x27; + scene.name).length === 0) {
           this.viewport.$element.prepend($(root.document.createElement(&#x27;div&#x27;)).attr(&#x27;id&#x27;, scene.name).attr(&#x27;class&#x27;, SceneDirector.prototype.sceneClassName));
 
-          if (!scene.async) {
-            if (scene.content) {
-              $(&#x27;#&#x27; + scene.name).html(scene.content);
-            }
-          }
+          scene.trigger(&#x27;added&#x27;);
 
-          // Bind events
-          if (scene.events &amp;&amp; !$.isEmptyObject(scene.events)) {
-            $.each(scene.events, function(key, value) {
-              if (( typeof value === &#x27;object&#x27;) &amp;&amp; (key !== &#x27;delegate&#x27;)) {
-                $(scene.events.delegate).on(value, key, {
-                  scene: scene
-                });
-              }
-            });
-          }
+          scene.on(&#x27;done&#x27;, function() {
+            $(&#x27;#&#x27; + scene.name).html(scene.content);
 
-          // Data binding
-          if (scene.template.data &amp;&amp; !$.isEmptyObject(scene.template.data)) {
-            $(&#x27;#&#x27; + scene.name + &#x27; [data-bind]&#x27;).each(function() {
-              var $dataElem = $(this);
-              
-              var prop = $dataElem.data(&#x27;bind&#x27;);
-
-              scene.template.data.watch(prop, function(id, oldval, newval) {
-                if (oldval !== newval) {
-                  $dataElem.html(newval);
+            // Bind events
+            if (scene.events &amp;&amp; !$.isEmptyObject(scene.events)) {
+              $.each(scene.events, function(key, value) {
+                if (( typeof value === &#x27;object&#x27;) &amp;&amp; (key !== &#x27;delegate&#x27;)) {
+                  $(scene.events.delegate).on(value, key, {
+                    scene: scene
+                  });
                 }
-
-                return newval;
               });
-            });
-          }
+            }
+
+            // Data binding
+            if (scene.template.data &amp;&amp; !$.isEmptyObject(scene.template.data)) {
+              $(&#x27;#&#x27; + scene.name + &#x27; [data-bind]&#x27;).each(function() {
+                var $dataElem = $(this);
+
+                var prop = $dataElem.data(&#x27;bind&#x27;);
+
+                scene.template.data.watch(prop, function(id, oldval, newval) {
+                  if (oldval !== newval) {
+                    $dataElem.html(newval);
+                  }
+
+                  return newval;
+                });
+              });
+            }
+          });
+
         }
       }
 
@@ -231,7 +232,7 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;mixin&#x27;, &
 
     /**
      * Shows a specified scene
-     * 
+     *
      * @method show
      * @param {String} scene
      * @param {Object} options
@@ -283,7 +284,7 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;mixin&#x27;, &
 
     /**
      * Refreshes a scene
-     * 
+     *
      * @method refresh
      * @param {String} scene
      */
@@ -292,15 +293,11 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;mixin&#x27;, &
 
       // Re-compile scene template
       sceneObj.refresh();
-
-      if (sceneObj.content) {
-        $(&#x27;#&#x27; + sceneObj.name).html(sceneObj.content);
-      }
     };
 
     /**
      * Triggers the render event of the current scene
-     * 
+     *
      * @method render
      */
     SceneDirector.prototype.render = function() {
@@ -309,7 +306,7 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;mixin&#x27;, &
 
     /**
      * Triggers the update event of the current scene
-     * 
+     *
      * @param {Number} dt
      */
     SceneDirector.prototype.update = function(dt) {

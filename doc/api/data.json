@@ -746,7 +746,7 @@
         },
         {
             "file": "src\\scene\\director.js",
-            "line": 118,
+            "line": 119,
             "description": "Shows a specified scene",
             "itemtype": "method",
             "name": "show",
@@ -773,7 +773,7 @@
         },
         {
             "file": "src\\scene\\director.js",
-            "line": 170,
+            "line": 171,
             "description": "Refreshes a scene",
             "itemtype": "method",
             "name": "refresh",
@@ -790,7 +790,7 @@
         },
         {
             "file": "src\\scene\\director.js",
-            "line": 187,
+            "line": 184,
             "description": "Triggers the render event of the current scene",
             "itemtype": "method",
             "name": "render",
@@ -800,7 +800,7 @@
         },
         {
             "file": "src\\scene\\director.js",
-            "line": 196,
+            "line": 193,
             "description": "Triggers the update event of the current scene",
             "params": [
                 {
@@ -815,7 +815,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 135,
+            "line": 182,
             "description": "Adds a gameobject to the scene",
             "itemtype": "method",
             "name": "add",
@@ -831,7 +831,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 183,
+            "line": 230,
             "description": "Refreshes the scene (Re-renders the template)",
             "itemtype": "method",
             "name": "refresh",
@@ -847,7 +847,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 201,
+            "line": 252,
             "description": "Sets an event to the event object or returns a specified event",
             "itemtype": "method",
             "name": "event",
@@ -1372,7 +1372,7 @@
         },
         {
             "message": "Missing item type\nTriggers the update event of the current scene",
-            "line": " src\\scene\\director.js:196"
+            "line": " src\\scene\\director.js:193"
         },
         {
             "message": "Missing item type",

@@ -115,7 +115,7 @@
 /**
  * @module Lyria
  */
-define(&#x27;lyria/scene&#x27;, [&#x27;isemptyobject&#x27;, &#x27;each&#x27;, &#x27;extend&#x27;, &#x27;clone&#x27;, &#x27;mixin&#x27;, &#x27;nexttick&#x27;, &#x27;lyria/eventmap&#x27;, &#x27;lyria/gameobject&#x27;], function(isEmptyObject, each, extend, clone, mixin, nextTick, EventMap, GameObject) {&#x27;use strict&#x27;;
+define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;isemptyobject&#x27;, &#x27;each&#x27;, &#x27;extend&#x27;, &#x27;clone&#x27;, &#x27;mixin&#x27;, &#x27;nexttick&#x27;, &#x27;lyria/eventmap&#x27;, &#x27;lyria/gameobject&#x27;], function($, isEmptyObject, each, extend, clone, mixin, nextTick, EventMap, GameObject) {&#x27;use strict&#x27;;
 
   var Scene = (function() {
 
@@ -167,55 +167,102 @@ define(&#x27;lyria/scene&#x27;, [&#x27;isemptyobject&#x27;, &#x27;each&#x27;, &#
 
         self.template.data = extend(true, self.template.data, obj);
       };
+      
+      Object.defineProperty(self, &#x27;$element&#x27;, {
+        get: function() {
+          return $(&#x27;#&#x27; + self.name);
+        }
+      });
+
+      self.on(&#x27;added&#x27;, function() {
+        self.refresh();
+
+        if (self.events) {
+          if (options &amp;&amp; options.isPrefab) {
+            self.events.delegate = (options.target) ? options.target : &#x27;body&#x27;;
+          } else {
+            self.events.delegate = &#x27;#&#x27; + sceneName;
+          }
+        }
+
+        self.on(&#x27;update&#x27;, function(dt) {
+          each(self.children, function(childKey, childValue) {
+            if (!isEmptyObject(childValue)) {
+              each(childValue, function(key, value) {
+                value.trigger(&#x27;update&#x27;, dt);
+              });
+            }
+          });
+        });
+
+        // Bind events
+        if (self.events &amp;&amp; !$.isEmptyObject(self.events)) {
+          $.each(self.events, function(key, value) {
+            if (( typeof value === &#x27;object&#x27;) &amp;&amp; (key !== &#x27;delegate&#x27;)) {
+              $(self.events.delegate).on(value, key, {
+                scene: self
+              });
+            }
+          });
+        }
+
+        // Data binding
+        if (self.template.data &amp;&amp; !$.isEmptyObject(self.template.data)) {
+          $(&#x27;#&#x27; + self.name + &#x27; [data-bind]&#x27;).each(function() {
+            var $dataElem = $(this);
+
+            var prop = $dataElem.data(&#x27;bind&#x27;);
+
+            self.template.data.watch(prop, function(id, oldval, newval) {
+              if (oldval !== newval) {
+                $dataElem.html(newval);
+              }
+
+              return newval;
+            });
+          });
+        }
+      });
 
       var createScene = function(LyriaObject, deps) {
         if (deps == null) {
           deps = [];
         }
-        
+
         var sceneDone = function(err, success) {
           if (err) {
             return console.error(&#x27;Error while executing scene &#x27; + self.name + &#x27;: &#x27; + err);
           }
-          
-          self.refresh();
 
-          if (self.events) {
-            if (options &amp;&amp; options.isPrefab) {
-              self.events.delegate = (options.target) ? options.target : &#x27;body&#x27;;
-            } else {
-              self.events.delegate = &#x27;#&#x27; + sceneName;
-            }
+          if (self.isAsync) {
+            self.trigger(&#x27;added&#x27;);
           }
-  
-          self.on(&#x27;update&#x27;, function(dt) {
-            each(self.children, function(childKey, childValue) {
-              if (!isEmptyObject(childValue)) {
-                each(childValue, function(key, value) {
-                  value.trigger(&#x27;update&#x27;, dt);
-                });
-              }
-            });
-          });
         };
-        
+
         var async = false;
-        
+
         var context = self;
         context.async = function() {
           async = true;
-          
+
           return function() {
-            nextTick(function() {              
+            nextTick(function() {
               sceneDone();
             });
           };
         };
-        
-        // TODO: Evaluate how to show dependencies (concat into array, array with objects of name and value)
+
+        Object.defineProperty(self, &#x27;isAsync&#x27;, {
+          get: function() {
+            return async;
+          }
+        });
+
+        // TODO: Evaluate how to show dependencies (concat into array, array with
+        // objects of name and value)
         try {
           var success = sceneFunction.apply(context, [context, LyriaObject].concat(deps));
-          
+
           if (!async) {
             sceneDone(null, success);
           }
@@ -307,6 +354,10 @@ define(&#x27;lyria/scene&#x27;, [&#x27;isemptyobject&#x27;, &#x27;each&#x27;, &#
 
       if (this.template &amp;&amp; this.template.source) {
         this.content = this.template.source(val);
+      }
+
+      if (this.$element.length &gt; 0) {
+        this.$element.html(this.content);
       }
 
       this.trigger(&#x27;refresh&#x27;);
