@@ -129,11 +129,12 @@ define(&#x27;lyria/eventmap&#x27;, [&#x27;root&#x27;], function(root) {&#x27;use
       this.validEvents = [];
     }
 
+
     EventMap.prototype.serialize = function() {
       var err, result;
       try {
         result = JSON.stringify(this.events, function(key, value) {
-          if (typeof value === &#x27;function&#x27;) {
+          if ( typeof value === &#x27;function&#x27;) {
             value = value.toString();
           }
           return value;
@@ -220,7 +221,7 @@ define(&#x27;lyria/eventmap&#x27;, [&#x27;root&#x27;], function(root) {&#x27;use
       if (eventName == null) {
         return;
       }
-      if (typeof eventName === &#x27;object&#x27;) {
+      if ( typeof eventName === &#x27;object&#x27;) {
         name = eventName.name, interval = eventName.interval, repeat = eventName.repeat, context = eventName.context, delay = eventName.delay;
       } else {
         name = eventName;
@@ -241,7 +242,7 @@ define(&#x27;lyria/eventmap&#x27;, [&#x27;root&#x27;], function(root) {&#x27;use
         delay = 0;
       }
       _ref = this.events[name];
-      for (_i = 0, _len = _ref.length; _i &lt; _len; _i++) {
+      for ( _i = 0, _len = _ref.length; _i &lt; _len; _i++) {
         i = _ref[_i];
         triggerFunction = function() {
           if (i.sender) {
@@ -280,9 +281,10 @@ define(&#x27;lyria/eventmap&#x27;, [&#x27;root&#x27;], function(root) {&#x27;use
     return EventMap;
 
   })();
-  
+
   return EventMap;
-}); 
+});
+
     </pre>
 </div>
 

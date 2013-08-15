@@ -798,7 +798,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 183,
+            "line": 184,
             "description": "Adds a gameobject to the scene",
             "itemtype": "method",
             "name": "add",
@@ -814,7 +814,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 231,
+            "line": 232,
             "description": "Refreshes the scene (Re-renders the template)",
             "itemtype": "method",
             "name": "refresh",
@@ -830,7 +830,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 253,
+            "line": 254,
             "description": "Sets an event to the event object or returns a specified event",
             "itemtype": "method",
             "name": "event",
@@ -849,6 +849,34 @@
                     "name": "eventFunction",
                     "description": "",
                     "type": "Function"
+                }
+            ],
+            "class": "Scene",
+            "module": "Lyria"
+        },
+        {
+            "file": "src\\scene\\index.js",
+            "line": 279,
+            "description": "Gets localized value",
+            "params": [
+                {
+                    "name": "lang",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "Scene",
+            "module": "Lyria"
+        },
+        {
+            "file": "src\\scene\\index.js",
+            "line": 290,
+            "description": "Logging directly from the scene",
+            "params": [
+                {
+                    "name": "text",
+                    "description": "",
+                    "type": "Object"
                 }
             ],
             "class": "Scene",
@@ -1356,6 +1384,14 @@
         {
             "message": "Missing item type\nDefine events for scene director",
             "line": " src\\scene\\director.js:48"
+        },
+        {
+            "message": "Missing item type\nGets localized value",
+            "line": " src\\scene\\index.js:279"
+        },
+        {
+            "message": "Missing item type\nLogging directly from the scene",
+            "line": " src\\scene\\index.js:290"
         },
         {
             "message": "Missing item type",
