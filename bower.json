@@ -2,7 +2,7 @@
   "name": "lyria",
   "version": "0.2.0-beta1",
   "main": ["dist/js/lyria.js", "dist/css/lyria.css"],
-  "ignore": ["**/.*", "node_modules", "bower_components", "test", "tests"],
+  "ignore": ["**/.*", "node_modules", "bower_components", "test", "tests", "src", "doc", "stylus", "gruntfile.js", "package.json"],
   "dependencies": {
     "almond": "~0.2.5",
     "checkt": "~1.1.0",
