@@ -158,7 +158,7 @@ define('lyria/scene', ['jquery', 'isemptyobject', 'each', 'extend', 'clone', 'mi
       };
 
       // Call scene
-      require(['lyria/achievements', 'lyria/log', 'lyria/component', 'lyria/gameobject', 'lyria/events', 'lyria/resource', 'lyria/data/store'], function(Achievements, Log, Component, GameObject, Events, Resource, DataStore) {
+      require(['lyria/achievements', 'lyria/log', 'lyria/component', 'lyria/gameobject', 'lyria/events', 'lyria/resource', 'lyria/data/store', 'lyria/loop'], function(Achievements, Log, Component, GameObject, Events, Resource, DataStore, Loop) {
         var LyriaObject = {
           Achievements: Achievements,
           Log: Log,
@@ -166,7 +166,8 @@ define('lyria/scene', ['jquery', 'isemptyobject', 'each', 'extend', 'clone', 'mi
           GameObject: GameObject,
           Events: Events,
           Resource: Resource,
-          DataStore: DataStore
+          DataStore: DataStore,
+          Loop: Loop
         };
 
         if (sceneDeps.length > 0) {
