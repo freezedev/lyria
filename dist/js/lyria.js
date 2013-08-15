@@ -993,11 +993,12 @@ define('lyria/eventmap', ['root'], function(root) {'use strict';
       this.validEvents = [];
     }
 
+
     EventMap.prototype.serialize = function() {
       var err, result;
       try {
         result = JSON.stringify(this.events, function(key, value) {
-          if (typeof value === 'function') {
+          if ( typeof value === 'function') {
             value = value.toString();
           }
           return value;
@@ -1084,7 +1085,7 @@ define('lyria/eventmap', ['root'], function(root) {'use strict';
       if (eventName == null) {
         return;
       }
-      if (typeof eventName === 'object') {
+      if ( typeof eventName === 'object') {
         name = eventName.name, interval = eventName.interval, repeat = eventName.repeat, context = eventName.context, delay = eventName.delay;
       } else {
         name = eventName;
@@ -1105,7 +1106,7 @@ define('lyria/eventmap', ['root'], function(root) {'use strict';
         delay = 0;
       }
       _ref = this.events[name];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      for ( _i = 0, _len = _ref.length; _i < _len; _i++) {
         i = _ref[_i];
         triggerFunction = function() {
           if (i.sender) {
@@ -1144,9 +1145,10 @@ define('lyria/eventmap', ['root'], function(root) {'use strict';
     return EventMap;
 
   })();
-  
+
   return EventMap;
-}); 
+});
+
 define('lyria/events', ['lyria/eventmap'], function(EventMap) {
   var instance = instance || new EventMap();
 
@@ -2032,7 +2034,7 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'ly
 /**
  * @module Lyria
  */
-define('lyria/scene', ['jquery', 'isemptyobject', 'each', 'extend', 'clone', 'mixin', 'nexttick', 'lyria/eventmap', 'lyria/gameobject'], function($, isEmptyObject, each, extend, clone, mixin, nextTick, EventMap, GameObject) {'use strict';
+define('lyria/scene', ['jquery', 'isemptyobject', 'each', 'extend', 'clone', 'mixin', 'nexttick', 'lyria/eventmap', 'lyria/gameobject', 'lyria/language', 'lyria/template/string', 'lyria/log'], function($, isEmptyObject, each, extend, clone, mixin, nextTick, EventMap, GameObject, Language, templateString, Log) {'use strict';
 
   var Scene = (function() {
 
@@ -2066,6 +2068,7 @@ define('lyria/scene', ['jquery', 'isemptyobject', 'each', 'extend', 'clone', 'mi
 
       // Default values
       this.localization = {};
+      this.language = Language.language;
 
       this.template = {};
       this.template.source = '';
@@ -2084,7 +2087,7 @@ define('lyria/scene', ['jquery', 'isemptyobject', 'each', 'extend', 'clone', 'mi
 
         self.template.data = extend(true, self.template.data, obj);
       };
-      
+
       Object.defineProperty(self, '$element', {
         get: function() {
           return $('#' + self.name);
@@ -2306,6 +2309,26 @@ define('lyria/scene', ['jquery', 'isemptyobject', 'each', 'extend', 'clone', 'mi
       }
     };
 
+    /**
+     * Gets localized value
+     *
+     * @param {Object} lang
+     */
+    Scene.prototype.i18n = function(name, parameter) {
+      if (this.localization && this.localization[this.language]) {
+        return templateString.process(this.localization[this.language][name], parameter);
+      }
+    };
+    
+    /**
+     * Logging directly from the scene
+     *  
+     * @param {Object} text
+     */
+    Scene.prototype.log = function(text) {
+      Log.i('Scene ' + this.name + ': ' + text);
+    };
+
     return Scene;
 
   })();
@@ -2432,6 +2455,41 @@ define('lyria/template/engine', ['root', 'lyria/template/connector', 'lyria/temp
 
 define('lyria/template/methods', function() {
   return ['compile'];
+});
+
+define('lyria/template/string', function() {
+  var templateString = {
+    key: {
+      start: '{{',
+      end: '}}'
+    },
+    process: function(value, parameter) {
+      if (value == null) {
+        return;
+      }
+
+      // Array or object
+      if ( typeof parameter === 'object') {
+        if (Array.isArray(parameter)) {
+          for (var i = 0, j = parameter.length; i < j; i++) {
+            value = value.replace(new RegExp(templateString.key.start + i + templateString.key.end), parameter[i]);
+          }
+        } else {
+          var paramKeys = Object.keys(parameter);
+
+          for (var k = 0, l = paramKeys.length; k < l; k++) {
+            (function(item) {
+              value = value.replace(new RegExp(templateString.key.start + paramKeys[k] + templateString.key.end), item);
+            })(parameter[paramKeys[k]]);
+          }
+        }
+      }
+
+      return value;
+    }
+  };
+
+  return templateString;
 });
 
 /**
