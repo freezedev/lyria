@@ -1,7 +1,7 @@
 /**
  * @module Lyria
  */
-define('lyria/scene', ['jquery', 'isemptyobject', 'each', 'extend', 'clone', 'mixin', 'nexttick', 'lyria/eventmap', 'lyria/gameobject'], function($, isEmptyObject, each, extend, clone, mixin, nextTick, EventMap, GameObject) {'use strict';
+define('lyria/scene', ['jquery', 'isemptyobject', 'each', 'extend', 'clone', 'mixin', 'nexttick', 'lyria/eventmap', 'lyria/gameobject', 'lyria/language', 'lyria/template/string', 'lyria/log'], function($, isEmptyObject, each, extend, clone, mixin, nextTick, EventMap, GameObject, Language, templateString, Log) {'use strict';
 
   var Scene = (function() {
 
@@ -35,6 +35,7 @@ define('lyria/scene', ['jquery', 'isemptyobject', 'each', 'extend', 'clone', 'mi
 
       // Default values
       this.localization = {};
+      this.language = Language.language;
 
       this.template = {};
       this.template.source = '';
@@ -53,7 +54,7 @@ define('lyria/scene', ['jquery', 'isemptyobject', 'each', 'extend', 'clone', 'mi
 
         self.template.data = extend(true, self.template.data, obj);
       };
-      
+
       Object.defineProperty(self, '$element', {
         get: function() {
           return $('#' + self.name);
@@ -273,6 +274,26 @@ define('lyria/scene', ['jquery', 'isemptyobject', 'each', 'extend', 'clone', 'mi
           return this.events[selector][eventName];
         }
       }
+    };
+
+    /**
+     * Gets localized value
+     *
+     * @param {Object} lang
+     */
+    Scene.prototype.i18n = function(name, parameter) {
+      if (this.localization && this.localization[this.language]) {
+        return templateString.process(this.localization[this.language][name], parameter);
+      }
+    };
+    
+    /**
+     * Logging directly from the scene
+     *  
+     * @param {Object} text
+     */
+    Scene.prototype.log = function(text) {
+      Log.i('Scene ' + this.name + ': ' + text);
     };
 
     return Scene;
