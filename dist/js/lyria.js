@@ -987,141 +987,163 @@ define('lyria/eventmap', ['root'], function(root) {'use strict';
    * https://github.com/elysion-powered/elyssa/blob/master/src/core/events.coffee
    */
   var EventMap = (function() {
-      function EventMap(sender) {
-        this.sender = sender;
-        this.events = {};
-        this.validEvents = [];
-      }
+    function EventMap(sender) {
+      this.sender = sender;
+      this.events = {};
+      this.validEvents = [];
+    }
 
-      EventMap.prototype.serialize = function() {
-        return JSON.stringify(this.events, function(key, value) {
+    EventMap.prototype.serialize = function() {
+      var err, result;
+      try {
+        result = JSON.stringify(this.events, function(key, value) {
           if (typeof value === 'function') {
             value = value.toString();
           }
           return value;
         });
-      };
+      } catch (_error) {
+        err = _error;
+        console.error("Error while serializing eventmap: " + err);
+      }
+      return result;
+    };
 
-      /*jshint evil:true */
-      EventMap.prototype.deserialize = function(string) {
-        this.events = JSON.parse(string, function(key, value) {
+    EventMap.prototype.deserialize = function(string) {
+      /*jshint evil:true*/
+      var err, events;
+      try {
+        events = JSON.parse(string, function(key, value) {
           if (value.indexOf('function') === 0) {
             value = new Function(value)();
           }
           return value;
         });
-      };
+      } catch (_error) {
+        err = _error;
+        console.error("Error while deserializing eventmap: " + err);
+        return false;
+      }
+      this.events = events;
+      return true;
+    };
 
-      EventMap.prototype.on = function(eventName, eventFunction) {
-        var eventDesc;
-        if (!eventFunction) {
+    EventMap.prototype.on = function(eventName, eventFunction) {
+      var eventDesc;
+      if (!eventFunction) {
+        return;
+      }
+      if (this.validEvents.length > 0) {
+        if (this.validEvents.indexOf(eventName) === -1) {
           return;
         }
-        if (this.validEvents.length > 0) {
-          if (this.validEvents.indexOf(eventName) === -1) {
-            return;
-          }
-        }
-        eventDesc = {
-          event: eventFunction,
-          id: -1,
-          type: '',
-          sender: this.sender
-        };
-        if (!this.events[eventName]) {
-          this.events[eventName] = [eventDesc];
-        } else {
-          this.events[eventName].push(eventDesc);
-        }
-        return this;
+      }
+      eventDesc = {
+        event: eventFunction,
+        id: -1,
+        type: '',
+        sender: this.sender
       };
+      if (!this.events[eventName]) {
+        this.events[eventName] = [eventDesc];
+      } else {
+        this.events[eventName].push(eventDesc);
+      }
+      return this;
+    };
 
-      EventMap.prototype.off = function(eventName) {
-        var eventType;
-        if (!eventName) {
-          return;
+    EventMap.prototype.off = function(eventName) {
+      var eventType;
+      if (!eventName) {
+        return;
+      }
+      eventType = this.events[eventName].type;
+      if (eventType === 'once' || eventType === 'repeat') {
+        if (eventType === 'repeat') {
+          root.clearInterval(this.events[eventName].id);
         }
-        eventType = this.events[eventName].type;
-        if (eventType === 'once' || eventType === 'repeat') {
-          if (eventType === 'repeat') {
-            root.clearInterval(this.events[eventName].id);
-          }
-          if (eventType === 'once') {
-            root.clearTimeout(this.events[eventName].id);
-          }
+        if (eventType === 'once') {
+          root.clearTimeout(this.events[eventName].id);
         }
-        if (this.events[eventName]) {
-          delete this.events[eventName];
-        }
-        return this;
-      };
+      }
+      if (this.events[eventName]) {
+        delete this.events[eventName];
+      }
+      return this;
+    };
 
-      EventMap.prototype.trigger = function() {
-        var args, context, delay, eventName, i, interval, name, repeat, timeoutId, triggerEvent, triggerFunction, _i, _len, _ref;
-        eventName = arguments[0], args = 2 <= arguments.length ? [].slice.call(arguments, 1) : [];
-        if (eventName == null) {
-          return;
-        }
-        if (typeof eventName === 'object') {
-          name = eventName.name, interval = eventName.interval, repeat = eventName.repeat, context = eventName.context, delay = eventName.delay;
-        } else {
-          name = eventName;
-        }
-        if (!this.events[name]) {
-          return;
-        }
-        if (interval == null) {
-          interval = 0;
-        }
-        if (repeat == null) {
-          repeat = false;
-        }
-        if (context == null) {
-          context = this;
-        }
-        if (delay == null) {
-          delay = 0;
-        }
-        _ref = this.events[name];
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          i = _ref[_i];
-          triggerFunction = function() {
-            if (i.sender) {
-              return i.event.apply(context, [].concat.apply([], [[i.sender], args]));
-            } else {
-              return i.event.apply(context, args);
-            }
-          };
-          triggerEvent = function() {
-            if (interval) {
-              if (repeat) {
-                i.type = 'repeat';
-                i.id = root.setInterval(triggerFunction, interval);
-              } else {
-                i.type = 'once';
-                i.id = root.setTimeout(triggerFunction, interval);
-              }
-            } else {
-              i.type = 'direct';
-              triggerFunction.call(this);
-            }
-            return null;
-          };
-          if (delay) {
-            timeoutId = root.setTimeout(function() {
-              triggerEvent.call(this);
-              return root.clearTimeout(timeoutId);
-            });
+    EventMap.prototype.clear = function() {
+      this.events = {};
+      this.validEvents = [];
+      return this;
+    };
+
+    EventMap.prototype.trigger = function() {
+      var args, context, delay, eventName, i, interval, name, repeat, timeoutId, triggerEvent, triggerFunction, _i, _len, _ref;
+      eventName = arguments[0], args = 2 <= arguments.length ? [].slice.call(arguments, 1) : [];
+      if (eventName == null) {
+        return;
+      }
+      if (typeof eventName === 'object') {
+        name = eventName.name, interval = eventName.interval, repeat = eventName.repeat, context = eventName.context, delay = eventName.delay;
+      } else {
+        name = eventName;
+      }
+      if (!this.events[name]) {
+        return;
+      }
+      if (interval == null) {
+        interval = 0;
+      }
+      if (repeat == null) {
+        repeat = false;
+      }
+      if (context == null) {
+        context = this;
+      }
+      if (delay == null) {
+        delay = 0;
+      }
+      _ref = this.events[name];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        i = _ref[_i];
+        triggerFunction = function() {
+          if (i.sender) {
+            return i.event.apply(context, [].concat.apply([], [[i.sender], args]));
           } else {
-            triggerEvent.call(this);
+            return i.event.apply(context, args);
           }
+        };
+        triggerEvent = function() {
+          if (interval) {
+            if (repeat) {
+              i.type = 'repeat';
+              i.id = root.setInterval(triggerFunction, interval);
+            } else {
+              i.type = 'once';
+              i.id = root.setTimeout(triggerFunction, interval);
+            }
+          } else {
+            i.type = 'direct';
+            triggerFunction.call(this);
+          }
+          return null;
+        };
+        if (delay) {
+          timeoutId = root.setTimeout(function() {
+            triggerEvent.call(this);
+            return root.clearTimeout(timeoutId);
+          });
+        } else {
+          triggerEvent.call(this);
         }
-        return this;
-      };
+      }
+      return this;
+    };
 
-      return EventMap;
+    return EventMap;
 
-    })();
+  })();
   
   return EventMap;
 }); 
@@ -1134,67 +1156,78 @@ define('lyria/events', ['lyria/eventmap'], function(EventMap) {
 /**
  * @module Lyria
  */
-define('lyria/game', ['lyria/viewport', 'lyria/scene/director', 'lyria/preloader', 'lyria/loop'], function(Viewport, Director, Preloader, Loop) {
-  'use strict';
-  
+define('lyria/game', ['extend', 'lyria/viewport', 'lyria/scene/director', 'lyria/preloader', 'lyria/loop'], function(extend, Viewport, Director, Preloader, Loop) {'use strict';
+
   /**
    * Game class which has a viewport, scene director and preloader by
    * default.
    *
-   * @class Game 
+   * @class Game
    */
   return (function() {
-    
+
     /**
-     * @constructor 
+     * @constructor
      */
-    var Game = function() {
+    var Game = function(options) {
       var self = this;
-      
+
+      options = extend(options, {
+        startLoop: true
+      });
+
       /**
        * @property viewport
-       * @type {Viewport} 
+       * @type {Viewport}
        */
       // Set up a viewport
       this.viewport = new Viewport();
 
       /**
        * @property director
-       * @type {Director} 
-       */      
+       * @type {Director}
+       */
       // Add a scene director
       this.director = new Director(this.viewport);
-      
+
       /**
        * @property preloader
-       * @type {Preloader} 
+       * @type {Preloader}
        */
       // Add a preloader
-      this.preloader = new Preloader(); 
-      
-      // Bind the scene director to the preloader reference     
+      this.preloader = new Preloader();
+
+      // Bind the scene director to the preloader reference
       this.preloader.sceneDirector = this.director;
-      
-      // Add an update task to the loop with updates the scene director on each frame
-      Game.Loop.addTask('update', function(dt) {
+
+      // Add an update task to the loop with updates the scene director on each
+      // frame
+      Game.Loop.on('update', function(dt) {
         self.director.trigger('update', dt);
-      });      
+      });
+      
+      // Run game loop (if it should start by default)
+      // In most cases, you'll need the loop (animation/physics/etc.)
+      // In a pure event-based game - like a turn-based-strategy game -
+      // you might want turn startLoop off
+      if (options.startLoop) {
+        Game.Loop.run();
+      }
     };
-    
+
     /**
      * @property Loop
      * @static
-     * @type {Loop} 
+     * @type {Loop}
      */
     // Store the reference to the Lyria Loop at the Game object
     Game.Loop = Loop;
-    
-    
+
     return Game;
-    
+
   })();
-  
-});
+
+}); 
 /**
  * @module Lyria
  */
@@ -1464,8 +1497,26 @@ define('lyria/log', ['root'], function(root) {
 /**
  * @module Lyria
  */
-define('lyria/loop', ['root', 'each', 'requestanimationframe'], function(root, each, requestAnimationFrame) {
+define('lyria/loop', ['root', 'requestanimationframe', 'lyria/eventmap'], function(root, requestAnimationFrame, EventMap) {
   'use strict';
+  
+  var loopEvents = new EventMap();
+  var pausedEvents = {};
+  
+  // Shim for detecting performance timer
+  var performance = root.performance;
+  performance.now = performance.now || (function() {
+    var vendors = ['ms', 'moz', 'webkit', 'o'];
+    
+    var functionName = '';
+    for (var i = 0, j = vendors.length; i < j; i++) {
+      functionName = vendors[i] + 'Now';
+      
+      if (performance[functionName]) {
+        return performance[functionName];
+      }
+    }
+  });
   
   /**
    * @class Loop
@@ -1473,7 +1524,6 @@ define('lyria/loop', ['root', 'each', 'requestanimationframe'], function(root, e
    */
   return (function() {
 
-    var taskList = {};
     var isRunning = true;
 
     /**
@@ -1494,11 +1544,15 @@ define('lyria/loop', ['root', 'each', 'requestanimationframe'], function(root, e
           return;
         }
 
-        each(taskList, function(key, value) {
-          if (!value.paused) {
-            value.value(dt);
-          }
-        });
+        var eventKeys = Object.keys(loopEvents.events);
+        
+        for (var i = 0, j = eventKeys.length; i < j; i++) {
+          (function(key) {
+            if (!pausedEvents[key]) {
+              loopEvents.trigger(key, dt);
+            }
+          })(eventKeys[i]);
+        }
       })();
     };
 
@@ -1510,37 +1564,47 @@ define('lyria/loop', ['root', 'each', 'requestanimationframe'], function(root, e
     };
 
     var clear = function() {
-      taskList = {};
+      loopEvents.clear();
+      pausedEvents = {};
+    };
+    
+    var on = function(taskName, taskFunction) {
+      loopEvents.on(taskName, taskFunction);
+      pausedEvents[taskName] = false;
+    };
+    
+    var off = function(taskName) {
+      loopEvents.off(taskName);
+      if (pausedEvents[taskName] != null) {
+        delete pausedEvents[taskName];        
+      }
     };
 
-    var addTask = function(taskName, taskFunction) {
-
-      taskList[taskName] = {
-        'paused': false,
-        'value': taskFunction
-      };
+    var pause = function(taskName) {
+      pausedEvents[taskName].paused = true;
     };
 
-    var pauseTask = function(taskName) {
-      taskList[taskName].paused = true;
+    var resume = function(taskName) {
+      if (taskName == null) {
+        isRunning = true;
+        return;
+      }
+      
+      pausedEvents[taskName].paused = false;
     };
 
-    var resumeTask = function(taskName) {
-      taskList[taskName].paused = false;
-    };
-
-    var removeTask = function(taskName) {
-      delete taskList[taskName];
-    };
 
     return {
       run: run,
+      
       stop: stop,
       clear: clear,
-      addTask: addTask,
-      removeTask: removeTask,
-      pauseTask: pauseTask,
-      resumeTask: resumeTask
+      
+      on: on,
+      off: off,
+      
+      pause: pause,
+      resume: resume
     };
   })();
   
@@ -1837,6 +1901,22 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'ly
        * @type {Scene}
        */
       this.currentScene = null;
+
+      /**
+       * Define events for scene director
+       *
+       */
+      this.on('render', function() {
+        if (this.currentScene) {
+          this.currentScene.trigger('render');
+        }
+      });
+
+      this.on('update', function(dt) {
+        if (this.currentScene) {
+          this.currentScene.trigger('update', dt);
+        }
+      });
     }
 
     // Properties
@@ -1869,39 +1949,9 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'ly
         if ($('#' + scene.name).length === 0) {
           this.viewport.$element.prepend($(root.document.createElement('div')).attr('id', scene.name).attr('class', SceneDirector.prototype.sceneClassName));
 
-          scene.trigger('added');
-
-          scene.on('done', function() {
-            $('#' + scene.name).html(scene.content);
-
-            // Bind events
-            if (scene.events && !$.isEmptyObject(scene.events)) {
-              $.each(scene.events, function(key, value) {
-                if (( typeof value === 'object') && (key !== 'delegate')) {
-                  $(scene.events.delegate).on(value, key, {
-                    scene: scene
-                  });
-                }
-              });
-            }
-
-            // Data binding
-            if (scene.template.data && !$.isEmptyObject(scene.template.data)) {
-              $('#' + scene.name + ' [data-bind]').each(function() {
-                var $dataElem = $(this);
-
-                var prop = $dataElem.data('bind');
-
-                scene.template.data.watch(prop, function(id, oldval, newval) {
-                  if (oldval !== newval) {
-                    $dataElem.html(newval);
-                  }
-
-                  return newval;
-                });
-              });
-            }
-          });
+          if (!scene.isAsync) {
+            scene.trigger('added');
+          }
 
         }
       }
@@ -1972,24 +2022,6 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'ly
 
       // Re-compile scene template
       sceneObj.refresh();
-    };
-
-    /**
-     * Triggers the render event of the current scene
-     *
-     * @method render
-     */
-    SceneDirector.prototype.render = function() {
-      this.currentScene.trigger('render');
-    };
-
-    /**
-     * Triggers the update event of the current scene
-     *
-     * @param {Number} dt
-     */
-    SceneDirector.prototype.update = function(dt) {
-      this.currentScene.trigger('update', dt);
     };
 
     return SceneDirector;
@@ -2157,7 +2189,7 @@ define('lyria/scene', ['jquery', 'isemptyobject', 'each', 'extend', 'clone', 'mi
       };
 
       // Call scene
-      require(['lyria/achievements', 'lyria/log', 'lyria/component', 'lyria/gameobject', 'lyria/events', 'lyria/resource', 'lyria/data/store'], function(Achievements, Log, Component, GameObject, Events, Resource, DataStore) {
+      require(['lyria/achievements', 'lyria/log', 'lyria/component', 'lyria/gameobject', 'lyria/events', 'lyria/resource', 'lyria/data/store', 'lyria/loop'], function(Achievements, Log, Component, GameObject, Events, Resource, DataStore, Loop) {
         var LyriaObject = {
           Achievements: Achievements,
           Log: Log,
@@ -2165,7 +2197,8 @@ define('lyria/scene', ['jquery', 'isemptyobject', 'each', 'extend', 'clone', 'mi
           GameObject: GameObject,
           Events: Events,
           Resource: Resource,
-          DataStore: DataStore
+          DataStore: DataStore,
+          Loop: Loop
         };
 
         if (sceneDeps.length > 0) {
