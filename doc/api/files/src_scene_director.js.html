@@ -158,6 +158,22 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;mixin&#x27;, &
        * @type {Scene}
        */
       this.currentScene = null;
+
+      /**
+       * Define events for scene director
+       *
+       */
+      this.on(&#x27;render&#x27;, function() {
+        if (this.currentScene) {
+          this.currentScene.trigger(&#x27;render&#x27;);
+        }
+      });
+
+      this.on(&#x27;update&#x27;, function(dt) {
+        if (this.currentScene) {
+          this.currentScene.trigger(&#x27;update&#x27;, dt);
+        }
+      });
     }
 
     // Properties
@@ -190,39 +206,9 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;mixin&#x27;, &
         if ($(&#x27;#&#x27; + scene.name).length === 0) {
           this.viewport.$element.prepend($(root.document.createElement(&#x27;div&#x27;)).attr(&#x27;id&#x27;, scene.name).attr(&#x27;class&#x27;, SceneDirector.prototype.sceneClassName));
 
-          scene.trigger(&#x27;added&#x27;);
-
-          scene.on(&#x27;done&#x27;, function() {
-            $(&#x27;#&#x27; + scene.name).html(scene.content);
-
-            // Bind events
-            if (scene.events &amp;&amp; !$.isEmptyObject(scene.events)) {
-              $.each(scene.events, function(key, value) {
-                if (( typeof value === &#x27;object&#x27;) &amp;&amp; (key !== &#x27;delegate&#x27;)) {
-                  $(scene.events.delegate).on(value, key, {
-                    scene: scene
-                  });
-                }
-              });
-            }
-
-            // Data binding
-            if (scene.template.data &amp;&amp; !$.isEmptyObject(scene.template.data)) {
-              $(&#x27;#&#x27; + scene.name + &#x27; [data-bind]&#x27;).each(function() {
-                var $dataElem = $(this);
-
-                var prop = $dataElem.data(&#x27;bind&#x27;);
-
-                scene.template.data.watch(prop, function(id, oldval, newval) {
-                  if (oldval !== newval) {
-                    $dataElem.html(newval);
-                  }
-
-                  return newval;
-                });
-              });
-            }
-          });
+          if (!scene.isAsync) {
+            scene.trigger(&#x27;added&#x27;);
+          }
 
         }
       }
@@ -293,24 +279,6 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;mixin&#x27;, &
 
       // Re-compile scene template
       sceneObj.refresh();
-    };
-
-    /**
-     * Triggers the render event of the current scene
-     *
-     * @method render
-     */
-    SceneDirector.prototype.render = function() {
-      this.currentScene.trigger(&#x27;render&#x27;);
-    };
-
-    /**
-     * Triggers the update event of the current scene
-     *
-     * @param {Number} dt
-     */
-    SceneDirector.prototype.update = function(dt) {
-      this.currentScene.trigger(&#x27;update&#x27;, dt);
     };
 
     return SceneDirector;

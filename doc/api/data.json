@@ -366,7 +366,7 @@
             "module": "Lyria",
             "namespace": "",
             "file": "src\\game.js",
-            "line": 7,
+            "line": 6,
             "description": "Game class which has a viewport, scene director and preloader by\ndefault."
         },
         "Layer": {
@@ -408,7 +408,7 @@
             "module": "Lyria",
             "namespace": "",
             "file": "src\\loop.js",
-            "line": 7,
+            "line": 25,
             "static": 1
         },
         "Preloader": {
@@ -724,7 +724,15 @@
         },
         {
             "file": "src\\scene\\director.js",
-            "line": 54,
+            "line": 48,
+            "description": "Define events for scene director",
+            "class": "Director",
+            "module": "Lyria",
+            "submodule": "Scene"
+        },
+        {
+            "file": "src\\scene\\director.js",
+            "line": 70,
             "description": "Adds a scene to the scene director",
             "itemtype": "method",
             "name": "add",
@@ -746,7 +754,7 @@
         },
         {
             "file": "src\\scene\\director.js",
-            "line": 119,
+            "line": 105,
             "description": "Shows a specified scene",
             "itemtype": "method",
             "name": "show",
@@ -773,7 +781,7 @@
         },
         {
             "file": "src\\scene\\director.js",
-            "line": 171,
+            "line": 157,
             "description": "Refreshes a scene",
             "itemtype": "method",
             "name": "refresh",
@@ -789,33 +797,8 @@
             "submodule": "Scene"
         },
         {
-            "file": "src\\scene\\director.js",
-            "line": 184,
-            "description": "Triggers the render event of the current scene",
-            "itemtype": "method",
-            "name": "render",
-            "class": "Director",
-            "module": "Lyria",
-            "submodule": "Scene"
-        },
-        {
-            "file": "src\\scene\\director.js",
-            "line": 193,
-            "description": "Triggers the update event of the current scene",
-            "params": [
-                {
-                    "name": "dt",
-                    "description": "",
-                    "type": "Number"
-                }
-            ],
-            "class": "Director",
-            "module": "Lyria",
-            "submodule": "Scene"
-        },
-        {
             "file": "src\\scene\\index.js",
-            "line": 182,
+            "line": 183,
             "description": "Adds a gameobject to the scene",
             "itemtype": "method",
             "name": "add",
@@ -831,7 +814,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 230,
+            "line": 231,
             "description": "Refreshes the scene (Re-renders the template)",
             "itemtype": "method",
             "name": "refresh",
@@ -847,7 +830,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 252,
+            "line": 253,
             "description": "Sets an event to the event object or returns a specified event",
             "itemtype": "method",
             "name": "event",
@@ -919,14 +902,14 @@
         },
         {
             "file": "src\\game.js",
-            "line": 15,
+            "line": 14,
             "is_constructor": 1,
             "class": "Game",
             "module": "Lyria"
         },
         {
             "file": "src\\game.js",
-            "line": 21,
+            "line": 24,
             "itemtype": "property",
             "name": "viewport",
             "type": "{Viewport}",
@@ -935,7 +918,7 @@
         },
         {
             "file": "src\\game.js",
-            "line": 28,
+            "line": 31,
             "itemtype": "property",
             "name": "director",
             "type": "{Director}",
@@ -944,7 +927,7 @@
         },
         {
             "file": "src\\game.js",
-            "line": 35,
+            "line": 38,
             "itemtype": "property",
             "name": "preloader",
             "type": "{Preloader}",
@@ -953,7 +936,7 @@
         },
         {
             "file": "src\\game.js",
-            "line": 51,
+            "line": 63,
             "itemtype": "property",
             "name": "Loop",
             "static": 1,
@@ -977,7 +960,7 @@
         },
         {
             "file": "src\\loop.js",
-            "line": 16,
+            "line": 33,
             "itemtype": "method",
             "name": "run",
             "class": "Loop",
@@ -985,7 +968,7 @@
         },
         {
             "file": "src\\loop.js",
-            "line": 42,
+            "line": 63,
             "itemtype": "method",
             "name": "stop",
             "class": "Loop",
@@ -1371,8 +1354,8 @@
             "line": " src\\scene\\director.js:7"
         },
         {
-            "message": "Missing item type\nTriggers the update event of the current scene",
-            "line": " src\\scene\\director.js:193"
+            "message": "Missing item type\nDefine events for scene director",
+            "line": " src\\scene\\director.js:48"
         },
         {
             "message": "Missing item type",
@@ -1392,7 +1375,7 @@
         },
         {
             "message": "Missing item type",
-            "line": " src\\game.js:15"
+            "line": " src\\game.js:14"
         },
         {
             "message": "Missing item type\nRefreshes the game object",
