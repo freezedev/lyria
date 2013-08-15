@@ -1,8 +1,26 @@
 /**
  * @module Lyria
  */
-define('lyria/loop', ['root', 'each', 'requestanimationframe'], function(root, each, requestAnimationFrame) {
+define('lyria/loop', ['root', 'requestanimationframe', 'lyria/eventmap'], function(root, requestAnimationFrame, EventMap) {
   'use strict';
+  
+  var loopEvents = new EventMap();
+  var pausedEvents = {};
+  
+  // Shim for detecting performance timer
+  var performance = root.performance;
+  performance.now = performance.now || (function() {
+    var vendors = ['ms', 'moz', 'webkit', 'o'];
+    
+    var functionName = '';
+    for (var i = 0, j = vendors.length; i < j; i++) {
+      functionName = vendors[i] + 'Now';
+      
+      if (performance[functionName]) {
+        return performance[functionName];
+      }
+    }
+  });
   
   /**
    * @class Loop
@@ -10,7 +28,6 @@ define('lyria/loop', ['root', 'each', 'requestanimationframe'], function(root, e
    */
   return (function() {
 
-    var taskList = {};
     var isRunning = true;
 
     /**
@@ -31,11 +48,15 @@ define('lyria/loop', ['root', 'each', 'requestanimationframe'], function(root, e
           return;
         }
 
-        each(taskList, function(key, value) {
-          if (!value.paused) {
-            value.value(dt);
-          }
-        });
+        var eventKeys = Object.keys(loopEvents.events);
+        
+        for (var i = 0, j = eventKeys.length; i < j; i++) {
+          (function(key) {
+            if (!pausedEvents[key]) {
+              loopEvents.trigger(key, dt);
+            }
+          })(eventKeys[i]);
+        }
       })();
     };
 
@@ -47,37 +68,47 @@ define('lyria/loop', ['root', 'each', 'requestanimationframe'], function(root, e
     };
 
     var clear = function() {
-      taskList = {};
+      loopEvents.clear();
+      pausedEvents = {};
+    };
+    
+    var on = function(taskName, taskFunction) {
+      loopEvents.on(taskName, taskFunction);
+      pausedEvents[taskName] = false;
+    };
+    
+    var off = function(taskName) {
+      loopEvents.off(taskName);
+      if (pausedEvents[taskName] != null) {
+        delete pausedEvents[taskName];        
+      }
     };
 
-    var addTask = function(taskName, taskFunction) {
-
-      taskList[taskName] = {
-        'paused': false,
-        'value': taskFunction
-      };
+    var pause = function(taskName) {
+      pausedEvents[taskName].paused = true;
     };
 
-    var pauseTask = function(taskName) {
-      taskList[taskName].paused = true;
+    var resume = function(taskName) {
+      if (taskName == null) {
+        isRunning = true;
+        return;
+      }
+      
+      pausedEvents[taskName].paused = false;
     };
 
-    var resumeTask = function(taskName) {
-      taskList[taskName].paused = false;
-    };
-
-    var removeTask = function(taskName) {
-      delete taskList[taskName];
-    };
 
     return {
       run: run,
+      
       stop: stop,
       clear: clear,
-      addTask: addTask,
-      removeTask: removeTask,
-      pauseTask: pauseTask,
-      resumeTask: resumeTask
+      
+      on: on,
+      off: off,
+      
+      pause: pause,
+      resume: resume
     };
   })();
   
