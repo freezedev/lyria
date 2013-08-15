@@ -44,6 +44,22 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'ly
        * @type {Scene}
        */
       this.currentScene = null;
+
+      /**
+       * Define events for scene director
+       *
+       */
+      this.on('render', function() {
+        if (this.currentScene) {
+          this.currentScene.trigger('render');
+        }
+      });
+
+      this.on('update', function(dt) {
+        if (this.currentScene) {
+          this.currentScene.trigger('update', dt);
+        }
+      });
     }
 
     // Properties
@@ -77,7 +93,7 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'ly
           this.viewport.$element.prepend($(root.document.createElement('div')).attr('id', scene.name).attr('class', SceneDirector.prototype.sceneClassName));
 
           if (!scene.isAsync) {
-            scene.trigger('added');            
+            scene.trigger('added');
           }
 
         }
@@ -149,24 +165,6 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'ly
 
       // Re-compile scene template
       sceneObj.refresh();
-    };
-
-    /**
-     * Triggers the render event of the current scene
-     *
-     * @method render
-     */
-    SceneDirector.prototype.render = function() {
-      this.currentScene.trigger('render');
-    };
-
-    /**
-     * Triggers the update event of the current scene
-     *
-     * @param {Number} dt
-     */
-    SceneDirector.prototype.update = function(dt) {
-      this.currentScene.trigger('update', dt);
     };
 
     return SceneDirector;
