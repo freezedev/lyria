@@ -1,7 +1,7 @@
 /**
  * @module Lyria
  */
-define('lyria/scene', ['jquery', 'isemptyobject', 'each', 'extend', 'clone', 'mixin', 'nexttick', 'lyria/eventmap', 'lyria/gameobject', 'lyria/language', 'lyria/template/string', 'lyria/log'], function($, isEmptyObject, each, extend, clone, mixin, nextTick, EventMap, GameObject, Language, templateString, Log) {'use strict';
+define('lyria/scene', ['jquery', 'isemptyobject', 'each', 'extend', 'clone', 'mixin', 'nexttick', 'lyria/eventmap', 'lyria/gameobject', 'lyria/language', 'lyria/template/string', 'lyria/log', 'lyria/mixin/language'], function($, isEmptyObject, each, extend, clone, mixin, nextTick, EventMap, GameObject, Language, templateString, Log, langMixin) {'use strict';
 
   var Scene = (function() {
 
@@ -35,7 +35,10 @@ define('lyria/scene', ['jquery', 'isemptyobject', 'each', 'extend', 'clone', 'mi
 
       // Default values
       this.localization = {};
-      this.language = Language.language;
+      
+      var langValue = Language.language;
+      
+      langMixin(self, langValue, self);
 
       this.template = {};
       this.template.source = '';
@@ -281,15 +284,33 @@ define('lyria/scene', ['jquery', 'isemptyobject', 'each', 'extend', 'clone', 'mi
      *
      * @param {Object} lang
      */
-    Scene.prototype.i18n = function(name, parameter) {
+    Scene.prototype.t = function(name, parameter) {
+      var self = this;
+
       if (this.localization && this.localization[this.language]) {
-        return templateString.process(this.localization[this.language][name], parameter);
+        if (this.localization[this.language][name] == null) {
+          return '[[Missing localization for ' + name + ']]';
+        }
+
+        if ( typeof this.localization[this.language][name] === 'string') {
+          return templateString.process(this.localization[this.language][name], parameter);
+        } else {
+          return {
+            plural: function(n) {
+              if (self.localization[this.language][name][n]) {
+                return templateString.process(self.localization[self.language][name][n], parameter);
+              } else {
+                return templateString.process(self.localization[self.language][name]['n'], parameter);
+              }
+            }
+          };
+        }
       }
     };
-    
+
     /**
      * Logging directly from the scene
-     *  
+     *
      * @param {Object} text
      */
     Scene.prototype.log = function(text) {
