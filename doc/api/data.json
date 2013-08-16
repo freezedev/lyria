@@ -2,7 +2,7 @@
     "project": {
         "name": "lyria",
         "description": "",
-        "version": "0.2.0-beta1",
+        "version": "0.2.0-beta2",
         "url": ""
     },
     "files": {
@@ -48,6 +48,13 @@
             "namespaces": {
                 "Lyria\nLyria namespace decleration": 1
             }
+        },
+        "src\\mixin\\language.js": {
+            "name": "src\\mixin\\language.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
         },
         "src\\prefab\\index.js": {
             "name": "src\\prefab\\index.js",
@@ -633,14 +640,6 @@
             "namespace": "Lyria\nLyria namespace decleration"
         },
         {
-            "file": "src\\events\\eventmap.js",
-            "line": 7,
-            "description": "This is directly taken from\nhttps://github.com/elysion-powered/elyssa/blob/master/src/core/events.coffee",
-            "class": "Director",
-            "module": "Lyria",
-            "namespace": "Lyria\nLyria namespace decleration"
-        },
-        {
             "file": "src\\localization\\index.js",
             "line": 1,
             "class": "Director",
@@ -681,6 +680,14 @@
                     "type": "Object"
                 }
             ],
+            "class": "Director",
+            "module": "Lyria",
+            "namespace": "Lyria\nLyria namespace decleration"
+        },
+        {
+            "file": "src\\mixin\\language.js",
+            "line": 1,
+            "description": "Mixin language property into objects",
             "class": "Director",
             "module": "Lyria",
             "namespace": "Lyria\nLyria namespace decleration"
@@ -798,7 +805,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 184,
+            "line": 187,
             "description": "Adds a gameobject to the scene",
             "itemtype": "method",
             "name": "add",
@@ -814,7 +821,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 232,
+            "line": 235,
             "description": "Refreshes the scene (Re-renders the template)",
             "itemtype": "method",
             "name": "refresh",
@@ -830,7 +837,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 254,
+            "line": 257,
             "description": "Sets an event to the event object or returns a specified event",
             "itemtype": "method",
             "name": "event",
@@ -856,7 +863,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 279,
+            "line": 282,
             "description": "Gets localized value",
             "params": [
                 {
@@ -870,7 +877,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 290,
+            "line": 311,
             "description": "Logging directly from the scene",
             "params": [
                 {
@@ -1358,10 +1365,6 @@
             "line": " src\\events\\eventmap.js:1"
         },
         {
-            "message": "Missing item type\nThis is directly taken from\nhttps://github.com/elysion-powered/elyssa/blob/master/src/core/events.coffee",
-            "line": " src\\events\\eventmap.js:7"
-        },
-        {
             "message": "Missing item type",
             "line": " src\\localization\\index.js:1"
         },
@@ -1372,6 +1375,10 @@
         {
             "message": "Missing item type",
             "line": " src\\localization\\index.js:55"
+        },
+        {
+            "message": "Missing item type\nMixin language property into objects",
+            "line": " src\\mixin\\language.js:1"
         },
         {
             "message": "Missing item type",
@@ -1387,11 +1394,11 @@
         },
         {
             "message": "Missing item type\nGets localized value",
-            "line": " src\\scene\\index.js:279"
+            "line": " src\\scene\\index.js:282"
         },
         {
             "message": "Missing item type\nLogging directly from the scene",
-            "line": " src\\scene\\index.js:290"
+            "line": " src\\scene\\index.js:311"
         },
         {
             "message": "Missing item type",

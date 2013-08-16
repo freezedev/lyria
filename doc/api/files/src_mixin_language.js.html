@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Connector - lyria</title>
+    <title>src\mixin\language.js - lyria</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -108,124 +108,32 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1>Connector Class</h1>
-<div class="box meta">
-    
+                        <h1 class="file-heading">File: src\mixin\language.js</h1>
 
-    
+<div class="file">
+    <pre class="code prettyprint linenums">
+/**
+ * Mixin language property into objects 
+ */
 
-    
-        <div class="foundat">
-            Defined in: <a href="../files/src_template_connector.js.html#l11"><code>src\template\connector.js:11</code></a>
-        </div>
-    
+define(&#x27;lyria/mixin/language&#x27;, function() {
+  return function(attachedObject, value, eventMap) {
 
-    
-        
-            Module: <a href="../modules/Template.html">Template</a><br>
-            Parent Module: <a href="../modules/Lyria.html">Lyria</a>
-        
-    
+    Object.defineProperty(attachedObject, &#x27;language&#x27;, {
+      get: function() {
+        return value;
+      },
+      set: function(val) {
+        value = val;
+        eventMap.trigger(&#x27;language:change&#x27;, value);
+      },
+      configurable: true,
+      enumarable: true
+    });
 
-    
-</div>
-
-
-
-<div class="box intro">
-    
-</div>
-
-
-    <div class="constructor">
-        <h2>Constructor</h2>
-        <div id="method_Connector" class="method item">
-    <h3 class="name"><code>Connector</code></h3>
-
-    
-        <span class="paren">()</span>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="../files/src_template_connector.js.html#l11"><code>src\template\connector.js:11</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-    
-
-    
-
-    
-</div>
-
-    </div>
-
-
-<div id="classdocs" class="tabview">
-    <ul class="api-class-tabs">
-        <li class="api-class-tab index"><a href="#index">Index</a></li>
-
-        
-        
-        
-        
-    </ul>
-
-    <div>
-        <div id="index" class="api-class-tabpanel index">
-            <h2 class="off-left">Item Index</h2>
-
-            
-
-            
-
-            
-
-            
-        </div>
-
-        
-
-        
-
-        
-
-        
-    </div>
+  };
+}); 
+    </pre>
 </div>
 
                     </div>
