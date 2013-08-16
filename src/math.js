@@ -1,4 +1,4 @@
-define('lyria/math', ['root', 'random', 'clamp', 'fisheryates'], function(root, random, clamp, fisheryates) {
+define('lyria/math', ['random', 'clamp', 'fisheryates'], function(random, clamp, fisheryates) {
 
   var Math = {
     random: random,
