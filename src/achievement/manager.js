@@ -1,4 +1,4 @@
-define('lyria/achievement/manager', ['root', 'jquery', 'lyria/achievement'], function(root, $, Achievement) {
+define('lyria/achievement/manager', ['jquery', 'lyria/achievement', 'lyria/template/engine'], function($, Achievement, TemplateEngine) {
   
   var achievementStore = {};
   
@@ -14,10 +14,20 @@ define('lyria/achievement/manager', ['root', 'jquery', 'lyria/achievement'], fun
       }
     },
     list: function() {
-      
+      //TemplateEngine.compile()
     },
     show: function(achName) {
-      
+      //TemplateEngine.compile();
+    },
+    toJSON: function() {
+      //return achievementStore;
+    },
+    toString: function() {
+      return JSON.stringify(AchievementManager.toJSON());
+    },
+    templates: {
+      achievement: '',
+      list: ''
     }
   };
   
