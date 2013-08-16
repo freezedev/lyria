@@ -1,4 +1,4 @@
-define('lyria/achievement', function() {
+define('lyria/achievement', ['clamp'], function(clamp) {
 
   var Achievement = (function() {
     var Achievement = function(options) {
@@ -18,7 +18,7 @@ define('lyria/achievement', function() {
 
       this.unlocked = (options.unlocked == null) ? false : options.unlocked;
       
-      var progressCurrent = 0;
+      var progressCurrent = this.progress.min;
 
       var self = this;
 
@@ -27,7 +27,8 @@ define('lyria/achievement', function() {
           return progressCurrent;
         },
         set: function(value) {
-          progressCurrent = value;
+          progressCurrent = clamp(value, self.progress.min, self.progress.max);
+          
           if (progressCurrent >= self.progress.max) {
             self.unlocked = true;
           } else {
