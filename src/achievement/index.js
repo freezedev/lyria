@@ -1,31 +1,23 @@
 define('lyria/achievement', function() {
 
-  var achievementId = 0;
-
   var Achievement = (function() {
     var Achievement = function(options) {
       if (!options.name) {
         // Break if no name has been specified
-        return;
+        throw new Error('An achievement needs to have a name.');
       } else {
         this.name = options.name;
       }
 
-      achievementId++;
+      this.id = options.id || 'achievement-' + Date.now();
+      this.icon = options.icon || null;
+      
+      this.localization = options.localization || {};
 
-      this.id = achievementId;
+      this.progress = options.progress || {min: 0, max: 1};
 
-      if (options.description != null) {
-        this.description = options.description;
-      }
-
-      if (options.icon != null) {
-        this.icon = options.icon;
-      }
-
-      this.progress = {};
-      this.progress.max = 1;
-
+      this.unlocked = (options.unlocked == null) ? false : options.unlocked;
+      
       var progressCurrent = 0;
 
       var self = this;
@@ -36,23 +28,25 @@ define('lyria/achievement', function() {
         },
         set: function(value) {
           progressCurrent = value;
-          if (self.progress.max === progressCount) {
-            self.unlock();
+          if (progressCurrent >= self.progress.max) {
+            self.unlocked = true;
+          } else {
+            if (self.unlocked === true) {
+              self.unlocked = false;
+            }
           }
         },
         enumarable: true,
         configurable: true
       });
-
-      this.unlocked = false;
     };
 
-    Achievement.prototype.lock = function() {
-      this.unlocked = false;
+    Achievement.prototype.reset = function() {
+      this.progress.current = this.progress.min;
     };
 
     Achievement.prototype.unlock = function() {
-      this.unlocked = true;
+      this.progress.current = this.progress.max;
     };
 
     Achievement.prototype.toJSON = function() {
