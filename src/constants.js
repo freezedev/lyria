@@ -10,7 +10,7 @@ define('lyria/constants', function() {
   };
 });
 
-define('lyria/language', ['detectr', 'lyria/events'], function(detectr, Events) {
+define('lyria/language', ['detectr', 'lyria/events', 'lyria/mixin/language'], function(detectr, Events, langMixin) {
   // Fallback language
   var langObject = {
     defaultLanguage: 'en'
@@ -18,17 +18,7 @@ define('lyria/language', ['detectr', 'lyria/events'], function(detectr, Events) 
 
   var langProp = detectr.Browser.language() || langObject.defaultLanguage;
 
-  Object.defineProperty(langObject, 'language', {
-    get: function() {
-      return langProp;
-    },
-    set: function(value) {
-      langProp = value;
-      Events.trigger('language:change', langProp);
-    },
-    configurable: true,
-    enumarable: true
-  });
+  langMixin(langObject, langProp, Events);
 
   return langObject;
 });
