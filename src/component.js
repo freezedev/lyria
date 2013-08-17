@@ -1,4 +1,4 @@
-define('lyria/component', ['mixin', 'lyria/eventmap'], function(mixin, EventMap) {
+define('lyria/component', ['mixin', 'eventmap'], function(mixin, EventMap) {
 
   //Lyria.Component
   return (function() {

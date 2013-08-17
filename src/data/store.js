@@ -1,4 +1,4 @@
-define('lyria/data/store', ['lyria/eventmap'], function(EventMap) {
+define('lyria/data/store', ['eventmap'], function(EventMap) {
 
   var data = {};
   var eventMap = new EventMap();

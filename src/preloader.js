@@ -1,7 +1,7 @@
 /**
  * @module Lyria
  */
-define('lyria/preloader', ['root', 'mixin', 'jquery', 'lyria/resource', 'lyria/log', 'lyria/eventmap'], function(root, mixin, $, Resource, Log, EventMap) {'use strict';
+define('lyria/preloader', ['root', 'mixin', 'jquery', 'lyria/resource', 'lyria/log', 'eventmap'], function(root, mixin, $, Resource, Log, EventMap) {'use strict';
 
   /**
    * Provides a preloader to load assets before they are needed

@@ -1,7 +1,7 @@
 /**
  * @module Lyria
  */
-define('lyria/loop', ['requestanimationframe', 'lyria/eventmap'], function(requestAnimationFrame, EventMap) {
+define('lyria/loop', ['requestanimationframe', 'eventmap'], function(requestAnimationFrame, EventMap) {
   'use strict';
   
   var loopEvents = new EventMap();
