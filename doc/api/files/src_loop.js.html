@@ -115,26 +115,11 @@
 /**
  * @module Lyria
  */
-define(&#x27;lyria/loop&#x27;, [&#x27;root&#x27;, &#x27;requestanimationframe&#x27;, &#x27;lyria/eventmap&#x27;], function(root, requestAnimationFrame, EventMap) {
+define(&#x27;lyria/loop&#x27;, [&#x27;requestanimationframe&#x27;, &#x27;eventmap&#x27;], function(requestAnimationFrame, EventMap) {
   &#x27;use strict&#x27;;
   
   var loopEvents = new EventMap();
   var pausedEvents = {};
-  
-  // Shim for detecting performance timer
-  var performance = root.performance;
-  performance.now = performance.now || (function() {
-    var vendors = [&#x27;ms&#x27;, &#x27;moz&#x27;, &#x27;webkit&#x27;, &#x27;o&#x27;];
-    
-    var functionName = &#x27;&#x27;;
-    for (var i = 0, j = vendors.length; i &lt; j; i++) {
-      functionName = vendors[i] + &#x27;Now&#x27;;
-      
-      if (performance[functionName]) {
-        return performance[functionName];
-      }
-    }
-  });
   
   /**
    * @class Loop

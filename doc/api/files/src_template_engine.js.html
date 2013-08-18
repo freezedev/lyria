@@ -145,6 +145,9 @@ define(&#x27;lyria/template/engine&#x27;, [&#x27;root&#x27;, &#x27;lyria/templat
     var handlebarsConnector = new TemplateConnector({
       compile: function() {
         return root.Handlebars.template.apply(this, arguments);
+      },
+      globalHelpers: function() {
+        return root.Handlebars.helpers;
       }
     });
 

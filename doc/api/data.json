@@ -37,7 +37,7 @@
             "classes": {},
             "fors": {},
             "namespaces": {
-                "Lyria\nLyria namespace decleration": 1
+                "Lyria\nLyria namespace decleration\n\nAlias to eventmap": 1
             }
         },
         "src\\localization\\index.js": {
@@ -230,6 +230,7 @@
             },
             "fors": {},
             "namespaces": {
+                "Lyria\nLyria namespace decleration\n\nAlias to eventmap": 1,
                 "Lyria\nLyria namespace decleration": 1
             },
             "tag": "module",
@@ -415,7 +416,7 @@
             "module": "Lyria",
             "namespace": "",
             "file": "src\\loop.js",
-            "line": 25,
+            "line": 10,
             "static": 1
         },
         "Preloader": {
@@ -637,7 +638,7 @@
             "line": 1,
             "class": "Director",
             "module": "Lyria",
-            "namespace": "Lyria\nLyria namespace decleration"
+            "namespace": "Lyria\nLyria namespace decleration\n\nAlias to eventmap"
         },
         {
             "file": "src\\localization\\index.js",
@@ -805,7 +806,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 187,
+            "line": 192,
             "description": "Adds a gameobject to the scene",
             "itemtype": "method",
             "name": "add",
@@ -821,7 +822,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 235,
+            "line": 240,
             "description": "Refreshes the scene (Re-renders the template)",
             "itemtype": "method",
             "name": "refresh",
@@ -837,7 +838,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 257,
+            "line": 262,
             "description": "Sets an event to the event object or returns a specified event",
             "itemtype": "method",
             "name": "event",
@@ -863,7 +864,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 282,
+            "line": 287,
             "description": "Gets localized value",
             "params": [
                 {
@@ -877,7 +878,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 311,
+            "line": 316,
             "description": "Logging directly from the scene",
             "params": [
                 {
@@ -995,7 +996,7 @@
         },
         {
             "file": "src\\loop.js",
-            "line": 33,
+            "line": 18,
             "itemtype": "method",
             "name": "run",
             "class": "Loop",
@@ -1003,7 +1004,7 @@
         },
         {
             "file": "src\\loop.js",
-            "line": 63,
+            "line": 48,
             "itemtype": "method",
             "name": "stop",
             "class": "Loop",
@@ -1116,7 +1117,7 @@
         },
         {
             "file": "src\\serialize.js",
-            "line": 4,
+            "line": 3,
             "params": [
                 {
                     "name": "anyObject",
@@ -1159,7 +1160,7 @@
         },
         {
             "file": "src\\viewport.js",
-            "line": 15,
+            "line": 26,
             "description": "The viewport width",
             "itemtype": "property",
             "name": "width",
@@ -1170,7 +1171,7 @@
         },
         {
             "file": "src\\viewport.js",
-            "line": 24,
+            "line": 35,
             "description": "The viewport height",
             "itemtype": "property",
             "name": "height",
@@ -1181,7 +1182,7 @@
         },
         {
             "file": "src\\viewport.js",
-            "line": 40,
+            "line": 53,
             "description": "The viewport element (jQuery object)",
             "itemtype": "property",
             "name": "$element",
@@ -1191,7 +1192,7 @@
         },
         {
             "file": "src\\viewport.js",
-            "line": 62,
+            "line": 83,
             "description": "Adds a behaviour which will be triggered on certain events",
             "itemtype": "method",
             "name": "behaviour",
@@ -1207,7 +1208,7 @@
         },
         {
             "file": "src\\viewport.js",
-            "line": 72,
+            "line": 93,
             "description": "Reset all CSS transforms on the viewport",
             "itemtype": "method",
             "name": "resetTransforms",
@@ -1216,7 +1217,7 @@
         },
         {
             "file": "src\\viewport.js",
-            "line": 81,
+            "line": 102,
             "description": "Updated CSS transforms on the viewport",
             "itemtype": "method",
             "name": "updateTransforms",
@@ -1225,7 +1226,7 @@
         },
         {
             "file": "src\\viewport.js",
-            "line": 94,
+            "line": 115,
             "description": "Scales the viewport",
             "itemtype": "method",
             "name": "scale",
@@ -1246,7 +1247,7 @@
         },
         {
             "file": "src\\viewport.js",
-            "line": 117,
+            "line": 138,
             "description": "Sets an origin for the viewport",
             "itemtype": "method",
             "name": "origin",
@@ -1267,7 +1268,7 @@
         },
         {
             "file": "src\\viewport.js",
-            "line": 128,
+            "line": 149,
             "description": "Centers the viewport",
             "itemtype": "method",
             "name": "center",
@@ -1276,7 +1277,7 @@
         },
         {
             "file": "src\\viewport.js",
-            "line": 137,
+            "line": 158,
             "description": "Rotate the viewport",
             "itemtype": "method",
             "name": "rotate",
@@ -1302,7 +1303,7 @@
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src\\serialize.js:4"
+            "line": " src\\serialize.js:3"
         },
         {
             "message": "replacing incorrect tag: returns with return",
@@ -1394,11 +1395,11 @@
         },
         {
             "message": "Missing item type\nGets localized value",
-            "line": " src\\scene\\index.js:282"
+            "line": " src\\scene\\index.js:287"
         },
         {
             "message": "Missing item type\nLogging directly from the scene",
-            "line": " src\\scene\\index.js:311"
+            "line": " src\\scene\\index.js:316"
         },
         {
             "message": "Missing item type",
@@ -1442,7 +1443,7 @@
         },
         {
             "message": "Missing item type",
-            "line": " src\\serialize.js:4"
+            "line": " src\\serialize.js:3"
         },
         {
             "message": "Missing item type",

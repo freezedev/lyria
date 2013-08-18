@@ -125,7 +125,18 @@ define(&#x27;lyria/viewport&#x27;, [&#x27;root&#x27;, &#x27;jquery&#x27;, &#x27;
    * @class Viewport
    * @constructor
    */
-    function Viewport(container, parent) {
+    function Viewport(container, options) {
+      var defaultOptions = {
+        parent: null,
+        trigger: {
+          element: &#x27;window&#x27;,
+          event: &#x27;resize&#x27;
+        },
+        scaleMode: &#x27;scaleToFit&#x27;
+      };
+      
+      options = $.extend(options, defaultOptions);
+      
       /**
        * The viewport width
        *
@@ -146,6 +157,8 @@ define(&#x27;lyria/viewport&#x27;, [&#x27;root&#x27;, &#x27;jquery&#x27;, &#x27;
       
       this.transforms = {};
       
+      this.scaleMode = options.scaleMode;
+      
       // Defaults container to the string &#x27;viewport&#x27;
       if (container == null) {
         container = &#x27;viewport&#x27;;
@@ -162,8 +175,8 @@ define(&#x27;lyria/viewport&#x27;, [&#x27;root&#x27;, &#x27;jquery&#x27;, &#x27;
       } else {
         var createdElement = $(root.document.createElement(&#x27;div&#x27;)).attr(&#x27;id&#x27;, container).attr(&#x27;class&#x27;, &#x27;viewport&#x27;);
         
-        if (parent) {
-          $(parent).prepend(createdElement);
+        if (options.parent) {
+          $(options.parent).prepend(createdElement);
         } else {
           $(&#x27;body&#x27;).prepend(createdElement);
         }
@@ -171,6 +184,14 @@ define(&#x27;lyria/viewport&#x27;, [&#x27;root&#x27;, &#x27;jquery&#x27;, &#x27;
         this.$element = $(&#x27;#&#x27; + container);
       }
       
+      var self = this;
+      $(options.trigger.element).on(options.trigger.event, function() {
+        switch (self.scaleMode) {
+          // TODO: Implement logic
+          case &#x27;scaleToFit&#x27;: break;
+          default: break;
+        }
+      });
     }
     
     /**
