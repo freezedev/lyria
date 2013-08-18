@@ -5,7 +5,9 @@ define('lyria/achievement/manager', ['jquery', 'lyria/achievement', 'lyria/templ
   var AchievementManager = {
     add: function(achievement) {
       if (achievement instanceof Achievement) {
-        achievementStore[achievement.name] = achievement;
+        if (!Object.hasOwnProperty.call(achievementStore, achievement.name)) {
+          achievementStore[achievement.name] = achievement;          
+        }
       }
     },
     remove: function(achName) {
@@ -20,10 +22,44 @@ define('lyria/achievement/manager', ['jquery', 'lyria/achievement', 'lyria/templ
       //TemplateEngine.compile();
     },
     toJSON: function() {
-      //return achievementStore;
+      var key, value;
+      var result = {};
+      
+      for (key in achievementStore) {
+        value = achievementStore[key];
+        result[key] = value.toJSON();
+      }
+      
+      return result;
     },
     toString: function() {
-      return JSON.stringify(AchievementManager.toJSON());
+      var result = '';
+      
+      try {
+        result = JSON.stringify(AchievementManager.toJSON());
+      } catch (e) {
+        throw new Error('Error while serializing achievements in AchievementManger: ' + e);
+      }
+      return result;
+    },
+    fromJSON: function(achievements) {
+      var key, value;
+      
+      for (key in achievements) {
+        value = achievements[key];
+        AchievementManager.add(value);
+      }
+    },
+    fromString: function(achievements) {
+      var deserializedValue = {};
+      
+      try {
+        deserializedValue = JSON.parse(achievements);
+      } catch (e) {
+        throw new Error('Error while deserializing achivements in AchievementManager: ' + e);
+      }
+      
+      return AchievementManager.fromJSON(deserializedValue);
     },
     templates: {
       achievement: '',
