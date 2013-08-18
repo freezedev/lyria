@@ -1,32 +1,24 @@
-define('lyria/achievement', function() {
-
-  var achievementId = 0;
+define('lyria/achievement', ['clamp'], function(clamp) {
 
   var Achievement = (function() {
     var Achievement = function(options) {
       if (!options.name) {
         // Break if no name has been specified
-        return;
+        throw new Error('An achievement needs to have a name.');
       } else {
         this.name = options.name;
       }
 
-      achievementId++;
+      this.id = options.id || 'achievement-' + Date.now();
+      this.icon = options.icon || null;
+      
+      this.localization = options.localization || {};
 
-      this.id = achievementId;
+      this.progress = options.progress || {min: 0, max: 1};
 
-      if (options.description != null) {
-        this.description = options.description;
-      }
-
-      if (options.icon != null) {
-        this.icon = options.icon;
-      }
-
-      this.progress = {};
-      this.progress.max = 1;
-
-      var progressCurrent = 0;
+      this.unlocked = (options.unlocked == null) ? false : options.unlocked;
+      
+      var progressCurrent = this.progress.min;
 
       var self = this;
 
@@ -35,24 +27,27 @@ define('lyria/achievement', function() {
           return progressCurrent;
         },
         set: function(value) {
-          progressCurrent = value;
-          if (self.progress.max === progressCount) {
-            self.unlock();
+          progressCurrent = clamp(value, self.progress.min, self.progress.max);
+          
+          if (progressCurrent >= self.progress.max) {
+            self.unlocked = true;
+          } else {
+            if (self.unlocked === true) {
+              self.unlocked = false;
+            }
           }
         },
         enumarable: true,
         configurable: true
       });
-
-      this.unlocked = false;
     };
 
-    Achievement.prototype.lock = function() {
-      this.unlocked = false;
+    Achievement.prototype.reset = function() {
+      this.progress.current = this.progress.min;
     };
 
     Achievement.prototype.unlock = function() {
-      this.unlocked = true;
+      this.progress.current = this.progress.max;
     };
 
     Achievement.prototype.toJSON = function() {
@@ -80,14 +75,16 @@ define('lyria/achievement', function() {
 
 });
 
-define('lyria/achievement/manager', ['root', 'jquery', 'lyria/achievement'], function(root, $, Achievement) {
+define('lyria/achievement/manager', ['jquery', 'lyria/achievement', 'lyria/template/engine'], function($, Achievement, TemplateEngine) {
   
   var achievementStore = {};
   
   var AchievementManager = {
     add: function(achievement) {
       if (achievement instanceof Achievement) {
-        achievementStore[achievement.name] = achievement;
+        if (!Object.hasOwnProperty.call(achievementStore, achievement.name)) {
+          achievementStore[achievement.name] = achievement;          
+        }
       }
     },
     remove: function(achName) {
@@ -96,10 +93,54 @@ define('lyria/achievement/manager', ['root', 'jquery', 'lyria/achievement'], fun
       }
     },
     list: function() {
-      
+      //TemplateEngine.compile()
     },
     show: function(achName) {
+      //TemplateEngine.compile();
+    },
+    toJSON: function() {
+      var key, value;
+      var result = {};
       
+      for (key in achievementStore) {
+        value = achievementStore[key];
+        result[key] = value.toJSON();
+      }
+      
+      return result;
+    },
+    toString: function() {
+      var result = '';
+      
+      try {
+        result = JSON.stringify(AchievementManager.toJSON());
+      } catch (e) {
+        throw new Error('Error while serializing achievements in AchievementManger: ' + e);
+      }
+      return result;
+    },
+    fromJSON: function(achievements) {
+      var key, value;
+      
+      for (key in achievements) {
+        value = achievements[key];
+        AchievementManager.add(value);
+      }
+    },
+    fromString: function(achievements) {
+      var deserializedValue = {};
+      
+      try {
+        deserializedValue = JSON.parse(achievements);
+      } catch (e) {
+        throw new Error('Error while deserializing achivements in AchievementManager: ' + e);
+      }
+      
+      return AchievementManager.fromJSON(deserializedValue);
+    },
+    templates: {
+      achievement: '',
+      list: ''
     }
   };
   
@@ -442,7 +483,7 @@ define('lyria/audio/manager', function() {
   return AudioManager;
 });
 
-define('lyria/component', ['mixin', 'lyria/eventmap'], function(mixin, EventMap) {
+define('lyria/component', ['mixin', 'eventmap'], function(mixin, EventMap) {
 
   //Lyria.Component
   return (function() {
@@ -871,6 +912,23 @@ define('path', function() {
   return Path;
 });
 
+(function(root) {
+  // Shim for detecting performance timer
+  var performance = root.performance;
+  performance.now = performance.now || (function() {
+    var vendors = ['ms', 'moz', 'webkit', 'o'];
+    
+    var functionName = '';
+    for (var i = 0, j = vendors.length; i < j; i++) {
+      functionName = vendors[i] + 'Now';
+      
+      if (performance[functionName]) {
+        return performance[functionName];
+      }
+    }
+  });
+})(this);
+
 define('random', function() {
   return function(max, min) {
     if (max == null) {
@@ -945,7 +1003,7 @@ define('lyria/data/layer', function() {
   
 });
 
-define('lyria/data/store', ['lyria/eventmap'], function(EventMap) {
+define('lyria/data/store', ['eventmap'], function(EventMap) {
 
   var data = {};
   var eventMap = new EventMap();
@@ -969,12 +1027,14 @@ define('lyria/data/store', ['lyria/eventmap'], function(EventMap) {
 /**
  * @namespace Lyria
  * Lyria namespace decleration
+ * 
+ * Alias to eventmap
  */
 define('lyria/eventmap', ['eventmap'], function(EventMap) {
   return EventMap;
 });
 
-define('lyria/events', ['lyria/eventmap'], function(EventMap) {
+define('lyria/events', ['eventmap'], function(EventMap) {
   var instance = instance || new EventMap();
 
   return instance;
@@ -1058,7 +1118,7 @@ define('lyria/game', ['extend', 'lyria/viewport', 'lyria/scene/director', 'lyria
 /**
  * @module Lyria
  */
-define('lyria/gameobject', ['mixin', 'isemptyobject', 'each', 'lyria/eventmap', 'lyria/component', 'lyria/log'], function(mixin, isEmptyObject, each, EventMap, Component, Log) {
+define('lyria/gameobject', ['mixin', 'isemptyobject', 'each', 'eventmap', 'lyria/component', 'lyria/log'], function(mixin, isEmptyObject, each, EventMap, Component, Log) {
   'use strict';
   
   //Lyria.GameObject
@@ -1324,26 +1384,11 @@ define('lyria/log', ['root'], function(root) {
 /**
  * @module Lyria
  */
-define('lyria/loop', ['root', 'requestanimationframe', 'lyria/eventmap'], function(root, requestAnimationFrame, EventMap) {
+define('lyria/loop', ['requestanimationframe', 'eventmap'], function(requestAnimationFrame, EventMap) {
   'use strict';
   
   var loopEvents = new EventMap();
   var pausedEvents = {};
-  
-  // Shim for detecting performance timer
-  var performance = root.performance;
-  performance.now = performance.now || (function() {
-    var vendors = ['ms', 'moz', 'webkit', 'o'];
-    
-    var functionName = '';
-    for (var i = 0, j = vendors.length; i < j; i++) {
-      functionName = vendors[i] + 'Now';
-      
-      if (performance[functionName]) {
-        return performance[functionName];
-      }
-    }
-  });
   
   /**
    * @class Loop
@@ -1436,7 +1481,7 @@ define('lyria/loop', ['root', 'requestanimationframe', 'lyria/eventmap'], functi
   })();
   
 });
-define('lyria/math', ['root', 'random', 'clamp', 'fisheryates'], function(root, random, clamp, fisheryates) {
+define('lyria/math', ['random', 'clamp', 'fisheryates'], function(random, clamp, fisheryates) {
 
   var Math = {
     random: random,
@@ -1509,7 +1554,7 @@ define('lyria/prefab/manager', function() {
 /**
  * @module Lyria
  */
-define('lyria/preloader', ['root', 'mixin', 'jquery', 'lyria/resource', 'lyria/log', 'lyria/eventmap'], function(root, mixin, $, Resource, Log, EventMap) {'use strict';
+define('lyria/preloader', ['root', 'mixin', 'jquery', 'lyria/resource', 'lyria/log', 'eventmap'], function(root, mixin, $, Resource, Log, EventMap) {'use strict';
 
   /**
    * Provides a preloader to load assets before they are needed
@@ -1707,7 +1752,7 @@ define('lyria/resource', ['path'], function(Path) {
  * @module Lyria
  * @submodule Scene
  */
-define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'lyria/scene', 'lyria/viewport'], function(root, mixin, $, EventMap, Scene, Viewport) {'use strict';
+define('lyria/scene/director', ['root', 'mixin', 'jquery', 'eventmap', 'lyria/scene', 'lyria/viewport'], function(root, mixin, $, EventMap, Scene, Viewport) {'use strict';
 
   /**
    * The scene director is the manager for all scenes
@@ -1880,7 +1925,7 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'lyria/eventmap', 'ly
 /**
  * @module Lyria
  */
-define('lyria/scene', ['jquery', 'isemptyobject', 'each', 'extend', 'clone', 'mixin', 'nexttick', 'lyria/eventmap', 'lyria/gameobject', 'lyria/language', 'lyria/template/string', 'lyria/log', 'lyria/mixin/language'], function($, isEmptyObject, each, extend, clone, mixin, nextTick, EventMap, GameObject, Language, templateString, Log, langMixin) {'use strict';
+define('lyria/scene', ['jquery', 'isemptyobject', 'each', 'extend', 'clone', 'mixin', 'nexttick', 'eventmap', 'lyria/gameobject', 'lyria/language', 'lyria/template/string', 'lyria/log', 'lyria/mixin/language'], function($, isEmptyObject, each, extend, clone, mixin, nextTick, EventMap, GameObject, Language, templateString, Log, langMixin) {'use strict';
 
   var Scene = (function() {
 
@@ -1921,8 +1966,13 @@ define('lyria/scene', ['jquery', 'isemptyobject', 'each', 'extend', 'clone', 'mi
 
       this.template = {};
       this.template.source = '';
+      this.template.helpers = {};
+      this.template.partials = {};
       // Collect all template values
       this.template.data = {};
+
+      // Add default helpers
+      this.template.helpers['translate'] = this.t;
 
       this.children = this.children || {};
       this.children.gameObjects = {};
@@ -2123,7 +2173,7 @@ define('lyria/scene', ['jquery', 'isemptyobject', 'each', 'extend', 'clone', 'mi
       }
 
       if (this.template && this.template.source) {
-        this.content = this.template.source(val);
+        this.content = this.template.source(val, {partials: this.template.partials, helpers: {}});
       }
 
       if (this.$element.length > 0) {
@@ -2206,7 +2256,6 @@ define('lyria/scene', ['jquery', 'isemptyobject', 'each', 'extend', 'clone', 'mi
 
 define('lyria/serialize', ['jquery'], function($) {
   
-  // TODO: Use JSON.parse + reviver instead
   /**
    *
    * @param {Object} anyObject
@@ -2234,7 +2283,7 @@ define('lyria/serialize', ['jquery'], function($) {
   return serialize;
 });
 
-/**
+ /**
  * @module Lyria
  * @submodule Template 
  */
@@ -2306,6 +2355,9 @@ define('lyria/template/engine', ['root', 'lyria/template/connector', 'lyria/temp
     var handlebarsConnector = new TemplateConnector({
       compile: function() {
         return root.Handlebars.template.apply(this, arguments);
+      },
+      globalHelpers: function() {
+        return root.Handlebars.helpers;
       }
     });
 
@@ -2439,7 +2491,18 @@ define('lyria/viewport', ['root', 'jquery', 'isemptyobject'], function(root, $, 
    * @class Viewport
    * @constructor
    */
-    function Viewport(container, parent) {
+    function Viewport(container, options) {
+      var defaultOptions = {
+        parent: null,
+        trigger: {
+          element: 'window',
+          event: 'resize'
+        },
+        scaleMode: 'scaleToFit'
+      };
+      
+      options = $.extend(options, defaultOptions);
+      
       /**
        * The viewport width
        *
@@ -2460,6 +2523,8 @@ define('lyria/viewport', ['root', 'jquery', 'isemptyobject'], function(root, $, 
       
       this.transforms = {};
       
+      this.scaleMode = options.scaleMode;
+      
       // Defaults container to the string 'viewport'
       if (container == null) {
         container = 'viewport';
@@ -2476,8 +2541,8 @@ define('lyria/viewport', ['root', 'jquery', 'isemptyobject'], function(root, $, 
       } else {
         var createdElement = $(root.document.createElement('div')).attr('id', container).attr('class', 'viewport');
         
-        if (parent) {
-          $(parent).prepend(createdElement);
+        if (options.parent) {
+          $(options.parent).prepend(createdElement);
         } else {
           $('body').prepend(createdElement);
         }
@@ -2485,6 +2550,14 @@ define('lyria/viewport', ['root', 'jquery', 'isemptyobject'], function(root, $, 
         this.$element = $('#' + container);
       }
       
+      var self = this;
+      $(options.trigger.element).on(options.trigger.event, function() {
+        switch (self.scaleMode) {
+          // TODO: Implement logic
+          case 'scaleToFit': break;
+          default: break;
+        }
+      });
     }
     
     /**
