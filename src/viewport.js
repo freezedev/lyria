@@ -11,7 +11,18 @@ define('lyria/viewport', ['root', 'jquery', 'isemptyobject'], function(root, $, 
    * @class Viewport
    * @constructor
    */
-    function Viewport(container, parent) {
+    function Viewport(container, options) {
+      var defaultOptions = {
+        parent: null,
+        trigger: {
+          element: 'window',
+          event: 'resize'
+        },
+        scaleMode: 'scaleToFit'
+      };
+      
+      options = $.extend(options, defaultOptions);
+      
       /**
        * The viewport width
        *
@@ -32,6 +43,8 @@ define('lyria/viewport', ['root', 'jquery', 'isemptyobject'], function(root, $, 
       
       this.transforms = {};
       
+      this.scaleMode = options.scaleMode;
+      
       // Defaults container to the string 'viewport'
       if (container == null) {
         container = 'viewport';
@@ -48,8 +61,8 @@ define('lyria/viewport', ['root', 'jquery', 'isemptyobject'], function(root, $, 
       } else {
         var createdElement = $(root.document.createElement('div')).attr('id', container).attr('class', 'viewport');
         
-        if (parent) {
-          $(parent).prepend(createdElement);
+        if (options.parent) {
+          $(options.parent).prepend(createdElement);
         } else {
           $('body').prepend(createdElement);
         }
@@ -57,6 +70,14 @@ define('lyria/viewport', ['root', 'jquery', 'isemptyobject'], function(root, $, 
         this.$element = $('#' + container);
       }
       
+      var self = this;
+      $(options.trigger.element).on(options.trigger.event, function() {
+        switch (self.scaleMode) {
+          // TODO: Implement logic
+          case 'scaleToFit': break;
+          default: break;
+        }
+      });
     }
     
     /**
