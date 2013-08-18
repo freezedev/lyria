@@ -31,6 +31,9 @@ define('lyria/template/engine', ['root', 'lyria/template/connector', 'lyria/temp
     var handlebarsConnector = new TemplateConnector({
       compile: function() {
         return root.Handlebars.template.apply(this, arguments);
+      },
+      globalHelpers: function() {
+        return root.Handlebars.helpers;
       }
     });
 
