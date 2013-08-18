@@ -1,7 +1,7 @@
 /**
  * @module Lyria
  */
-define('lyria/scene', ['jquery', 'isemptyobject', 'each', 'extend', 'clone', 'mixin', 'nexttick', 'lyria/eventmap', 'lyria/gameobject', 'lyria/language', 'lyria/template/string', 'lyria/log', 'lyria/mixin/language'], function($, isEmptyObject, each, extend, clone, mixin, nextTick, EventMap, GameObject, Language, templateString, Log, langMixin) {'use strict';
+define('lyria/scene', ['jquery', 'isemptyobject', 'each', 'extend', 'clone', 'mixin', 'nexttick', 'eventmap', 'lyria/gameobject', 'lyria/language', 'lyria/template/string', 'lyria/log', 'lyria/mixin/language'], function($, isEmptyObject, each, extend, clone, mixin, nextTick, EventMap, GameObject, Language, templateString, Log, langMixin) {'use strict';
 
   var Scene = (function() {
 
@@ -42,8 +42,13 @@ define('lyria/scene', ['jquery', 'isemptyobject', 'each', 'extend', 'clone', 'mi
 
       this.template = {};
       this.template.source = '';
+      this.template.helpers = {};
+      this.template.partials = {};
       // Collect all template values
       this.template.data = {};
+
+      // Add default helpers
+      this.template.helpers['translate'] = this.t;
 
       this.children = this.children || {};
       this.children.gameObjects = {};
@@ -244,7 +249,7 @@ define('lyria/scene', ['jquery', 'isemptyobject', 'each', 'extend', 'clone', 'mi
       }
 
       if (this.template && this.template.source) {
-        this.content = this.template.source(val);
+        this.content = this.template.source(val, {partials: this.template.partials, helpers: {}});
       }
 
       if (this.$element.length > 0) {
