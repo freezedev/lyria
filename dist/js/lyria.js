@@ -150,6 +150,21 @@ define('lyria/achievement/manager', ['jquery', 'lyria/achievement', 'lyria/templ
     }
   });
   
+  Object.defineProperty(AchievementManager, 'unlockedCount', {
+    get: function() {
+      var counter = 0;
+      
+      $.each(achievementStore, function(key, value) {
+        if (value.unlocked) {
+          counter++;
+        }
+      });
+      
+      return counter;
+    }
+  });
+  
+  
   return AchievementManager;
   
 });
