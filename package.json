@@ -7,7 +7,7 @@
     "grunt-contrib-jshint": "0.6.x",
     "grunt-contrib-concat": "0.3.x",
     "grunt-contrib-yuidoc": "0.4.x",
-    "grunt-contrib-stylus": "0.7.x",
+    "grunt-contrib-stylus": "0.8.x",
     "grunt-contrib-watch": "0.5.x",
     "grunt-contrib-cssmin": "0.6.x",
     "grunt-contrib-clean": "0.5.x",
