@@ -128,16 +128,6 @@ Of course, this only a simple example of what you can do with scenes. You can al
 
 If you are already have worked with the [CouchDB eventlys](https://github.com/jchris/evently), this concept might feel very familiar to you.
 
-What do I need?
----------------
-All libraries are included in the repository, so you don't need to worry about browsing the internet and downloading the libraries you need.
-
-* [jQuery](http://jquery.com/) 2.0 or higher
-* [Modernizr](http://modernizr.com/)
-* [Handlebars.js](http://handlebarsjs.com/)
-* [detectr](https://github.com/Stoney-FD/detectr.js)
-* [checkt](https://github.com/Stoney-FD/checkt)
-
 Features
 --------
 
