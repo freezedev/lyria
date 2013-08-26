@@ -1064,7 +1064,7 @@ define('lyria/events', ['eventmap'], function(EventMap) {
 /**
  * @module Lyria
  */
-define('lyria/game', ['extend', 'lyria/viewport', 'lyria/scene/director', 'lyria/preloader', 'lyria/loop'], function(extend, Viewport, Director, Preloader, Loop) {'use strict';
+define('lyria/game', ['extend', 'eventmap', 'mixin', 'jquery', 'lyria/viewport', 'lyria/scene/director', 'lyria/preloader', 'lyria/loop'], function(extend, EventMap, mixin, $, Viewport, Director, Preloader, Loop) {'use strict';
 
   /**
    * Game class which has a viewport, scene director and preloader by
@@ -1083,6 +1083,8 @@ define('lyria/game', ['extend', 'lyria/viewport', 'lyria/scene/director', 'lyria
       options = extend(options, {
         startLoop: true
       });
+      
+      mixin(Game.prototype, new EventMap());
 
       /**
        * @property viewport
@@ -1107,6 +1109,8 @@ define('lyria/game', ['extend', 'lyria/viewport', 'lyria/scene/director', 'lyria
 
       // Bind the scene director to the preloader reference
       this.preloader.sceneDirector = this.director;
+      
+      this.paused = false;
 
       // Add an update task to the loop with updates the scene director on each
       // frame
@@ -1121,6 +1125,21 @@ define('lyria/game', ['extend', 'lyria/viewport', 'lyria/scene/director', 'lyria
       if (options.startLoop) {
         Game.Loop.run();
       }
+      
+      $(document).ready(function() {
+        $(window).blur(self.pause);
+        $(window).focus(self.resume);
+      });
+    };
+    
+    Game.prototype.pause = function() {
+      this.paused = true;
+      this.trigger('pause');
+    };
+    
+    Game.prototype.resume = function() {
+      this.paused = false;
+      this.trigger('resume');
     };
 
     /**
