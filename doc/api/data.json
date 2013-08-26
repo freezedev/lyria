@@ -945,7 +945,7 @@
         },
         {
             "file": "src\\game.js",
-            "line": 24,
+            "line": 26,
             "itemtype": "property",
             "name": "viewport",
             "type": "{Viewport}",
@@ -954,7 +954,7 @@
         },
         {
             "file": "src\\game.js",
-            "line": 31,
+            "line": 33,
             "itemtype": "property",
             "name": "director",
             "type": "{Director}",
@@ -963,7 +963,7 @@
         },
         {
             "file": "src\\game.js",
-            "line": 38,
+            "line": 40,
             "itemtype": "property",
             "name": "preloader",
             "type": "{Preloader}",
@@ -972,7 +972,7 @@
         },
         {
             "file": "src\\game.js",
-            "line": 63,
+            "line": 82,
             "itemtype": "property",
             "name": "Loop",
             "static": 1,

@@ -115,7 +115,7 @@
 /**
  * @module Lyria
  */
-define(&#x27;lyria/game&#x27;, [&#x27;extend&#x27;, &#x27;lyria/viewport&#x27;, &#x27;lyria/scene/director&#x27;, &#x27;lyria/preloader&#x27;, &#x27;lyria/loop&#x27;], function(extend, Viewport, Director, Preloader, Loop) {&#x27;use strict&#x27;;
+define(&#x27;lyria/game&#x27;, [&#x27;extend&#x27;, &#x27;eventmap&#x27;, &#x27;mixin&#x27;, &#x27;jquery&#x27;, &#x27;lyria/viewport&#x27;, &#x27;lyria/scene/director&#x27;, &#x27;lyria/preloader&#x27;, &#x27;lyria/loop&#x27;], function(extend, EventMap, mixin, $, Viewport, Director, Preloader, Loop) {&#x27;use strict&#x27;;
 
   /**
    * Game class which has a viewport, scene director and preloader by
@@ -134,6 +134,8 @@ define(&#x27;lyria/game&#x27;, [&#x27;extend&#x27;, &#x27;lyria/viewport&#x27;, 
       options = extend(options, {
         startLoop: true
       });
+      
+      mixin(Game.prototype, new EventMap());
 
       /**
        * @property viewport
@@ -158,6 +160,8 @@ define(&#x27;lyria/game&#x27;, [&#x27;extend&#x27;, &#x27;lyria/viewport&#x27;, 
 
       // Bind the scene director to the preloader reference
       this.preloader.sceneDirector = this.director;
+      
+      this.paused = false;
 
       // Add an update task to the loop with updates the scene director on each
       // frame
@@ -172,6 +176,21 @@ define(&#x27;lyria/game&#x27;, [&#x27;extend&#x27;, &#x27;lyria/viewport&#x27;, 
       if (options.startLoop) {
         Game.Loop.run();
       }
+      
+      $(document).ready(function() {
+        $(window).blur(self.pause);
+        $(window).focus(self.resume);
+      });
+    };
+    
+    Game.prototype.pause = function() {
+      this.paused = true;
+      this.trigger(&#x27;pause&#x27;);
+    };
+    
+    Game.prototype.resume = function() {
+      this.paused = false;
+      this.trigger(&#x27;resume&#x27;);
     };
 
     /**
