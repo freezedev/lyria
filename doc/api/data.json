@@ -31,15 +31,6 @@
             "fors": {},
             "namespaces": {}
         },
-        "src\\events\\eventmap.js": {
-            "name": "src\\events\\eventmap.js",
-            "modules": {},
-            "classes": {},
-            "fors": {},
-            "namespaces": {
-                "Lyria\nLyria namespace decleration\n\nAlias to eventmap": 1
-            }
-        },
         "src\\localization\\index.js": {
             "name": "src\\localization\\index.js",
             "modules": {},
@@ -230,7 +221,6 @@
             },
             "fors": {},
             "namespaces": {
-                "Lyria\nLyria namespace decleration\n\nAlias to eventmap": 1,
                 "Lyria\nLyria namespace decleration": 1
             },
             "tag": "module",
@@ -632,13 +622,6 @@
             "description": "Trying to find a better alternative than setTimeout(fn, 0)\nrequestAnimationFrame should be a better alternative",
             "class": "Director",
             "module": "Lyria"
-        },
-        {
-            "file": "src\\events\\eventmap.js",
-            "line": 1,
-            "class": "Director",
-            "module": "Lyria",
-            "namespace": "Lyria\nLyria namespace decleration\n\nAlias to eventmap"
         },
         {
             "file": "src\\localization\\index.js",
@@ -1360,10 +1343,6 @@
         {
             "message": "Missing item type\nTrying to find a better alternative than setTimeout(fn, 0)\nrequestAnimationFrame should be a better alternative",
             "line": " src\\core\\nexttick.js:1"
-        },
-        {
-            "message": "Missing item type",
-            "line": " src\\events\\eventmap.js:1"
         },
         {
             "message": "Missing item type",
