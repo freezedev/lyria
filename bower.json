@@ -1,8 +1,22 @@
 {
   "name": "lyria",
   "version": "0.2.0-beta2",
-  "main": ["dist/js/lyria.js", "dist/css/lyria.css"],
-  "ignore": ["**/.*", "node_modules", "bower_components", "test", "tests", "src", "doc", "stylus", "gruntfile.js", "package.json"],
+  "main": [
+    "dist/js/lyria.js",
+    "dist/css/lyria.css"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "src",
+    "doc",
+    "stylus",
+    "gruntfile.js",
+    "package.json"
+  ],
   "dependencies": {
     "almond": "~0.2.5",
     "checkt": "~1.1.0",
@@ -10,10 +24,24 @@
     "handlebars": "~1.0.0",
     "jquery": "~2.0.3",
     "modernizr": "~2.6.2",
-    "eventmap": "~1.1.0"
+    "eventmap": "~1.1.0",
+    "animframe": "~1.0.0"
   },
   "devDependencies": {
     "mocha": "~1.12.0",
     "chai": "~1.7.2"
-  }
+  },
+  "homepage": "https://github.com/freezedev/lyria",
+  "authors": [
+    "Johannes Stein <johannesstein@freeze-dev.com>"
+  ],
+  "description": "Game engine based on jQuery",
+  "keywords": [
+    "jquery",
+    "game",
+    "engine",
+    "game",
+    "dom"
+  ],
+  "license": "UNLICENSE"
 }
