@@ -175,7 +175,6 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
           GameObject: GameObject,
           Events: Events,
           Resource: Resource,
-          DataStore: DataStore,
           Loop: Loop
         };
 
