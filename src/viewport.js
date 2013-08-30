@@ -1,7 +1,7 @@
 /**
  * @module Lyria
  */
-define('lyria/viewport', ['root', 'jquery', 'isemptyobject'], function(root, $, isEmptyObject) {
+define('lyria/viewport', ['root', 'jquery'], function(root, $) {
   'use strict';
 
   return (function() {
@@ -105,7 +105,7 @@ define('lyria/viewport', ['root', 'jquery', 'isemptyobject'], function(root, $, 
      * @method updateTransforms
      */
     Viewport.prototype.updateTransforms = function() {
-      if (isEmptyObject(this.transforms)) {
+      if ($.isEmptyObject(this.transforms)) {
         return;
       }
       
