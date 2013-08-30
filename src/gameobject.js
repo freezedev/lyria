@@ -1,7 +1,7 @@
 /**
  * @module Lyria
  */
-define('lyria/gameobject', ['mixin', 'isemptyobject', 'each', 'eventmap', 'lyria/component', 'lyria/log'], function(mixin, isEmptyObject, each, EventMap, Component, Log) {
+define('lyria/gameobject', ['mixer', 'eventmap', 'lyria/component', 'lyria/log'], function(mixer, EventMap, Component, Log) {
   'use strict';
   
   //Lyria.GameObject
@@ -9,7 +9,7 @@ define('lyria/gameobject', ['mixin', 'isemptyobject', 'each', 'eventmap', 'lyria
     
     // Constructor
     var GameObject = function() {
-      mixin(GameObject.prototype, new EventMap());
+      mixer(GameObject.prototype, new EventMap());
       
       var self = this;
       
@@ -20,11 +20,11 @@ define('lyria/gameobject', ['mixin', 'isemptyobject', 'each', 'eventmap', 'lyria
       this.template.source = '<div id="{{id}}" class="{{className}}"></div>';
       
       this.on('update', function(dt) {
-        if (isEmptyObject(self.components)) {
+        if (_.isEmpty(self.components)) {
           return;
         }
         
-        each(self.components, function(key, value) {
+        _.each(self.components, function(key, value) {
           value.trigger('update', dt);
         });
       });
