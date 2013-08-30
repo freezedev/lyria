@@ -1,7 +1,7 @@
 /**
  * @module Lyria
  */
-define('lyria/game', ['extend', 'eventmap', 'mixin', 'jquery', 'lyria/viewport', 'lyria/scene/director', 'lyria/preloader', 'lyria/loop'], function(extend, EventMap, mixin, $, Viewport, Director, Preloader, Loop) {'use strict';
+define('lyria/game', ['eventmap', 'mixer', 'jquery', 'lyria/viewport', 'lyria/scene/director', 'lyria/preloader', 'lyria/loop'], function(EventMap, mixer, $, Viewport, Director, Preloader, Loop) {'use strict';
 
   /**
    * Game class which has a viewport, scene director and preloader by
@@ -17,11 +17,11 @@ define('lyria/game', ['extend', 'eventmap', 'mixin', 'jquery', 'lyria/viewport',
     var Game = function(options) {
       var self = this;
 
-      options = extend(options, {
+      options = $.extend(options, {
         startLoop: true
       });
       
-      mixin(Game.prototype, new EventMap());
+      mixer(Game.prototype, new EventMap());
 
       /**
        * @property viewport
