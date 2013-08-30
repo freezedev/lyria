@@ -103,15 +103,6 @@
             "fors": {},
             "namespaces": {}
         },
-        "src\\achievements.js": {
-            "name": "src\\achievements.js",
-            "modules": {},
-            "classes": {},
-            "fors": {},
-            "namespaces": {
-                "Lyria\nLyria namespace decleration": 1
-            }
-        },
         "src\\game.js": {
             "name": "src\\game.js",
             "modules": {},
@@ -874,52 +865,6 @@
             "module": "Lyria"
         },
         {
-            "file": "src\\achievements.js",
-            "line": 1,
-            "class": "Game",
-            "module": "Lyria",
-            "namespace": "Lyria\nLyria namespace decleration"
-        },
-        {
-            "file": "src\\achievements.js",
-            "line": 36,
-            "description": "Gets the number of how many achievements have been unlocked",
-            "return": {
-                "description": "The exact number of unlocked achievements",
-                "type": "Number"
-            },
-            "class": "Game",
-            "module": "Lyria",
-            "namespace": "Lyria\nLyria namespace decleration"
-        },
-        {
-            "file": "src\\achievements.js",
-            "line": 49,
-            "description": "Lists all achievements in a list of <div>s",
-            "return": {
-                "description": "The markup for the list",
-                "type": "String"
-            },
-            "class": "Game",
-            "module": "Lyria",
-            "namespace": "Lyria\nLyria namespace decleration"
-        },
-        {
-            "file": "src\\achievements.js",
-            "line": 66,
-            "description": "Displays an achievement if it hasn't been displayed yet",
-            "params": [
-                {
-                    "name": "text",
-                    "description": "",
-                    "type": "String"
-                }
-            ],
-            "class": "Game",
-            "module": "Lyria",
-            "namespace": "Lyria\nLyria namespace decleration"
-        },
-        {
             "file": "src\\game.js",
             "line": 14,
             "is_constructor": 1,
@@ -1278,14 +1223,6 @@
     "warnings": [
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src\\achievements.js:36"
-        },
-        {
-            "message": "replacing incorrect tag: returns with return",
-            "line": " src\\achievements.js:49"
-        },
-        {
-            "message": "replacing incorrect tag: returns with return",
             "line": " src\\serialize.js:3"
         },
         {
@@ -1379,22 +1316,6 @@
         {
             "message": "Missing item type\nLogging directly from the scene",
             "line": " src\\scene\\index.js:316"
-        },
-        {
-            "message": "Missing item type",
-            "line": " src\\achievements.js:1"
-        },
-        {
-            "message": "Missing item type\nGets the number of how many achievements have been unlocked",
-            "line": " src\\achievements.js:36"
-        },
-        {
-            "message": "Missing item type\nLists all achievements in a list of <div>s",
-            "line": " src\\achievements.js:49"
-        },
-        {
-            "message": "Missing item type\nDisplays an achievement if it hasn't been displayed yet",
-            "line": " src\\achievements.js:66"
         },
         {
             "message": "Missing item type",
