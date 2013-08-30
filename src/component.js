@@ -1,10 +1,10 @@
-define('lyria/component', ['mixin', 'eventmap'], function(mixin, EventMap) {
+define('lyria/component', ['mixer', 'eventmap'], function(mixer, EventMap) {
 
   //Lyria.Component
   return (function() {
 
     function Component(name) {
-      mixin(Component.prototype, new EventMap());
+      mixer(Component.prototype, new EventMap());
       
       this.name = name != null ? name : this.constructor.name;
     }
