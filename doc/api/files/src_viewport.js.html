@@ -219,7 +219,7 @@ define(&#x27;lyria/viewport&#x27;, [&#x27;root&#x27;, &#x27;jquery&#x27;], funct
      * @method updateTransforms
      */
     Viewport.prototype.updateTransforms = function() {
-      if (_.isEmpty(this.transforms)) {
+      if ($.isEmptyObject(this.transforms)) {
         return;
       }
       
