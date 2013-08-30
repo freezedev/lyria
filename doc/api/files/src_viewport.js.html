@@ -115,7 +115,7 @@
 /**
  * @module Lyria
  */
-define(&#x27;lyria/viewport&#x27;, [&#x27;root&#x27;, &#x27;jquery&#x27;, &#x27;isemptyobject&#x27;], function(root, $, isEmptyObject) {
+define(&#x27;lyria/viewport&#x27;, [&#x27;root&#x27;, &#x27;jquery&#x27;], function(root, $) {
   &#x27;use strict&#x27;;
 
   return (function() {
@@ -219,7 +219,7 @@ define(&#x27;lyria/viewport&#x27;, [&#x27;root&#x27;, &#x27;jquery&#x27;, &#x27;
      * @method updateTransforms
      */
     Viewport.prototype.updateTransforms = function() {
-      if (isEmptyObject(this.transforms)) {
+      if (_.isEmpty(this.transforms)) {
         return;
       }
       

@@ -117,7 +117,7 @@
  *
  * @module Lyria
  */
-define(&#x27;lyria/layer&#x27;, [&#x27;mixin&#x27;, &#x27;lyria/gameobject&#x27;], function(mixin, GameObject) {
+define(&#x27;lyria/layer&#x27;, [&#x27;mixer&#x27;, &#x27;lyria/gameobject&#x27;], function(mixer, GameObject) {
   &#x27;use strict&#x27;;
 
   return (function() {
@@ -128,7 +128,7 @@ define(&#x27;lyria/layer&#x27;, [&#x27;mixin&#x27;, &#x27;lyria/gameobject&#x27;
      * @constructor
      */
     var Layer = function() {
-      mixin(this.prototype, new GameObject());
+      mixer(this.prototype, new GameObject());
     };
 
     return Layer;
