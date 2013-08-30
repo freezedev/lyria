@@ -1,7 +1,7 @@
 /**
  * @module Lyria
  */
-define('lyria/scene', ['jquery', 'isemptyobject', 'each', 'extend', 'clone', 'mixin', 'nexttick', 'eventmap', 'lyria/gameobject', 'lyria/language', 'lyria/template/string', 'lyria/log', 'lyria/mixin/language'], function($, isEmptyObject, each, extend, clone, mixin, nextTick, EventMap, GameObject, Language, templateString, Log, langMixin) {'use strict';
+define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobject', 'lyria/language', 'lyria/template/string', 'lyria/log', 'lyria/mixer/language'], function($, mixer, nextTick, EventMap, GameObject, Language, templateString, Log, langMixin) {'use strict';
 
   var Scene = (function() {
 
@@ -23,7 +23,7 @@ define('lyria/scene', ['jquery', 'isemptyobject', 'each', 'extend', 'clone', 'mi
       }
 
       // Mixin event map into Scene
-      mixin(Scene.prototype, new EventMap('scene:' + sceneName));
+      mixer(Scene.prototype, new EventMap('scene:' + sceneName));
 
       // We need a reference to the scene not being this
       var self = this;
@@ -56,11 +56,11 @@ define('lyria/scene', ['jquery', 'isemptyobject', 'each', 'extend', 'clone', 'mi
 
       // Expose function for template values
       this.expose = function(obj) {
-        if (!obj || isEmptyObject(obj)) {
+        if (!obj || $.isEmptyObject(obj)) {
           return;
         }
 
-        self.template.data = extend(true, self.template.data, obj);
+        self.template.data = $.extend(true, self.template.data, obj);
       };
 
       Object.defineProperty(self, '$element', {
@@ -81,9 +81,9 @@ define('lyria/scene', ['jquery', 'isemptyobject', 'each', 'extend', 'clone', 'mi
         }
 
         self.on('update', function(dt) {
-          each(self.children, function(childKey, childValue) {
-            if (!isEmptyObject(childValue)) {
-              each(childValue, function(key, value) {
+          $.each(self.children, function(childKey, childValue) {
+            if (!$.isEmptyObject(childValue)) {
+              $.each(childValue, function(key, value) {
                 value.trigger('update', dt);
               });
             }
@@ -204,7 +204,7 @@ define('lyria/scene', ['jquery', 'isemptyobject', 'each', 'extend', 'clone', 'mi
         this.template.data.gameobject = (function() {
           var array = [];
 
-          each(self.children.gameObjects, function(key, value) {
+          $.each(self.children.gameObjects, function(key, value) {
             array.push(value);
           });
 
@@ -222,7 +222,7 @@ define('lyria/scene', ['jquery', 'isemptyobject', 'each', 'extend', 'clone', 'mi
         this.template.data.gameobject = (function() {
           var array = [];
 
-          each(self.children.gameObjects, function(key, value) {
+          $.each(self.children.gameObjects, function(key, value) {
             array.push(value);
           });
 
