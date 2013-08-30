@@ -395,13 +395,13 @@ define('lyria/audio/manager', function() {
   return AudioManager;
 });
 
-define('lyria/component', ['mixin', 'eventmap'], function(mixin, EventMap) {
+define('lyria/component', ['mixer', 'eventmap'], function(mixer, EventMap) {
 
   //Lyria.Component
   return (function() {
 
     function Component(name) {
-      mixin(Component.prototype, new EventMap());
+      mixer(Component.prototype, new EventMap());
       
       this.name = name != null ? name : this.constructor.name;
     }
@@ -473,44 +473,6 @@ define('clamp', function() {
   return clamp;
 });
 
-/*
-  Cloning objects
-*/
-define('clone', function() {
-  var clone = function(obj) {
-    var flags, key, newInstance;
-
-    if ((obj == null) || typeof obj !== 'object') {
-      return obj;
-    }
-    if (obj instanceof Date) {
-      return new Date(obj.getTime());
-    }
-    if (obj instanceof RegExp) {
-      flags = '';
-      if (obj.global != null) {
-        flags += 'g';
-      }
-      if (obj.ignoreCase != null) {
-        flags += 'i';
-      }
-      if (obj.multiline != null) {
-        flags += 'm';
-      }
-      if (obj.sticky != null) {
-        flags += 'y';
-      }
-      return new RegExp(obj.source, flags);
-    }
-    newInstance = new obj.constructor();
-    for (key in obj) {
-      newInstance[key] = clone(obj[key]);
-    }
-    return newInstance;
-  };
-  
-  return clone;
-});
 define('deleteitem', function() {
   var deleteItem = function(obj, item) {
     var i, key, newObject, num, _i, _len, _results;
@@ -537,87 +499,6 @@ define('deleteitem', function() {
   return deleteItem;
 });
 
-define('each', function() {
-  return function(obj, callback) {
-    var i, num, objKeys, val, _i, _j, _len, _len1;
-
-    if (Array.isArray(obj)) {
-      if (obj.length === 0) {
-        return;
-      }
-      
-      for ( num = _i = 0, _len = obj.length; _i < _len; num = ++_i) {
-        i = obj[num];
-        if (callback(num, i)) {
-          continue;
-        } else {
-          break;
-        }
-      }
-    } else {
-      objKeys = Object.keys(obj);
-      if (objKeys.length === 0) {
-        return;
-      }
-      
-      for ( num = _j = 0, _len1 = objKeys.length; _j < _len1; num = ++_j) {
-        i = objKeys[num];
-        val = obj[i];
-        if (callback(i, val)) {
-          continue;
-        } else {
-          break;
-        }
-      }
-    }
-    return null;
-  };
-});
-/*define('extend', function() {
-  var __slice = [].slice, __hasProp = {}.hasOwnProperty;
-
-  var extend = function() {
-    var deep, key, s, source, target, value, _i, _j, _len, _len1;
-
-    deep = arguments[0], target = arguments[1], source = 3 <= arguments.length ? __slice.call(arguments, 2) : [];
-    if ( typeof deep === 'object') {
-      target = deep;
-      deep = false;
-    }
-    if (deep) {
-      for ( _i = 0, _len = source.length; _i < _len; _i++) {
-        s = source[_i];
-        for (key in s) {
-          if (!__hasProp.call(s, key))
-            continue;
-          value = s[key];
-          if ( typeof value === 'object') {
-            target[key] = extend(true, {}, value);
-          } else {
-            target[key] = value;
-          }
-        }
-      }
-    } else {
-      for ( _j = 0, _len1 = source.length; _j < _len1; _j++) {
-        s = source[_j];
-        for (key in s) {
-          if (!__hasProp.call(s, key))
-            continue;
-          value = s[key];
-          target[key] = value;
-        }
-      }
-    }
-    return target;
-  };
-
-  return extend;
-});*/
-
-define('extend', ['jquery'], function($) {
-  return $.extend;
-});
 define('fisheryates', ['random'], function(random) {
   /**
    * Randomize array element order in-place.
@@ -658,55 +539,10 @@ define('cancelfullscreen', function() {
   };
 });
 
-define('isemptyobject', function() {
-  return function(obj) {
-    if ( typeof obj !== 'object') {
-      return;
-    }
-
-    return (Object.keys(obj).length === 0);
-  };
-});
 define('jqueryify', ['jquery'], function($) {
   return function(sel) {
     return (sel instanceof $) ? sel : $(sel);
   };
-});
-define('mixin', function() {
-  var mixin;
-
-  mixin = function() {
-    var key, oldRef, s, source, target, value, _i, _len;
-
-    target = arguments[0], source = 2 <= arguments.length ? [].slice.call(arguments, 1) : [];
-    if (!(target || source)) {
-      return;
-    }
-    for ( _i = 0, _len = source.length; _i < _len; _i++) {
-      s = source[_i];
-      for (key in s) {
-        value = s[key];
-        if (!Object.hasOwnProperty.call(target, key)) {
-          target[key] = value;
-        } /* else {
-         oldRef = target[key];
-         target[key] = (function() {
-         if ( typeof oldRef === 'function' && typeof value === 'function') {
-         return function() {
-         oldRef.apply(this, arguments);
-         return value.apply(this, arguments);
-         };
-         } else {
-         return [oldRef, value];
-         }
-         })();
-         } */
-      }
-    }
-    return null;
-  };
-
-  return mixin;
 });
 /**
  * Trying to find a better alternative than setTimeout(fn, 0)
@@ -890,7 +726,7 @@ define('lyria/events', ['eventmap'], function(EventMap) {
 /**
  * @module Lyria
  */
-define('lyria/game', ['extend', 'eventmap', 'mixin', 'jquery', 'lyria/viewport', 'lyria/scene/director', 'lyria/preloader', 'lyria/loop'], function(extend, EventMap, mixin, $, Viewport, Director, Preloader, Loop) {'use strict';
+define('lyria/game', ['eventmap', 'mixer', 'jquery', 'lyria/viewport', 'lyria/scene/director', 'lyria/preloader', 'lyria/loop'], function(EventMap, mixer, $, Viewport, Director, Preloader, Loop) {'use strict';
 
   /**
    * Game class which has a viewport, scene director and preloader by
@@ -906,11 +742,11 @@ define('lyria/game', ['extend', 'eventmap', 'mixin', 'jquery', 'lyria/viewport',
     var Game = function(options) {
       var self = this;
 
-      options = extend(options, {
+      options = $.extend(options, {
         startLoop: true
       });
       
-      mixin(Game.prototype, new EventMap());
+      mixer(Game.prototype, new EventMap());
 
       /**
        * @property viewport
@@ -984,7 +820,7 @@ define('lyria/game', ['extend', 'eventmap', 'mixin', 'jquery', 'lyria/viewport',
 /**
  * @module Lyria
  */
-define('lyria/gameobject', ['mixin', 'isemptyobject', 'each', 'eventmap', 'lyria/component', 'lyria/log'], function(mixin, isEmptyObject, each, EventMap, Component, Log) {
+define('lyria/gameobject', ['mixer', 'eventmap', 'lyria/component', 'lyria/log'], function(mixer, EventMap, Component, Log) {
   'use strict';
   
   //Lyria.GameObject
@@ -992,7 +828,7 @@ define('lyria/gameobject', ['mixin', 'isemptyobject', 'each', 'eventmap', 'lyria
     
     // Constructor
     var GameObject = function() {
-      mixin(GameObject.prototype, new EventMap());
+      mixer(GameObject.prototype, new EventMap());
       
       var self = this;
       
@@ -1003,11 +839,11 @@ define('lyria/gameobject', ['mixin', 'isemptyobject', 'each', 'eventmap', 'lyria
       this.template.source = '<div id="{{id}}" class="{{className}}"></div>';
       
       this.on('update', function(dt) {
-        if (isEmptyObject(self.components)) {
+        if (_.isEmpty(self.components)) {
           return;
         }
         
-        each(self.components, function(key, value) {
+        _.each(self.components, function(key, value) {
           value.trigger('update', dt);
         });
       });
@@ -1054,7 +890,7 @@ define('lyria/gameobject', ['mixin', 'isemptyobject', 'each', 'eventmap', 'lyria
  *
  * @module Lyria
  */
-define('lyria/layer', ['mixin', 'lyria/gameobject'], function(mixin, GameObject) {
+define('lyria/layer', ['mixer', 'lyria/gameobject'], function(mixer, GameObject) {
   'use strict';
 
   return (function() {
@@ -1065,7 +901,7 @@ define('lyria/layer', ['mixin', 'lyria/gameobject'], function(mixin, GameObject)
      * @constructor
      */
     var Layer = function() {
-      mixin(this.prototype, new GameObject());
+      mixer(this.prototype, new GameObject());
     };
 
     return Layer;
@@ -1384,7 +1220,7 @@ define('lyria/mixin/language', function() {
  * @namespace Lyria
  * Lyria namespace decleration
  */
-define('lyria/prefab', ['extend', 'lyria/scene'], function(extend, Scene) {
+define('lyria/prefab', ['lyria/scene'], function(Scene) {
 	'use strict';
 
 	//Lyria.Prefab
@@ -1398,7 +1234,7 @@ define('lyria/prefab', ['extend', 'lyria/scene'], function(extend, Scene) {
 			isPrefab: true
 		};
 		
-		options = extend(true, defaultOptions, options);
+		options = _.defaults(true, defaultOptions, options);
 		
 		return new Scene(prefabName, options);
 		
@@ -1420,7 +1256,7 @@ define('lyria/prefab/manager', function() {
 /**
  * @module Lyria
  */
-define('lyria/preloader', ['root', 'mixin', 'jquery', 'lyria/resource', 'lyria/log', 'eventmap'], function(root, mixin, $, Resource, Log, EventMap) {'use strict';
+define('lyria/preloader', ['root', 'mixer', 'jquery', 'lyria/resource', 'lyria/log', 'eventmap'], function(root, mixer, $, Resource, Log, EventMap) {'use strict';
 
   /**
    * Provides a preloader to load assets before they are needed
@@ -1435,7 +1271,7 @@ define('lyria/preloader', ['root', 'mixin', 'jquery', 'lyria/resource', 'lyria/l
      * @param {Object} assetArray
      */
     var Preloader = function(assetArray) {
-      mixin(Preloader.prototype, new EventMap());
+      mixer(Preloader.prototype, new EventMap());
 
       /**
        * @property assets
@@ -1618,7 +1454,7 @@ define('lyria/resource', ['path'], function(Path) {
  * @module Lyria
  * @submodule Scene
  */
-define('lyria/scene/director', ['root', 'mixin', 'jquery', 'eventmap', 'lyria/scene', 'lyria/viewport'], function(root, mixin, $, EventMap, Scene, Viewport) {'use strict';
+define('lyria/scene/director', ['root', 'mixer', 'jquery', 'eventmap', 'lyria/scene', 'lyria/viewport'], function(root, mixer, $, EventMap, Scene, Viewport) {'use strict';
 
   /**
    * The scene director is the manager for all scenes
@@ -1637,7 +1473,7 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'eventmap', 'lyria/sc
      * @param {Object} parent
      */
     function SceneDirector(container, parent) {
-      mixin(SceneDirector.prototype, new EventMap());
+      mixer(SceneDirector.prototype, new EventMap());
 
       if ( container instanceof Viewport) {
         this.viewport = container;
@@ -1791,7 +1627,7 @@ define('lyria/scene/director', ['root', 'mixin', 'jquery', 'eventmap', 'lyria/sc
 /**
  * @module Lyria
  */
-define('lyria/scene', ['jquery', 'isemptyobject', 'each', 'extend', 'clone', 'mixin', 'nexttick', 'eventmap', 'lyria/gameobject', 'lyria/language', 'lyria/template/string', 'lyria/log', 'lyria/mixin/language'], function($, isEmptyObject, each, extend, clone, mixin, nextTick, EventMap, GameObject, Language, templateString, Log, langMixin) {'use strict';
+define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobject', 'lyria/language', 'lyria/template/string', 'lyria/log', 'lyria/mixer/language'], function($, mixer, nextTick, EventMap, GameObject, Language, templateString, Log, langMixin) {'use strict';
 
   var Scene = (function() {
 
@@ -1813,7 +1649,7 @@ define('lyria/scene', ['jquery', 'isemptyobject', 'each', 'extend', 'clone', 'mi
       }
 
       // Mixin event map into Scene
-      mixin(Scene.prototype, new EventMap('scene:' + sceneName));
+      mixer(Scene.prototype, new EventMap('scene:' + sceneName));
 
       // We need a reference to the scene not being this
       var self = this;
@@ -1846,11 +1682,11 @@ define('lyria/scene', ['jquery', 'isemptyobject', 'each', 'extend', 'clone', 'mi
 
       // Expose function for template values
       this.expose = function(obj) {
-        if (!obj || isEmptyObject(obj)) {
+        if (!obj || $.isEmptyObject(obj)) {
           return;
         }
 
-        self.template.data = extend(true, self.template.data, obj);
+        self.template.data = $.extend(true, self.template.data, obj);
       };
 
       Object.defineProperty(self, '$element', {
@@ -1871,9 +1707,9 @@ define('lyria/scene', ['jquery', 'isemptyobject', 'each', 'extend', 'clone', 'mi
         }
 
         self.on('update', function(dt) {
-          each(self.children, function(childKey, childValue) {
-            if (!isEmptyObject(childValue)) {
-              each(childValue, function(key, value) {
+          $.each(self.children, function(childKey, childValue) {
+            if (!$.isEmptyObject(childValue)) {
+              $.each(childValue, function(key, value) {
                 value.trigger('update', dt);
               });
             }
@@ -1994,7 +1830,7 @@ define('lyria/scene', ['jquery', 'isemptyobject', 'each', 'extend', 'clone', 'mi
         this.template.data.gameobject = (function() {
           var array = [];
 
-          each(self.children.gameObjects, function(key, value) {
+          $.each(self.children.gameObjects, function(key, value) {
             array.push(value);
           });
 
@@ -2012,7 +1848,7 @@ define('lyria/scene', ['jquery', 'isemptyobject', 'each', 'extend', 'clone', 'mi
         this.template.data.gameobject = (function() {
           var array = [];
 
-          each(self.children.gameObjects, function(key, value) {
+          $.each(self.children.gameObjects, function(key, value) {
             array.push(value);
           });
 
@@ -2347,7 +2183,7 @@ define('lyria/video', function() {
 /**
  * @module Lyria
  */
-define('lyria/viewport', ['root', 'jquery', 'isemptyobject'], function(root, $, isEmptyObject) {
+define('lyria/viewport', ['root', 'jquery'], function(root, $) {
   'use strict';
 
   return (function() {
@@ -2451,7 +2287,7 @@ define('lyria/viewport', ['root', 'jquery', 'isemptyobject'], function(root, $, 
      * @method updateTransforms
      */
     Viewport.prototype.updateTransforms = function() {
-      if (isEmptyObject(this.transforms)) {
+      if (_.isEmpty(this.transforms)) {
         return;
       }
       
