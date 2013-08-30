@@ -167,7 +167,7 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
       };
 
       // Call scene
-      require(['lyria/achievements', 'lyria/log', 'lyria/component', 'lyria/gameobject', 'lyria/events', 'lyria/resource', 'lyria/data/store', 'lyria/loop'], function(Achievements, Log, Component, GameObject, Events, Resource, DataStore, Loop) {
+      require(['lyria/achievements', 'lyria/log', 'lyria/component', 'lyria/gameobject', 'lyria/events', 'lyria/resource', 'lyria/loop'], function(Achievements, Log, Component, GameObject, Events, Resource, Loop) {
         var LyriaObject = {
           Achievements: Achievements,
           Log: Log,
