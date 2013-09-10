@@ -177,6 +177,10 @@ define('lyria/animation', function() {
       this.frame.width = 0 || options.width;
       this.frame.height = 0 || options.height;
       this.frame.current = 0;
+      
+      this.sprite.width;
+      this.sprite.height;
+      this.sprite.image = new Image();
     };
     
     Animation.prototype.play = function() {
@@ -2144,6 +2148,14 @@ define('lyria/template/string', function() {
   };
 
   return templateString;
+});
+
+define('lyria/tween', function() {
+  var tween = function() {
+    
+  };
+  
+  return tween;
 });
 
 /**
