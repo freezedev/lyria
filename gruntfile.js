@@ -1,12 +1,13 @@
 module.exports = function(grunt) {
 
   var lyriaOrigin = 'src/**/*.js';
+  var generatedFiles = 'generated/**/*.js';
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     concat: {
       scripts: {
-        src: [lyriaOrigin],
+        src: [lyriaOrigin, generatedFiles],
         dest: 'dist/js/<%= pkg.name %>.js'
       },
       styles: {
@@ -70,7 +71,17 @@ module.exports = function(grunt) {
         }]
       }
     },
-    clean: ['dist'],
+    handlebars: {
+      options: {
+        namespace: 'lyria/template/list',
+      },
+      compile: {
+        files: {
+          'generated/templates.js': ['templates/*.html']
+        }
+      }
+    },
+    clean: ['dist', 'generated'],
     dependo: {
       targetPath: 'src',
       outputPath: './doc/dependencies',
@@ -79,9 +90,10 @@ module.exports = function(grunt) {
   });
 
   require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
+  grunt.loadTasks('./tasks');
 
   grunt.registerTask('test', 'Lints and unit tests', ['jshint']);
   grunt.registerTask('doc', 'Generated documentation', ['yuidoc', 'dependo']);
-  grunt.registerTask('default', 'Default task', ['clean', 'test', 'stylus', 'concat', 'uglify', 'cssmin', 'doc']);
+  grunt.registerTask('default', 'Default task', ['clean', 'test', 'handlebars', 'stylus', 'concat', 'uglify', 'cssmin', 'doc']);
 
 };
