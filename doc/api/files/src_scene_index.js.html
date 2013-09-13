@@ -281,7 +281,7 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;ne
       };
 
       // Call scene
-      require([&#x27;lyria/achievements&#x27;, &#x27;lyria/log&#x27;, &#x27;lyria/component&#x27;, &#x27;lyria/gameobject&#x27;, &#x27;lyria/events&#x27;, &#x27;lyria/resource&#x27;, &#x27;lyria/loop&#x27;], function(Achievements, Log, Component, GameObject, Events, Resource, Loop) {
+      require([&#x27;lyria/achievements&#x27;, &#x27;lyria/log&#x27;, &#x27;lyria/component&#x27;, &#x27;lyria/gameobject&#x27;, &#x27;lyria/events&#x27;, &#x27;lyria/resource&#x27;, &#x27;lyria/loop&#x27;, &#x27;lyria/tween&#x27;], function(Achievements, Log, Component, GameObject, Events, Resource, Loop, Tween) {
         var LyriaObject = {
           Achievements: Achievements,
           Log: Log,
@@ -289,7 +289,8 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;ne
           GameObject: GameObject,
           Events: Events,
           Resource: Resource,
-          Loop: Loop
+          Loop: Loop,
+          Tween: Tween
         };
 
         if (sceneDeps.length &gt; 0) {
