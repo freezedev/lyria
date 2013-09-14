@@ -169,7 +169,7 @@ define('lyria/achievement/manager', ['jquery', 'lyria/achievement', 'lyria/templ
   
 });
 
-define('lyria/animation', function() {
+define('lyria/animation', ['mixer', 'eventmap'], function(mixer, EventMap) {
   var Animation = (function() {
     var Animation = function($elem, options) {
       this.$elem = $elem;
@@ -181,22 +181,8 @@ define('lyria/animation', function() {
       this.sprite.width;
       this.sprite.height;
       this.sprite.image = new Image();
-    };
-    
-    Animation.prototype.play = function() {
       
-    };
-    
-    Animation.prototype.pause = function() {
-      
-    };
-    
-    Animation.prototype.resume = function() {
-      
-    };
-    
-    Animation.prototype.stop = function() {
-      
+      mixer(this.prototype, new EventMap());
     };
     
     Animation.prototype.reset = function() {
@@ -2528,8 +2514,17 @@ function program1(depth0,data) {
   },'scene':function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  return "<div id=\"\"></div>";
+  buffer += "<div id=\"";
+  if (stack1 = helpers.name) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.name; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "\" class=\"";
+  if (stack1 = helpers.type) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.type; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "\"></div>";
+  return buffer;
   }});
