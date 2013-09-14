@@ -1,4 +1,4 @@
-define('lyria/animation', function() {
+define('lyria/animation', ['mixer', 'eventmap'], function(mixer, EventMap) {
   var Animation = (function() {
     var Animation = function($elem, options) {
       this.$elem = $elem;
@@ -10,22 +10,8 @@ define('lyria/animation', function() {
       this.sprite.width;
       this.sprite.height;
       this.sprite.image = new Image();
-    };
-    
-    Animation.prototype.play = function() {
       
-    };
-    
-    Animation.prototype.pause = function() {
-      
-    };
-    
-    Animation.prototype.resume = function() {
-      
-    };
-    
-    Animation.prototype.stop = function() {
-      
+      mixer(this.prototype, new EventMap());
     };
     
     Animation.prototype.reset = function() {
