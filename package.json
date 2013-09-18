@@ -15,6 +15,7 @@
     "grunt-contrib-cssmin": "0.6.x",
     "grunt-contrib-clean": "0.5.x",
     "grunt-dependo": "0.1.x",
+    "grunt-mocha": "0.4.x",
     "matchdep": "0.1.x"
   },
   "repository": {
