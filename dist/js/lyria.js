@@ -75,7 +75,7 @@ define('lyria/achievement', ['clamp'], function(clamp) {
 
 });
 
-define('lyria/achievement/manager', ['jquery', 'lyria/achievement', 'lyria/template/engine'], function($, Achievement, TemplateEngine) {
+define('lyria/achievement/manager', ['jquery', 'lyria/achievement', 'lyria/template/engine', 'lyria/template/list'], function($, Achievement, TemplateEngine, templateList) {
   
   var achievementStore = {};
   
@@ -96,6 +96,10 @@ define('lyria/achievement/manager', ['jquery', 'lyria/achievement', 'lyria/templ
       //TemplateEngine.compile()
     },
     show: function(achName) {
+      TemplateEngine.compile(templateList['achievements'], {
+        title: achName,
+        description: achievement.description
+      });
       //TemplateEngine.compile();
     },
     toJSON: function() {
@@ -2502,7 +2506,11 @@ function program1(depth0,data) {
   if (stack1 = helpers.title) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.title; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
-    + "</div>\r\n  <div class=\"icon\"></div>\r\n  <div class=\"description\">";
+    + "</div>\r\n  <div class=\"icon ";
+  if (stack1 = helpers.title) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.title; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "\"></div>\r\n  <div class=\"description\">";
   if (stack1 = helpers.description) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.description; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
