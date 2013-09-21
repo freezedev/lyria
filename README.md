@@ -1,6 +1,6 @@
 Lyria
 =====
-
+[![Build Status](https://travis-ci.org/freezedev/lyria.png?branch=master)](https://travis-ci.org/freezedev/lyria)
 [![Dependency Status](https://david-dm.org/freezedev/lyria.png)](https://david-dm.org/freezedev/lyria)
 [![devDependency Status](https://david-dm.org/freezedev/lyria/dev-status.png)](https://david-dm.org/freezedev/lyria#info=devDependencies)
 
