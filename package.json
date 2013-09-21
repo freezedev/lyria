@@ -18,6 +18,9 @@
     "grunt-mocha": "0.4.x",
     "matchdep": "0.1.x"
   },
+  "scripts": {
+    "test": "grunt test"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/freezedev/lyria.git"
