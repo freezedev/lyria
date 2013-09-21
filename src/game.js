@@ -1,7 +1,7 @@
 /**
  * @module Lyria
  */
-define('lyria/game', ['eventmap', 'mixer', 'jquery', 'lyria/viewport', 'lyria/scene/director', 'lyria/preloader', 'lyria/loop'], function(EventMap, mixer, $, Viewport, Director, Preloader, Loop) {'use strict';
+define('lyria/game', ['eventmap', 'mixer', 'jquery', 'lyria/viewport', 'lyria/scene/director', 'lyria/preloader', 'lyria/loop', 'lyria/world'], function(EventMap, mixer, $, Viewport, Director, Preloader, Loop, World) {'use strict';
 
   /**
    * Game class which has a viewport, scene director and preloader by
@@ -48,6 +48,9 @@ define('lyria/game', ['eventmap', 'mixer', 'jquery', 'lyria/viewport', 'lyria/sc
       this.preloader.sceneDirector = this.director;
       
       this.paused = false;
+      
+      // World reference
+      this.world = new World();
 
       // Add an update task to the loop with updates the scene director on each
       // frame
@@ -78,7 +81,7 @@ define('lyria/game', ['eventmap', 'mixer', 'jquery', 'lyria/viewport', 'lyria/sc
       this.paused = false;
       this.trigger('resume');
     };
-
+    
     /**
      * @property Loop
      * @static
