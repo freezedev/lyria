@@ -3,6 +3,20 @@
  */
 define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobject', 'lyria/language', 'lyria/template/string', 'lyria/log', 'lyria/mixin/language'], function($, mixer, nextTick, EventMap, GameObject, Language, templateString, Log, langMixin) {'use strict';
 
+  var createNamespace = function(obj, chain, value) {
+    var chainArr = chain.split('.');
+    
+    for (var i = 0, j = chainArr.length; i < j; i++) {
+      (function(item, lastElem) {
+        if (lastElem) {
+          obj = value;
+        } else {
+          obj = (obj[item] = obj[item] || {});          
+        }
+      })(chainArr[i], i === j - 1);
+    }
+  };
+
   var Scene = (function() {
 
     /**
@@ -167,24 +181,23 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
       };
 
       // Call scene
-      require(['lyria/achievements', 'lyria/log', 'lyria/component', 'lyria/gameobject', 'lyria/events', 'lyria/resource', 'lyria/loop', 'lyria/tween'], function(Achievements, Log, Component, GameObject, Events, Resource, Loop, Tween) {
-        var LyriaObject = {
-          Achievements: Achievements,
-          Log: Log,
-          Component: Component,
-          GameObject: GameObject,
-          Events: Events,
-          Resource: Resource,
-          Loop: Loop,
-          Tween: Tween
-        };
+      var reqModules = Object.keys(Scene.requireAlways) || [];
+      
+      require(reqModules, function() {
+        var importedModules = {};
+        
+        for (var i = 0, j = arguments.length; i < j; i++) {
+          (function(dep) {
+            createNamespace(importedModules, reqModules[i], dep);
+          })(arguments[i]);
+        }
 
         if (sceneDeps.length > 0) {
           require(sceneDeps, function() {
-            createScene(LyriaObject, [].slice.call(arguments, 0));
+            createScene(importedModules, [].slice.call(arguments, 0));
           });
         } else {
-          createScene(LyriaObject);
+          createScene(importedModules);
         }
       });
     };
@@ -320,6 +333,18 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
      */
     Scene.prototype.log = function(text) {
       Log.i('Scene ' + this.name + ': ' + text);
+    };
+    
+    Scene.requireAlways = {
+      'lyria/achievements': 'Lyria.Achievements',
+      'lyria/log': 'Lyria.Log',
+      'lyria/component': 'Lyria.Component',
+      'lyria/gameobject': 'Lyria.GameObject',
+      'lyria/events': 'Lyria.Events',
+      'lyria/resource': 'Lyria.Resource',
+      'lyria/loop': 'Lyria.Loop',
+      'lyria/tween': 'Lyria.Tween',
+      'lyria/animation': 'Lyria.Animation'
     };
 
     return Scene;
