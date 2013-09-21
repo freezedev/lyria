@@ -117,6 +117,20 @@
  */
 define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;nexttick&#x27;, &#x27;eventmap&#x27;, &#x27;lyria/gameobject&#x27;, &#x27;lyria/language&#x27;, &#x27;lyria/template/string&#x27;, &#x27;lyria/log&#x27;, &#x27;lyria/mixin/language&#x27;], function($, mixer, nextTick, EventMap, GameObject, Language, templateString, Log, langMixin) {&#x27;use strict&#x27;;
 
+  var createNamespace = function(obj, chain, value) {
+    var chainArr = chain.split(&#x27;.&#x27;);
+    
+    for (var i = 0, j = chainArr.length; i &lt; j; i++) {
+      (function(item, lastElem) {
+        if (lastElem) {
+          obj = value;
+        } else {
+          obj = (obj[item] = obj[item] || {});          
+        }
+      })(chainArr[i], i === j - 1);
+    }
+  };
+
   var Scene = (function() {
 
     /**
@@ -281,24 +295,23 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;ne
       };
 
       // Call scene
-      require([&#x27;lyria/achievements&#x27;, &#x27;lyria/log&#x27;, &#x27;lyria/component&#x27;, &#x27;lyria/gameobject&#x27;, &#x27;lyria/events&#x27;, &#x27;lyria/resource&#x27;, &#x27;lyria/loop&#x27;, &#x27;lyria/tween&#x27;], function(Achievements, Log, Component, GameObject, Events, Resource, Loop, Tween) {
-        var LyriaObject = {
-          Achievements: Achievements,
-          Log: Log,
-          Component: Component,
-          GameObject: GameObject,
-          Events: Events,
-          Resource: Resource,
-          Loop: Loop,
-          Tween: Tween
-        };
+      var reqModules = Object.keys(Scene.requireAlways) || [];
+      
+      require(reqModules, function() {
+        var importedModules = {};
+        
+        for (var i = 0, j = arguments.length; i &lt; j; i++) {
+          (function(dep) {
+            createNamespace(importedModules, reqModules[i], dep);
+          })(arguments[i]);
+        }
 
         if (sceneDeps.length &gt; 0) {
           require(sceneDeps, function() {
-            createScene(LyriaObject, [].slice.call(arguments, 0));
+            createScene(importedModules, [].slice.call(arguments, 0));
           });
         } else {
-          createScene(LyriaObject);
+          createScene(importedModules);
         }
       });
     };
@@ -434,6 +447,18 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;ne
      */
     Scene.prototype.log = function(text) {
       Log.i(&#x27;Scene &#x27; + this.name + &#x27;: &#x27; + text);
+    };
+    
+    Scene.requireAlways = {
+      &#x27;lyria/achievements&#x27;: &#x27;Lyria.Achievements&#x27;,
+      &#x27;lyria/log&#x27;: &#x27;Lyria.Log&#x27;,
+      &#x27;lyria/component&#x27;: &#x27;Lyria.Component&#x27;,
+      &#x27;lyria/gameobject&#x27;: &#x27;Lyria.GameObject&#x27;,
+      &#x27;lyria/events&#x27;: &#x27;Lyria.Events&#x27;,
+      &#x27;lyria/resource&#x27;: &#x27;Lyria.Resource&#x27;,
+      &#x27;lyria/loop&#x27;: &#x27;Lyria.Loop&#x27;,
+      &#x27;lyria/tween&#x27;: &#x27;Lyria.Tween&#x27;,
+      &#x27;lyria/animation&#x27;: &#x27;Lyria.Animation&#x27;
     };
 
     return Scene;
