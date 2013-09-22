@@ -1515,7 +1515,7 @@ define('lyria/scene/director', ['root', 'mixer', 'jquery', 'eventmap', 'lyria/sc
       if ( container instanceof Viewport) {
         this.viewport = container;
       } else {
-        this.viewport = new Viewport(container, parent);
+        this.viewport = new Viewport(container, {parent: parent});
       }
 
       /**
@@ -1809,6 +1809,7 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
           if (self.isAsync) {
             self.trigger('added');
           }
+          
         };
 
         var async = false;
@@ -1829,6 +1830,8 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
             return async;
           }
         });
+        
+        context.modules = LyriaObject;
 
         // TODO: Evaluate how to show dependencies (concat into array, array with
         // objects of name and value)
