@@ -26,7 +26,7 @@ define('lyria/scene/director', ['root', 'mixer', 'jquery', 'eventmap', 'lyria/sc
       if ( container instanceof Viewport) {
         this.viewport = container;
       } else {
-        this.viewport = new Viewport(container, parent);
+        this.viewport = new Viewport(container, {parent: parent});
       }
 
       /**
