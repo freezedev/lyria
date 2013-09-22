@@ -140,7 +140,7 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;mixer&#x27;, &
       if ( container instanceof Viewport) {
         this.viewport = container;
       } else {
-        this.viewport = new Viewport(container, parent);
+        this.viewport = new Viewport(container, {parent: parent});
       }
 
       /**

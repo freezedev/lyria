@@ -260,6 +260,7 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;ne
           if (self.isAsync) {
             self.trigger(&#x27;added&#x27;);
           }
+          
         };
 
         var async = false;
@@ -280,6 +281,8 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;ne
             return async;
           }
         });
+        
+        context.modules = LyriaObject;
 
         // TODO: Evaluate how to show dependencies (concat into array, array with
         // objects of name and value)

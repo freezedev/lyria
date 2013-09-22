@@ -780,7 +780,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 205,
+            "line": 208,
             "description": "Adds a gameobject to the scene",
             "itemtype": "method",
             "name": "add",
@@ -796,7 +796,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 253,
+            "line": 256,
             "description": "Refreshes the scene (Re-renders the template)",
             "itemtype": "method",
             "name": "refresh",
@@ -812,7 +812,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 275,
+            "line": 278,
             "description": "Sets an event to the event object or returns a specified event",
             "itemtype": "method",
             "name": "event",
@@ -838,7 +838,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 300,
+            "line": 303,
             "description": "Gets localized value",
             "params": [
                 {
@@ -852,7 +852,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 329,
+            "line": 332,
             "description": "Logging directly from the scene",
             "params": [
                 {
@@ -1311,11 +1311,11 @@
         },
         {
             "message": "Missing item type\nGets localized value",
-            "line": " src\\scene\\index.js:300"
+            "line": " src\\scene\\index.js:303"
         },
         {
             "message": "Missing item type\nLogging directly from the scene",
-            "line": " src\\scene\\index.js:329"
+            "line": " src\\scene\\index.js:332"
         },
         {
             "message": "Missing item type",
