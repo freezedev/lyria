@@ -1700,7 +1700,8 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
       }
 
       // Mixin event map into Scene
-      mixer(Scene.prototype, new EventMap('scene:' + sceneName));
+      // Sender: "scene:#{sceneName}"
+      mixer(Scene.prototype, new EventMap());
 
       // We need a reference to the scene not being this
       var self = this;
