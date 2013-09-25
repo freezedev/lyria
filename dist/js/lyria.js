@@ -1858,12 +1858,28 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
           })(arguments[i]);
         }
 
-        if (sceneDeps.length > 0) {
-          require(sceneDeps, function() {
-            createScene(importedModules, [].slice.call(arguments, 0));
-          });
+        if (Array.isArray(sceneDeps)) {
+          if (sceneDeps.length > 0) {
+            require(sceneDeps, function() {
+              createScene(importedModules, [].slice.call(arguments, 0));
+            });
+          } else {
+            createScene(importedModules);
+          }
         } else {
-          createScene(importedModules);
+          sceneDeps = sceneDeps || {};
+          var reqSceneModules = Object.keys(sceneDeps) || [];
+          
+          require(reqSceneModules, function() {
+        
+            for (var k = 0, l = arguments.length; k < l; k++) {
+              (function(sceneDep) {
+                createNamespace(importedModules, reqSceneModules[j], sceneDep);
+              })(arguments[j]);
+            }
+            
+            createScene(importedModules);
+          });
         }
       });
     };
@@ -2328,7 +2344,7 @@ define('lyria/viewport', ['root', 'jquery'], function(root, $) {
       var defaultOptions = {
         parent: null,
         trigger: {
-          element: 'window',
+          element: window,
           event: 'resize'
         },
         scaleMode: 'scaleToFit'
@@ -2385,9 +2401,28 @@ define('lyria/viewport', ['root', 'jquery'], function(root, $) {
       
       var self = this;
       $(options.trigger.element).on(options.trigger.event, function() {
+        var scaleFactor = 0;
+        var scaleExp = 0;
+        
         switch (self.scaleMode) {
-          // TODO: Implement logic
-          case 'scaleToFit': break;
+          // TODO: Seperate scaleToFit from scaleHeightToFit
+          case 'scaleToFit':
+          case 'scaleHeightToFit':
+            if (self.height > $(options.trigger.element).innerHeight()) {
+              scaleFactor = $(options.trigger.element).innerHeight() / self.height;
+              scaleExp = 'scale(' + scaleFactor + ', ' + scaleFactor + ')';
+        
+              self.$element.css('transform', scaleExp);
+            }
+            break;
+          case 'scaleWidthToFit':
+            if (self.width > $(options.trigger.element).innerWidth()) {
+              scaleFactor = $(options.trigger.element).innerWidth() / self.width;
+              scaleExp = 'scale(' + scaleFactor + ', ' + scaleFactor + ')';
+        
+              self.$element.css('transform', scaleExp);
+            }
+            break;
           default: break;
         }
       });
