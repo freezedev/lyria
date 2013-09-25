@@ -195,12 +195,28 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
           })(arguments[i]);
         }
 
-        if (sceneDeps.length > 0) {
-          require(sceneDeps, function() {
-            createScene(importedModules, [].slice.call(arguments, 0));
-          });
+        if (Array.isArray(sceneDeps)) {
+          if (sceneDeps.length > 0) {
+            require(sceneDeps, function() {
+              createScene(importedModules, [].slice.call(arguments, 0));
+            });
+          } else {
+            createScene(importedModules);
+          }
         } else {
-          createScene(importedModules);
+          sceneDeps = sceneDeps || {};
+          var reqSceneModules = Object.keys(sceneDeps) || [];
+          
+          require(reqSceneModules, function() {
+        
+            for (var k = 0, l = arguments.length; k < l; k++) {
+              (function(sceneDep) {
+                createNamespace(importedModules, reqSceneModules[j], sceneDep);
+              })(arguments[j]);
+            }
+            
+            createScene(importedModules);
+          });
         }
       });
     };
