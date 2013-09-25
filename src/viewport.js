@@ -15,7 +15,7 @@ define('lyria/viewport', ['root', 'jquery'], function(root, $) {
       var defaultOptions = {
         parent: null,
         trigger: {
-          element: 'window',
+          element: window,
           event: 'resize'
         },
         scaleMode: 'scaleToFit'
@@ -72,9 +72,28 @@ define('lyria/viewport', ['root', 'jquery'], function(root, $) {
       
       var self = this;
       $(options.trigger.element).on(options.trigger.event, function() {
+        var scaleFactor = 0;
+        var scaleExp = 0;
+        
         switch (self.scaleMode) {
-          // TODO: Implement logic
-          case 'scaleToFit': break;
+          // TODO: Seperate scaleToFit from scaleHeightToFit
+          case 'scaleToFit':
+          case 'scaleHeightToFit':
+            if (self.height > $(options.trigger.element).innerHeight()) {
+              scaleFactor = $(options.trigger.element).innerHeight() / self.height;
+              scaleExp = 'scale(' + scaleFactor + ', ' + scaleFactor + ')';
+        
+              self.$element.css('transform', scaleExp);
+            }
+            break;
+          case 'scaleWidthToFit':
+            if (self.width > $(options.trigger.element).innerWidth()) {
+              scaleFactor = $(options.trigger.element).innerWidth() / self.width;
+              scaleExp = 'scale(' + scaleFactor + ', ' + scaleFactor + ')';
+        
+              self.$element.css('transform', scaleExp);
+            }
+            break;
           default: break;
         }
       });
