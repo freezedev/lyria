@@ -86,6 +86,12 @@ define('lyria/scene/director', ['root', 'mixer', 'jquery', 'eventmap', 'lyria/sc
       }
 
       scene.parent = this;
+      
+      // Update reference to the game itself
+      if (this.parent != null) {
+        scene.game = this.parent;
+      }
+      
       this.sceneList[scene.name] = scene;
 
       if (this.viewport.$element) {
