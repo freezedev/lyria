@@ -19,7 +19,7 @@
             
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.2.0-beta2</em>
+            <em>API Docs for: 0.2.0-beta3</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -151,7 +151,8 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;ne
       }
 
       // Mixin event map into Scene
-      mixer(Scene.prototype, new EventMap(&#x27;scene:&#x27; + sceneName));
+      // Sender: &quot;scene:#{sceneName}&quot;
+      mixer(Scene.prototype, new EventMap());
 
       // We need a reference to the scene not being this
       var self = this;
