@@ -204,10 +204,10 @@ define(&#x27;lyria/preloader&#x27;, [&#x27;root&#x27;, &#x27;mixer&#x27;, &#x27;
 
         var percentLoaded = currentProgress / totalSize;
 
-        self.trigger(&#x27;progresschange&#x27;, percentLoaded);
+        self.trigger(&#x27;progress&#x27;, percentLoaded);
         
         if (hasLoadingScene) {
-          self.sceneDirector.currentScene.trigger(&#x27;progresschange&#x27;, percentLoaded);
+          self.sceneDirector.currentScene.trigger(&#x27;progress&#x27;, percentLoaded, currentProgress, totalSize);
         }
 
         if (currentProgress &gt;= totalSize) {

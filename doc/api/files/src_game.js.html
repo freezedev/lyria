@@ -143,6 +143,7 @@ define(&#x27;lyria/game&#x27;, [&#x27;eventmap&#x27;, &#x27;mixer&#x27;, &#x27;j
        */
       // Set up a viewport
       this.viewport = new Viewport();
+      this.viewport.parent = this;
 
       /**
        * @property director
@@ -150,6 +151,7 @@ define(&#x27;lyria/game&#x27;, [&#x27;eventmap&#x27;, &#x27;mixer&#x27;, &#x27;j
        */
       // Add a scene director
       this.director = new Director(this.viewport);
+      this.director.parent = this;
 
       /**
        * @property preloader
@@ -157,6 +159,7 @@ define(&#x27;lyria/game&#x27;, [&#x27;eventmap&#x27;, &#x27;mixer&#x27;, &#x27;j
        */
       // Add a preloader
       this.preloader = new Preloader();
+      this.preloader.parent = this;
 
       // Bind the scene director to the preloader reference
       this.preloader.sceneDirector = this.director;
@@ -165,6 +168,7 @@ define(&#x27;lyria/game&#x27;, [&#x27;eventmap&#x27;, &#x27;mixer&#x27;, &#x27;j
       
       // World reference
       this.world = new World();
+      this.world.parent = this;
 
       // Add an update task to the loop with updates the scene director on each
       // frame

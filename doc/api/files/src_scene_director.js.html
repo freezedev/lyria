@@ -200,6 +200,12 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;mixer&#x27;, &
       }
 
       scene.parent = this;
+      
+      // Update reference to the game itself
+      if (this.parent != null) {
+        scene.game = this.parent;
+      }
+      
       this.sceneList[scene.name] = scene;
 
       if (this.viewport.$element) {

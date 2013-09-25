@@ -736,7 +736,7 @@
         },
         {
             "file": "src\\scene\\director.js",
-            "line": 105,
+            "line": 111,
             "description": "Shows a specified scene",
             "itemtype": "method",
             "name": "show",
@@ -763,7 +763,7 @@
         },
         {
             "file": "src\\scene\\director.js",
-            "line": 157,
+            "line": 163,
             "description": "Refreshes a scene",
             "itemtype": "method",
             "name": "refresh",
@@ -882,7 +882,7 @@
         },
         {
             "file": "src\\game.js",
-            "line": 33,
+            "line": 34,
             "itemtype": "property",
             "name": "director",
             "type": "{Director}",
@@ -891,7 +891,7 @@
         },
         {
             "file": "src\\game.js",
-            "line": 40,
+            "line": 42,
             "itemtype": "property",
             "name": "preloader",
             "type": "{Preloader}",
@@ -900,7 +900,7 @@
         },
         {
             "file": "src\\game.js",
-            "line": 85,
+            "line": 89,
             "itemtype": "property",
             "name": "Loop",
             "static": 1,
