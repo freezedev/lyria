@@ -356,7 +356,8 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
     };
     
     Scene.requireAlways = {
-      'lyria/achievements': 'Lyria.Achievements',
+      'lyria/audio': 'Lyria.Audio',
+      'lyria/achievement/manager': 'Lyria.AchievementManager',
       'lyria/log': 'Lyria.Log',
       'lyria/component': 'Lyria.Component',
       'lyria/gameobject': 'Lyria.GameObject',
