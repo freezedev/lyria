@@ -29,6 +29,7 @@ define('lyria/game', ['eventmap', 'mixer', 'jquery', 'lyria/viewport', 'lyria/sc
        */
       // Set up a viewport
       this.viewport = new Viewport();
+      this.viewport.parent = this;
 
       /**
        * @property director
@@ -36,6 +37,7 @@ define('lyria/game', ['eventmap', 'mixer', 'jquery', 'lyria/viewport', 'lyria/sc
        */
       // Add a scene director
       this.director = new Director(this.viewport);
+      this.director.parent = this;
 
       /**
        * @property preloader
@@ -43,6 +45,7 @@ define('lyria/game', ['eventmap', 'mixer', 'jquery', 'lyria/viewport', 'lyria/sc
        */
       // Add a preloader
       this.preloader = new Preloader();
+      this.preloader.parent = this;
 
       // Bind the scene director to the preloader reference
       this.preloader.sceneDirector = this.director;
@@ -51,6 +54,7 @@ define('lyria/game', ['eventmap', 'mixer', 'jquery', 'lyria/viewport', 'lyria/sc
       
       // World reference
       this.world = new World();
+      this.world.parent = this;
 
       // Add an update task to the loop with updates the scene director on each
       // frame
