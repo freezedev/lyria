@@ -129,7 +129,7 @@ define(&#x27;lyria/viewport&#x27;, [&#x27;root&#x27;, &#x27;jquery&#x27;], funct
       var defaultOptions = {
         parent: null,
         trigger: {
-          element: &#x27;window&#x27;,
+          element: window,
           event: &#x27;resize&#x27;
         },
         scaleMode: &#x27;scaleToFit&#x27;
@@ -186,9 +186,28 @@ define(&#x27;lyria/viewport&#x27;, [&#x27;root&#x27;, &#x27;jquery&#x27;], funct
       
       var self = this;
       $(options.trigger.element).on(options.trigger.event, function() {
+        var scaleFactor = 0;
+        var scaleExp = 0;
+        
         switch (self.scaleMode) {
-          // TODO: Implement logic
-          case &#x27;scaleToFit&#x27;: break;
+          // TODO: Seperate scaleToFit from scaleHeightToFit
+          case &#x27;scaleToFit&#x27;:
+          case &#x27;scaleHeightToFit&#x27;:
+            if (self.height &gt; $(options.trigger.element).innerHeight()) {
+              scaleFactor = $(options.trigger.element).innerHeight() / self.height;
+              scaleExp = &#x27;scale(&#x27; + scaleFactor + &#x27;, &#x27; + scaleFactor + &#x27;)&#x27;;
+        
+              self.$element.css(&#x27;transform&#x27;, scaleExp);
+            }
+            break;
+          case &#x27;scaleWidthToFit&#x27;:
+            if (self.width &gt; $(options.trigger.element).innerWidth()) {
+              scaleFactor = $(options.trigger.element).innerWidth() / self.width;
+              scaleExp = &#x27;scale(&#x27; + scaleFactor + &#x27;, &#x27; + scaleFactor + &#x27;)&#x27;;
+        
+              self.$element.css(&#x27;transform&#x27;, scaleExp);
+            }
+            break;
           default: break;
         }
       });

@@ -309,12 +309,28 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;ne
           })(arguments[i]);
         }
 
-        if (sceneDeps.length &gt; 0) {
-          require(sceneDeps, function() {
-            createScene(importedModules, [].slice.call(arguments, 0));
-          });
+        if (Array.isArray(sceneDeps)) {
+          if (sceneDeps.length &gt; 0) {
+            require(sceneDeps, function() {
+              createScene(importedModules, [].slice.call(arguments, 0));
+            });
+          } else {
+            createScene(importedModules);
+          }
         } else {
-          createScene(importedModules);
+          sceneDeps = sceneDeps || {};
+          var reqSceneModules = Object.keys(sceneDeps) || [];
+          
+          require(reqSceneModules, function() {
+        
+            for (var k = 0, l = arguments.length; k &lt; l; k++) {
+              (function(sceneDep) {
+                createNamespace(importedModules, reqSceneModules[j], sceneDep);
+              })(arguments[j]);
+            }
+            
+            createScene(importedModules);
+          });
         }
       });
     };
