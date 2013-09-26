@@ -70,20 +70,18 @@ define('lyria/game', ['eventmap', 'mixer', 'jquery', 'lyria/viewport', 'lyria/sc
         Game.Loop.run();
       }
       
-      $(document).ready(function() {
-        $(window).blur(self.pause);
-        $(window).focus(self.resume);
+      this.on('pause', function() {
+        self.paused = true;
       });
-    };
-    
-    Game.prototype.pause = function() {
-      this.paused = true;
-      this.trigger('pause');
-    };
-    
-    Game.prototype.resume = function() {
-      this.paused = false;
-      this.trigger('resume');
+      
+      this.on('resume', function() {
+        self.paused = false;
+      });
+      
+      $(document).ready(function() {       
+        $(window).blur(self.pause.bind(self));
+        $(window).focus(self.resume.bind(self));
+      });
     };
     
     /**
