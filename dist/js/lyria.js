@@ -1887,7 +1887,7 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
 
         for (var i = 0, j = arguments.length; i < j; i++) {
           (function(dep) {
-            createNamespace(importedModules, Scene.requireAlways(reqModules[i]), dep);
+            createNamespace(importedModules, Scene.requireAlways[reqModules[i]], dep);
           })(arguments[i]);
         }
 
@@ -1907,7 +1907,7 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
 
             for (var k = 0, l = arguments.length; k < l; k++) {
               (function(sceneDep) {
-                createNamespace(importedModules, sceneDeps(reqSceneModules[j]), sceneDep);
+                createNamespace(importedModules, sceneDeps[reqSceneModules[j]], sceneDep);
               })(arguments[j]);
             }
 
