@@ -17,6 +17,31 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
     }
   };
 
+  // TODO: Move this into localization API when refactored
+  var localizedElement = function(localization, language) {
+    return function(name, parameter) {
+      if (localization && localization[language]) {
+        if (localization[language][name] == null) {
+          return '[[Missing localization for ' + name + ']]';
+        }
+
+        if ( typeof localization[language][name] === 'string') {
+          return templateString.process(localization[language][name], parameter);
+        } else {
+          return {
+            plural: function(n) {
+              if (self.localization[language][name][n]) {
+                return templateString.process(self.localization[self.language][name][n], parameter);
+              } else {
+                return templateString.process(self.localization[self.language][name]['n'], parameter);
+              }
+            }
+          };
+        }
+      }
+    };
+  };
+
   var Scene = (function() {
 
     /**
@@ -61,9 +86,6 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
       this.template.partials = {};
       // Collect all template values
       this.template.data = {};
-
-      // Add default helpers
-      this.template.helpers['translate'] = this.t;
 
       this.children = this.children || {};
       this.children.gameObjects = {};
@@ -280,6 +302,9 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
       if (val == null && this.template) {
         val = this.template.data;
       }
+      
+      // Add default helpers
+      this.template.helpers['translate'] = localizedElement(this.localization, this.language);
 
       if (this.template && this.template.source) {
         this.content = this.template.source(val, {
@@ -325,28 +350,8 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
      *
      * @param {Object} lang
      */
-    Scene.prototype.t = function(name, parameter) {
-      var self = this;
-
-      if (this.localization && this.localization[this.language]) {
-        if (this.localization[this.language][name] == null) {
-          return '[[Missing localization for ' + name + ']]';
-        }
-
-        if ( typeof this.localization[this.language][name] === 'string') {
-          return templateString.process(this.localization[this.language][name], parameter);
-        } else {
-          return {
-            plural: function(n) {
-              if (self.localization[this.language][name][n]) {
-                return templateString.process(self.localization[self.language][name][n], parameter);
-              } else {
-                return templateString.process(self.localization[self.language][name]['n'], parameter);
-              }
-            }
-          };
-        }
-      }
+    Scene.prototype.t = function() {
+      return localizedElement(this.localization, this.language).apply(this, arguments);
     };
 
     /**
