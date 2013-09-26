@@ -131,6 +131,31 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;ne
     }
   };
 
+  // TODO: Move this into localization API when refactored
+  var localizedElement = function(localization, language) {
+    return function(name, parameter) {
+      if (localization &amp;&amp; localization[language]) {
+        if (localization[language][name] == null) {
+          return &#x27;[[Missing localization for &#x27; + name + &#x27;]]&#x27;;
+        }
+
+        if ( typeof localization[language][name] === &#x27;string&#x27;) {
+          return templateString.process(localization[language][name], parameter);
+        } else {
+          return {
+            plural: function(n) {
+              if (self.localization[language][name][n]) {
+                return templateString.process(self.localization[self.language][name][n], parameter);
+              } else {
+                return templateString.process(self.localization[self.language][name][&#x27;n&#x27;], parameter);
+              }
+            }
+          };
+        }
+      }
+    };
+  };
+
   var Scene = (function() {
 
     /**
@@ -175,9 +200,6 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;ne
       this.template.partials = {};
       // Collect all template values
       this.template.data = {};
-
-      // Add default helpers
-      this.template.helpers[&#x27;translate&#x27;] = this.t;
 
       this.children = this.children || {};
       this.children.gameObjects = {};
@@ -394,6 +416,9 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;ne
       if (val == null &amp;&amp; this.template) {
         val = this.template.data;
       }
+      
+      // Add default helpers
+      this.template.helpers[&#x27;translate&#x27;] = localizedElement(this.localization, this.language);
 
       if (this.template &amp;&amp; this.template.source) {
         this.content = this.template.source(val, {
@@ -439,28 +464,8 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;ne
      *
      * @param {Object} lang
      */
-    Scene.prototype.t = function(name, parameter) {
-      var self = this;
-
-      if (this.localization &amp;&amp; this.localization[this.language]) {
-        if (this.localization[this.language][name] == null) {
-          return &#x27;[[Missing localization for &#x27; + name + &#x27;]]&#x27;;
-        }
-
-        if ( typeof this.localization[this.language][name] === &#x27;string&#x27;) {
-          return templateString.process(this.localization[this.language][name], parameter);
-        } else {
-          return {
-            plural: function(n) {
-              if (self.localization[this.language][name][n]) {
-                return templateString.process(self.localization[self.language][name][n], parameter);
-              } else {
-                return templateString.process(self.localization[self.language][name][&#x27;n&#x27;], parameter);
-              }
-            }
-          };
-        }
-      }
+    Scene.prototype.t = function() {
+      return localizedElement(this.localization, this.language).apply(this, arguments);
     };
 
     /**
