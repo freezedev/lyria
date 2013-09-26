@@ -229,7 +229,7 @@ define(&#x27;lyria/preloader&#x27;, [&#x27;root&#x27;, &#x27;mixer&#x27;, &#x27;
         for (var i = 0, j = value.files.length; i &lt; j; i++) {
           (function(iterator) {
             
-            if (iterator.name.indexOf(&#x27;/&#x27; + Resource.path.image + &#x27;/&#x27;) &gt;= 0) {
+            if (iterator.type.indexOf(&#x27;image&#x27;) === 0) {
               var img = new root.Image();
               img.onload = function() {
                 currentProgress += iterator.size;
