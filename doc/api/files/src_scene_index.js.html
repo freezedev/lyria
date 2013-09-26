@@ -119,13 +119,13 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;ne
 
   var createNamespace = function(obj, chain, value) {
     var chainArr = chain.split(&#x27;.&#x27;);
-    
+
     for (var i = 0, j = chainArr.length; i &lt; j; i++) {
       (function(item, lastElem) {
         if (lastElem) {
           obj = value;
         } else {
-          obj = (obj[item] = obj[item] || {});          
+          obj = (obj[item] = obj[item] || {});
         }
       })(chainArr[i], i === j - 1);
     }
@@ -164,9 +164,9 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;ne
 
       // Default values
       this.localization = {};
-      
+
       var langValue = Language.language;
-      
+
       langMixin(self, langValue, self);
 
       this.template = {};
@@ -261,7 +261,7 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;ne
           if (self.isAsync) {
             self.trigger(&#x27;added&#x27;);
           }
-          
+
         };
 
         var async = false;
@@ -282,7 +282,7 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;ne
             return async;
           }
         });
-        
+
         context.modules = LyriaObject;
 
         // TODO: Evaluate how to show dependencies (concat into array, array with
@@ -300,10 +300,10 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;ne
 
       // Call scene
       var reqModules = Object.keys(Scene.requireAlways) || [];
-      
+
       require(reqModules, function() {
         var importedModules = {};
-        
+
         for (var i = 0, j = arguments.length; i &lt; j; i++) {
           (function(dep) {
             createNamespace(importedModules, reqModules[i], dep);
@@ -321,15 +321,15 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;ne
         } else {
           sceneDeps = sceneDeps || {};
           var reqSceneModules = Object.keys(sceneDeps) || [];
-          
+
           require(reqSceneModules, function() {
-        
+
             for (var k = 0, l = arguments.length; k &lt; l; k++) {
               (function(sceneDep) {
                 createNamespace(importedModules, reqSceneModules[j], sceneDep);
               })(arguments[j]);
             }
-            
+
             createScene(importedModules);
           });
         }
@@ -396,7 +396,10 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;ne
       }
 
       if (this.template &amp;&amp; this.template.source) {
-        this.content = this.template.source(val, {partials: this.template.partials, helpers: {}});
+        this.content = this.template.source(val, {
+          partials: this.template.partials,
+          helpers: this.template.helpers
+        });
       }
 
       if (this.$element.length &gt; 0) {
@@ -468,7 +471,7 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;ne
     Scene.prototype.log = function(text) {
       Log.i(&#x27;Scene &#x27; + this.name + &#x27;: &#x27; + text);
     };
-    
+
     Scene.requireAlways = {
       &#x27;lyria/audio&#x27;: &#x27;Lyria.Audio&#x27;,
       &#x27;lyria/achievement/manager&#x27;: &#x27;Lyria.AchievementManager&#x27;,

@@ -184,20 +184,18 @@ define(&#x27;lyria/game&#x27;, [&#x27;eventmap&#x27;, &#x27;mixer&#x27;, &#x27;j
         Game.Loop.run();
       }
       
-      $(document).ready(function() {
-        $(window).blur(self.pause);
-        $(window).focus(self.resume);
+      this.on(&#x27;pause&#x27;, function() {
+        self.paused = true;
       });
-    };
-    
-    Game.prototype.pause = function() {
-      this.paused = true;
-      this.trigger(&#x27;pause&#x27;);
-    };
-    
-    Game.prototype.resume = function() {
-      this.paused = false;
-      this.trigger(&#x27;resume&#x27;);
+      
+      this.on(&#x27;resume&#x27;, function() {
+        self.paused = false;
+      });
+      
+      $(document).ready(function() {       
+        $(window).blur(self.pause.bind(self));
+        $(window).focus(self.resume.bind(self));
+      });
     };
     
     /**
