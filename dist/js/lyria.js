@@ -1680,10 +1680,12 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
     for (var i = 0, j = chainArr.length; i < j; i++) {
       (function(item, lastElem) {
         if (lastElem) {
-          obj = value;
+          obj[item] = value;
         } else {
-          obj = (obj[item] = obj[item] || {});
+          obj[item] = obj[item] || {};
         }
+
+        obj = obj[item];
       })(chainArr[i], i === j - 1);
     }
   };
