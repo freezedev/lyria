@@ -1,6 +1,6 @@
 {
   "name": "lyria",
-  "version": "0.2.0-beta3",
+  "version": "0.2.0-beta4",
   "dependencies": {
     "handlebars": "1.0.x"
   },
