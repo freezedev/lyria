@@ -330,7 +330,7 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;ne
 
         for (var i = 0, j = arguments.length; i &lt; j; i++) {
           (function(dep) {
-            createNamespace(importedModules, reqModules[i], dep);
+            createNamespace(importedModules, Scene.requireAlways(reqModules[i]), dep);
           })(arguments[i]);
         }
 
@@ -350,7 +350,7 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;ne
 
             for (var k = 0, l = arguments.length; k &lt; l; k++) {
               (function(sceneDep) {
-                createNamespace(importedModules, reqSceneModules[j], sceneDep);
+                createNamespace(importedModules, sceneDeps(reqSceneModules[j]), sceneDep);
               })(arguments[j]);
             }
 
