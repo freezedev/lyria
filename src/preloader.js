@@ -115,7 +115,7 @@ define('lyria/preloader', ['root', 'mixer', 'jquery', 'lyria/resource', 'lyria/l
         for (var i = 0, j = value.files.length; i < j; i++) {
           (function(iterator) {
             
-            if (iterator.name.indexOf('/' + Resource.path.image + '/') >= 0) {
+            if (iterator.type.indexOf('image') === 0) {
               var img = new root.Image();
               img.onload = function() {
                 currentProgress += iterator.size;
