@@ -829,20 +829,18 @@ define('lyria/game', ['eventmap', 'mixer', 'jquery', 'lyria/viewport', 'lyria/sc
         Game.Loop.run();
       }
       
-      $(document).ready(function() {
-        $(window).blur(self.pause);
-        $(window).focus(self.resume);
+      this.on('pause', function() {
+        self.paused = true;
       });
-    };
-    
-    Game.prototype.pause = function() {
-      this.paused = true;
-      this.trigger('pause');
-    };
-    
-    Game.prototype.resume = function() {
-      this.paused = false;
-      this.trigger('resume');
+      
+      this.on('resume', function() {
+        self.paused = false;
+      });
+      
+      $(document).ready(function() {       
+        $(window).blur(self.pause.bind(self));
+        $(window).focus(self.resume.bind(self));
+      });
     };
     
     /**
@@ -1678,13 +1676,13 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
 
   var createNamespace = function(obj, chain, value) {
     var chainArr = chain.split('.');
-    
+
     for (var i = 0, j = chainArr.length; i < j; i++) {
       (function(item, lastElem) {
         if (lastElem) {
           obj = value;
         } else {
-          obj = (obj[item] = obj[item] || {});          
+          obj = (obj[item] = obj[item] || {});
         }
       })(chainArr[i], i === j - 1);
     }
@@ -1723,9 +1721,9 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
 
       // Default values
       this.localization = {};
-      
+
       var langValue = Language.language;
-      
+
       langMixin(self, langValue, self);
 
       this.template = {};
@@ -1820,7 +1818,7 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
           if (self.isAsync) {
             self.trigger('added');
           }
-          
+
         };
 
         var async = false;
@@ -1841,7 +1839,7 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
             return async;
           }
         });
-        
+
         context.modules = LyriaObject;
 
         // TODO: Evaluate how to show dependencies (concat into array, array with
@@ -1859,10 +1857,10 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
 
       // Call scene
       var reqModules = Object.keys(Scene.requireAlways) || [];
-      
+
       require(reqModules, function() {
         var importedModules = {};
-        
+
         for (var i = 0, j = arguments.length; i < j; i++) {
           (function(dep) {
             createNamespace(importedModules, reqModules[i], dep);
@@ -1880,15 +1878,15 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
         } else {
           sceneDeps = sceneDeps || {};
           var reqSceneModules = Object.keys(sceneDeps) || [];
-          
+
           require(reqSceneModules, function() {
-        
+
             for (var k = 0, l = arguments.length; k < l; k++) {
               (function(sceneDep) {
                 createNamespace(importedModules, reqSceneModules[j], sceneDep);
               })(arguments[j]);
             }
-            
+
             createScene(importedModules);
           });
         }
@@ -1955,7 +1953,10 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
       }
 
       if (this.template && this.template.source) {
-        this.content = this.template.source(val, {partials: this.template.partials, helpers: {}});
+        this.content = this.template.source(val, {
+          partials: this.template.partials,
+          helpers: this.template.helpers
+        });
       }
 
       if (this.$element.length > 0) {
@@ -2027,7 +2028,7 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
     Scene.prototype.log = function(text) {
       Log.i('Scene ' + this.name + ': ' + text);
     };
-    
+
     Scene.requireAlways = {
       'lyria/audio': 'Lyria.Audio',
       'lyria/achievement/manager': 'Lyria.AchievementManager',
