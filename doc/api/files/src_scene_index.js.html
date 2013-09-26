@@ -123,10 +123,12 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;ne
     for (var i = 0, j = chainArr.length; i &lt; j; i++) {
       (function(item, lastElem) {
         if (lastElem) {
-          obj = value;
+          obj[item] = value;
         } else {
-          obj = (obj[item] = obj[item] || {});
+          obj[item] = obj[item] || {};
         }
+
+        obj = obj[item];
       })(chainArr[i], i === j - 1);
     }
   };
