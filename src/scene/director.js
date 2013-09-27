@@ -112,12 +112,12 @@ define('lyria/scene/director', ['root', 'mixer', 'jquery', 'eventmap', 'lyria/sc
      * Shows a specified scene
      *
      * @method show
-     * @param {String} scene
+     * @param {String} scene name of scene
      * @param {Object} options
      * @param {Function} callback
      */
-    SceneDirector.prototype.show = function(scene, options, callback) {
-      this.trigger('scene:change', scene);
+    SceneDirector.prototype.show = function(sceneName, options, callback) {
+      this.trigger('scene:change', sceneName);
 
       // More than one scene visible at the same time
       if ($('.' + SceneDirector.prototype.sceneClassName + ':visible')) {
@@ -138,26 +138,19 @@ define('lyria/scene/director', ['root', 'mixer', 'jquery', 'eventmap', 'lyria/sc
 
       var self = this;
 
-      $.each(this.sceneList, function(key, value) {
-        if (key === scene) {
-
-          if (scene.transition && scene.transition.length) {
-            $('#' + scene).show(scene.transition.length);
-          } else {
-            $('#' + scene).show();
-          }
-
-          self.currentScene = value;
-
-          self.currentScene.trigger('active', options);
-
-          if (callback) {
-            callback(scene);
-          }
-
-          return false;
-        }
-      });
+      self.currentScene = this.sceneList[sceneName];
+      
+      if (self.currentScene.transition && self.currentScene.transition.length) {
+        $('#' + sceneName).show(self.currentScene.transition.length);
+      } else {
+        $('#' + sceneName).show();
+      }
+      
+      self.currentScene.trigger('active', options);
+      
+      if (callback) {
+        callback(sceneName);
+      }
     };
 
     /**
