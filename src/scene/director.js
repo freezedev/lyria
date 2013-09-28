@@ -117,8 +117,6 @@ define('lyria/scene/director', ['root', 'mixer', 'jquery', 'eventmap', 'lyria/sc
      * @param {Function} callback
      */
     SceneDirector.prototype.show = function(sceneName, options, callback) {
-      this.trigger('scene:change', sceneName);
-
       // More than one scene visible at the same time
       if ($('.' + SceneDirector.prototype.sceneClassName + ':visible')) {
         $('.' + SceneDirector.prototype.sceneClassName).hide();
@@ -145,7 +143,7 @@ define('lyria/scene/director', ['root', 'mixer', 'jquery', 'eventmap', 'lyria/sc
       } else {
         $('#' + sceneName).show();
       }
-      
+      this.trigger('scene:change', sceneName);
       self.currentScene.trigger('active', options);
       
       if (callback) {
