@@ -2,7 +2,7 @@
     "project": {
         "name": "lyria",
         "description": "",
-        "version": "0.2.0-beta3",
+        "version": "0.2.0-beta4",
         "url": ""
     },
     "files": {
@@ -743,7 +743,7 @@
             "params": [
                 {
                     "name": "scene",
-                    "description": "",
+                    "description": "name of scene",
                     "type": "String"
                 },
                 {
@@ -763,7 +763,7 @@
         },
         {
             "file": "src\\scene\\director.js",
-            "line": 163,
+            "line": 154,
             "description": "Refreshes a scene",
             "itemtype": "method",
             "name": "refresh",

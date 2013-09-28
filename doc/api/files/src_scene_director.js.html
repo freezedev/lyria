@@ -19,7 +19,7 @@
             
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.2.0-beta3</em>
+            <em>API Docs for: 0.2.0-beta4</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -226,13 +226,11 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;mixer&#x27;, &
      * Shows a specified scene
      *
      * @method show
-     * @param {String} scene
+     * @param {String} scene name of scene
      * @param {Object} options
      * @param {Function} callback
      */
-    SceneDirector.prototype.show = function(scene, options, callback) {
-      this.trigger(&#x27;scene:change&#x27;, scene);
-
+    SceneDirector.prototype.show = function(sceneName, options, callback) {
       // More than one scene visible at the same time
       if ($(&#x27;.&#x27; + SceneDirector.prototype.sceneClassName + &#x27;:visible&#x27;)) {
         $(&#x27;.&#x27; + SceneDirector.prototype.sceneClassName).hide();
@@ -252,26 +250,19 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;mixer&#x27;, &
 
       var self = this;
 
-      $.each(this.sceneList, function(key, value) {
-        if (key === scene) {
-
-          if (scene.transition &amp;&amp; scene.transition.length) {
-            $(&#x27;#&#x27; + scene).show(scene.transition.length);
-          } else {
-            $(&#x27;#&#x27; + scene).show();
-          }
-
-          self.currentScene = value;
-
-          self.currentScene.trigger(&#x27;active&#x27;, options);
-
-          if (callback) {
-            callback(scene);
-          }
-
-          return false;
-        }
-      });
+      self.currentScene = this.sceneList[sceneName];
+      
+      if (self.currentScene.transition &amp;&amp; self.currentScene.transition.length) {
+        $(&#x27;#&#x27; + sceneName).show(self.currentScene.transition.length);
+      } else {
+        $(&#x27;#&#x27; + sceneName).show();
+      }
+      this.trigger(&#x27;scene:change&#x27;, sceneName);
+      self.currentScene.trigger(&#x27;active&#x27;, options);
+      
+      if (callback) {
+        callback(sceneName);
+      }
     };
 
     /**
