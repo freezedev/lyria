@@ -1,16 +1,14 @@
 /**
  * @module Lyria
  */
-define('lyria/viewport', ['root', 'jquery'], function(root, $) {
-  'use strict';
+define('lyria/viewport', ['root', 'jquery', 'mixer', 'eventmap'], function(root, $, mixer, EventMap) {'use strict';
 
   return (function() {
-    
-    
-  /**
-   * @class Viewport
-   * @constructor
-   */
+
+    /**
+     * @class Viewport
+     * @constructor
+     */
     function Viewport(container, options) {
       var defaultOptions = {
         parent: null,
@@ -20,31 +18,13 @@ define('lyria/viewport', ['root', 'jquery'], function(root, $) {
         },
         scaleMode: 'scaleToFit'
       };
-      
+
       options = $.extend(options, defaultOptions);
       
-      /**
-       * The viewport width
-       *
-       * @property width
-       * @type {Number} 
-       * @default 800
-       */
-      this.width = 800;
-      
-      /**
-       * The viewport height
-       * 
-       * @property height
-       * @type {Number}
-       * @default 600 
-       */
-      this.height = 600;
-      
-      this.transforms = {};
-      
+      mixer(Viewport.prototype, new EventMap());
+
       this.scaleMode = options.scaleMode;
-      
+
       // Defaults container to the string 'viewport'
       if (container == null) {
         container = 'viewport';
@@ -54,86 +34,117 @@ define('lyria/viewport', ['root', 'jquery'], function(root, $) {
        * The viewport element (jQuery object)
        *
        * @property $element
-       * @type {jQuery} 
+       * @type {jQuery}
        */
       if ($('#' + container).length > 0) {
         this.$element = $('#' + container);
       } else {
         var createdElement = $(root.document.createElement('div')).attr('id', container).attr('class', 'viewport');
-        
+
         if (options.parent) {
           $(options.parent).prepend(createdElement);
         } else {
           $('body').prepend(createdElement);
         }
-        
+
         this.$element = $('#' + container);
       }
-      
-      var self = this;
-      $(options.trigger.element).on(options.trigger.event, function() {
-        var scaleFactor = 0;
-        var scaleExp = 0;
-        
-        switch (self.scaleMode) {
-          // TODO: Seperate scaleToFit from scaleHeightToFit
-          case 'scaleToFit':
-          case 'scaleHeightToFit':
-            if (self.height > $(options.trigger.element).innerHeight()) {
-              scaleFactor = $(options.trigger.element).innerHeight() / self.height;
-              scaleExp = 'scale(' + scaleFactor + ', ' + scaleFactor + ')';
-        
-              self.$element.css('transform', scaleExp);
-            }
-            break;
-          case 'scaleWidthToFit':
-            if (self.width > $(options.trigger.element).innerWidth()) {
-              scaleFactor = $(options.trigger.element).innerWidth() / self.width;
-              scaleExp = 'scale(' + scaleFactor + ', ' + scaleFactor + ')';
-        
-              self.$element.css('transform', scaleExp);
-            }
-            break;
-          default: break;
+
+      Object.defineProperty(this, 'width', {
+        get: function() {
+          return this.$element.outerWidth();
         }
       });
+
+      Object.defineProperty(this, 'height', {
+        get: function() {
+          return this.$element.outerHeight();
+        }
+      });
+
+      var self = this;
+
+      this.on('scale', function() {
+        var scaleFactor = 0;
+        var scaleExp = 0;
+
+        var scaleHeightToFit = function() {
+          if (self.height > $(options.trigger.element).innerHeight()) {
+            scaleFactor = $(options.trigger.element).innerHeight() / self.height;
+            scaleExp = 'scale(' + scaleFactor + ', ' + scaleFactor + ')';
+
+            self.$element.css('transform', scaleExp);
+          }
+        };
+
+        var scaleWidthToFit = function() {
+          if (self.width > $(options.trigger.element).innerWidth()) {
+            scaleFactor = $(options.trigger.element).innerWidth() / self.width;
+            scaleExp = 'scale(' + scaleFactor + ', ' + scaleFactor + ')';
+
+            self.$element.css('transform', scaleExp);
+          }
+        };
+
+        switch (self.scaleMode) {
+          case 'scaleToFit':
+            if ($(options.trigger.element).innerWidth() > self.width) {
+              scaleWidthToFit();
+            } else {
+              scaleHeightToFit();
+            }
+            break;
+          case 'scaleHeightToFit':
+            scaleHeightToFit();
+            break;
+          case 'scaleWidthToFit':
+            scaleWidthToFit();
+            break;
+          default:
+            break;
+        }
+      });
+
+      $(options.trigger.element).on(options.trigger.event, function() {
+        self.trigger('scale');
+      });
     }
-    
+
     /**
      * Adds a behaviour which will be triggered on certain events
-     * 
+     *
      * @method behaviour
      * @param {Object} fn
      */
     Viewport.prototype.behaviour = function(fn) {
-      
+
     };
-    
+
     /**
      * Reset all CSS transforms on the viewport
-     * 
-     * @method resetTransforms 
+     *
+     * @method resetTransforms
      */
     Viewport.prototype.resetTransforms = function() {
       this.transforms = {};
     };
-    
+
     /**
      * Updated CSS transforms on the viewport
-     *  
+     *
      * @method updateTransforms
      */
     Viewport.prototype.updateTransforms = function() {
       if ($.isEmptyObject(this.transforms)) {
         return;
       }
-      
+
       this.$element.css('transform', this.transforms.join(' '));
     };
-    
+
     /**
      * Scales the viewport
-     * 
+     *
      * @method scale
      * @param {Object} scaleX
      * @param {Object} scaleY
@@ -142,41 +153,41 @@ define('lyria/viewport', ['root', 'jquery'], function(root, $) {
       if (scaleX == null) {
         return;
       }
-      
+
       if (scaleY == null) {
         scaleY = scaleX;
       }
-      
+
       this.transforms.scale = this.transforms.scale || {};
       this.transforms.scale.x = scaleX;
       this.transforms.scale.y = scaleY;
-      
+
       this.$element.css('transform', '');
     };
-    
+
     /**
      * Sets an origin for the viewport
-     * 
+     *
      * @method origin
      * @param {Number} originX
      * @param {Number} originY
      */
     Viewport.prototype.origin = function(originX, originY) {
-      
+
     };
-    
+
     /**
      * Centers the viewport
-     *  
+     *
      * @method center
      */
     Viewport.prototype.center = function() {
-      
+
     };
-    
+
     /**
      * Rotate the viewport
-     * 
+     *
      * @method rotate
      * @param {Number} angle
      */
@@ -184,13 +195,13 @@ define('lyria/viewport', ['root', 'jquery'], function(root, $) {
       if (angle == null) {
         return;
       }
-      
+
       this.transforms.rotate = angle;
-      
+
       this.$element.css('transform', 'rotate(' + angle + ')');
     };
-    
+
     return Viewport;
-    
+
   })();
 });
