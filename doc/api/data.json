@@ -216,7 +216,7 @@
             },
             "tag": "module",
             "file": "src\\viewport.js",
-            "line": 10
+            "line": 8
         },
         "Scene": {
             "name": "Scene",
@@ -425,7 +425,7 @@
             "module": "Lyria",
             "namespace": "",
             "file": "src\\viewport.js",
-            "line": 10,
+            "line": 8,
             "is_constructor": 1
         }
     },
@@ -1088,29 +1088,7 @@
         },
         {
             "file": "src\\viewport.js",
-            "line": 26,
-            "description": "The viewport width",
-            "itemtype": "property",
-            "name": "width",
-            "type": "{Number}",
-            "default": "800",
-            "class": "Viewport",
-            "module": "Lyria"
-        },
-        {
-            "file": "src\\viewport.js",
-            "line": 35,
-            "description": "The viewport height",
-            "itemtype": "property",
-            "name": "height",
-            "type": "{Number}",
-            "default": "600",
-            "class": "Viewport",
-            "module": "Lyria"
-        },
-        {
-            "file": "src\\viewport.js",
-            "line": 53,
+            "line": 33,
             "description": "The viewport element (jQuery object)",
             "itemtype": "property",
             "name": "$element",
@@ -1120,7 +1098,7 @@
         },
         {
             "file": "src\\viewport.js",
-            "line": 102,
+            "line": 113,
             "description": "Adds a behaviour which will be triggered on certain events",
             "itemtype": "method",
             "name": "behaviour",
@@ -1136,7 +1114,7 @@
         },
         {
             "file": "src\\viewport.js",
-            "line": 112,
+            "line": 123,
             "description": "Reset all CSS transforms on the viewport",
             "itemtype": "method",
             "name": "resetTransforms",
@@ -1145,7 +1123,7 @@
         },
         {
             "file": "src\\viewport.js",
-            "line": 121,
+            "line": 132,
             "description": "Updated CSS transforms on the viewport",
             "itemtype": "method",
             "name": "updateTransforms",
@@ -1154,7 +1132,7 @@
         },
         {
             "file": "src\\viewport.js",
-            "line": 134,
+            "line": 145,
             "description": "Scales the viewport",
             "itemtype": "method",
             "name": "scale",
@@ -1175,7 +1153,7 @@
         },
         {
             "file": "src\\viewport.js",
-            "line": 157,
+            "line": 168,
             "description": "Sets an origin for the viewport",
             "itemtype": "method",
             "name": "origin",
@@ -1196,7 +1174,7 @@
         },
         {
             "file": "src\\viewport.js",
-            "line": 168,
+            "line": 179,
             "description": "Centers the viewport",
             "itemtype": "method",
             "name": "center",
@@ -1205,7 +1183,7 @@
         },
         {
             "file": "src\\viewport.js",
-            "line": 177,
+            "line": 188,
             "description": "Rotate the viewport",
             "itemtype": "method",
             "name": "rotate",
