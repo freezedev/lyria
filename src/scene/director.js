@@ -75,6 +75,18 @@ define('lyria/scene/director', ['root', 'mixer', 'jquery', 'eventmap', 'lyria/sc
      * @param {Object} options
      */
     SceneDirector.prototype.add = function(scene, options) {
+      
+      // Shorthand to add all scenes to the scene director
+      if (scene === '*' && this.scenes) {
+        scene = Object.keys(this.scenes);
+      }
+      
+      // Allow array as scenes
+      if (Array.isArray(scene)) {
+        for (var i = 0, j = scene.length; i < j; i++) {
+          this.add(scene[i], options);
+        }
+      }
 
       if (!( scene instanceof Scene)) {
         if (this.scenes && !$.isEmptyObject(this.scenes)) {
