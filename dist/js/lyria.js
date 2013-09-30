@@ -1799,6 +1799,7 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
       self.on('added', function() {
         self.refresh();
 
+        // TODO: This overwrites eventmap events. Find a better way!
         if (self.events) {
           if (options && options.isPrefab) {
             self.events.delegate = (options.target) ? options.target : 'body';
@@ -2431,34 +2432,62 @@ define('lyria/viewport', ['root', 'jquery', 'mixer', 'eventmap'], function(root,
       var self = this;
 
       this.on('scale', function() {
-        var scaleFactor = 0;
-        var scaleExp = 0;
-
-        var scaleHeightToFit = function() {
-          if (self.height > $(options.trigger.element).innerHeight()) {
-            scaleFactor = $(options.trigger.element).innerHeight() / self.height;
-            scaleExp = 'scale(' + scaleFactor + ', ' + scaleFactor + ')';
-
-            self.$element.css('transform', scaleExp);
-          }
+        
+        // TODO: Reset scaling to 1.0
+        
+        var scaleElement = function(scaleFactor) {
+          var scaleExp = 'scale(' + scaleFactor + ', ' + scaleFactor + ')';
+          self.$element.css('transform', scaleExp);
         };
 
-        var scaleWidthToFit = function() {
+        var scaleHeightToFit = function(doNotSetTransform) {
+          var scaleFactor = 0;
+          
+          if (self.height > $(options.trigger.element).innerHeight()) {
+            scaleFactor = $(options.trigger.element).innerHeight() / self.height;
+
+            if (doNotSetTransform) {
+              return scaleFactor;
+            } else {
+              scaleElement(scaleFactor);
+              return scaleFactor;
+            }
+          }
+          
+          return 1.0;
+        };
+
+        var scaleWidthToFit = function(doNotSetTransform) {
+          var scaleFactor = 0;
+          
           if (self.width > $(options.trigger.element).innerWidth()) {
             scaleFactor = $(options.trigger.element).innerWidth() / self.width;
-            scaleExp = 'scale(' + scaleFactor + ', ' + scaleFactor + ')';
-
-            self.$element.css('transform', scaleExp);
+            
+            if (doNotSetTransform) {
+              return scaleFactor;
+            } else {
+              scaleElement(scaleFactor);
+              return scaleFactor;
+            }
           }
+          
+          return 1.0;
         };
 
         switch (self.scaleMode) {
           case 'scaleToFit':
-            if ($(options.trigger.element).innerWidth() > self.width) {
-              scaleWidthToFit();
-            } else {
-              scaleHeightToFit();
+            var scaleX = 1;
+            var scaleY = 1;
+          
+            if ($(options.trigger.element).innerHeight() < self.height) {
+              scaleY = scaleHeightToFit(true);
             }
+            
+            if ($(options.trigger.element).innerWidth() < self.width) { 
+              scaleX = scaleWidthToFit(true);                
+            }
+            
+            scaleElement(Math.min(scaleX, scaleY));
             break;
           case 'scaleHeightToFit':
             scaleHeightToFit();
