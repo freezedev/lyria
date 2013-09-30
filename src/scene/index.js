@@ -111,6 +111,7 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
       self.on('added', function() {
         self.refresh();
 
+        // TODO: This overwrites eventmap events. Find a better way!
         if (self.events) {
           if (options && options.isPrefab) {
             self.events.delegate = (options.target) ? options.target : 'body';
