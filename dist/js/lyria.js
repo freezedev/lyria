@@ -1602,7 +1602,7 @@ define('lyria/scene/director', ['root', 'mixer', 'jquery', 'eventmap', 'lyria/sc
 
       // Add first scene as a default scene      
       if (Object.keys(this.sceneList).length === 0) {
-        this.defaultScene = scene;
+        this.defaultScene = scene.name;
       }
 
       this.sceneList[scene.name] = scene;
@@ -1630,6 +1630,10 @@ define('lyria/scene/director', ['root', 'mixer', 'jquery', 'eventmap', 'lyria/sc
      * @param {Function} callback
      */
     SceneDirector.prototype.show = function(sceneName, options, callback) {
+      if (!sceneName) {
+        return;
+      }
+      
       // More than one scene visible at the same time
       if ($('.' + SceneDirector.prototype.sceneClassName + ':visible')) {
         $('.' + SceneDirector.prototype.sceneClassName).hide();
@@ -2644,10 +2648,12 @@ function program1(depth0,data) {
   },'scene':function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
+  var stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
 
-
-  buffer += "<div id=\"";
+function program1(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\r\n  <canvas id=\"";
   if (stack1 = helpers.name) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.name; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
@@ -2655,6 +2661,26 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   if (stack1 = helpers.type) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.type; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
-    + "\"></div>";
+    + "\"></canvas>\r\n";
   return buffer;
+  }
+
+function program3(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\r\n  <div id=\"";
+  if (stack1 = helpers.name) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.name; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "\" class=\"";
+  if (stack1 = helpers.type) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.type; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "\"></div>\r\n";
+  return buffer;
+  }
+
+  stack1 = helpers['if'].call(depth0, depth0.canvas, {hash:{},inverse:self.program(3, program3, data),fn:self.program(1, program1, data),data:data});
+  if(stack1 || stack1 === 0) { return stack1; }
+  else { return ''; }
   }});
