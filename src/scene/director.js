@@ -44,6 +44,14 @@ define('lyria/scene/director', ['root', 'mixer', 'jquery', 'eventmap', 'lyria/sc
        * @type {Scene}
        */
       this.currentScene = null;
+      
+      /**
+       * The default scene
+       * 
+       * @property defaultScene
+       * @type {String} 
+       */
+      this.defaultScene = null;
 
       /**
        * Define events for scene director
