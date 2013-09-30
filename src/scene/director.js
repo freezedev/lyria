@@ -94,6 +94,8 @@ define('lyria/scene/director', ['root', 'mixer', 'jquery', 'eventmap', 'lyria/sc
         for (var i = 0, j = scene.length; i < j; i++) {
           this.add(scene[i], options);
         }
+        
+        return;
       }
 
       if (!( scene instanceof Scene)) {
@@ -111,7 +113,12 @@ define('lyria/scene/director', ['root', 'mixer', 'jquery', 'eventmap', 'lyria/sc
       if (this.parent != null) {
         scene.game = this.parent;
       }
-      
+
+      // Add first scene as a default scene      
+      if (Object.keys(sceneList).length === 0) {
+        this.defaultScene = scene;
+      }
+
       this.sceneList[scene.name] = scene;
 
       if (this.viewport.$element) {
