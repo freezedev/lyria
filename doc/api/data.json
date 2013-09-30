@@ -791,7 +791,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 249,
+            "line": 250,
             "description": "Adds a gameobject to the scene",
             "itemtype": "method",
             "name": "add",
@@ -807,7 +807,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 297,
+            "line": 298,
             "description": "Refreshes the scene (Re-renders the template)",
             "itemtype": "method",
             "name": "refresh",
@@ -823,7 +823,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 325,
+            "line": 326,
             "description": "Sets an event to the event object or returns a specified event",
             "itemtype": "method",
             "name": "event",
@@ -849,7 +849,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 350,
+            "line": 351,
             "description": "Gets localized value",
             "params": [
                 {
@@ -863,7 +863,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 359,
+            "line": 360,
             "description": "Logging directly from the scene",
             "params": [
                 {
@@ -1109,7 +1109,7 @@
         },
         {
             "file": "src\\viewport.js",
-            "line": 111,
+            "line": 139,
             "description": "Adds a behaviour which will be triggered on certain events",
             "itemtype": "method",
             "name": "behaviour",
@@ -1125,7 +1125,7 @@
         },
         {
             "file": "src\\viewport.js",
-            "line": 121,
+            "line": 149,
             "description": "Reset all CSS transforms on the viewport",
             "itemtype": "method",
             "name": "resetTransforms",
@@ -1134,7 +1134,7 @@
         },
         {
             "file": "src\\viewport.js",
-            "line": 130,
+            "line": 158,
             "description": "Updated CSS transforms on the viewport",
             "itemtype": "method",
             "name": "updateTransforms",
@@ -1143,7 +1143,7 @@
         },
         {
             "file": "src\\viewport.js",
-            "line": 143,
+            "line": 171,
             "description": "Scales the viewport",
             "itemtype": "method",
             "name": "scale",
@@ -1164,7 +1164,7 @@
         },
         {
             "file": "src\\viewport.js",
-            "line": 166,
+            "line": 194,
             "description": "Sets an origin for the viewport",
             "itemtype": "method",
             "name": "origin",
@@ -1185,7 +1185,7 @@
         },
         {
             "file": "src\\viewport.js",
-            "line": 177,
+            "line": 205,
             "description": "Centers the viewport",
             "itemtype": "method",
             "name": "center",
@@ -1194,7 +1194,7 @@
         },
         {
             "file": "src\\viewport.js",
-            "line": 186,
+            "line": 214,
             "description": "Rotate the viewport",
             "itemtype": "method",
             "name": "rotate",
@@ -1300,11 +1300,11 @@
         },
         {
             "message": "Missing item type\nGets localized value",
-            "line": " src\\scene\\index.js:350"
+            "line": " src\\scene\\index.js:351"
         },
         {
             "message": "Missing item type\nLogging directly from the scene",
-            "line": " src\\scene\\index.js:359"
+            "line": " src\\scene\\index.js:360"
         },
         {
             "message": "Missing item type",

@@ -225,6 +225,7 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;ne
       self.on(&#x27;added&#x27;, function() {
         self.refresh();
 
+        // TODO: This overwrites eventmap events. Find a better way!
         if (self.events) {
           if (options &amp;&amp; options.isPrefab) {
             self.events.delegate = (options.target) ? options.target : &#x27;body&#x27;;

@@ -179,34 +179,62 @@ define(&#x27;lyria/viewport&#x27;, [&#x27;root&#x27;, &#x27;jquery&#x27;, &#x27;
       var self = this;
 
       this.on(&#x27;scale&#x27;, function() {
-        var scaleFactor = 0;
-        var scaleExp = 0;
-
-        var scaleHeightToFit = function() {
-          if (self.height &gt; $(options.trigger.element).innerHeight()) {
-            scaleFactor = $(options.trigger.element).innerHeight() / self.height;
-            scaleExp = &#x27;scale(&#x27; + scaleFactor + &#x27;, &#x27; + scaleFactor + &#x27;)&#x27;;
-
-            self.$element.css(&#x27;transform&#x27;, scaleExp);
-          }
+        
+        // TODO: Reset scaling to 1.0
+        
+        var scaleElement = function(scaleFactor) {
+          var scaleExp = &#x27;scale(&#x27; + scaleFactor + &#x27;, &#x27; + scaleFactor + &#x27;)&#x27;;
+          self.$element.css(&#x27;transform&#x27;, scaleExp);
         };
 
-        var scaleWidthToFit = function() {
+        var scaleHeightToFit = function(doNotSetTransform) {
+          var scaleFactor = 0;
+          
+          if (self.height &gt; $(options.trigger.element).innerHeight()) {
+            scaleFactor = $(options.trigger.element).innerHeight() / self.height;
+
+            if (doNotSetTransform) {
+              return scaleFactor;
+            } else {
+              scaleElement(scaleFactor);
+              return scaleFactor;
+            }
+          }
+          
+          return 1.0;
+        };
+
+        var scaleWidthToFit = function(doNotSetTransform) {
+          var scaleFactor = 0;
+          
           if (self.width &gt; $(options.trigger.element).innerWidth()) {
             scaleFactor = $(options.trigger.element).innerWidth() / self.width;
-            scaleExp = &#x27;scale(&#x27; + scaleFactor + &#x27;, &#x27; + scaleFactor + &#x27;)&#x27;;
-
-            self.$element.css(&#x27;transform&#x27;, scaleExp);
+            
+            if (doNotSetTransform) {
+              return scaleFactor;
+            } else {
+              scaleElement(scaleFactor);
+              return scaleFactor;
+            }
           }
+          
+          return 1.0;
         };
 
         switch (self.scaleMode) {
           case &#x27;scaleToFit&#x27;:
-            if ($(options.trigger.element).innerWidth() &gt; self.width) {
-              scaleWidthToFit();
-            } else {
-              scaleHeightToFit();
+            var scaleX = 1;
+            var scaleY = 1;
+          
+            if ($(options.trigger.element).innerHeight() &lt; self.height) {
+              scaleY = scaleHeightToFit(true);
             }
+            
+            if ($(options.trigger.element).innerWidth() &lt; self.width) { 
+              scaleX = scaleWidthToFit(true);                
+            }
+            
+            scaleElement(Math.min(scaleX, scaleY));
             break;
           case &#x27;scaleHeightToFit&#x27;:
             scaleHeightToFit();
