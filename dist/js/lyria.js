@@ -664,23 +664,6 @@ define('path', function() {
   return Path;
 });
 
-(function(root) {
-  // Shim for detecting performance timer
-  var performance = root.performance;
-  performance.now = performance.now || (function() {
-    var vendors = ['ms', 'moz', 'webkit', 'o'];
-    
-    var functionName = '';
-    for (var i = 0, j = vendors.length; i < j; i++) {
-      functionName = vendors[i] + 'Now';
-      
-      if (performance[functionName]) {
-        return performance[functionName];
-      }
-    }
-  });
-})(this);
-
 define('random', function() {
   return function(max, min) {
     if (max == null) {
@@ -777,7 +760,8 @@ define('lyria/game', ['eventmap', 'mixer', 'jquery', 'lyria/viewport', 'lyria/sc
       var self = this;
 
       options = $.extend(options, {
-        startLoop: true
+        startLoop: true,
+        defaultPreloaderEvent: true
       });
       
       mixer(Game.prototype, new EventMap());
@@ -809,7 +793,18 @@ define('lyria/game', ['eventmap', 'mixer', 'jquery', 'lyria/viewport', 'lyria/sc
       // Bind the scene director to the preloader reference
       this.preloader.sceneDirector = this.director;
       
+      if (options.defaultPreloaderEvent) {
+        this.preloader.on('complete', function() {
+          self.director.add('*');
+          
+          self.director.show(self.director.defaultScene);
+        });
+      }
+      
       this.paused = false;
+      
+      // Mute
+      this.mute = false;
       
       // World reference
       this.world = new World();
@@ -1535,6 +1530,14 @@ define('lyria/scene/director', ['root', 'mixer', 'jquery', 'eventmap', 'lyria/sc
        * @type {Scene}
        */
       this.currentScene = null;
+      
+      /**
+       * The default scene
+       * 
+       * @property defaultScene
+       * @type {String} 
+       */
+      this.defaultScene = null;
 
       /**
        * Define events for scene director
@@ -1566,6 +1569,20 @@ define('lyria/scene/director', ['root', 'mixer', 'jquery', 'eventmap', 'lyria/sc
      * @param {Object} options
      */
     SceneDirector.prototype.add = function(scene, options) {
+      
+      // Shorthand to add all scenes to the scene director
+      if (scene === '*' && this.scenes) {
+        scene = Object.keys(this.scenes);
+      }
+      
+      // Allow array as scenes
+      if (Array.isArray(scene)) {
+        for (var i = 0, j = scene.length; i < j; i++) {
+          this.add(scene[i], options);
+        }
+        
+        return;
+      }
 
       if (!( scene instanceof Scene)) {
         if (this.scenes && !$.isEmptyObject(this.scenes)) {
@@ -1582,7 +1599,12 @@ define('lyria/scene/director', ['root', 'mixer', 'jquery', 'eventmap', 'lyria/sc
       if (this.parent != null) {
         scene.game = this.parent;
       }
-      
+
+      // Add first scene as a default scene      
+      if (Object.keys(sceneList).length === 0) {
+        this.defaultScene = scene;
+      }
+
       this.sceneList[scene.name] = scene;
 
       if (this.viewport.$element) {
@@ -2445,9 +2467,7 @@ define('lyria/viewport', ['root', 'jquery', 'mixer', 'eventmap'], function(root,
         }
       });
 
-      $(options.trigger.element).on(options.trigger.event, function() {
-        self.trigger('scale');
-      });
+      $(options.trigger.element).on(options.trigger.event, self.trigger.bind(self, 'scale'));
     }
 
     /**
