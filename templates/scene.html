@@ -1,1 +1,5 @@
-<div id="{{name}}" class="{{type}}"></div>
+{{#if canvas}}
+  <canvas id="{{name}}" class="{{type}}"></canvas>
+{{else}}
+  <div id="{{name}}" class="{{type}}"></div>
+{{/if}}
