@@ -774,7 +774,7 @@
         },
         {
             "file": "src\\scene\\director.js",
-            "line": 181,
+            "line": 185,
             "description": "Refreshes a scene",
             "itemtype": "method",
             "name": "refresh",
