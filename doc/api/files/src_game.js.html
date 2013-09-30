@@ -132,7 +132,8 @@ define(&#x27;lyria/game&#x27;, [&#x27;eventmap&#x27;, &#x27;mixer&#x27;, &#x27;j
       var self = this;
 
       options = $.extend(options, {
-        startLoop: true
+        startLoop: true,
+        defaultPreloaderEvent: true
       });
       
       mixer(Game.prototype, new EventMap());
@@ -164,7 +165,18 @@ define(&#x27;lyria/game&#x27;, [&#x27;eventmap&#x27;, &#x27;mixer&#x27;, &#x27;j
       // Bind the scene director to the preloader reference
       this.preloader.sceneDirector = this.director;
       
+      if (options.defaultPreloaderEvent) {
+        this.preloader.on(&#x27;complete&#x27;, function() {
+          self.director.add(&#x27;*&#x27;);
+          
+          self.director.show(self.director.defaultScene);
+        });
+      }
+      
       this.paused = false;
+      
+      // Mute
+      this.mute = false;
       
       // World reference
       this.world = new World();

@@ -219,9 +219,7 @@ define(&#x27;lyria/viewport&#x27;, [&#x27;root&#x27;, &#x27;jquery&#x27;, &#x27;
         }
       });
 
-      $(options.trigger.element).on(options.trigger.event, function() {
-        self.trigger(&#x27;scale&#x27;);
-      });
+      $(options.trigger.element).on(options.trigger.event, self.trigger.bind(self, &#x27;scale&#x27;));
     }
 
     /**

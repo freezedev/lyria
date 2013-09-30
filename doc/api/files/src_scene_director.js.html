@@ -158,6 +158,14 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;mixer&#x27;, &
        * @type {Scene}
        */
       this.currentScene = null;
+      
+      /**
+       * The default scene
+       * 
+       * @property defaultScene
+       * @type {String} 
+       */
+      this.defaultScene = null;
 
       /**
        * Define events for scene director
@@ -189,6 +197,20 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;mixer&#x27;, &
      * @param {Object} options
      */
     SceneDirector.prototype.add = function(scene, options) {
+      
+      // Shorthand to add all scenes to the scene director
+      if (scene === &#x27;*&#x27; &amp;&amp; this.scenes) {
+        scene = Object.keys(this.scenes);
+      }
+      
+      // Allow array as scenes
+      if (Array.isArray(scene)) {
+        for (var i = 0, j = scene.length; i &lt; j; i++) {
+          this.add(scene[i], options);
+        }
+        
+        return;
+      }
 
       if (!( scene instanceof Scene)) {
         if (this.scenes &amp;&amp; !$.isEmptyObject(this.scenes)) {
@@ -205,7 +227,12 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;mixer&#x27;, &
       if (this.parent != null) {
         scene.game = this.parent;
       }
-      
+
+      // Add first scene as a default scene      
+      if (Object.keys(sceneList).length === 0) {
+        this.defaultScene = scene;
+      }
+
       this.sceneList[scene.name] = scene;
 
       if (this.viewport.$element) {

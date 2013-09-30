@@ -707,6 +707,17 @@
         {
             "file": "src\\scene\\director.js",
             "line": 48,
+            "description": "The default scene",
+            "itemtype": "property",
+            "name": "defaultScene",
+            "type": "{String}",
+            "class": "Director",
+            "module": "Lyria",
+            "submodule": "Scene"
+        },
+        {
+            "file": "src\\scene\\director.js",
+            "line": 56,
             "description": "Define events for scene director",
             "class": "Director",
             "module": "Lyria",
@@ -714,7 +725,7 @@
         },
         {
             "file": "src\\scene\\director.js",
-            "line": 70,
+            "line": 78,
             "description": "Adds a scene to the scene director",
             "itemtype": "method",
             "name": "add",
@@ -736,7 +747,7 @@
         },
         {
             "file": "src\\scene\\director.js",
-            "line": 111,
+            "line": 138,
             "description": "Shows a specified scene",
             "itemtype": "method",
             "name": "show",
@@ -763,7 +774,7 @@
         },
         {
             "file": "src\\scene\\director.js",
-            "line": 154,
+            "line": 181,
             "description": "Refreshes a scene",
             "itemtype": "method",
             "name": "refresh",
@@ -873,7 +884,7 @@
         },
         {
             "file": "src\\game.js",
-            "line": 26,
+            "line": 27,
             "itemtype": "property",
             "name": "viewport",
             "type": "{Viewport}",
@@ -882,7 +893,7 @@
         },
         {
             "file": "src\\game.js",
-            "line": 34,
+            "line": 35,
             "itemtype": "property",
             "name": "director",
             "type": "{Director}",
@@ -891,7 +902,7 @@
         },
         {
             "file": "src\\game.js",
-            "line": 42,
+            "line": 43,
             "itemtype": "property",
             "name": "preloader",
             "type": "{Preloader}",
@@ -900,7 +911,7 @@
         },
         {
             "file": "src\\game.js",
-            "line": 87,
+            "line": 99,
             "itemtype": "property",
             "name": "Loop",
             "static": 1,
@@ -1098,7 +1109,7 @@
         },
         {
             "file": "src\\viewport.js",
-            "line": 113,
+            "line": 111,
             "description": "Adds a behaviour which will be triggered on certain events",
             "itemtype": "method",
             "name": "behaviour",
@@ -1114,7 +1125,7 @@
         },
         {
             "file": "src\\viewport.js",
-            "line": 123,
+            "line": 121,
             "description": "Reset all CSS transforms on the viewport",
             "itemtype": "method",
             "name": "resetTransforms",
@@ -1123,7 +1134,7 @@
         },
         {
             "file": "src\\viewport.js",
-            "line": 132,
+            "line": 130,
             "description": "Updated CSS transforms on the viewport",
             "itemtype": "method",
             "name": "updateTransforms",
@@ -1132,7 +1143,7 @@
         },
         {
             "file": "src\\viewport.js",
-            "line": 145,
+            "line": 143,
             "description": "Scales the viewport",
             "itemtype": "method",
             "name": "scale",
@@ -1153,7 +1164,7 @@
         },
         {
             "file": "src\\viewport.js",
-            "line": 168,
+            "line": 166,
             "description": "Sets an origin for the viewport",
             "itemtype": "method",
             "name": "origin",
@@ -1174,7 +1185,7 @@
         },
         {
             "file": "src\\viewport.js",
-            "line": 179,
+            "line": 177,
             "description": "Centers the viewport",
             "itemtype": "method",
             "name": "center",
@@ -1183,7 +1194,7 @@
         },
         {
             "file": "src\\viewport.js",
-            "line": 188,
+            "line": 186,
             "description": "Rotate the viewport",
             "itemtype": "method",
             "name": "rotate",
@@ -1285,7 +1296,7 @@
         },
         {
             "message": "Missing item type\nDefine events for scene director",
-            "line": " src\\scene\\director.js:48"
+            "line": " src\\scene\\director.js:56"
         },
         {
             "message": "Missing item type\nGets localized value",
