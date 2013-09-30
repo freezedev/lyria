@@ -115,7 +115,7 @@ define('lyria/scene/director', ['root', 'mixer', 'jquery', 'eventmap', 'lyria/sc
       }
 
       // Add first scene as a default scene      
-      if (Object.keys(sceneList).length === 0) {
+      if (Object.keys(this.sceneList).length === 0) {
         this.defaultScene = scene;
       }
 
