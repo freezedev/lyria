@@ -116,7 +116,7 @@ define('lyria/scene/director', ['root', 'mixer', 'jquery', 'eventmap', 'lyria/sc
 
       // Add first scene as a default scene      
       if (Object.keys(this.sceneList).length === 0) {
-        this.defaultScene = scene;
+        this.defaultScene = scene.name;
       }
 
       this.sceneList[scene.name] = scene;
@@ -144,6 +144,10 @@ define('lyria/scene/director', ['root', 'mixer', 'jquery', 'eventmap', 'lyria/sc
      * @param {Function} callback
      */
     SceneDirector.prototype.show = function(sceneName, options, callback) {
+      if (!sceneName) {
+        return;
+      }
+      
       // More than one scene visible at the same time
       if ($('.' + SceneDirector.prototype.sceneClassName + ':visible')) {
         $('.' + SceneDirector.prototype.sceneClassName).hide();
