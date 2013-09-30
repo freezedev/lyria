@@ -55,7 +55,7 @@ define('lyria/game', ['eventmap', 'mixer', 'jquery', 'lyria/viewport', 'lyria/sc
         this.preloader.on('complete', function() {
           self.director.add('*');
           
-          self.director.show(Object.keys(self.director.sceneList)[0]);
+          self.director.show(self.director.defaultScene);
         });
       }
       
