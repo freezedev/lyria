@@ -43,8 +43,10 @@
     "jquery",
     "game",
     "engine",
-    "game",
-    "dom"
+    "dom",
+    "grunt",
+    "bower",
+    "scene"
   ],
   "license": "UNLICENSE"
 }
