@@ -7,11 +7,18 @@ define('lyria/component', ['mixer', 'eventmap'], function(mixer, EventMap) {
       mixer(Component.prototype, new EventMap());
       
       this.name = name != null ? name : this.constructor.name;
+      
+      this.children = {};
+      
+      this.on('update', function(dt) {
+        for (var key in children) {
+          var value = children[key];
+          if (value && value.update) {
+            value.update();
+          }
+        }
+      });
     }
-    
-    Component.prototype.update = function(dt) {
-      this.trigger('update', dt);
-    };
 
     return Component;
 
