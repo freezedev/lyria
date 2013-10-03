@@ -10,6 +10,12 @@ define('requestfullscreen', function() {
   };
 });
 
+define('fullscreenelement', function() {
+  return function(element) {
+    return (element.fullscreenElement || element.mozFullScreenElement || element.webkitFullscreenElement);
+  };
+});
+
 define('cancelfullscreen', function() {
   return function(element) {
     if (element.cancelFullScreen) {
