@@ -105,11 +105,16 @@ define('lyria/preloader', ['root', 'mixer', 'jquery', 'lyria/resource', 'lyria/l
         }
       }
 
+      // Trigger complete event if there is nothing to load
+      if ($.isEmptyObject(this.assets)) {
+        this.trigger('complete');
+      }
 
+      // Go through all assets and preload them
       $.each(this.assets, function(key, value) {
         
         if (value.files == null || !Array.isArray(value.files) || value.files.length === 0) {
-          return false;
+          return true;
         }
         
         for (var i = 0, j = value.files.length; i < j; i++) {
