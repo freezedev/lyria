@@ -791,7 +791,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 250,
+            "line": 253,
             "description": "Adds a gameobject to the scene",
             "itemtype": "method",
             "name": "add",
@@ -807,7 +807,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 298,
+            "line": 301,
             "description": "Refreshes the scene (Re-renders the template)",
             "itemtype": "method",
             "name": "refresh",
@@ -823,10 +823,10 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 326,
-            "description": "Sets an event to the event object or returns a specified event",
+            "line": 329,
+            "description": "Sets an event to the event object (DOM events)\nTODO: Not completely happy with the function name",
             "itemtype": "method",
-            "name": "event",
+            "name": "bindEvent",
             "params": [
                 {
                     "name": "selector",
@@ -849,7 +849,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 351,
+            "line": 374,
             "description": "Gets localized value",
             "params": [
                 {
@@ -863,7 +863,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 360,
+            "line": 383,
             "description": "Logging directly from the scene",
             "params": [
                 {
@@ -911,7 +911,7 @@
         },
         {
             "file": "src\\game.js",
-            "line": 99,
+            "line": 113,
             "itemtype": "property",
             "name": "Loop",
             "static": 1,
@@ -1300,11 +1300,11 @@
         },
         {
             "message": "Missing item type\nGets localized value",
-            "line": " src\\scene\\index.js:351"
+            "line": " src\\scene\\index.js:374"
         },
         {
             "message": "Missing item type\nLogging directly from the scene",
-            "line": " src\\scene\\index.js:360"
+            "line": " src\\scene\\index.js:383"
         },
         {
             "message": "Missing item type",

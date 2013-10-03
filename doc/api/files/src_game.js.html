@@ -115,7 +115,7 @@
 /**
  * @module Lyria
  */
-define(&#x27;lyria/game&#x27;, [&#x27;eventmap&#x27;, &#x27;mixer&#x27;, &#x27;jquery&#x27;, &#x27;lyria/viewport&#x27;, &#x27;lyria/scene/director&#x27;, &#x27;lyria/preloader&#x27;, &#x27;lyria/loop&#x27;, &#x27;lyria/world&#x27;], function(EventMap, mixer, $, Viewport, Director, Preloader, Loop, World) {&#x27;use strict&#x27;;
+define(&#x27;lyria/game&#x27;, [&#x27;eventmap&#x27;, &#x27;mixer&#x27;, &#x27;fullscreen&#x27;, &#x27;jquery&#x27;, &#x27;lyria/viewport&#x27;, &#x27;lyria/scene/director&#x27;, &#x27;lyria/preloader&#x27;, &#x27;lyria/loop&#x27;, &#x27;lyria/world&#x27;], function(EventMap, mixer, fullscreen, $, Viewport, Director, Preloader, Loop, World) {&#x27;use strict&#x27;;
 
   /**
    * Game class which has a viewport, scene director and preloader by
@@ -202,6 +202,20 @@ define(&#x27;lyria/game&#x27;, [&#x27;eventmap&#x27;, &#x27;mixer&#x27;, &#x27;j
       
       this.on(&#x27;resume&#x27;, function() {
         self.paused = false;
+      });
+      
+      this.on(&#x27;fullscreen&#x27;, function() {
+        var viewportElement = self.viewport.$element[0];
+        
+        if (!viewportElement) {
+          return;
+        }
+        
+        if (fullscreen.isFullscreen(viewportElement)) {
+          fullscreen.cancel(viewportElement);
+        } else {
+          fullscreen.request(viewportElement);
+        }
       });
       
       $(document).ready(function() {       

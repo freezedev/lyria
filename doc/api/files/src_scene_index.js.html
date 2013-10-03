@@ -191,6 +191,9 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;ne
 
       // Default values
       this.localization = {};
+      
+      // Default event value
+      this.defaultEvent = &#x27;click&#x27;;
 
       var langValue = Language.language;
 
@@ -225,12 +228,11 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;ne
       self.on(&#x27;added&#x27;, function() {
         self.refresh();
 
-        // TODO: This overwrites eventmap events. Find a better way!
-        if (self.events) {
+        if (self.DOMEvents) {
           if (options &amp;&amp; options.isPrefab) {
-            self.events.delegate = (options.target) ? options.target : &#x27;body&#x27;;
+            self.DOMEvents.delegate = (options.target) ? options.target : &#x27;body&#x27;;
           } else {
-            self.events.delegate = &#x27;#&#x27; + sceneName;
+            self.DOMEvents.delegate = &#x27;#&#x27; + sceneName;
           }
         }
 
@@ -245,10 +247,10 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;ne
         });
 
         // Bind events
-        if (self.events &amp;&amp; !$.isEmptyObject(self.events)) {
-          $.each(self.events, function(key, value) {
+        if (self.DOMEvents &amp;&amp; !$.isEmptyObject(self.DOMEvents)) {
+          $.each(self.DOMEvents, function(key, value) {
             if (( typeof value === &#x27;object&#x27;) &amp;&amp; (key !== &#x27;delegate&#x27;)) {
-              $(self.events.delegate).on(value, key, {
+              $(self.DOMEvents.delegate).on(value, key, {
                 scene: self
               });
             }
@@ -256,6 +258,7 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;ne
         }
 
         // Data binding
+        // TODO: Find a better way than using Object.watch
         if (self.template.data &amp;&amp; !$.isEmptyObject(self.template.data)) {
           $(&#x27;#&#x27; + self.name + &#x27; [data-bind]&#x27;).each(function() {
             var $dataElem = $(this);
@@ -435,30 +438,50 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;ne
       }
 
       this.trigger(&#x27;refresh&#x27;);
-    };
-
+    };    
+    
     /**
-     *  Sets an event to the event object or returns a specified event
+     * Sets an event to the event object (DOM events)
+     * TODO: Not completely happy with the function name
      *
-     * @method event
+     * @method bindEvent
      * @param {String} selector
      * @param {String} eventName
      * @param {Function} eventFunction
      */
-    Scene.prototype.event = function(selector, eventName, eventFunction) {
+    Scene.prototype.bindEvent = function(selector, eventName, eventFunction) {
       if (selector == null) {
         return;
       }
-
-      if (eventName == null) {
-        return this.events[selector];
+      
+      if (typeof selector === &#x27;object&#x27;) {
+        this.DOMEvents = selector;
+      }
+      
+      if (typeof eventName === &#x27;function&#x27;) {
+        this.DOMEvents[selector][this.defaultEvent] = eventFunction;
       } else {
-        if ( typeof eventFunction === &#x27;function&#x27;) {
-          this.events[selector] = {};
-          this.events[selector][eventName] = eventFunction;
-        } else {
-          return this.events[selector][eventName];
-        }
+        this.DOMEvents[selector][eventName] = eventFunction;
+      }
+    };
+    
+    /*
+     * Unbinds a previously bound event
+     * 
+     * @method unbindEvent
+     * @param {String} selector
+     * @param {String} eventName
+     * @param {Function} eventFunction
+     */
+    Scene.prototype.unbindEvent = function(selector, eventName) {
+      if (selector == null) {
+        return;
+      }
+      
+      if (eventName == null) {
+        delete this.DOMEvents[selector];
+      } else {
+        delete this.DOMEvents[selector][eventName];
       }
     };
 
