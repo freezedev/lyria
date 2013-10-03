@@ -27,3 +27,11 @@ define('cancelfullscreen', function() {
     }
   };
 });
+
+define('fullscreen', ['requestfullscreen', 'fullscreenelement', 'cancelfullscreen'], function(rf, fs, cf) {
+  return {
+    request: rf,
+    isFullScreen: fs,
+    cancel: cf
+  };
+})
