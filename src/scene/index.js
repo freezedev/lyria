@@ -281,7 +281,7 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
       }
       
       // Add default helpers
-      this.template.helpers['translate'] = this.localization.t;
+      this.template.helpers['translate'] = Localization.elements(this.localization.data, this.localization.language);
 
       if (this.template && this.template.source) {
         this.content = this.template.source(val, {
@@ -348,7 +348,7 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
      * @param {Object} lang
      */
     Scene.prototype.t = function() {
-      return this.localization.t.apply(this, arguments);
+      return this.localization.t.apply(this.localization, arguments);
     };
 
     /**
