@@ -1,7 +1,7 @@
 /**
  * @module Lyria
  */
-define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobject', 'lyria/language', 'lyria/log', 'lyria/localization'], function($, mixer, nextTick, EventMap, GameObject, Language, Log, langMixin, Localization) {'use strict';
+define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobject', 'lyria/language', 'lyria/log', 'lyria/localization'], function($, mixer, nextTick, EventMap, GameObject, Language, Log, Localization) {'use strict';
 
   var createNamespace = function(obj, chain, value) {
     var chainArr = chain.split('.');
