@@ -34,4 +34,4 @@ define('fullscreen', ['requestfullscreen', 'fullscreenelement', 'cancelfullscree
     isFullscreen: fs,
     cancel: cf
   };
-})
+});
