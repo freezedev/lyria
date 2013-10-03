@@ -324,37 +324,7 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
       }
 
       this.trigger('refresh');
-    };
-
-    /**
-     *  Sets an event to the event object or returns a specified event
-     *
-     * @method event
-     * @param {String} selector
-     * @param {String} eventName
-     * @param {Function} eventFunction
-     */
-    Scene.prototype.event = function(selector, eventName, eventFunction) {
-      if (selector == null) {
-        return;
-      }
-      
-      if (typeof selector === 'object') {
-        return this.DOMEvents = selector;
-      }
-
-      if (eventName == null) {
-        return this.DOMEvents[selector];
-      } else {
-        if ( typeof eventFunction === 'function') {
-          this.DOMEvents[selector] = {};
-          this.DOMEvents[selector][eventName] = eventFunction;
-        } else {
-          return this.DOMEvents[selector][eventName];
-        }
-      }
-    };
-    
+    };    
     
     /**
      * Sets an event to the event object (DOM events)
