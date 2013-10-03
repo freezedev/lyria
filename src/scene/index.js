@@ -1,7 +1,7 @@
 /**
  * @module Lyria
  */
-define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobject', 'lyria/language', 'lyria/template/string', 'lyria/log', 'lyria/mixin/language'], function($, mixer, nextTick, EventMap, GameObject, Language, templateString, Log, langMixin) {'use strict';
+define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobject', 'lyria/language', 'lyria/log', 'lyria/localization'], function($, mixer, nextTick, EventMap, GameObject, Language, Log, langMixin, Localization) {'use strict';
 
   var createNamespace = function(obj, chain, value) {
     var chainArr = chain.split('.');
@@ -17,31 +17,6 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
         obj = obj[item];
       })(chainArr[i], i === j - 1);
     }
-  };
-
-  // TODO: Move this into localization API when refactored
-  var localizedElement = function(localization, language) {
-    return function(name, parameter) {
-      if (localization && localization[language]) {
-        if (localization[language][name] == null) {
-          return '[[Missing localization for ' + name + ']]';
-        }
-
-        if ( typeof localization[language][name] === 'string') {
-          return templateString.process(localization[language][name], parameter);
-        } else {
-          return {
-            plural: function(n) {
-              if (self.localization[language][name][n]) {
-                return templateString.process(self.localization[self.language][name][n], parameter);
-              } else {
-                return templateString.process(self.localization[self.language][name]['n'], parameter);
-              }
-            }
-          };
-        }
-      }
-    };
   };
 
   var Scene = (function() {
@@ -76,14 +51,10 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
       this.async = false;
 
       // Default values
-      this.localization = {};
+      this.localization = new Localization();
       
       // Default event value
       this.defaultEvent = 'click';
-
-      var langValue = Language.language;
-
-      langMixin(self, langValue, self);
 
       this.template = {};
       this.template.source = '';
@@ -310,7 +281,7 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
       }
       
       // Add default helpers
-      this.template.helpers['translate'] = localizedElement(this.localization, this.language);
+      this.template.helpers['translate'] = this.localization.t;
 
       if (this.template && this.template.source) {
         this.content = this.template.source(val, {
@@ -377,7 +348,7 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
      * @param {Object} lang
      */
     Scene.prototype.t = function() {
-      return localizedElement(this.localization, this.language).apply(this, arguments);
+      return this.localization.t.apply(this, arguments);
     };
 
     /**
