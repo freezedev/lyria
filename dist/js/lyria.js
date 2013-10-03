@@ -432,11 +432,18 @@ define('lyria/component', ['mixer', 'eventmap'], function(mixer, EventMap) {
       mixer(Component.prototype, new EventMap());
       
       this.name = name != null ? name : this.constructor.name;
+      
+      this.children = {};
+      
+      this.on('update', function(dt) {
+        for (var key in children) {
+          var value = children[key];
+          if (value && value.update) {
+            value.update();
+          }
+        }
+      });
     }
-    
-    Component.prototype.update = function(dt) {
-      this.trigger('update', dt);
-    };
 
     return Component;
 
@@ -555,6 +562,12 @@ define('requestfullscreen', function() {
   };
 });
 
+define('fullscreenelement', function() {
+  return function(element) {
+    return (element.fullscreenElement || element.mozFullScreenElement || element.webkitFullscreenElement);
+  };
+});
+
 define('cancelfullscreen', function() {
   return function(element) {
     if (element.cancelFullScreen) {
@@ -567,6 +580,13 @@ define('cancelfullscreen', function() {
   };
 });
 
+define('fullscreen', ['requestfullscreen', 'fullscreenelement', 'cancelfullscreen'], function(rf, fs, cf) {
+  return {
+    request: rf,
+    isFullscreen: fs,
+    cancel: cf
+  };
+});
 define('jqueryify', ['jquery'], function($) {
   return function(sel) {
     return (sel instanceof $) ? sel : $(sel);
@@ -743,7 +763,7 @@ define('lyria/events', ['eventmap'], function(EventMap) {
 /**
  * @module Lyria
  */
-define('lyria/game', ['eventmap', 'mixer', 'jquery', 'lyria/viewport', 'lyria/scene/director', 'lyria/preloader', 'lyria/loop', 'lyria/world'], function(EventMap, mixer, $, Viewport, Director, Preloader, Loop, World) {'use strict';
+define('lyria/game', ['eventmap', 'mixer', 'fullscreen', 'jquery', 'lyria/viewport', 'lyria/scene/director', 'lyria/preloader', 'lyria/loop', 'lyria/world'], function(EventMap, mixer, fullscreen, $, Viewport, Director, Preloader, Loop, World) {'use strict';
 
   /**
    * Game class which has a viewport, scene director and preloader by
@@ -830,6 +850,20 @@ define('lyria/game', ['eventmap', 'mixer', 'jquery', 'lyria/viewport', 'lyria/sc
       
       this.on('resume', function() {
         self.paused = false;
+      });
+      
+      this.on('fullscreen', function() {
+        var viewportElement = self.viewport.$element[0];
+        
+        if (!viewportElement) {
+          return;
+        }
+        
+        if (fullscreen.isFullscreen(viewportElement)) {
+          fullscreen.cancel(viewportElement);
+        } else {
+          fullscreen.request(viewportElement);
+        }
       });
       
       $(document).ready(function() {       
@@ -1765,6 +1799,9 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
 
       // Default values
       this.localization = {};
+      
+      // Default event value
+      this.defaultEvent = 'click';
 
       var langValue = Language.language;
 
@@ -1799,12 +1836,11 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
       self.on('added', function() {
         self.refresh();
 
-        // TODO: This overwrites eventmap events. Find a better way!
-        if (self.events) {
+        if (self.DOMEvents) {
           if (options && options.isPrefab) {
-            self.events.delegate = (options.target) ? options.target : 'body';
+            self.DOMEvents.delegate = (options.target) ? options.target : 'body';
           } else {
-            self.events.delegate = '#' + sceneName;
+            self.DOMEvents.delegate = '#' + sceneName;
           }
         }
 
@@ -1819,10 +1855,10 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
         });
 
         // Bind events
-        if (self.events && !$.isEmptyObject(self.events)) {
-          $.each(self.events, function(key, value) {
+        if (self.DOMEvents && !$.isEmptyObject(self.DOMEvents)) {
+          $.each(self.DOMEvents, function(key, value) {
             if (( typeof value === 'object') && (key !== 'delegate')) {
-              $(self.events.delegate).on(value, key, {
+              $(self.DOMEvents.delegate).on(value, key, {
                 scene: self
               });
             }
@@ -1830,6 +1866,7 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
         }
 
         // Data binding
+        // TODO: Find a better way than using Object.watch
         if (self.template.data && !$.isEmptyObject(self.template.data)) {
           $('#' + self.name + ' [data-bind]').each(function() {
             var $dataElem = $(this);
@@ -2009,30 +2046,50 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
       }
 
       this.trigger('refresh');
-    };
-
+    };    
+    
     /**
-     *  Sets an event to the event object or returns a specified event
+     * Sets an event to the event object (DOM events)
+     * TODO: Not completely happy with the function name
      *
-     * @method event
+     * @method bindEvent
      * @param {String} selector
      * @param {String} eventName
      * @param {Function} eventFunction
      */
-    Scene.prototype.event = function(selector, eventName, eventFunction) {
+    Scene.prototype.bindEvent = function(selector, eventName, eventFunction) {
       if (selector == null) {
         return;
       }
-
-      if (eventName == null) {
-        return this.events[selector];
+      
+      if (typeof selector === 'object') {
+        this.DOMEvents = selector;
+      }
+      
+      if (typeof eventName === 'function') {
+        this.DOMEvents[selector][this.defaultEvent] = eventFunction;
       } else {
-        if ( typeof eventFunction === 'function') {
-          this.events[selector] = {};
-          this.events[selector][eventName] = eventFunction;
-        } else {
-          return this.events[selector][eventName];
-        }
+        this.DOMEvents[selector][eventName] = eventFunction;
+      }
+    };
+    
+    /*
+     * Unbinds a previously bound event
+     * 
+     * @method unbindEvent
+     * @param {String} selector
+     * @param {String} eventName
+     * @param {Function} eventFunction
+     */
+    Scene.prototype.unbindEvent = function(selector, eventName) {
+      if (selector == null) {
+        return;
+      }
+      
+      if (eventName == null) {
+        delete this.DOMEvents[selector];
+      } else {
+        delete this.DOMEvents[selector][eventName];
       }
     };
 
