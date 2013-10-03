@@ -1,7 +1,7 @@
 /**
  * @module Lyria
  */
-define('lyria/game', ['eventmap', 'mixer', 'jquery', 'lyria/viewport', 'lyria/scene/director', 'lyria/preloader', 'lyria/loop', 'lyria/world'], function(EventMap, mixer, $, Viewport, Director, Preloader, Loop, World) {'use strict';
+define('lyria/game', ['eventmap', 'mixer', 'fullscreen', 'jquery', 'lyria/viewport', 'lyria/scene/director', 'lyria/preloader', 'lyria/loop', 'lyria/world'], function(EventMap, mixer, fullscreen, $, Viewport, Director, Preloader, Loop, World) {'use strict';
 
   /**
    * Game class which has a viewport, scene director and preloader by
@@ -88,6 +88,20 @@ define('lyria/game', ['eventmap', 'mixer', 'jquery', 'lyria/viewport', 'lyria/sc
       
       this.on('resume', function() {
         self.paused = false;
+      });
+      
+      this.on('fullscreen', function() {
+        var viewportElement = self.viewport.$element[0];
+        
+        if (!viewportElement) {
+          return;
+        }
+        
+        if (fullscreen.isFullscreen(viewportElement)) {
+          fullscreen.cancel(viewportElement);
+        } else {
+          fullscreen.request(viewportElement);
+        }
       });
       
       $(document).ready(function() {       
