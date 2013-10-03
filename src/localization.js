@@ -2,37 +2,54 @@ define('lyria/localization', ['lyria/language', 'lyria/template/string', 'lyria/
 
   var Localization = (function() {
     var Localization = function(data) {
-      var self = this;
-      
       this.data = data;
-      
+
       var langValue = Language.language;
 
-      langMixin(self, langValue, self);
+      langMixin(this, langValue, this);
     };
 
-    Localization.prototype.t = function(name, parameter) {
-      var self = this;
-      
-      if (this.data && this.data[this.language]) {
-        if (this.data[this.language][name] == null) {
-          return '[[Missing localization for ' + name + ']]';
-        }
-
-        if ( typeof this.data[this.language][name] === 'string') {
-          return templateString.process(this.data[this.language][name], parameter);
-        } else {
-          return {
-            plural: function(n) {
-              if (self.data[self.language][name][n]) {
-                return templateString.process(self.localization[self.language][name][n], parameter);
-              } else {
-                return templateString.process(self.localization[self.language][name]['n'], parameter);
-              }
-            }
-          };
-        }
+    Localization.elements = function(localeData, localeLang, fallbackLang) {
+      if (fallbackLang == null) {
+        fallbackLang = 'en';
       }
+      
+      return function(name, parameter) {
+        if (!localeData || Object.keys(localeData).length === 0) {
+          return '[[No language data found]]';          
+        }
+        
+        if (!localeData[localeLang] || Object.keys(localeData[localeLang]).length === 0) {
+          localeLang = fallbackLang;
+        }
+        
+        if (localeData[localeLang]) {
+          
+          if (localeData[localeLang][name] == null) {
+            return '[[Missing localization for ' + name + ']]';
+          }
+
+          if ( typeof localeData[localeLang][name] === 'string') {
+            return templateString.process(localeData[localeLang][name], parameter);
+          } else {
+            return {
+              plural: function(n) {
+                if (localeData[localeLang][name][n]) {
+                  return templateString.process(localeData[localeLang][name][n], parameter);
+                } else {
+                  return templateString.process(localeData[localeLang][name]['n'], parameter);
+                }
+              }
+            };
+          }
+        } else {
+          return '[[No language definition found for ' + localeLang + ']]';
+        }
+      };
+    };
+
+    Localization.prototype.t = function() {
+      return Localization.elements(this.data, this.language).apply(this, arguments);
     };
 
     return Localization;
