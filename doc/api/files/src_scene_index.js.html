@@ -115,7 +115,7 @@
 /**
  * @module Lyria
  */
-define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;nexttick&#x27;, &#x27;eventmap&#x27;, &#x27;lyria/gameobject&#x27;, &#x27;lyria/language&#x27;, &#x27;lyria/template/string&#x27;, &#x27;lyria/log&#x27;, &#x27;lyria/mixin/language&#x27;], function($, mixer, nextTick, EventMap, GameObject, Language, templateString, Log, langMixin) {&#x27;use strict&#x27;;
+define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;nexttick&#x27;, &#x27;eventmap&#x27;, &#x27;lyria/gameobject&#x27;, &#x27;lyria/language&#x27;, &#x27;lyria/log&#x27;, &#x27;lyria/localization&#x27;], function($, mixer, nextTick, EventMap, GameObject, Language, Log, Localization) {&#x27;use strict&#x27;;
 
   var createNamespace = function(obj, chain, value) {
     var chainArr = chain.split(&#x27;.&#x27;);
@@ -131,31 +131,6 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;ne
         obj = obj[item];
       })(chainArr[i], i === j - 1);
     }
-  };
-
-  // TODO: Move this into localization API when refactored
-  var localizedElement = function(localization, language) {
-    return function(name, parameter) {
-      if (localization &amp;&amp; localization[language]) {
-        if (localization[language][name] == null) {
-          return &#x27;[[Missing localization for &#x27; + name + &#x27;]]&#x27;;
-        }
-
-        if ( typeof localization[language][name] === &#x27;string&#x27;) {
-          return templateString.process(localization[language][name], parameter);
-        } else {
-          return {
-            plural: function(n) {
-              if (self.localization[language][name][n]) {
-                return templateString.process(self.localization[self.language][name][n], parameter);
-              } else {
-                return templateString.process(self.localization[self.language][name][&#x27;n&#x27;], parameter);
-              }
-            }
-          };
-        }
-      }
-    };
   };
 
   var Scene = (function() {
@@ -190,14 +165,10 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;ne
       this.async = false;
 
       // Default values
-      this.localization = {};
+      this.localization = new Localization();
       
       // Default event value
       this.defaultEvent = &#x27;click&#x27;;
-
-      var langValue = Language.language;
-
-      langMixin(self, langValue, self);
 
       this.template = {};
       this.template.source = &#x27;&#x27;;
@@ -424,7 +395,7 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;ne
       }
       
       // Add default helpers
-      this.template.helpers[&#x27;translate&#x27;] = localizedElement(this.localization, this.language);
+      this.template.helpers[&#x27;translate&#x27;] = Localization.elements(this.localization.data, this.localization.language);
 
       if (this.template &amp;&amp; this.template.source) {
         this.content = this.template.source(val, {
@@ -491,7 +462,7 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;ne
      * @param {Object} lang
      */
     Scene.prototype.t = function() {
-      return localizedElement(this.localization, this.language).apply(this, arguments);
+      return this.localization.t.apply(this.localization, arguments);
     };
 
     /**

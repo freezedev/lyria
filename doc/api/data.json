@@ -31,15 +31,6 @@
             "fors": {},
             "namespaces": {}
         },
-        "src\\localization\\index.js": {
-            "name": "src\\localization\\index.js",
-            "modules": {},
-            "classes": {},
-            "fors": {},
-            "namespaces": {
-                "Lyria\nLyria namespace decleration": 1
-            }
-        },
         "src\\mixin\\language.js": {
             "name": "src\\mixin\\language.js",
             "modules": {},
@@ -303,7 +294,7 @@
             "module": "Lyria",
             "namespace": "",
             "file": "src\\scene\\index.js",
-            "line": 49,
+            "line": 24,
             "description": "Scene constructor",
             "is_constructor": 1
         },
@@ -615,57 +606,11 @@
             "module": "Lyria"
         },
         {
-            "file": "src\\localization\\index.js",
-            "line": 1,
-            "class": "Director",
-            "module": "Lyria",
-            "namespace": "Lyria\nLyria namespace decleration"
-        },
-        {
-            "file": "src\\localization\\index.js",
-            "line": 9,
-            "params": [
-                {
-                    "name": "localization",
-                    "description": "",
-                    "type": "Object"
-                },
-                {
-                    "name": "options",
-                    "description": "",
-                    "type": "Object"
-                }
-            ],
-            "class": "Director",
-            "module": "Lyria",
-            "namespace": "Lyria\nLyria namespace decleration"
-        },
-        {
-            "file": "src\\localization\\index.js",
-            "line": 55,
-            "params": [
-                {
-                    "name": "name",
-                    "description": "",
-                    "type": "Object"
-                },
-                {
-                    "name": "fallback",
-                    "description": "",
-                    "type": "Object"
-                }
-            ],
-            "class": "Director",
-            "module": "Lyria",
-            "namespace": "Lyria\nLyria namespace decleration"
-        },
-        {
             "file": "src\\mixin\\language.js",
             "line": 1,
             "description": "Mixin language property into objects",
             "class": "Director",
-            "module": "Lyria",
-            "namespace": "Lyria\nLyria namespace decleration"
+            "module": "Lyria"
         },
         {
             "file": "src\\prefab\\index.js",
@@ -791,7 +736,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 253,
+            "line": 224,
             "description": "Adds a gameobject to the scene",
             "itemtype": "method",
             "name": "add",
@@ -807,7 +752,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 301,
+            "line": 272,
             "description": "Refreshes the scene (Re-renders the template)",
             "itemtype": "method",
             "name": "refresh",
@@ -823,7 +768,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 329,
+            "line": 300,
             "description": "Sets an event to the event object (DOM events)\nTODO: Not completely happy with the function name",
             "itemtype": "method",
             "name": "bindEvent",
@@ -849,7 +794,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 374,
+            "line": 345,
             "description": "Gets localized value",
             "params": [
                 {
@@ -863,7 +808,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 383,
+            "line": 354,
             "description": "Logging directly from the scene",
             "params": [
                 {
@@ -884,7 +829,7 @@
         },
         {
             "file": "src\\game.js",
-            "line": 27,
+            "line": 26,
             "itemtype": "property",
             "name": "viewport",
             "type": "{Viewport}",
@@ -893,7 +838,7 @@
         },
         {
             "file": "src\\game.js",
-            "line": 35,
+            "line": 34,
             "itemtype": "property",
             "name": "director",
             "type": "{Director}",
@@ -902,7 +847,7 @@
         },
         {
             "file": "src\\game.js",
-            "line": 43,
+            "line": 42,
             "itemtype": "property",
             "name": "preloader",
             "type": "{Preloader}",
@@ -911,7 +856,7 @@
         },
         {
             "file": "src\\game.js",
-            "line": 113,
+            "line": 104,
             "itemtype": "property",
             "name": "Loop",
             "static": 1,
@@ -1271,18 +1216,6 @@
             "line": " src\\core\\nexttick.js:1"
         },
         {
-            "message": "Missing item type",
-            "line": " src\\localization\\index.js:1"
-        },
-        {
-            "message": "Missing item type",
-            "line": " src\\localization\\index.js:9"
-        },
-        {
-            "message": "Missing item type",
-            "line": " src\\localization\\index.js:55"
-        },
-        {
             "message": "Missing item type\nMixin language property into objects",
             "line": " src\\mixin\\language.js:1"
         },
@@ -1300,11 +1233,11 @@
         },
         {
             "message": "Missing item type\nGets localized value",
-            "line": " src\\scene\\index.js:374"
+            "line": " src\\scene\\index.js:345"
         },
         {
             "message": "Missing item type\nLogging directly from the scene",
-            "line": " src\\scene\\index.js:383"
+            "line": " src\\scene\\index.js:354"
         },
         {
             "message": "Missing item type",
