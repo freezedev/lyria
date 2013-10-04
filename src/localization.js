@@ -48,6 +48,10 @@ define('lyria/localization', ['lyria/language', 'lyria/template/string', 'lyria/
       };
     };
 
+    Localization.prototype.exists = function(name) {
+      return (this.data && this.data[this.language] && this.data[this.language][name]);
+    };
+
     Localization.prototype.t = function() {
       return Localization.elements(this.data, this.language).apply(this, arguments);
     };
