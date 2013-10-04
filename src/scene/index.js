@@ -313,6 +313,7 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
       
       if (typeof selector === 'object') {
         this.DOMEvents = selector;
+        return;
       }
       
       if (typeof eventName === 'function') {
