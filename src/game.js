@@ -18,8 +18,7 @@ define('lyria/game', ['eventmap', 'mixer', 'fullscreen', 'jquery', 'lyria/viewpo
       var self = this;
 
       options = $.extend(options, {
-        startLoop: true,
-        defaultPreloaderEvent: true
+        startLoop: true
       });
       
       mixer(Game.prototype, new EventMap());
@@ -50,14 +49,6 @@ define('lyria/game', ['eventmap', 'mixer', 'fullscreen', 'jquery', 'lyria/viewpo
 
       // Bind the scene director to the preloader reference
       this.preloader.sceneDirector = this.director;
-      
-      if (options.defaultPreloaderEvent) {
-        this.preloader.on('complete', function() {
-          self.director.add('*');
-          
-          self.director.show(self.director.defaultScene);
-        });
-      }
       
       this.paused = false;
       
