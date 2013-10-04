@@ -1,8 +1,9 @@
-define('lyria/achievement/manager', ['jquery', 'lyria/achievement', 'lyria/template/engine', 'lyria/template/list'], function($, Achievement, TemplateEngine, templateList) {
+define('lyria/achievement/manager', ['jquery', 'lyria/achievement', 'lyria/template/engine', 'lyria/template/list', 'lyria/localization'], function($, Achievement, TemplateEngine, templateList, Localization) {
   
   var achievementStore = {};
   
   var AchievementManager = {
+    localization: new Localization(),
     add: function(achievement) {
       if (achievement instanceof Achievement) {
         if (!Object.hasOwnProperty.call(achievementStore, achievement.name)) {
