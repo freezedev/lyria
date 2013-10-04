@@ -102,8 +102,7 @@ define('lyria/scene/director', ['root', 'mixer', 'jquery', 'eventmap', 'lyria/sc
         if (this.scenes && !$.isEmptyObject(this.scenes)) {
           scene = this.scenes[scene];
         } else {
-          // TODO: Don't throw a string. Throw an error
-          throw 'No valid scene found.';
+          throw new Error('No valid scene found.');
         }
       }
 
