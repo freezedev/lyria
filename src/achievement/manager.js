@@ -20,9 +20,12 @@ define('lyria/achievement/manager', ['jquery', 'lyria/achievement', 'lyria/templ
       //TemplateEngine.compile()
     },
     show: function(achName) {
+      var title = (AchievementManager.localization.exists(achName)) ? Achievement.localization.t(achName) : achName;
+      var description = (AchievementManager.localization.exists(achName + '-description')) ? Achievement.localization.t(achName + '-description') : achievementStore[achName].description;
+      
       TemplateEngine.compile(templateList['achievements'], {
-        title: achName,
-        description: achievement.description
+        title: title,
+        description: description
       });
       //TemplateEngine.compile();
     },
