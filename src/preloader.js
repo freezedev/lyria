@@ -25,7 +25,7 @@ define('lyria/preloader', ['root', 'mixer', 'jquery', 'lyria/resource', 'lyria/l
       if (assetArray != null) {
         this.assets = assetArray;
       } else {
-        this.assets = [];
+        this.assets = {};
       }
   
       /**
@@ -64,12 +64,19 @@ define('lyria/preloader', ['root', 'mixer', 'jquery', 'lyria/resource', 'lyria/l
      */
     Preloader.prototype.start = function() {
       // Check if it's valid
-      if (this.assets == null || Object.keys(this.assets).length === 0) {
-        return;
+      if (this.assets == null) {
+        Log.w('There are no assets to load. At least use an empty object.');
       }
-
+      
       this.trigger('start');
 
+      // Empty objects are now allowed
+      if (Object.keys(this.assets).length === 0) {
+        // Trigger complete event if there is nothing to load
+        this.trigger('complete');
+        return;
+      }
+      
       var totalSize = this.assets.totalSize;
       var currentProgress = 0;
       
@@ -103,11 +110,6 @@ define('lyria/preloader', ['root', 'mixer', 'jquery', 'lyria/resource', 'lyria/l
 
           self.trigger('complete');
         }
-      }
-
-      // Trigger complete event if there is nothing to load
-      if ($.isEmptyObject(this.assets)) {
-        this.trigger('complete');
       }
 
       // Go through all assets and preload them
