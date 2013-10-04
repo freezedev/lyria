@@ -29,6 +29,12 @@ define('lyria/viewport', ['root', 'jquery', 'mixer', 'eventmap'], function(root,
       if (container == null) {
         container = 'viewport';
       }
+      
+      Object.defineProperty(this, '$element', {
+        get: function() {
+          return $('#' + container);
+        }
+      });
 
       /**
        * The viewport element (jQuery object)
@@ -36,9 +42,7 @@ define('lyria/viewport', ['root', 'jquery', 'mixer', 'eventmap'], function(root,
        * @property $element
        * @type {jQuery}
        */
-      if ($('#' + container).length > 0) {
-        this.$element = $('#' + container);
-      } else {
+      if (this.$element.length === 0) {
         var createdElement = $(root.document.createElement('div')).attr('id', container).attr('class', 'viewport');
 
         if (options.parent) {
@@ -46,8 +50,6 @@ define('lyria/viewport', ['root', 'jquery', 'mixer', 'eventmap'], function(root,
         } else {
           $('body').prepend(createdElement);
         }
-
-        this.$element = $('#' + container);
       }
 
       Object.defineProperty(this, 'width', {
@@ -134,98 +136,10 @@ define('lyria/viewport', ['root', 'jquery', 'mixer', 'eventmap'], function(root,
       });
 
       $(options.trigger.element).on(options.trigger.event, self.trigger.bind(self, 'scale'));
+      
+      // Call scale event
+      self.trigger('scale');
     }
-
-    /**
-     * Adds a behaviour which will be triggered on certain events
-     *
-     * @method behaviour
-     * @param {Object} fn
-     */
-    Viewport.prototype.behaviour = function(fn) {
-
-    };
-
-    /**
-     * Reset all CSS transforms on the viewport
-     *
-     * @method resetTransforms
-     */
-    Viewport.prototype.resetTransforms = function() {
-      this.transforms = {};
-    };
-
-    /**
-     * Updated CSS transforms on the viewport
-     *
-     * @method updateTransforms
-     */
-    Viewport.prototype.updateTransforms = function() {
-      if ($.isEmptyObject(this.transforms)) {
-        return;
-      }
-
-      this.$element.css('transform', this.transforms.join(' '));
-    };
-
-    /**
-     * Scales the viewport
-     *
-     * @method scale
-     * @param {Object} scaleX
-     * @param {Object} scaleY
-     */
-    Viewport.prototype.scale = function(scaleX, scaleY) {
-      if (scaleX == null) {
-        return;
-      }
-
-      if (scaleY == null) {
-        scaleY = scaleX;
-      }
-
-      this.transforms.scale = this.transforms.scale || {};
-      this.transforms.scale.x = scaleX;
-      this.transforms.scale.y = scaleY;
-
-      this.$element.css('transform', '');
-    };
-
-    /**
-     * Sets an origin for the viewport
-     *
-     * @method origin
-     * @param {Number} originX
-     * @param {Number} originY
-     */
-    Viewport.prototype.origin = function(originX, originY) {
-
-    };
-
-    /**
-     * Centers the viewport
-     *
-     * @method center
-     */
-    Viewport.prototype.center = function() {
-
-    };
-
-    /**
-     * Rotate the viewport
-     *
-     * @method rotate
-     * @param {Number} angle
-     */
-    Viewport.prototype.rotate = function(angle) {
-      if (angle == null) {
-        return;
-      }
-
-      this.transforms.rotate = angle;
-
-      this.$element.css('transform', 'rotate(' + angle + ')');
-    };
 
     return Viewport;
 
