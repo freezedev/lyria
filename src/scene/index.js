@@ -57,7 +57,7 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
       this.defaultEvent = 'click';
 
       this.template = {};
-      this.template.source = '';
+      this.template.source = null;
       this.template.helpers = {};
       this.template.partials = {};
       // Collect all template values
