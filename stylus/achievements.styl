@@ -1,11 +1,8 @@
-.status.achievement
-  display: none
+.achievement
   position: absolute
   left: 50%
-  bottom: -120px
-  margin-left: -160px
-
-.achievement
+  bottom: 0px
+  
   opacity: 1.0
   border: 1px solid #fff
   background-color: #000
@@ -24,6 +21,13 @@
   padding-right: 12px
   padding-top: 8px
   z-index: 30000001
+  transition: all 1200ms ease-in-out 0ms
+  
+  margin-left: -(@width / 2)
+  
+  &.offscreen
+    opacity: 0.0
+  
   
   &.locked
     background-color: #ccc
