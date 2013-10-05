@@ -273,7 +273,8 @@ define(&#x27;lyria/preloader&#x27;, [&#x27;root&#x27;, &#x27;mixer&#x27;, &#x27;
         });
       } else {
         // TODO: This is bad, mkay? Find a way to asynchronously load no assets
-        setTimeout(loadingProgress, 1000);
+        // This is like jumping onto a moving car on the high way while you&#x27;re moving at 1mph
+        setTimeout(loadingProgress, 100);
       }
       
     };
