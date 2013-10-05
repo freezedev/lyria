@@ -11,6 +11,7 @@ define('lyria/achievement/manager', ['jquery', 'lyria/achievement', 'lyria/templ
         }
       }
     },
+    viewport: null,
     remove: function(achName) {
       if (Object.hasOwnProperty.call(achievementStore, achName)) {
         delete achievementStore[achName];
@@ -20,12 +21,33 @@ define('lyria/achievement/manager', ['jquery', 'lyria/achievement', 'lyria/templ
       //TemplateEngine.compile()
     },
     show: function(achName) {
-      var title = (AchievementManager.localization.exists(achName)) ? Achievement.localization.t(achName) : achName;
-      var description = (AchievementManager.localization.exists(achName + '-description')) ? Achievement.localization.t(achName + '-description') : achievementStore[achName].description;
+      var currentAchievement = achievementStore[achName];
       
-      TemplateEngine.compile(templateList['achievements'], {
+      if (currentAchievement == null) {
+        throw new Error('Achievement ' + achName + ' not found.');        
+      }
+      
+      var title = (AchievementManager.localization.exists(currentAchievement.name)) ? Achievement.localization.t(currentAchievement.name) : currentAchievement.name;
+      var description = (AchievementManager.localization.exists(currentAchievement.name + '-description')) ? Achievement.localization.t(currentAchievement.name + '-description') : currentAchievement.description;
+      
+      var achTemplate = TemplateEngine.compile(templateList['achievement'])({
+        id: currentAchievement.id,
         title: title,
         description: description
+      });
+      
+      var $currentAchievement = $('#' + currentAchievement.id);
+      
+      if (AchievementManager.viewport == null) {
+        $('body').append(achTemplate);        
+      } else {
+        AchievementManager.viewport.$element.append(achTemplate);
+      }
+      
+      $currentAchievement.addClass('offscreen');
+      $currentAchievement.removeClass('offscreen');
+      $currentAchievement.on('transitionend', function() {
+        $currentAchievement.remove();
       });
       //TemplateEngine.compile();
     },
