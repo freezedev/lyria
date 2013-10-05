@@ -143,6 +143,12 @@ define(&#x27;lyria/viewport&#x27;, [&#x27;root&#x27;, &#x27;jquery&#x27;, &#x27;
       if (container == null) {
         container = &#x27;viewport&#x27;;
       }
+      
+      Object.defineProperty(this, &#x27;$element&#x27;, {
+        get: function() {
+          return $(&#x27;#&#x27; + container);
+        }
+      });
 
       /**
        * The viewport element (jQuery object)
@@ -150,9 +156,7 @@ define(&#x27;lyria/viewport&#x27;, [&#x27;root&#x27;, &#x27;jquery&#x27;, &#x27;
        * @property $element
        * @type {jQuery}
        */
-      if ($(&#x27;#&#x27; + container).length &gt; 0) {
-        this.$element = $(&#x27;#&#x27; + container);
-      } else {
+      if (this.$element.length === 0) {
         var createdElement = $(root.document.createElement(&#x27;div&#x27;)).attr(&#x27;id&#x27;, container).attr(&#x27;class&#x27;, &#x27;viewport&#x27;);
 
         if (options.parent) {
@@ -160,8 +164,6 @@ define(&#x27;lyria/viewport&#x27;, [&#x27;root&#x27;, &#x27;jquery&#x27;, &#x27;
         } else {
           $(&#x27;body&#x27;).prepend(createdElement);
         }
-
-        this.$element = $(&#x27;#&#x27; + container);
       }
 
       Object.defineProperty(this, &#x27;width&#x27;, {
@@ -248,98 +250,10 @@ define(&#x27;lyria/viewport&#x27;, [&#x27;root&#x27;, &#x27;jquery&#x27;, &#x27;
       });
 
       $(options.trigger.element).on(options.trigger.event, self.trigger.bind(self, &#x27;scale&#x27;));
+      
+      // Call scale event
+      self.trigger(&#x27;scale&#x27;);
     }
-
-    /**
-     * Adds a behaviour which will be triggered on certain events
-     *
-     * @method behaviour
-     * @param {Object} fn
-     */
-    Viewport.prototype.behaviour = function(fn) {
-
-    };
-
-    /**
-     * Reset all CSS transforms on the viewport
-     *
-     * @method resetTransforms
-     */
-    Viewport.prototype.resetTransforms = function() {
-      this.transforms = {};
-    };
-
-    /**
-     * Updated CSS transforms on the viewport
-     *
-     * @method updateTransforms
-     */
-    Viewport.prototype.updateTransforms = function() {
-      if ($.isEmptyObject(this.transforms)) {
-        return;
-      }
-
-      this.$element.css(&#x27;transform&#x27;, this.transforms.join(&#x27; &#x27;));
-    };
-
-    /**
-     * Scales the viewport
-     *
-     * @method scale
-     * @param {Object} scaleX
-     * @param {Object} scaleY
-     */
-    Viewport.prototype.scale = function(scaleX, scaleY) {
-      if (scaleX == null) {
-        return;
-      }
-
-      if (scaleY == null) {
-        scaleY = scaleX;
-      }
-
-      this.transforms.scale = this.transforms.scale || {};
-      this.transforms.scale.x = scaleX;
-      this.transforms.scale.y = scaleY;
-
-      this.$element.css(&#x27;transform&#x27;, &#x27;&#x27;);
-    };
-
-    /**
-     * Sets an origin for the viewport
-     *
-     * @method origin
-     * @param {Number} originX
-     * @param {Number} originY
-     */
-    Viewport.prototype.origin = function(originX, originY) {
-
-    };
-
-    /**
-     * Centers the viewport
-     *
-     * @method center
-     */
-    Viewport.prototype.center = function() {
-
-    };
-
-    /**
-     * Rotate the viewport
-     *
-     * @method rotate
-     * @param {Number} angle
-     */
-    Viewport.prototype.rotate = function(angle) {
-      if (angle == null) {
-        return;
-      }
-
-      this.transforms.rotate = angle;
-
-      this.$element.css(&#x27;transform&#x27;, &#x27;rotate(&#x27; + angle + &#x27;)&#x27;);
-    };
 
     return Viewport;
 

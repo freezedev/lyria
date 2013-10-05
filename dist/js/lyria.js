@@ -75,11 +75,12 @@ define('lyria/achievement', ['clamp'], function(clamp) {
 
 });
 
-define('lyria/achievement/manager', ['jquery', 'lyria/achievement', 'lyria/template/engine', 'lyria/template/list'], function($, Achievement, TemplateEngine, templateList) {
+define('lyria/achievement/manager', ['jquery', 'lyria/achievement', 'lyria/template/engine', 'lyria/template/list', 'lyria/localization'], function($, Achievement, TemplateEngine, templateList, Localization) {
   
   var achievementStore = {};
   
   var AchievementManager = {
+    localization: new Localization(),
     add: function(achievement) {
       if (achievement instanceof Achievement) {
         if (!Object.hasOwnProperty.call(achievementStore, achievement.name)) {
@@ -96,9 +97,12 @@ define('lyria/achievement/manager', ['jquery', 'lyria/achievement', 'lyria/templ
       //TemplateEngine.compile()
     },
     show: function(achName) {
+      var title = (AchievementManager.localization.exists(achName)) ? Achievement.localization.t(achName) : achName;
+      var description = (AchievementManager.localization.exists(achName + '-description')) ? Achievement.localization.t(achName + '-description') : achievementStore[achName].description;
+      
       TemplateEngine.compile(templateList['achievements'], {
-        title: achName,
-        description: achievement.description
+        title: title,
+        description: description
       });
       //TemplateEngine.compile();
     },
@@ -967,6 +971,24 @@ define('lyria/layer', ['mixer', 'lyria/gameobject'], function(mixer, GameObject)
 
   })();
 }); 
+define('lyria/localization/group', ['lyria/localization'], function(Localization) {
+  
+  var LocalizationGroup = (function() {
+    var LocalizationGroup = function(groups) {
+      for (var key in groups) {
+        var value = groups[key];
+        
+        this[key] = new Localization(value);
+      }
+    };
+    
+    return LocalizationGroup;
+  })();
+  
+  return LocalizationGroup;
+  
+});
+
 define('lyria/localization', ['lyria/language', 'lyria/template/string', 'lyria/mixin/language'], function(Language, templateString, langMixin) {
 
   var Localization = (function() {
@@ -1015,6 +1037,10 @@ define('lyria/localization', ['lyria/language', 'lyria/template/string', 'lyria/
           return '[[No language definition found for ' + localeLang + ']]';
         }
       };
+    };
+
+    Localization.prototype.exists = function(name) {
+      return (this.data && this.data[this.language] && this.data[this.language][name]);
     };
 
     Localization.prototype.t = function() {
@@ -1303,7 +1329,7 @@ define('lyria/preloader', ['root', 'mixer', 'jquery', 'lyria/resource', 'lyria/l
       if (assetArray != null) {
         this.assets = assetArray;
       } else {
-        this.assets = [];
+        this.assets = {};
       }
   
       /**
@@ -1342,12 +1368,19 @@ define('lyria/preloader', ['root', 'mixer', 'jquery', 'lyria/resource', 'lyria/l
      */
     Preloader.prototype.start = function() {
       // Check if it's valid
-      if (this.assets == null || Object.keys(this.assets).length === 0) {
-        return;
+      if (this.assets == null) {
+        Log.w('There are no assets to load. At least use an empty object.');
       }
-
+      
       this.trigger('start');
 
+      // Empty objects are now allowed
+      if (Object.keys(this.assets).length === 0) {
+        // Trigger complete event if there is nothing to load
+        this.trigger('complete');
+        return;
+      }
+      
       var totalSize = this.assets.totalSize;
       var currentProgress = 0;
       
@@ -1381,11 +1414,6 @@ define('lyria/preloader', ['root', 'mixer', 'jquery', 'lyria/resource', 'lyria/l
 
           self.trigger('complete');
         }
-      }
-
-      // Trigger complete event if there is nothing to load
-      if ($.isEmptyObject(this.assets)) {
-        this.trigger('complete');
       }
 
       // Go through all assets and preload them
@@ -1582,8 +1610,7 @@ define('lyria/scene/director', ['root', 'mixer', 'jquery', 'eventmap', 'lyria/sc
         if (this.scenes && !$.isEmptyObject(this.scenes)) {
           scene = this.scenes[scene];
         } else {
-          // TODO: Don't throw a string. Throw an error
-          throw 'No valid scene found.';
+          throw new Error('No valid scene found.');
         }
       }
 
@@ -1679,11 +1706,12 @@ define('lyria/scene/director', ['root', 'mixer', 'jquery', 'eventmap', 'lyria/sc
 
   })();
 });
-
 /**
  * @module Lyria
  */
-define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobject', 'lyria/language', 'lyria/log', 'lyria/localization'], function($, mixer, nextTick, EventMap, GameObject, Language, Log, Localization) {'use strict';
+define('lyria/scene', 
+  ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobject', 'lyria/language', 'lyria/log', 'lyria/localization'], 
+  function($, mixer, nextTick, EventMap, GameObject, Language, Log, Localization) {'use strict';
 
   var createNamespace = function(obj, chain, value) {
     var chainArr = chain.split('.');
@@ -1730,8 +1758,6 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
       // Set name
       this.name = sceneName;
 
-      this.async = false;
-
       // Default values
       this.localization = new Localization();
       
@@ -1739,7 +1765,7 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
       this.defaultEvent = 'click';
 
       this.template = {};
-      this.template.source = '';
+      this.template.source = null;
       this.template.helpers = {};
       this.template.partials = {};
       // Collect all template values
@@ -1765,54 +1791,56 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
       });
 
       self.on('added', function() {
-        self.refresh();
-
-        if (self.DOMEvents) {
-          if (options && options.isPrefab) {
-            self.DOMEvents.delegate = (options.target) ? options.target : 'body';
-          } else {
-            self.DOMEvents.delegate = '#' + sceneName;
+        setTimeout(function() {
+          self.refresh();
+  
+          if (self.DOMEvents) {
+            if (options && options.isPrefab) {
+              self.DOMEvents.delegate = (options.target) ? options.target : 'body';
+            } else {
+              self.DOMEvents.delegate = '#' + sceneName;
+            }
           }
-        }
-
-        self.on('update', function(dt) {
-          $.each(self.children, function(childKey, childValue) {
-            if (!$.isEmptyObject(childValue)) {
-              $.each(childValue, function(key, value) {
-                value.trigger('update', dt);
-              });
-            }
-          });
-        });
-
-        // Bind events
-        if (self.DOMEvents && !$.isEmptyObject(self.DOMEvents)) {
-          $.each(self.DOMEvents, function(key, value) {
-            if (( typeof value === 'object') && (key !== 'delegate')) {
-              $(self.DOMEvents.delegate).on(value, key, {
-                scene: self
-              });
-            }
-          });
-        }
-
-        // Data binding
-        // TODO: Find a better way than using Object.watch
-        if (self.template.data && !$.isEmptyObject(self.template.data)) {
-          $('#' + self.name + ' [data-bind]').each(function() {
-            var $dataElem = $(this);
-
-            var prop = $dataElem.data('bind');
-
-            self.template.data.watch(prop, function(id, oldval, newval) {
-              if (oldval !== newval) {
-                $dataElem.html(newval);
+  
+          self.on('update', function(dt) {
+            $.each(self.children, function(childKey, childValue) {
+              if (!$.isEmptyObject(childValue)) {
+                $.each(childValue, function(key, value) {
+                  value.trigger('update', dt);
+                });
               }
-
-              return newval;
             });
           });
-        }
+  
+          // Bind events
+          if (self.DOMEvents && !$.isEmptyObject(self.DOMEvents)) {
+            $.each(self.DOMEvents, function(key, value) {
+              if (( typeof value === 'object') && (key !== 'delegate')) {
+                $(self.DOMEvents.delegate).on(value, key, {
+                  scene: self
+                });
+              }
+            });
+          }
+  
+          // Data binding
+          // TODO: Find a better way than using Object.watch
+          if (self.template.data && !$.isEmptyObject(self.template.data)) {
+            $('#' + self.name + ' [data-bind]').each(function() {
+              var $dataElem = $(this);
+  
+              var prop = $dataElem.data('bind');
+  
+              self.template.data.watch(prop, function(id, oldval, newval) {
+                if (oldval !== newval) {
+                  $dataElem.html(newval);
+                }
+  
+                return newval;
+              });
+            });
+          }
+        }, 10);
       });
 
       var createScene = function(LyriaObject, deps) {
@@ -1995,6 +2023,7 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
       
       if (typeof selector === 'object') {
         this.DOMEvents = selector;
+        return;
       }
       
       if (typeof eventName === 'function') {
@@ -2030,7 +2059,11 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
      * @param {Object} lang
      */
     Scene.prototype.t = function() {
-      return this.localization.t.apply(this.localization, arguments);
+      if (this.localization && this.localization.t) {
+        return this.localization.t.apply(this.localization, arguments);        
+      } else {
+        return;
+      }
     };
 
     /**
@@ -2062,7 +2095,6 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
   return Scene;
 
 });
-
 define('lyria/serialize', ['jquery'], function($) {
   
   /**
@@ -2384,6 +2416,12 @@ define('lyria/viewport', ['root', 'jquery', 'mixer', 'eventmap'], function(root,
       if (container == null) {
         container = 'viewport';
       }
+      
+      Object.defineProperty(this, '$element', {
+        get: function() {
+          return $('#' + container);
+        }
+      });
 
       /**
        * The viewport element (jQuery object)
@@ -2391,9 +2429,7 @@ define('lyria/viewport', ['root', 'jquery', 'mixer', 'eventmap'], function(root,
        * @property $element
        * @type {jQuery}
        */
-      if ($('#' + container).length > 0) {
-        this.$element = $('#' + container);
-      } else {
+      if (this.$element.length === 0) {
         var createdElement = $(root.document.createElement('div')).attr('id', container).attr('class', 'viewport');
 
         if (options.parent) {
@@ -2401,8 +2437,6 @@ define('lyria/viewport', ['root', 'jquery', 'mixer', 'eventmap'], function(root,
         } else {
           $('body').prepend(createdElement);
         }
-
-        this.$element = $('#' + container);
       }
 
       Object.defineProperty(this, 'width', {
@@ -2489,98 +2523,10 @@ define('lyria/viewport', ['root', 'jquery', 'mixer', 'eventmap'], function(root,
       });
 
       $(options.trigger.element).on(options.trigger.event, self.trigger.bind(self, 'scale'));
+      
+      // Call scale event
+      self.trigger('scale');
     }
-
-    /**
-     * Adds a behaviour which will be triggered on certain events
-     *
-     * @method behaviour
-     * @param {Object} fn
-     */
-    Viewport.prototype.behaviour = function(fn) {
-
-    };
-
-    /**
-     * Reset all CSS transforms on the viewport
-     *
-     * @method resetTransforms
-     */
-    Viewport.prototype.resetTransforms = function() {
-      this.transforms = {};
-    };
-
-    /**
-     * Updated CSS transforms on the viewport
-     *
-     * @method updateTransforms
-     */
-    Viewport.prototype.updateTransforms = function() {
-      if ($.isEmptyObject(this.transforms)) {
-        return;
-      }
-
-      this.$element.css('transform', this.transforms.join(' '));
-    };
-
-    /**
-     * Scales the viewport
-     *
-     * @method scale
-     * @param {Object} scaleX
-     * @param {Object} scaleY
-     */
-    Viewport.prototype.scale = function(scaleX, scaleY) {
-      if (scaleX == null) {
-        return;
-      }
-
-      if (scaleY == null) {
-        scaleY = scaleX;
-      }
-
-      this.transforms.scale = this.transforms.scale || {};
-      this.transforms.scale.x = scaleX;
-      this.transforms.scale.y = scaleY;
-
-      this.$element.css('transform', '');
-    };
-
-    /**
-     * Sets an origin for the viewport
-     *
-     * @method origin
-     * @param {Number} originX
-     * @param {Number} originY
-     */
-    Viewport.prototype.origin = function(originX, originY) {
-
-    };
-
-    /**
-     * Centers the viewport
-     *
-     * @method center
-     */
-    Viewport.prototype.center = function() {
-
-    };
-
-    /**
-     * Rotate the viewport
-     *
-     * @method rotate
-     * @param {Number} angle
-     */
-    Viewport.prototype.rotate = function(angle) {
-      if (angle == null) {
-        return;
-      }
-
-      this.transforms.rotate = angle;
-
-      this.$element.css('transform', 'rotate(' + angle + ')');
-    };
 
     return Viewport;
 

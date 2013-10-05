@@ -294,7 +294,7 @@
             "module": "Lyria",
             "namespace": "",
             "file": "src\\scene\\index.js",
-            "line": 24,
+            "line": 26,
             "description": "Scene constructor",
             "is_constructor": 1
         },
@@ -692,7 +692,7 @@
         },
         {
             "file": "src\\scene\\director.js",
-            "line": 138,
+            "line": 137,
             "description": "Shows a specified scene",
             "itemtype": "method",
             "name": "show",
@@ -719,7 +719,7 @@
         },
         {
             "file": "src\\scene\\director.js",
-            "line": 185,
+            "line": 184,
             "description": "Refreshes a scene",
             "itemtype": "method",
             "name": "refresh",
@@ -736,7 +736,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 224,
+            "line": 226,
             "description": "Adds a gameobject to the scene",
             "itemtype": "method",
             "name": "add",
@@ -752,7 +752,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 272,
+            "line": 274,
             "description": "Refreshes the scene (Re-renders the template)",
             "itemtype": "method",
             "name": "refresh",
@@ -768,7 +768,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 300,
+            "line": 302,
             "description": "Sets an event to the event object (DOM events)\nTODO: Not completely happy with the function name",
             "itemtype": "method",
             "name": "bindEvent",
@@ -794,7 +794,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 345,
+            "line": 348,
             "description": "Gets localized value",
             "params": [
                 {
@@ -808,7 +808,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 354,
+            "line": 361,
             "description": "Logging directly from the scene",
             "params": [
                 {
@@ -1044,112 +1044,11 @@
         },
         {
             "file": "src\\viewport.js",
-            "line": 33,
+            "line": 39,
             "description": "The viewport element (jQuery object)",
             "itemtype": "property",
             "name": "$element",
             "type": "{jQuery}",
-            "class": "Viewport",
-            "module": "Lyria"
-        },
-        {
-            "file": "src\\viewport.js",
-            "line": 139,
-            "description": "Adds a behaviour which will be triggered on certain events",
-            "itemtype": "method",
-            "name": "behaviour",
-            "params": [
-                {
-                    "name": "fn",
-                    "description": "",
-                    "type": "Object"
-                }
-            ],
-            "class": "Viewport",
-            "module": "Lyria"
-        },
-        {
-            "file": "src\\viewport.js",
-            "line": 149,
-            "description": "Reset all CSS transforms on the viewport",
-            "itemtype": "method",
-            "name": "resetTransforms",
-            "class": "Viewport",
-            "module": "Lyria"
-        },
-        {
-            "file": "src\\viewport.js",
-            "line": 158,
-            "description": "Updated CSS transforms on the viewport",
-            "itemtype": "method",
-            "name": "updateTransforms",
-            "class": "Viewport",
-            "module": "Lyria"
-        },
-        {
-            "file": "src\\viewport.js",
-            "line": 171,
-            "description": "Scales the viewport",
-            "itemtype": "method",
-            "name": "scale",
-            "params": [
-                {
-                    "name": "scaleX",
-                    "description": "",
-                    "type": "Object"
-                },
-                {
-                    "name": "scaleY",
-                    "description": "",
-                    "type": "Object"
-                }
-            ],
-            "class": "Viewport",
-            "module": "Lyria"
-        },
-        {
-            "file": "src\\viewport.js",
-            "line": 194,
-            "description": "Sets an origin for the viewport",
-            "itemtype": "method",
-            "name": "origin",
-            "params": [
-                {
-                    "name": "originX",
-                    "description": "",
-                    "type": "Number"
-                },
-                {
-                    "name": "originY",
-                    "description": "",
-                    "type": "Number"
-                }
-            ],
-            "class": "Viewport",
-            "module": "Lyria"
-        },
-        {
-            "file": "src\\viewport.js",
-            "line": 205,
-            "description": "Centers the viewport",
-            "itemtype": "method",
-            "name": "center",
-            "class": "Viewport",
-            "module": "Lyria"
-        },
-        {
-            "file": "src\\viewport.js",
-            "line": 214,
-            "description": "Rotate the viewport",
-            "itemtype": "method",
-            "name": "rotate",
-            "params": [
-                {
-                    "name": "angle",
-                    "description": "",
-                    "type": "Number"
-                }
-            ],
             "class": "Viewport",
             "module": "Lyria"
         }
@@ -1233,11 +1132,11 @@
         },
         {
             "message": "Missing item type\nGets localized value",
-            "line": " src\\scene\\index.js:345"
+            "line": " src\\scene\\index.js:348"
         },
         {
             "message": "Missing item type\nLogging directly from the scene",
-            "line": " src\\scene\\index.js:354"
+            "line": " src\\scene\\index.js:361"
         },
         {
             "message": "Missing item type",

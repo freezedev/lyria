@@ -48,11 +48,9 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
       // Set name
       this.name = sceneName;
 
-      this.async = false;
-
       // Default values
       this.localization = new Localization();
-      
+
       // Default event value
       this.defaultEvent = 'click';
 
@@ -279,7 +277,7 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
       if (val == null && this.template) {
         val = this.template.data;
       }
-      
+
       // Add default helpers
       this.template.helpers['translate'] = Localization.elements(this.localization.data, this.localization.language);
 
@@ -295,8 +293,8 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
       }
 
       this.trigger('refresh');
-    };    
-    
+    };
+
     /**
      * Sets an event to the event object (DOM events)
      * TODO: Not completely happy with the function name
@@ -310,22 +308,22 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
       if (selector == null) {
         return;
       }
-      
-      if (typeof selector === 'object') {
+
+      if ( typeof selector === 'object') {
         this.DOMEvents = selector;
         return;
       }
-      
-      if (typeof eventName === 'function') {
+
+      if ( typeof eventName === 'function') {
         this.DOMEvents[selector][this.defaultEvent] = eventFunction;
       } else {
         this.DOMEvents[selector][eventName] = eventFunction;
       }
     };
-    
+
     /*
      * Unbinds a previously bound event
-     * 
+     *
      * @method unbindEvent
      * @param {String} selector
      * @param {String} eventName
@@ -335,7 +333,7 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
       if (selector == null) {
         return;
       }
-      
+
       if (eventName == null) {
         delete this.DOMEvents[selector];
       } else {
@@ -349,7 +347,11 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
      * @param {Object} lang
      */
     Scene.prototype.t = function() {
-      return this.localization.t.apply(this.localization, arguments);
+      if (this.localization && this.localization.t) {
+        return this.localization.t.apply(this.localization, arguments);
+      } else {
+        return;
+      }
     };
 
     /**
@@ -380,4 +382,4 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
 
   return Scene;
 
-});
+}); 

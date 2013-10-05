@@ -216,8 +216,7 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;mixer&#x27;, &
         if (this.scenes &amp;&amp; !$.isEmptyObject(this.scenes)) {
           scene = this.scenes[scene];
         } else {
-          // TODO: Don&#x27;t throw a string. Throw an error
-          throw &#x27;No valid scene found.&#x27;;
+          throw new Error(&#x27;No valid scene found.&#x27;);
         }
       }
 
@@ -313,7 +312,6 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;mixer&#x27;, &
 
   })();
 });
-
     </pre>
 </div>
 
