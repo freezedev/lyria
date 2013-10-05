@@ -179,19 +179,19 @@ define(&#x27;lyria/preloader&#x27;, [&#x27;root&#x27;, &#x27;mixer&#x27;, &#x27;
     Preloader.prototype.start = function() {
       // Check if it&#x27;s valid
       if (this.assets == null) {
-        Log.w(&#x27;There are no assets to load. At least use an empty object.&#x27;);
+        throw new Error(&#x27;Assets should not be null. Pass at least an empty object.&#x27;);
       }
       
+
       this.trigger(&#x27;start&#x27;);
 
-      // Empty objects are now allowed
-      if (Object.keys(this.assets).length === 0) {
-        // Trigger complete event if there is nothing to load
-        this.trigger(&#x27;complete&#x27;);
-        return;
+      var totalSize = 0;
+
+      // Trigger complete event if there is nothing to load
+      if (Object.keys(this.assets).length &gt; 0) {
+        totalSize = this.assets.totalSize;
       }
       
-      var totalSize = this.assets.totalSize;
       var currentProgress = 0;
       
       if ((this.steps == null) || (this.steps.length === 0)) {
@@ -207,9 +207,13 @@ define(&#x27;lyria/preloader&#x27;, [&#x27;root&#x27;, &#x27;mixer&#x27;, &#x27;
       
       var self = this;
 
-      function loadingProgress() {
+      var loadingProgress = function() {
 
-        var percentLoaded = currentProgress / totalSize;
+        var percentLoaded = 100;
+        
+        if (currentProgress !== totalSize) {
+          percentLoaded = currentProgress / totalSize;
+        }
 
         self.trigger(&#x27;progress&#x27;, percentLoaded);
         
@@ -224,49 +228,54 @@ define(&#x27;lyria/preloader&#x27;, [&#x27;root&#x27;, &#x27;mixer&#x27;, &#x27;
 
           self.trigger(&#x27;complete&#x27;);
         }
+      };
+
+
+      if (Object.keys(this.assets).length &gt; 0) {
+        // Go through all assets and preload them
+        $.each(this.assets, function(key, value) {
+          
+          if (value.files == null || !Array.isArray(value.files) || value.files.length === 0) {
+            return true;
+          }
+          
+          for (var i = 0, j = value.files.length; i &lt; j; i++) {
+            (function(iterator) {
+              
+              if (iterator.type.indexOf(&#x27;image&#x27;) === 0) {
+                var img = new root.Image();
+                img.onload = function() {
+                  currentProgress += iterator.size;
+      
+                  loadingProgress();
+                };
+      
+                img.onerror = function(err) {
+                  Log.e(&#x27;Error while loading &#x27; + iterator.name);
+                };
+      
+                img.src = iterator.name;
+              } else {
+                $.ajax({
+                  url: iterator.name,
+                  dataType: &#x27;text&#x27;
+                }).always(function() {
+                  currentProgress += iterator.size;
+      
+                  loadingProgress();
+                }).error(function(err) {
+                  Log.e(&#x27;Error while loading &#x27; + iterator.name + &#x27;: &#x27; + err);
+                });
+              }
+              
+            })(value.files[i]);
+          }
+        });
+      } else {
+        // TODO: This is bad, mkay? Find a way to asynchronously load no assets
+        setTimeout(loadingProgress, 1000);
       }
-
-      // Go through all assets and preload them
-      $.each(this.assets, function(key, value) {
-        
-        if (value.files == null || !Array.isArray(value.files) || value.files.length === 0) {
-          return true;
-        }
-        
-        for (var i = 0, j = value.files.length; i &lt; j; i++) {
-          (function(iterator) {
-            
-            if (iterator.type.indexOf(&#x27;image&#x27;) === 0) {
-              var img = new root.Image();
-              img.onload = function() {
-                currentProgress += iterator.size;
-    
-                loadingProgress();
-              };
-    
-              img.onerror = function(err) {
-                Log.e(&#x27;Error while loading &#x27; + iterator.name);
-              };
-    
-              img.src = iterator.name;
-            } else {
-              $.ajax({
-                url: iterator.name,
-                dataType: &#x27;text&#x27;
-              }).always(function() {
-                currentProgress += iterator.size;
-    
-                loadingProgress();
-              }).error(function(err) {
-                Log.e(&#x27;Error while loading &#x27; + iterator.name + &#x27;: &#x27; + err);
-              });
-            }
-            
-          })(value.files[i]);
-        }
-
-
-      });
+      
     };
 
     return Preloader;

@@ -115,9 +115,7 @@
 /**
  * @module Lyria
  */
-define(&#x27;lyria/scene&#x27;, 
-  [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;nexttick&#x27;, &#x27;eventmap&#x27;, &#x27;lyria/gameobject&#x27;, &#x27;lyria/language&#x27;, &#x27;lyria/log&#x27;, &#x27;lyria/localization&#x27;], 
-  function($, mixer, nextTick, EventMap, GameObject, Language, Log, Localization) {&#x27;use strict&#x27;;
+define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;nexttick&#x27;, &#x27;eventmap&#x27;, &#x27;lyria/gameobject&#x27;, &#x27;lyria/language&#x27;, &#x27;lyria/log&#x27;, &#x27;lyria/localization&#x27;], function($, mixer, nextTick, EventMap, GameObject, Language, Log, Localization) {&#x27;use strict&#x27;;
 
   var createNamespace = function(obj, chain, value) {
     var chainArr = chain.split(&#x27;.&#x27;);
@@ -166,7 +164,7 @@ define(&#x27;lyria/scene&#x27;,
 
       // Default values
       this.localization = new Localization();
-      
+
       // Default event value
       this.defaultEvent = &#x27;click&#x27;;
 
@@ -197,56 +195,54 @@ define(&#x27;lyria/scene&#x27;,
       });
 
       self.on(&#x27;added&#x27;, function() {
-        setTimeout(function() {
-          self.refresh();
-  
-          if (self.DOMEvents) {
-            if (options &amp;&amp; options.isPrefab) {
-              self.DOMEvents.delegate = (options.target) ? options.target : &#x27;body&#x27;;
-            } else {
-              self.DOMEvents.delegate = &#x27;#&#x27; + sceneName;
-            }
+        self.refresh();
+
+        if (self.DOMEvents) {
+          if (options &amp;&amp; options.isPrefab) {
+            self.DOMEvents.delegate = (options.target) ? options.target : &#x27;body&#x27;;
+          } else {
+            self.DOMEvents.delegate = &#x27;#&#x27; + sceneName;
           }
-  
-          self.on(&#x27;update&#x27;, function(dt) {
-            $.each(self.children, function(childKey, childValue) {
-              if (!$.isEmptyObject(childValue)) {
-                $.each(childValue, function(key, value) {
-                  value.trigger(&#x27;update&#x27;, dt);
-                });
+        }
+
+        self.on(&#x27;update&#x27;, function(dt) {
+          $.each(self.children, function(childKey, childValue) {
+            if (!$.isEmptyObject(childValue)) {
+              $.each(childValue, function(key, value) {
+                value.trigger(&#x27;update&#x27;, dt);
+              });
+            }
+          });
+        });
+
+        // Bind events
+        if (self.DOMEvents &amp;&amp; !$.isEmptyObject(self.DOMEvents)) {
+          $.each(self.DOMEvents, function(key, value) {
+            if (( typeof value === &#x27;object&#x27;) &amp;&amp; (key !== &#x27;delegate&#x27;)) {
+              $(self.DOMEvents.delegate).on(value, key, {
+                scene: self
+              });
+            }
+          });
+        }
+
+        // Data binding
+        // TODO: Find a better way than using Object.watch
+        if (self.template.data &amp;&amp; !$.isEmptyObject(self.template.data)) {
+          $(&#x27;#&#x27; + self.name + &#x27; [data-bind]&#x27;).each(function() {
+            var $dataElem = $(this);
+
+            var prop = $dataElem.data(&#x27;bind&#x27;);
+
+            self.template.data.watch(prop, function(id, oldval, newval) {
+              if (oldval !== newval) {
+                $dataElem.html(newval);
               }
+
+              return newval;
             });
           });
-  
-          // Bind events
-          if (self.DOMEvents &amp;&amp; !$.isEmptyObject(self.DOMEvents)) {
-            $.each(self.DOMEvents, function(key, value) {
-              if (( typeof value === &#x27;object&#x27;) &amp;&amp; (key !== &#x27;delegate&#x27;)) {
-                $(self.DOMEvents.delegate).on(value, key, {
-                  scene: self
-                });
-              }
-            });
-          }
-  
-          // Data binding
-          // TODO: Find a better way than using Object.watch
-          if (self.template.data &amp;&amp; !$.isEmptyObject(self.template.data)) {
-            $(&#x27;#&#x27; + self.name + &#x27; [data-bind]&#x27;).each(function() {
-              var $dataElem = $(this);
-  
-              var prop = $dataElem.data(&#x27;bind&#x27;);
-  
-              self.template.data.watch(prop, function(id, oldval, newval) {
-                if (oldval !== newval) {
-                  $dataElem.html(newval);
-                }
-  
-                return newval;
-              });
-            });
-          }
-        }, 10);
+        }
       });
 
       var createScene = function(LyriaObject, deps) {
@@ -395,7 +391,7 @@ define(&#x27;lyria/scene&#x27;,
       if (val == null &amp;&amp; this.template) {
         val = this.template.data;
       }
-      
+
       // Add default helpers
       this.template.helpers[&#x27;translate&#x27;] = Localization.elements(this.localization.data, this.localization.language);
 
@@ -411,8 +407,8 @@ define(&#x27;lyria/scene&#x27;,
       }
 
       this.trigger(&#x27;refresh&#x27;);
-    };    
-    
+    };
+
     /**
      * Sets an event to the event object (DOM events)
      * TODO: Not completely happy with the function name
@@ -426,22 +422,22 @@ define(&#x27;lyria/scene&#x27;,
       if (selector == null) {
         return;
       }
-      
-      if (typeof selector === &#x27;object&#x27;) {
+
+      if ( typeof selector === &#x27;object&#x27;) {
         this.DOMEvents = selector;
         return;
       }
-      
-      if (typeof eventName === &#x27;function&#x27;) {
+
+      if ( typeof eventName === &#x27;function&#x27;) {
         this.DOMEvents[selector][this.defaultEvent] = eventFunction;
       } else {
         this.DOMEvents[selector][eventName] = eventFunction;
       }
     };
-    
+
     /*
      * Unbinds a previously bound event
-     * 
+     *
      * @method unbindEvent
      * @param {String} selector
      * @param {String} eventName
@@ -451,7 +447,7 @@ define(&#x27;lyria/scene&#x27;,
       if (selector == null) {
         return;
       }
-      
+
       if (eventName == null) {
         delete this.DOMEvents[selector];
       } else {
@@ -466,7 +462,7 @@ define(&#x27;lyria/scene&#x27;,
      */
     Scene.prototype.t = function() {
       if (this.localization &amp;&amp; this.localization.t) {
-        return this.localization.t.apply(this.localization, arguments);        
+        return this.localization.t.apply(this.localization, arguments);
       } else {
         return;
       }
@@ -500,7 +496,7 @@ define(&#x27;lyria/scene&#x27;,
 
   return Scene;
 
-});
+}); 
     </pre>
 </div>
 

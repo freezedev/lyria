@@ -294,7 +294,7 @@
             "module": "Lyria",
             "namespace": "",
             "file": "src\\scene\\index.js",
-            "line": 26,
+            "line": 24,
             "description": "Scene constructor",
             "is_constructor": 1
         },
@@ -736,7 +736,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 226,
+            "line": 222,
             "description": "Adds a gameobject to the scene",
             "itemtype": "method",
             "name": "add",
@@ -752,7 +752,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 274,
+            "line": 270,
             "description": "Refreshes the scene (Re-renders the template)",
             "itemtype": "method",
             "name": "refresh",
@@ -768,7 +768,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 302,
+            "line": 298,
             "description": "Sets an event to the event object (DOM events)\nTODO: Not completely happy with the function name",
             "itemtype": "method",
             "name": "bindEvent",
@@ -794,7 +794,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 348,
+            "line": 344,
             "description": "Gets localized value",
             "params": [
                 {
@@ -808,7 +808,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 361,
+            "line": 357,
             "description": "Logging directly from the scene",
             "params": [
                 {
@@ -1132,11 +1132,11 @@
         },
         {
             "message": "Missing item type\nGets localized value",
-            "line": " src\\scene\\index.js:348"
+            "line": " src\\scene\\index.js:344"
         },
         {
             "message": "Missing item type\nLogging directly from the scene",
-            "line": " src\\scene\\index.js:361"
+            "line": " src\\scene\\index.js:357"
         },
         {
             "message": "Missing item type",
