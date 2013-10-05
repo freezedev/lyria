@@ -1369,19 +1369,19 @@ define('lyria/preloader', ['root', 'mixer', 'jquery', 'lyria/resource', 'lyria/l
     Preloader.prototype.start = function() {
       // Check if it's valid
       if (this.assets == null) {
-        Log.w('There are no assets to load. At least use an empty object.');
+        throw new Error('Assets should not be null. Pass at least an empty object.');
       }
       
+
       this.trigger('start');
 
-      // Empty objects are now allowed
-      if (Object.keys(this.assets).length === 0) {
-        // Trigger complete event if there is nothing to load
-        this.trigger('complete');
-        return;
+      var totalSize = 0;
+
+      // Trigger complete event if there is nothing to load
+      if (Object.keys(this.assets).length > 0) {
+        totalSize = this.assets.totalSize;
       }
       
-      var totalSize = this.assets.totalSize;
       var currentProgress = 0;
       
       if ((this.steps == null) || (this.steps.length === 0)) {
@@ -1397,9 +1397,13 @@ define('lyria/preloader', ['root', 'mixer', 'jquery', 'lyria/resource', 'lyria/l
       
       var self = this;
 
-      function loadingProgress() {
+      var loadingProgress = function() {
 
-        var percentLoaded = currentProgress / totalSize;
+        var percentLoaded = 100;
+        
+        if (currentProgress !== totalSize) {
+          percentLoaded = currentProgress / totalSize;
+        }
 
         self.trigger('progress', percentLoaded);
         
@@ -1414,49 +1418,54 @@ define('lyria/preloader', ['root', 'mixer', 'jquery', 'lyria/resource', 'lyria/l
 
           self.trigger('complete');
         }
+      };
+
+
+      if (Object.keys(this.assets).length > 0) {
+        // Go through all assets and preload them
+        $.each(this.assets, function(key, value) {
+          
+          if (value.files == null || !Array.isArray(value.files) || value.files.length === 0) {
+            return true;
+          }
+          
+          for (var i = 0, j = value.files.length; i < j; i++) {
+            (function(iterator) {
+              
+              if (iterator.type.indexOf('image') === 0) {
+                var img = new root.Image();
+                img.onload = function() {
+                  currentProgress += iterator.size;
+      
+                  loadingProgress();
+                };
+      
+                img.onerror = function(err) {
+                  Log.e('Error while loading ' + iterator.name);
+                };
+      
+                img.src = iterator.name;
+              } else {
+                $.ajax({
+                  url: iterator.name,
+                  dataType: 'text'
+                }).always(function() {
+                  currentProgress += iterator.size;
+      
+                  loadingProgress();
+                }).error(function(err) {
+                  Log.e('Error while loading ' + iterator.name + ': ' + err);
+                });
+              }
+              
+            })(value.files[i]);
+          }
+        });
+      } else {
+        // TODO: This is bad, mkay? Find a way to asynchronously load no assets
+        setTimeout(loadingProgress, 1000);
       }
-
-      // Go through all assets and preload them
-      $.each(this.assets, function(key, value) {
-        
-        if (value.files == null || !Array.isArray(value.files) || value.files.length === 0) {
-          return true;
-        }
-        
-        for (var i = 0, j = value.files.length; i < j; i++) {
-          (function(iterator) {
-            
-            if (iterator.type.indexOf('image') === 0) {
-              var img = new root.Image();
-              img.onload = function() {
-                currentProgress += iterator.size;
-    
-                loadingProgress();
-              };
-    
-              img.onerror = function(err) {
-                Log.e('Error while loading ' + iterator.name);
-              };
-    
-              img.src = iterator.name;
-            } else {
-              $.ajax({
-                url: iterator.name,
-                dataType: 'text'
-              }).always(function() {
-                currentProgress += iterator.size;
-    
-                loadingProgress();
-              }).error(function(err) {
-                Log.e('Error while loading ' + iterator.name + ': ' + err);
-              });
-            }
-            
-          })(value.files[i]);
-        }
-
-
-      });
+      
     };
 
     return Preloader;
@@ -1709,9 +1718,7 @@ define('lyria/scene/director', ['root', 'mixer', 'jquery', 'eventmap', 'lyria/sc
 /**
  * @module Lyria
  */
-define('lyria/scene', 
-  ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobject', 'lyria/language', 'lyria/log', 'lyria/localization'], 
-  function($, mixer, nextTick, EventMap, GameObject, Language, Log, Localization) {'use strict';
+define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobject', 'lyria/language', 'lyria/log', 'lyria/localization'], function($, mixer, nextTick, EventMap, GameObject, Language, Log, Localization) {'use strict';
 
   var createNamespace = function(obj, chain, value) {
     var chainArr = chain.split('.');
@@ -1760,7 +1767,7 @@ define('lyria/scene',
 
       // Default values
       this.localization = new Localization();
-      
+
       // Default event value
       this.defaultEvent = 'click';
 
@@ -1791,56 +1798,54 @@ define('lyria/scene',
       });
 
       self.on('added', function() {
-        setTimeout(function() {
-          self.refresh();
-  
-          if (self.DOMEvents) {
-            if (options && options.isPrefab) {
-              self.DOMEvents.delegate = (options.target) ? options.target : 'body';
-            } else {
-              self.DOMEvents.delegate = '#' + sceneName;
-            }
+        self.refresh();
+
+        if (self.DOMEvents) {
+          if (options && options.isPrefab) {
+            self.DOMEvents.delegate = (options.target) ? options.target : 'body';
+          } else {
+            self.DOMEvents.delegate = '#' + sceneName;
           }
-  
-          self.on('update', function(dt) {
-            $.each(self.children, function(childKey, childValue) {
-              if (!$.isEmptyObject(childValue)) {
-                $.each(childValue, function(key, value) {
-                  value.trigger('update', dt);
-                });
+        }
+
+        self.on('update', function(dt) {
+          $.each(self.children, function(childKey, childValue) {
+            if (!$.isEmptyObject(childValue)) {
+              $.each(childValue, function(key, value) {
+                value.trigger('update', dt);
+              });
+            }
+          });
+        });
+
+        // Bind events
+        if (self.DOMEvents && !$.isEmptyObject(self.DOMEvents)) {
+          $.each(self.DOMEvents, function(key, value) {
+            if (( typeof value === 'object') && (key !== 'delegate')) {
+              $(self.DOMEvents.delegate).on(value, key, {
+                scene: self
+              });
+            }
+          });
+        }
+
+        // Data binding
+        // TODO: Find a better way than using Object.watch
+        if (self.template.data && !$.isEmptyObject(self.template.data)) {
+          $('#' + self.name + ' [data-bind]').each(function() {
+            var $dataElem = $(this);
+
+            var prop = $dataElem.data('bind');
+
+            self.template.data.watch(prop, function(id, oldval, newval) {
+              if (oldval !== newval) {
+                $dataElem.html(newval);
               }
+
+              return newval;
             });
           });
-  
-          // Bind events
-          if (self.DOMEvents && !$.isEmptyObject(self.DOMEvents)) {
-            $.each(self.DOMEvents, function(key, value) {
-              if (( typeof value === 'object') && (key !== 'delegate')) {
-                $(self.DOMEvents.delegate).on(value, key, {
-                  scene: self
-                });
-              }
-            });
-          }
-  
-          // Data binding
-          // TODO: Find a better way than using Object.watch
-          if (self.template.data && !$.isEmptyObject(self.template.data)) {
-            $('#' + self.name + ' [data-bind]').each(function() {
-              var $dataElem = $(this);
-  
-              var prop = $dataElem.data('bind');
-  
-              self.template.data.watch(prop, function(id, oldval, newval) {
-                if (oldval !== newval) {
-                  $dataElem.html(newval);
-                }
-  
-                return newval;
-              });
-            });
-          }
-        }, 10);
+        }
       });
 
       var createScene = function(LyriaObject, deps) {
@@ -1989,7 +1994,7 @@ define('lyria/scene',
       if (val == null && this.template) {
         val = this.template.data;
       }
-      
+
       // Add default helpers
       this.template.helpers['translate'] = Localization.elements(this.localization.data, this.localization.language);
 
@@ -2005,8 +2010,8 @@ define('lyria/scene',
       }
 
       this.trigger('refresh');
-    };    
-    
+    };
+
     /**
      * Sets an event to the event object (DOM events)
      * TODO: Not completely happy with the function name
@@ -2020,22 +2025,22 @@ define('lyria/scene',
       if (selector == null) {
         return;
       }
-      
-      if (typeof selector === 'object') {
+
+      if ( typeof selector === 'object') {
         this.DOMEvents = selector;
         return;
       }
-      
-      if (typeof eventName === 'function') {
+
+      if ( typeof eventName === 'function') {
         this.DOMEvents[selector][this.defaultEvent] = eventFunction;
       } else {
         this.DOMEvents[selector][eventName] = eventFunction;
       }
     };
-    
+
     /*
      * Unbinds a previously bound event
-     * 
+     *
      * @method unbindEvent
      * @param {String} selector
      * @param {String} eventName
@@ -2045,7 +2050,7 @@ define('lyria/scene',
       if (selector == null) {
         return;
       }
-      
+
       if (eventName == null) {
         delete this.DOMEvents[selector];
       } else {
@@ -2060,7 +2065,7 @@ define('lyria/scene',
      */
     Scene.prototype.t = function() {
       if (this.localization && this.localization.t) {
-        return this.localization.t.apply(this.localization, arguments);        
+        return this.localization.t.apply(this.localization, arguments);
       } else {
         return;
       }
@@ -2094,7 +2099,7 @@ define('lyria/scene',
 
   return Scene;
 
-});
+}); 
 define('lyria/serialize', ['jquery'], function($) {
   
   /**
