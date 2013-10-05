@@ -692,7 +692,7 @@
         },
         {
             "file": "src\\scene\\director.js",
-            "line": 137,
+            "line": 142,
             "description": "Shows a specified scene",
             "itemtype": "method",
             "name": "show",
@@ -719,7 +719,7 @@
         },
         {
             "file": "src\\scene\\director.js",
-            "line": 184,
+            "line": 189,
             "description": "Refreshes a scene",
             "itemtype": "method",
             "name": "refresh",

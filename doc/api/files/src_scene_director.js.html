@@ -212,14 +212,19 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;mixer&#x27;, &
         return;
       }
 
-      if (!( scene instanceof Scene)) {
-        if (this.scenes &amp;&amp; !$.isEmptyObject(this.scenes)) {
+      if (scene instanceof Scene) {
+        // Add to scenes if it&#x27;s an actual scene
+        this.scenes[scene.name] = scene;        
+      } else {
+        // Handle string
+        if (this.scenes &amp;&amp; Object.keys(this.scenes).length &gt; 0) {
           scene = this.scenes[scene];
         } else {
           throw new Error(&#x27;No valid scene found.&#x27;);
         }
       }
 
+      // Set scene parent
       scene.parent = this;
       
       // Update reference to the game itself
@@ -232,16 +237,16 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;mixer&#x27;, &
         this.defaultScene = scene.name;
       }
 
+      // Set scene in sceneList
       this.sceneList[scene.name] = scene;
 
       if (this.viewport.$element) {
         if ($(&#x27;#&#x27; + scene.name).length === 0) {
           this.viewport.$element.prepend($(root.document.createElement(&#x27;div&#x27;)).attr(&#x27;id&#x27;, scene.name).attr(&#x27;class&#x27;, SceneDirector.prototype.sceneClassName));
-
-          if (!scene.isAsync) {
-            scene.trigger(&#x27;added&#x27;);
-          }
-
+        }
+        
+        if (!scene.isAsync) {
+          scene.trigger(&#x27;added&#x27;);
         }
       }
 
