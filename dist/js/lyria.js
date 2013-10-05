@@ -12,8 +12,6 @@ define('lyria/achievement', ['clamp'], function(clamp) {
       this.id = options.id || 'achievement-' + Date.now();
       this.icon = options.icon || null;
       
-      this.localization = options.localization || {};
-
       this.progress = options.progress || {min: 0, max: 1};
 
       this.unlocked = (options.unlocked == null) ? false : options.unlocked;
@@ -88,6 +86,7 @@ define('lyria/achievement/manager', ['jquery', 'lyria/achievement', 'lyria/templ
         }
       }
     },
+    viewport: null,
     remove: function(achName) {
       if (Object.hasOwnProperty.call(achievementStore, achName)) {
         delete achievementStore[achName];
@@ -97,12 +96,33 @@ define('lyria/achievement/manager', ['jquery', 'lyria/achievement', 'lyria/templ
       //TemplateEngine.compile()
     },
     show: function(achName) {
-      var title = (AchievementManager.localization.exists(achName)) ? Achievement.localization.t(achName) : achName;
-      var description = (AchievementManager.localization.exists(achName + '-description')) ? Achievement.localization.t(achName + '-description') : achievementStore[achName].description;
+      var currentAchievement = achievementStore[achName];
       
-      TemplateEngine.compile(templateList['achievements'], {
+      if (currentAchievement == null) {
+        throw new Error('Achievement ' + achName + ' not found.');        
+      }
+      
+      var title = (AchievementManager.localization.exists(currentAchievement.name)) ? Achievement.localization.t(currentAchievement.name) : currentAchievement.name;
+      var description = (AchievementManager.localization.exists(currentAchievement.name + '-description')) ? Achievement.localization.t(currentAchievement.name + '-description') : currentAchievement.description;
+      
+      var achTemplate = TemplateEngine.compile(templateList['achievement'])({
+        id: currentAchievement.id,
         title: title,
         description: description
+      });
+      
+      var $currentAchievement = $('#' + currentAchievement.id);
+      
+      if (AchievementManager.viewport == null) {
+        $('body').append(achTemplate);        
+      } else {
+        AchievementManager.viewport.$element.append(achTemplate);
+      }
+      
+      $currentAchievement.addClass('offscreen');
+      $currentAchievement.removeClass('offscreen');
+      $currentAchievement.on('transitionend', function() {
+        $currentAchievement.remove();
       });
       //TemplateEngine.compile();
     },
@@ -2602,7 +2622,11 @@ function program1(depth0,data) {
   return buffer;
   }
 
-  buffer += "<div class=\"achievement\">\r\n  <div class=\"title\">";
+  buffer += "<div id=\"";
+  if (stack1 = helpers.id) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.id; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "\" class=\"achievement\">\r\n  <div class=\"title\">";
   if (stack1 = helpers.title) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.title; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)

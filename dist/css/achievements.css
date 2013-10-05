@@ -1,11 +1,6 @@
-.status.achievement {
-  display: none;
+.achievement {
   position: absolute;
   left: 50%;
-  bottom: -120px;
-  margin-left: -160px;
-}
-.achievement {
   opacity: 1;
   -ms-filter: none;
   filter: none;
@@ -30,6 +25,17 @@
   padding-right: 12px;
   padding-top: 8px;
   z-index: 30000001;
+  -webkit-transition: all 1200ms ease-in-out 0ms;
+  -moz-transition: all 1200ms ease-in-out 0ms;
+  -o-transition: all 1200ms ease-in-out 0ms;
+  -ms-transition: all 1200ms ease-in-out 0ms;
+  transition: all 1200ms ease-in-out 0ms;
+  margin-left: -160px;
+}
+.achievement.offscreen {
+  opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
 }
 .achievement.locked {
   background-color: #ccc;
