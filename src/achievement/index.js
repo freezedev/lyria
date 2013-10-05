@@ -12,8 +12,6 @@ define('lyria/achievement', ['clamp'], function(clamp) {
       this.id = options.id || 'achievement-' + Date.now();
       this.icon = options.icon || null;
       
-      this.localization = options.localization || {};
-
       this.progress = options.progress || {min: 0, max: 1};
 
       this.unlocked = (options.unlocked == null) ? false : options.unlocked;
