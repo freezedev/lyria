@@ -33,7 +33,8 @@ define('lyria/achievement/manager', ['jquery', 'lyria/achievement', 'lyria/templ
       var achTemplate = TemplateEngine.compile(templateList['achievement'])({
         id: currentAchievement.id,
         title: title,
-        description: description
+        description: description,
+        offscreen: true
       });
       
       var $currentAchievement = $('#' + currentAchievement.id);
@@ -44,12 +45,10 @@ define('lyria/achievement/manager', ['jquery', 'lyria/achievement', 'lyria/templ
         AchievementManager.viewport.$element.append(achTemplate);
       }
       
-      $currentAchievement.addClass('offscreen');
-      $currentAchievement.removeClass('offscreen');
+      $currentAchievement.removeClass('offscreen').delay(2000).addClass('offscreen');
       $currentAchievement.on('transitionend', function() {
         $currentAchievement.remove();
       });
-      //TemplateEngine.compile();
     },
     toJSON: function() {
       var key, value;
@@ -68,7 +67,7 @@ define('lyria/achievement/manager', ['jquery', 'lyria/achievement', 'lyria/templ
       try {
         result = JSON.stringify(AchievementManager.toJSON());
       } catch (e) {
-        throw new Error('Error while serializing achievements in AchievementManger: ' + e);
+        throw new Error('Error while serializing achievements in AchievementManager: ' + e);
       }
       return result;
     },
@@ -90,10 +89,6 @@ define('lyria/achievement/manager', ['jquery', 'lyria/achievement', 'lyria/templ
       }
       
       return AchievementManager.fromJSON(deserializedValue);
-    },
-    templates: {
-      achievement: '',
-      list: ''
     }
   };
   
