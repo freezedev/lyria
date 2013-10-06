@@ -121,6 +121,12 @@ define('lyria/achievement/manager', ['jquery', 'lyria/achievement', 'lyria/templ
       return counter;
     }
   });
+  
+  Object.defineProperty(AchievementManager, 'store', {
+    get: function() {
+      return achievementStore;
+    }
+  });
 
   return AchievementManager;
 
