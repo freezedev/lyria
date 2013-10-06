@@ -2,6 +2,12 @@ define('lyria/achievement', ['clamp'], function(clamp) {
 
   var Achievement = (function() {
     var Achievement = function(options) {
+      if (typeof options === 'string') {
+        options = {
+          name: options
+        };
+      }
+      
       if (!options.name) {
         // Break if no name has been specified
         throw new Error('An achievement needs to have a name.');
