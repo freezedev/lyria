@@ -2,6 +2,12 @@ define('lyria/achievement', ['clamp'], function(clamp) {
 
   var Achievement = (function() {
     var Achievement = function(options) {
+      if (typeof options === 'string') {
+        options = {
+          name: options
+        };
+      }
+      
       if (!options.name) {
         // Break if no name has been specified
         throw new Error('An achievement needs to have a name.');
@@ -74,18 +80,19 @@ define('lyria/achievement', ['clamp'], function(clamp) {
 });
 
 define('lyria/achievement/manager', ['jquery', 'lyria/achievement', 'lyria/template/engine', 'lyria/template/list', 'lyria/localization'], function($, Achievement, TemplateEngine, templateList, Localization) {
-  
+
   var achievementStore = {};
-  
+
   var AchievementManager = {
     localization: new Localization(),
     add: function(achievement) {
-      if (achievement instanceof Achievement) {
+      if ( achievement instanceof Achievement) {
         if (!Object.hasOwnProperty.call(achievementStore, achievement.name)) {
-          achievementStore[achievement.name] = achievement;          
+          achievementStore[achievement.name] = achievement;
         }
       }
     },
+    progressSeparator: '/',
     viewport: null,
     remove: function(achName) {
       if (Object.hasOwnProperty.call(achievementStore, achName)) {
@@ -97,59 +104,67 @@ define('lyria/achievement/manager', ['jquery', 'lyria/achievement', 'lyria/templ
     },
     show: function(achName) {
       var currentAchievement = achievementStore[achName];
-      
+
       if (currentAchievement == null) {
-        throw new Error('Achievement ' + achName + ' not found.');        
+        throw new Error('Achievement ' + achName + ' not found.');
       }
-      
-      var title = (AchievementManager.localization.exists(currentAchievement.name)) ? Achievement.localization.t(currentAchievement.name) : currentAchievement.name;
-      var description = (AchievementManager.localization.exists(currentAchievement.name + '-description')) ? Achievement.localization.t(currentAchievement.name + '-description') : currentAchievement.description;
-      
+
+      var title = (AchievementManager.localization.exists(currentAchievement.name)) ? AchievementManager.localization.t(currentAchievement.name) : currentAchievement.name;
+      var description = (AchievementManager.localization.exists(currentAchievement.name + '-description')) ? AchievementManager.localization.t(currentAchievement.name + '-description') : currentAchievement.description;
+
       var achTemplate = TemplateEngine.compile(templateList['achievement'])({
         id: currentAchievement.id,
+        className: currentAchievement.name,
         title: title,
-        description: description
+        description: description,
+        offscreen: true,
+        progressable: (currentAchievement.progress.max > 0 && currentAchievement.progress.max !== 1),
+        max: currentAchievement.progress.max,
+        current: currentAchievement.progress.current,
+        separator: AchievementManager.progressSeparator
       });
-      
+
       var $currentAchievement = $('#' + currentAchievement.id);
-      
+
       if (AchievementManager.viewport == null) {
-        $('body').append(achTemplate);        
+        $('body').append(achTemplate);
       } else {
         AchievementManager.viewport.$element.append(achTemplate);
       }
-      
-      $currentAchievement.addClass('offscreen');
-      $currentAchievement.removeClass('offscreen');
-      $currentAchievement.on('transitionend', function() {
+
+      // Refactor this if lyria/tween is available
+      $currentAchievement.animate({
+        opacity: 1.0
+      }, 600).delay(2000).animate({
+        opacity: 0.0
+      }, 600, function() {
         $currentAchievement.remove();
       });
-      //TemplateEngine.compile();
     },
     toJSON: function() {
       var key, value;
       var result = {};
-      
+
       for (key in achievementStore) {
         value = achievementStore[key];
         result[key] = value.toJSON();
       }
-      
+
       return result;
     },
     toString: function() {
       var result = '';
-      
+
       try {
         result = JSON.stringify(AchievementManager.toJSON());
       } catch (e) {
-        throw new Error('Error while serializing achievements in AchievementManger: ' + e);
+        throw new Error('Error while serializing achievements in AchievementManager: ' + e);
       }
       return result;
     },
     fromJSON: function(achievements) {
       var key, value;
-      
+
       for (key in achievements) {
         value = achievements[key];
         AchievementManager.add(value);
@@ -157,44 +172,45 @@ define('lyria/achievement/manager', ['jquery', 'lyria/achievement', 'lyria/templ
     },
     fromString: function(achievements) {
       var deserializedValue = {};
-      
+
       try {
         deserializedValue = JSON.parse(achievements);
       } catch (e) {
         throw new Error('Error while deserializing achivements in AchievementManager: ' + e);
       }
-      
+
       return AchievementManager.fromJSON(deserializedValue);
-    },
-    templates: {
-      achievement: '',
-      list: ''
     }
   };
-  
+
   Object.defineProperty(AchievementManager, 'length', {
     get: function() {
       return Object.keys(achievementStore).length;
     }
   });
-  
+
   Object.defineProperty(AchievementManager, 'unlockedCount', {
     get: function() {
       var counter = 0;
-      
+
       $.each(achievementStore, function(key, value) {
         if (value.unlocked) {
           counter++;
         }
       });
-      
+
       return counter;
     }
   });
   
-  
+  Object.defineProperty(AchievementManager, 'store', {
+    get: function() {
+      return achievementStore;
+    }
+  });
+
   return AchievementManager;
-  
+
 });
 
 define('lyria/animation', ['mixer', 'eventmap'], function(mixer, EventMap) {
@@ -1060,7 +1076,7 @@ define('lyria/localization', ['lyria/language', 'lyria/template/string', 'lyria/
     };
 
     Localization.prototype.exists = function(name) {
-      return (this.data && this.data[this.language] && this.data[this.language][name]);
+      return !!(this.data && this.data[this.language] && this.data[this.language][name]);
     };
 
     Localization.prototype.t = function() {
@@ -2108,6 +2124,7 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
 
     Scene.requireAlways = {
       'lyria/audio': 'Lyria.Audio',
+      'lyria/achievement': 'Lyria.Achievement',
       'lyria/achievement/manager': 'Lyria.AchievementManager',
       'lyria/log': 'Lyria.Log',
       'lyria/component': 'Lyria.Component',
@@ -2605,10 +2622,16 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 
 function program1(depth0,data) {
   
+  
+  return "offscreen";
+  }
+
+function program3(depth0,data) {
+  
   var buffer = "", stack1;
-  buffer += "\r\n  <div class=\"progress-status\">\r\n    <span class=\"min\">";
-  if (stack1 = helpers.min) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
-  else { stack1 = depth0.min; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += "\r\n  <div class=\"progress-status\">\r\n    <span class=\"current\">";
+  if (stack1 = helpers.current) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.current; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
     + "</span>\r\n    <span class=\"separator\">";
   if (stack1 = helpers.separator) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
@@ -2626,20 +2649,23 @@ function program1(depth0,data) {
   if (stack1 = helpers.id) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.id; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
-    + "\" class=\"achievement\">\r\n  <div class=\"title\">";
+    + "\" class=\"achievement ";
+  stack1 = helpers['if'].call(depth0, depth0.offscreen, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\">\r\n  <div class=\"title\">";
   if (stack1 = helpers.title) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.title; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
     + "</div>\r\n  <div class=\"icon ";
-  if (stack1 = helpers.title) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
-  else { stack1 = depth0.title; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  if (stack1 = helpers.className) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.className; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
     + "\"></div>\r\n  <div class=\"description\">";
   if (stack1 = helpers.description) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.description; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
     + "</div>\r\n  ";
-  stack1 = helpers['if'].call(depth0, depth0.progressable, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
+  stack1 = helpers['if'].call(depth0, depth0.progressable, {hash:{},inverse:self.noop,fn:self.program(3, program3, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\r\n</div>";
   return buffer;

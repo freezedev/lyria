@@ -1,6 +1,7 @@
 .achievement {
-  position: absolute;
+  position: fixed;
   left: 50%;
+  bottom: 0px;
   opacity: 1;
   -ms-filter: none;
   filter: none;
@@ -30,7 +31,7 @@
   -o-transition: all 1200ms ease-in-out 0ms;
   -ms-transition: all 1200ms ease-in-out 0ms;
   transition: all 1200ms ease-in-out 0ms;
-  margin-left: -160px;
+  margin-left: -206px;
 }
 .achievement.offscreen {
   opacity: 0;
