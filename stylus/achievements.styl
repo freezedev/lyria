@@ -1,5 +1,5 @@
 .achievement
-  position: absolute
+  position: fixed
   left: 50%
   bottom: 0px
   
@@ -23,7 +23,7 @@
   z-index: 30000001
   transition: all 1200ms ease-in-out 0ms
   
-  margin-left: -(@width / 2)
+  margin-left: -((@width + @padding-left + @padding-right) / 2)
   
   &.offscreen
     opacity: 0.0
