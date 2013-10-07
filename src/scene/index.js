@@ -309,16 +309,19 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
         return;
       }
 
-      if ( typeof selector === 'object') {
-        this.DOMEvents = selector;
-        return;
-      }
-
       if ( typeof eventName === 'function') {
         this.DOMEvents[selector][this.defaultEvent] = eventFunction;
       } else {
         this.DOMEvents[selector][eventName] = eventFunction;
       }
+    };
+    
+    /**
+     *
+     * @method bindEvents 
+     */
+    Scene.prototype.bindEvents = function(obj) {
+      this.DOMEvents = obj;
     };
 
     /*
