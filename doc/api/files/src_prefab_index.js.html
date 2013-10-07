@@ -19,7 +19,7 @@
             
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.2.0-beta5</em>
+            <em>API Docs for: 0.2.0-beta6</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -120,21 +120,7 @@ define(&#x27;lyria/prefab&#x27;, [&#x27;lyria/scene&#x27;], function(Scene) {
 	&#x27;use strict&#x27;;
 
 	//Lyria.Prefab
-	return function(prefabName, options) {
-		
-		var defaultOptions = {
-			target: null,
-			template: &#x27;prefab.html&#x27;,
-			data: &#x27;prefab.js&#x27;,
-			path: &#x27;prefab&#x27;,
-			isPrefab: true
-		};
-		
-		options = _.defaults(true, defaultOptions, options);
-		
-		return new Scene(prefabName, options);
-		
-	};
+	return Scene;
   
 });
     </pre>
