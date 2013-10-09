@@ -794,7 +794,15 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 344,
+            "line": 319,
+            "itemtype": "method",
+            "name": "bindEvents",
+            "class": "Scene",
+            "module": "Lyria"
+        },
+        {
+            "file": "src\\scene\\index.js",
+            "line": 347,
             "description": "Gets localized value",
             "params": [
                 {
@@ -808,7 +816,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 357,
+            "line": 360,
             "description": "Logging directly from the scene",
             "params": [
                 {
@@ -1132,11 +1140,11 @@
         },
         {
             "message": "Missing item type\nGets localized value",
-            "line": " src\\scene\\index.js:344"
+            "line": " src\\scene\\index.js:347"
         },
         {
             "message": "Missing item type\nLogging directly from the scene",
-            "line": " src\\scene\\index.js:357"
+            "line": " src\\scene\\index.js:360"
         },
         {
             "message": "Missing item type",
