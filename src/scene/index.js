@@ -35,7 +35,7 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
       if ( typeof sceneDeps === 'function') {
         options = sceneFunction;
         sceneFunction = sceneDeps;
-        sceneDeps = [];
+        sceneDeps = {};
       }
 
       // Mixin event map into Scene
@@ -194,6 +194,7 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
         }
 
         if (Array.isArray(sceneDeps)) {
+          // Array is deprecated... leave it in until I'm sure it works like a charm
           if (sceneDeps.length > 0) {
             require(sceneDeps, function() {
               createScene(importedModules, [].slice.call(arguments, 0));
