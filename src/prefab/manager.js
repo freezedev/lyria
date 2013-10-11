@@ -39,6 +39,10 @@ define('lyria/prefab/manager', ['jqueryify', 'jquery', 'root'], function($ify, $
   PrefabManager.prepend = function() {
     createElement('prepend').apply(this, arguments);
   };
+  
+  PrefabManager.insert = function() {
+    createElement('html').apply(this, arguments);
+  };
 
   return PrefabManager;
 });
