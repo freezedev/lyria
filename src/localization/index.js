@@ -2,6 +2,10 @@ define('lyria/localization', ['lyria/language', 'lyria/template/string', 'lyria/
 
   var Localization = (function() {
     var Localization = function(data) {
+      if (data == null) {
+        data = {};
+      }
+      
       this.data = data;
 
       var langValue = Language.language;
