@@ -70,20 +70,23 @@ The markup of the scene
 The data section of a scene. You can use it to prepare data you want to display, calculate stuff or directly set the variables you want to show in the template.
 
 ```javascript
-(function(sender, localization) {
-	
-	var buttonArray = [];
-	var button1 = "button1";
-	var button2 = "button2";
+(function() {
 
-	buttonArray.push({id: button1, caption: localization[button1]});
-	buttonArray.push({id: button2, caption: localization[button2]});
+  var self = this;
+  
+  var buttonArray = [];
+  var button1 = "button1";
+  var button2 = "button2";
 
-	return {
-		someText: 'Hello there.',
-		buttons: buttonArray
-	};
-})(sender, localization);
+  buttonArray.push({id: button1, caption: self.t(button1)});
+  buttonArray.push({id: button2, caption: self.t(button2)});
+
+  this.expose({
+    buttons: buttonArray,
+    someText: 'Hello there.'
+  });
+
+}).call(this);
 ```
 
 **3) localization.json**  
