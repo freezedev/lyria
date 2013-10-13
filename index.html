@@ -38,37 +38,151 @@
           <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
         </div>
 
-        <h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
+        <h1>
+<a name="lyria" class="anchor" href="#lyria"><span class="octicon octicon-link"></span></a>Lyria</h1>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+<p><a href="https://travis-ci.org/freezedev/lyria"><img src="https://travis-ci.org/freezedev/lyria.png?branch=master" alt="Build Status"></a>
+<a href="https://david-dm.org/freezedev/lyria"><img src="https://david-dm.org/freezedev/lyria.png" alt="Dependency Status"></a>
+<a href="https://david-dm.org/freezedev/lyria#info=devDependencies"><img src="https://david-dm.org/freezedev/lyria/dev-status.png" alt="devDependency Status"></a></p>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
+<p>Lightweight prototyping javascript game framework based on jQuery. </p>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+<p>The Lyria template can be found here: <a href="https://github.com/freezedev/lyria-template">https://github.com/freezedev/lyria-template</a></p>
 
-<h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
+<p>If you are looking for something more CoffeeScript, take a look at <a href="https://github.com/elysion-powered/elyssa">Elyssa</a>.<br>
+If you are looking for something less game-related, take a look at <a href="https://github.com/freezedev/milksugar">MilkSugar</a>.</p>
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
+<h2>
+<a name="getting-lyria" class="anchor" href="#getting-lyria"><span class="octicon octicon-link"></span></a>Getting Lyria</h2>
 
-<h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
+<p>If you have Bower installed, simply do:
+<code>bower install lyria</code><br>
+(If you don't have bower installed, simply do a <code>npm install -g bower</code> in the command-line of your choice. To learn more about Bower, go to <a href="http://bower.io">http://bower.io</a>)</p>
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+<h2>
+<a name="warning" class="anchor" href="#warning"><span class="octicon octicon-link"></span></a>Warning</h2>
 
-<h3>
-<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
+<p>Lyria is currently being reworked and the API changed and still changes a lot. There are bugs. Documentation is incomplete.</p>
 
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+<h2>
+<a name="what-does-it-look-like" class="anchor" href="#what-does-it-look-like"><span class="octicon octicon-link"></span></a>What does it look like?</h2>
 
-<h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
+<p>First create a new game object.</p>
 
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
+<div class="highlight highlight-javascript"><pre><span class="nx">define</span><span class="p">(</span><span class="s1">'mygame'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'lyria/game'</span><span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Game</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">myGame</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Game</span><span class="p">();</span>
+<span class="p">});</span>
+</pre></div>
+
+<p>Lyria uses AMD modules extensively and it is very much recommended to use the AMD pattern for organizing your game as well.</p>
+
+<p>Every game object (as in a <code>lyria/game</code> instance, not an actual game object) has a scene manager, a viewport and a preloader. The core of it all is the scene manger. (The scene manger in Lyria.js is quite similar to the one in <a href="https://github.com/freezedev/elysion">Elysion</a>.)<br>
+If you are coming from a game developer background, you may already know what a scene is. A scene in a game enviroment can be a main menu, a settings screen or the game itself. Or in 2D point-and-click-adventure, a scene can by any location the character is traveling to.<br>
+So in Lyria a scene is that as well, but seperated in a markup file, a data file and localization JSON file. Templating is build in through Handlebars.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">define</span><span class="p">(</span><span class="s1">'mygame'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'lyria/game'</span><span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Game</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">myGame</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Game</span><span class="p">();</span>
+
+  <span class="nx">myGame</span><span class="p">.</span><span class="nx">director</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'myScene'</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+
+<p>Our scene called myScene might look this:  </p>
+
+<p><strong>1) scene.html</strong><br>
+The markup of the scene  </p>
+
+<div class="highlight highlight-html"><pre>{{#if someText}}
+    <span class="nt">&lt;span&gt;</span>{{someText}}<span class="nt">&lt;/span&gt;</span>
+{{/if someText}}
+
+{{#each buttons}}
+    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"{{id}}"</span><span class="nt">&gt;</span>{{caption}}<span class="nt">&lt;/div&gt;</span>
+{{/each buttons}}
+</pre></div>
+
+<p><strong>2) scene.js</strong><br>
+The data section of a scene. You can use it to prepare data you want to display, calculate stuff or directly set the variables you want to show in the template.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+
+  <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+
+  <span class="kd">var</span> <span class="nx">buttonArray</span> <span class="o">=</span> <span class="p">[];</span>
+  <span class="kd">var</span> <span class="nx">button1</span> <span class="o">=</span> <span class="s2">"button1"</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">button2</span> <span class="o">=</span> <span class="s2">"button2"</span><span class="p">;</span>
+
+  <span class="nx">buttonArray</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span><span class="nx">id</span><span class="o">:</span> <span class="nx">button1</span><span class="p">,</span> <span class="nx">caption</span><span class="o">:</span> <span class="nx">self</span><span class="p">.</span><span class="nx">t</span><span class="p">(</span><span class="nx">button1</span><span class="p">)});</span>
+  <span class="nx">buttonArray</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span><span class="nx">id</span><span class="o">:</span> <span class="nx">button2</span><span class="p">,</span> <span class="nx">caption</span><span class="o">:</span> <span class="nx">self</span><span class="p">.</span><span class="nx">t</span><span class="p">(</span><span class="nx">button2</span><span class="p">)});</span>
+
+  <span class="k">this</span><span class="p">.</span><span class="nx">expose</span><span class="p">({</span>
+    <span class="nx">buttons</span><span class="o">:</span> <span class="nx">buttonArray</span><span class="p">,</span>
+    <span class="nx">someText</span><span class="o">:</span> <span class="s1">'Hello there.'</span>
+  <span class="p">});</span>
+
+<span class="p">}).</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+</pre></div>
+
+<p><strong>3) localization.json</strong><br>
+Contains localized strings as a JSON file</p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+    <span class="nt">"en"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">"button1"</span><span class="p">:</span> <span class="s2">"This is the first button."</span><span class="p">,</span>
+        <span class="nt">"button2"</span><span class="p">:</span> <span class="s2">"This is the second button."</span>
+    <span class="p">},</span>
+    <span class="nt">"de"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">"button1"</span><span class="p">:</span> <span class="s2">"Das ist der erste Button."</span><span class="p">,</span>
+        <span class="nt">"button2"</span><span class="p">:</span> <span class="s2">"Das ist der zweite Button."</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>The result will look this:</p>
+
+<div class="highlight highlight-html"><pre><span class="nt">&lt;span&gt;</span>Hello there.<span class="nt">&lt;/span&gt;</span>
+
+<span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"button1"</span><span class="nt">&gt;</span>This is the first button.<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"button2"</span><span class="nt">&gt;</span>This is the second button.<span class="nt">&lt;/div&gt;</span>
+</pre></div>
+
+<p>Assuming you opened the web application in a browser with an english language pack. Opening the page in a browser with a german language pack will show this:</p>
+
+<div class="highlight highlight-html"><pre><span class="nt">&lt;span&gt;</span>Hello there.<span class="nt">&lt;/span&gt;</span>
+
+<span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"button1"</span><span class="nt">&gt;</span>Das ist der erste Button.<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"button2"</span><span class="nt">&gt;</span>Das ist der zweite Button.<span class="nt">&lt;/div&gt;</span>
+</pre></div>
+
+<p>If the page is opened with a browser in a language that is not supported (i.e. not defined in localization.json) the english version will be displayed, as english is the default fallback language in Lyria.</p>
+
+<p>Of course, this only a simple example of what you can do with scenes. You can also add partials, helper functions and directly bind events to elements.</p>
+
+<p>If you are already have worked with the <a href="https://github.com/jchris/evently">CouchDB eventlys</a>, this concept might feel very familiar to you.</p>
+
+<h2>
+<a name="features" class="anchor" href="#features"><span class="octicon octicon-link"></span></a>Features</h2>
+
+<p>Here is the plain old feature list:</p>
+
+<ul>
+<li>Scene management</li>
+<li>Data bindings</li>
+<li>High-level abstraction to DOM elements (or you can directly mess with the DOM elements if you prefer)</li>
+</ul><h2>
+<a name="how-do-i-get-started" class="anchor" href="#how-do-i-get-started"><span class="octicon octicon-link"></span></a>How do I get started?</h2>
+
+<p>You are already half-way there. Either download the latest stable version, the current development version if you are feeling adventurous or clone this repository.<br>
+Head on over to the <a href="https://github.com/freezedev/Lyria.js/wiki">wiki</a> to have step by step instructions on how to use this framework.</p>
+
+<h2>
+<a name="what-does-lyria-mean" class="anchor" href="#what-does-lyria-mean"><span class="octicon octicon-link"></span></a>What does Lyria mean?</h2>
+
+<ul>
+<li>It's "freedom" in albanian (free as in not proprietary, free as in open-source)</li>
+<li>It's also a reference to Lyrium from Bioware's Dragon Age series, in which Lyrium is the essence for magic</li>
+<li>It's a reference to Illyria, a powerful being from the TV series Angel</li>
+</ul>
       </section>
 
     </div>
