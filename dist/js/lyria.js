@@ -1127,6 +1127,10 @@ define('lyria/localization', ['lyria/language', 'lyria/template/string', 'lyria/
 
   var Localization = (function() {
     var Localization = function(data) {
+      if (data == null) {
+        data = {};
+      }
+      
       this.data = data;
 
       var langValue = Language.language;
@@ -1621,7 +1625,7 @@ define('lyria/preloader', ['root', 'mixer', 'jquery', 'lyria/resource', 'lyria/l
       } else {
         // TODO: This is bad, mkay? Find a way to asynchronously load no assets
         // This is like jumping onto a moving car on the high way while you're moving at 1mph
-        setTimeout(loadingProgress, 100);
+        setTimeout(loadingProgress, 500);
       }
       
     };
@@ -1805,10 +1809,6 @@ define('lyria/scene/director', ['root', 'mixer', 'jquery', 'eventmap', 'lyria/sc
         if ($('#' + scene.name).length === 0) {
           this.viewport.$element.prepend($(root.document.createElement('div')).attr('id', scene.name).attr('class', SceneDirector.prototype.sceneClassName));
         }
-        
-        if (!scene.isAsync) {
-          scene.trigger('added');
-        }
       }
 
       return this;
@@ -1915,7 +1915,7 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
       if ( typeof sceneDeps === 'function') {
         options = sceneFunction;
         sceneFunction = sceneDeps;
-        sceneDeps = [];
+        sceneDeps = {};
       }
 
       // Mixin event map into Scene
@@ -2011,20 +2011,14 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
         }
       });
 
-      var createScene = function(LyriaObject, deps) {
-        if (deps == null) {
-          deps = [];
-        }
-
+      var createScene = function(modules) {
         var sceneDone = function(err, success) {
           if (err) {
             return console.error('Error while executing scene ' + self.name + ': ' + err);
           }
 
-          if (self.isAsync) {
-            self.trigger('added');
-          }
-
+          // It's always asynchronous
+          self.trigger('added');
         };
 
         var async = false;
@@ -2046,12 +2040,10 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
           }
         });
 
-        context.modules = LyriaObject;
+        context.modules = modules;
 
-        // TODO: Evaluate how to show dependencies (concat into array, array with
-        // objects of name and value)
         try {
-          var success = sceneFunction.apply(context, [context, LyriaObject].concat(deps));
+          var success = sceneFunction.apply(context, [context, modules]);
 
           if (!async) {
             sceneDone(null, success);
@@ -2073,18 +2065,10 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
           })(arguments[i]);
         }
 
-        if (Array.isArray(sceneDeps)) {
-          if (sceneDeps.length > 0) {
-            require(sceneDeps, function() {
-              createScene(importedModules, [].slice.call(arguments, 0));
-            });
-          } else {
-            createScene(importedModules);
-          }
-        } else {
-          sceneDeps = sceneDeps || {};
-          var reqSceneModules = Object.keys(sceneDeps) || [];
+        sceneDeps = sceneDeps || {};
+        var reqSceneModules = Object.keys(sceneDeps) || [];
 
+        if (reqSceneModules.length) {
           require(reqSceneModules, function() {
 
             for (var k = 0, l = arguments.length; k < l; k++) {
@@ -2095,7 +2079,10 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
 
             createScene(importedModules);
           });
+        } else {
+          createScene(importedModules);
         }
+
       });
     };
 
@@ -2195,10 +2182,10 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
         this.DOMEvents[selector][eventName] = eventFunction;
       }
     };
-    
+
     /**
      *
-     * @method bindEvents 
+     * @method bindEvents
      */
     Scene.prototype.bindEvents = function(obj) {
       this.DOMEvents = obj;
@@ -2266,7 +2253,8 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
 
   return Scene;
 
-}); 
+});
+
 define('lyria/serialize', ['jquery'], function($) {
   
   /**
@@ -2719,116 +2707,231 @@ define('lyria/world', ['mixer', 'eventmap'], function(mixer, EventMap) {
 
 });
 
-define('lyria/template/list', {'achievement-list':function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); partials = this.merge(partials, Handlebars.partials); data = data || {};
-  var buffer = "", stack1, self=this;
+define('lyria/template/list', {
+  'achievement-list': function(Handlebars, depth0, helpers, partials, data) {
+    this.compilerInfo = [4, '>= 1.0.0'];
+    helpers = this.merge(helpers, Handlebars.helpers);
+    partials = this.merge(partials, Handlebars.partials);
+    data = data || {};
+    var buffer = "",
+      stack1, self = this;
 
-function program1(depth0,data) {
-  
-  var buffer = "", stack1;
-  buffer += "\r\n    ";
-  stack1 = self.invokePartial(partials.achievement, 'achievement', depth0, helpers, partials, data);
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\r\n  ";
-  return buffer;
+    function program1(depth0, data) {
+
+      var buffer = "",
+        stack1;
+      buffer += "\r\n    ";
+      stack1 = self.invokePartial(partials.achievement, 'achievement', depth0, helpers, partials, data);
+      if (stack1 || stack1 === 0) {
+        buffer += stack1;
+      }
+      buffer += "\r\n  ";
+      return buffer;
+    }
+
+    buffer += "<div class=\"achievement-list\">\r\n  ";
+    stack1 = helpers.each.call(depth0, depth0.achievement, {
+      hash: {},
+      inverse: self.noop,
+      fn: self.program(1, program1, data),
+      data: data
+    });
+    if (stack1 || stack1 === 0) {
+      buffer += stack1;
+    }
+    buffer += "\r\n</div>";
+    return buffer;
+  },
+  'achievement': function(Handlebars, depth0, helpers, partials, data) {
+    this.compilerInfo = [4, '>= 1.0.0'];
+    helpers = this.merge(helpers, Handlebars.helpers);
+    data = data || {};
+    var buffer = "",
+      stack1, functionType = "function",
+      escapeExpression = this.escapeExpression,
+      self = this;
+
+    function program1(depth0, data) {
+
+
+      return "offscreen";
+    }
+
+    function program3(depth0, data) {
+
+      var buffer = "",
+        stack1;
+      buffer += "\r\n  <div class=\"progress-status\">\r\n    <span class=\"current\">";
+      if (stack1 = helpers.current) {
+        stack1 = stack1.call(depth0, {
+          hash: {},
+          data: data
+        });
+      } else {
+        stack1 = depth0.current;
+        stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
+      }
+      buffer += escapeExpression(stack1) + "</span>\r\n    <span class=\"separator\">";
+      if (stack1 = helpers.separator) {
+        stack1 = stack1.call(depth0, {
+          hash: {},
+          data: data
+        });
+      } else {
+        stack1 = depth0.separator;
+        stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
+      }
+      buffer += escapeExpression(stack1) + "</span>\r\n    <span class=\"max\">";
+      if (stack1 = helpers.max) {
+        stack1 = stack1.call(depth0, {
+          hash: {},
+          data: data
+        });
+      } else {
+        stack1 = depth0.max;
+        stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
+      }
+      buffer += escapeExpression(stack1) + "</span>\r\n  </div>\r\n  ";
+      return buffer;
+    }
+
+    buffer += "<div id=\"";
+    if (stack1 = helpers.id) {
+      stack1 = stack1.call(depth0, {
+        hash: {},
+        data: data
+      });
+    } else {
+      stack1 = depth0.id;
+      stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
+    }
+    buffer += escapeExpression(stack1) + "\" class=\"achievement ";
+    stack1 = helpers['if'].call(depth0, depth0.offscreen, {
+      hash: {},
+      inverse: self.noop,
+      fn: self.program(1, program1, data),
+      data: data
+    });
+    if (stack1 || stack1 === 0) {
+      buffer += stack1;
+    }
+    buffer += "\">\r\n  <div class=\"title\">";
+    if (stack1 = helpers.title) {
+      stack1 = stack1.call(depth0, {
+        hash: {},
+        data: data
+      });
+    } else {
+      stack1 = depth0.title;
+      stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
+    }
+    buffer += escapeExpression(stack1) + "</div>\r\n  <div class=\"icon ";
+    if (stack1 = helpers.className) {
+      stack1 = stack1.call(depth0, {
+        hash: {},
+        data: data
+      });
+    } else {
+      stack1 = depth0.className;
+      stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
+    }
+    buffer += escapeExpression(stack1) + "\"></div>\r\n  <div class=\"description\">";
+    if (stack1 = helpers.description) {
+      stack1 = stack1.call(depth0, {
+        hash: {},
+        data: data
+      });
+    } else {
+      stack1 = depth0.description;
+      stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
+    }
+    buffer += escapeExpression(stack1) + "</div>\r\n  ";
+    stack1 = helpers['if'].call(depth0, depth0.progressable, {
+      hash: {},
+      inverse: self.noop,
+      fn: self.program(3, program3, data),
+      data: data
+    });
+    if (stack1 || stack1 === 0) {
+      buffer += stack1;
+    }
+    buffer += "\r\n</div>";
+    return buffer;
+  },
+  'scene': function(Handlebars, depth0, helpers, partials, data) {
+    this.compilerInfo = [4, '>= 1.0.0'];
+    helpers = this.merge(helpers, Handlebars.helpers);
+    data = data || {};
+    var stack1, functionType = "function",
+      escapeExpression = this.escapeExpression,
+      self = this;
+
+    function program1(depth0, data) {
+
+      var buffer = "",
+        stack1;
+      buffer += "\r\n  <canvas id=\"";
+      if (stack1 = helpers.name) {
+        stack1 = stack1.call(depth0, {
+          hash: {},
+          data: data
+        });
+      } else {
+        stack1 = depth0.name;
+        stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
+      }
+      buffer += escapeExpression(stack1) + "\" class=\"";
+      if (stack1 = helpers.type) {
+        stack1 = stack1.call(depth0, {
+          hash: {},
+          data: data
+        });
+      } else {
+        stack1 = depth0.type;
+        stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
+      }
+      buffer += escapeExpression(stack1) + "\"></canvas>\r\n";
+      return buffer;
+    }
+
+    function program3(depth0, data) {
+
+      var buffer = "",
+        stack1;
+      buffer += "\r\n  <div id=\"";
+      if (stack1 = helpers.name) {
+        stack1 = stack1.call(depth0, {
+          hash: {},
+          data: data
+        });
+      } else {
+        stack1 = depth0.name;
+        stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
+      }
+      buffer += escapeExpression(stack1) + "\" class=\"";
+      if (stack1 = helpers.type) {
+        stack1 = stack1.call(depth0, {
+          hash: {},
+          data: data
+        });
+      } else {
+        stack1 = depth0.type;
+        stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
+      }
+      buffer += escapeExpression(stack1) + "\"></div>\r\n";
+      return buffer;
+    }
+
+    stack1 = helpers['if'].call(depth0, depth0.canvas, {
+      hash: {},
+      inverse: self.program(3, program3, data),
+      fn: self.program(1, program1, data),
+      data: data
+    });
+    if (stack1 || stack1 === 0) {
+      return stack1;
+    } else {
+      return '';
+    }
   }
-
-  buffer += "<div class=\"achievement-list\">\r\n  ";
-  stack1 = helpers.each.call(depth0, depth0.achievement, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\r\n</div>";
-  return buffer;
-  },'achievement':function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
-
-function program1(depth0,data) {
-  
-  
-  return "offscreen";
-  }
-
-function program3(depth0,data) {
-  
-  var buffer = "", stack1;
-  buffer += "\r\n  <div class=\"progress-status\">\r\n    <span class=\"current\">";
-  if (stack1 = helpers.current) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
-  else { stack1 = depth0.current; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
-  buffer += escapeExpression(stack1)
-    + "</span>\r\n    <span class=\"separator\">";
-  if (stack1 = helpers.separator) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
-  else { stack1 = depth0.separator; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
-  buffer += escapeExpression(stack1)
-    + "</span>\r\n    <span class=\"max\">";
-  if (stack1 = helpers.max) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
-  else { stack1 = depth0.max; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
-  buffer += escapeExpression(stack1)
-    + "</span>\r\n  </div>\r\n  ";
-  return buffer;
-  }
-
-  buffer += "<div id=\"";
-  if (stack1 = helpers.id) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
-  else { stack1 = depth0.id; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
-  buffer += escapeExpression(stack1)
-    + "\" class=\"achievement ";
-  stack1 = helpers['if'].call(depth0, depth0.offscreen, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\">\r\n  <div class=\"title\">";
-  if (stack1 = helpers.title) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
-  else { stack1 = depth0.title; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
-  buffer += escapeExpression(stack1)
-    + "</div>\r\n  <div class=\"icon ";
-  if (stack1 = helpers.className) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
-  else { stack1 = depth0.className; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
-  buffer += escapeExpression(stack1)
-    + "\"></div>\r\n  <div class=\"description\">";
-  if (stack1 = helpers.description) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
-  else { stack1 = depth0.description; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
-  buffer += escapeExpression(stack1)
-    + "</div>\r\n  ";
-  stack1 = helpers['if'].call(depth0, depth0.progressable, {hash:{},inverse:self.noop,fn:self.program(3, program3, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\r\n</div>";
-  return buffer;
-  },'scene':function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
-
-function program1(depth0,data) {
-  
-  var buffer = "", stack1;
-  buffer += "\r\n  <canvas id=\"";
-  if (stack1 = helpers.name) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
-  else { stack1 = depth0.name; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
-  buffer += escapeExpression(stack1)
-    + "\" class=\"";
-  if (stack1 = helpers.type) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
-  else { stack1 = depth0.type; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
-  buffer += escapeExpression(stack1)
-    + "\"></canvas>\r\n";
-  return buffer;
-  }
-
-function program3(depth0,data) {
-  
-  var buffer = "", stack1;
-  buffer += "\r\n  <div id=\"";
-  if (stack1 = helpers.name) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
-  else { stack1 = depth0.name; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
-  buffer += escapeExpression(stack1)
-    + "\" class=\"";
-  if (stack1 = helpers.type) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
-  else { stack1 = depth0.type; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
-  buffer += escapeExpression(stack1)
-    + "\"></div>\r\n";
-  return buffer;
-  }
-
-  stack1 = helpers['if'].call(depth0, depth0.canvas, {hash:{},inverse:self.program(3, program3, data),fn:self.program(1, program1, data),data:data});
-  if(stack1 || stack1 === 0) { return stack1; }
-  else { return ''; }
-  }});
+});
