@@ -692,7 +692,7 @@
         },
         {
             "file": "src\\scene\\director.js",
-            "line": 142,
+            "line": 138,
             "description": "Shows a specified scene",
             "itemtype": "method",
             "name": "show",
@@ -719,7 +719,7 @@
         },
         {
             "file": "src\\scene\\director.js",
-            "line": 189,
+            "line": 185,
             "description": "Refreshes a scene",
             "itemtype": "method",
             "name": "refresh",
@@ -736,7 +736,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 222,
+            "line": 209,
             "description": "Adds a gameobject to the scene",
             "itemtype": "method",
             "name": "add",
@@ -752,7 +752,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 270,
+            "line": 257,
             "description": "Refreshes the scene (Re-renders the template)",
             "itemtype": "method",
             "name": "refresh",
@@ -768,7 +768,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 298,
+            "line": 285,
             "description": "Sets an event to the event object (DOM events)\nTODO: Not completely happy with the function name",
             "itemtype": "method",
             "name": "bindEvent",
@@ -794,7 +794,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 319,
+            "line": 306,
             "itemtype": "method",
             "name": "bindEvents",
             "class": "Scene",
@@ -802,7 +802,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 347,
+            "line": 334,
             "description": "Gets localized value",
             "params": [
                 {
@@ -816,7 +816,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 360,
+            "line": 347,
             "description": "Logging directly from the scene",
             "params": [
                 {
@@ -1140,11 +1140,11 @@
         },
         {
             "message": "Missing item type\nGets localized value",
-            "line": " src\\scene\\index.js:347"
+            "line": " src\\scene\\index.js:334"
         },
         {
             "message": "Missing item type\nLogging directly from the scene",
-            "line": " src\\scene\\index.js:360"
+            "line": " src\\scene\\index.js:347"
         },
         {
             "message": "Missing item type",

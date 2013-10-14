@@ -244,10 +244,6 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;mixer&#x27;, &
         if ($(&#x27;#&#x27; + scene.name).length === 0) {
           this.viewport.$element.prepend($(root.document.createElement(&#x27;div&#x27;)).attr(&#x27;id&#x27;, scene.name).attr(&#x27;class&#x27;, SceneDirector.prototype.sceneClassName));
         }
-        
-        if (!scene.isAsync) {
-          scene.trigger(&#x27;added&#x27;);
-        }
       }
 
       return this;

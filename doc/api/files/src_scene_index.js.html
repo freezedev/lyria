@@ -149,7 +149,7 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;ne
       if ( typeof sceneDeps === &#x27;function&#x27;) {
         options = sceneFunction;
         sceneFunction = sceneDeps;
-        sceneDeps = [];
+        sceneDeps = {};
       }
 
       // Mixin event map into Scene
@@ -245,20 +245,14 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;ne
         }
       });
 
-      var createScene = function(LyriaObject, deps) {
-        if (deps == null) {
-          deps = [];
-        }
-
+      var createScene = function(modules) {
         var sceneDone = function(err, success) {
           if (err) {
             return console.error(&#x27;Error while executing scene &#x27; + self.name + &#x27;: &#x27; + err);
           }
 
-          if (self.isAsync) {
-            self.trigger(&#x27;added&#x27;);
-          }
-
+          // It&#x27;s always asynchronous
+          self.trigger(&#x27;added&#x27;);
         };
 
         var async = false;
@@ -280,12 +274,10 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;ne
           }
         });
 
-        context.modules = LyriaObject;
+        context.modules = modules;
 
-        // TODO: Evaluate how to show dependencies (concat into array, array with
-        // objects of name and value)
         try {
-          var success = sceneFunction.apply(context, [context, LyriaObject].concat(deps));
+          var success = sceneFunction.apply(context, [context, modules]);
 
           if (!async) {
             sceneDone(null, success);
@@ -307,18 +299,10 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;ne
           })(arguments[i]);
         }
 
-        if (Array.isArray(sceneDeps)) {
-          if (sceneDeps.length &gt; 0) {
-            require(sceneDeps, function() {
-              createScene(importedModules, [].slice.call(arguments, 0));
-            });
-          } else {
-            createScene(importedModules);
-          }
-        } else {
-          sceneDeps = sceneDeps || {};
-          var reqSceneModules = Object.keys(sceneDeps) || [];
+        sceneDeps = sceneDeps || {};
+        var reqSceneModules = Object.keys(sceneDeps) || [];
 
+        if (reqSceneModules.length) {
           require(reqSceneModules, function() {
 
             for (var k = 0, l = arguments.length; k &lt; l; k++) {
@@ -329,7 +313,10 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;ne
 
             createScene(importedModules);
           });
+        } else {
+          createScene(importedModules);
         }
+
       });
     };
 
@@ -429,10 +416,10 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;ne
         this.DOMEvents[selector][eventName] = eventFunction;
       }
     };
-    
+
     /**
      *
-     * @method bindEvents 
+     * @method bindEvents
      */
     Scene.prototype.bindEvents = function(obj) {
       this.DOMEvents = obj;
@@ -500,7 +487,8 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;ne
 
   return Scene;
 
-}); 
+});
+
     </pre>
 </div>
 
