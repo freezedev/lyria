@@ -130,10 +130,6 @@ define('lyria/scene/director', ['root', 'mixer', 'jquery', 'eventmap', 'lyria/sc
         if ($('#' + scene.name).length === 0) {
           this.viewport.$element.prepend($(root.document.createElement('div')).attr('id', scene.name).attr('class', SceneDirector.prototype.sceneClassName));
         }
-        
-        if (!scene.isAsync) {
-          scene.trigger('added');
-        }
       }
 
       return this;
