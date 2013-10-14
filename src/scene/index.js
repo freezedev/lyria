@@ -131,20 +131,14 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
         }
       });
 
-      var createScene = function(LyriaObject, deps) {
-        if (deps == null) {
-          deps = [];
-        }
-
+      var createScene = function(modules) {
         var sceneDone = function(err, success) {
           if (err) {
             return console.error('Error while executing scene ' + self.name + ': ' + err);
           }
 
-          if (self.isAsync) {
-            self.trigger('added');
-          }
-
+          // It's always asynchronous
+          self.trigger('added');
         };
 
         var async = false;
@@ -166,12 +160,10 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
           }
         });
 
-        context.modules = LyriaObject;
+        context.modules = modules;
 
-        // TODO: Evaluate how to show dependencies (concat into array, array with
-        // objects of name and value)
         try {
-          var success = sceneFunction.apply(context, [context, LyriaObject].concat(deps));
+          var success = sceneFunction.apply(context, [context, modules]);
 
           if (!async) {
             sceneDone(null, success);
@@ -193,19 +185,10 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
           })(arguments[i]);
         }
 
-        if (Array.isArray(sceneDeps)) {
-          // Array is deprecated... leave it in until I'm sure it works like a charm
-          if (sceneDeps.length > 0) {
-            require(sceneDeps, function() {
-              createScene(importedModules, [].slice.call(arguments, 0));
-            });
-          } else {
-            createScene(importedModules);
-          }
-        } else {
-          sceneDeps = sceneDeps || {};
-          var reqSceneModules = Object.keys(sceneDeps) || [];
+        sceneDeps = sceneDeps || {};
+        var reqSceneModules = Object.keys(sceneDeps) || [];
 
+        if (reqSceneModules.length) {
           require(reqSceneModules, function() {
 
             for (var k = 0, l = arguments.length; k < l; k++) {
@@ -216,7 +199,10 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
 
             createScene(importedModules);
           });
+        } else {
+          createScene(importedModules);
         }
+
       });
     };
 
@@ -316,10 +302,10 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
         this.DOMEvents[selector][eventName] = eventFunction;
       }
     };
-    
+
     /**
      *
-     * @method bindEvents 
+     * @method bindEvents
      */
     Scene.prototype.bindEvents = function(obj) {
       this.DOMEvents = obj;
@@ -387,4 +373,4 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
 
   return Scene;
 
-}); 
+});
