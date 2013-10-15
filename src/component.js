@@ -4,7 +4,7 @@ define('lyria/component', ['mixer', 'eventmap'], function(mixer, EventMap) {
   return (function() {
 
     function Component(name) {
-      mixer(Component.prototype, new EventMap());
+      mixer([this, Component.prototype], new EventMap());
       
       this.name = name != null ? name : this.constructor.name;
       
