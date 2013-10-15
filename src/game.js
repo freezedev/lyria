@@ -21,7 +21,7 @@ define('lyria/game', ['eventmap', 'mixer', 'fullscreen', 'jquery', 'lyria/viewpo
         startLoop: true
       });
       
-      mixer(Game.prototype, new EventMap());
+      mixer([this, Game.prototype], new EventMap());
 
       /**
        * @property viewport
