@@ -9,7 +9,7 @@ define('lyria/gameobject', ['mixer', 'eventmap', 'lyria/component', 'lyria/log']
     
     // Constructor
     var GameObject = function() {
-      mixer(GameObject.prototype, new EventMap());
+      mixer([this, GameObject.prototype], new EventMap());
       
       var self = this;
       
