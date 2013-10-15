@@ -123,7 +123,7 @@ define(&#x27;lyria/gameobject&#x27;, [&#x27;mixer&#x27;, &#x27;eventmap&#x27;, &
     
     // Constructor
     var GameObject = function() {
-      mixer(GameObject.prototype, new EventMap());
+      mixer([this, GameObject.prototype], new EventMap());
       
       var self = this;
       

@@ -130,7 +130,7 @@ define(&#x27;lyria/preloader&#x27;, [&#x27;root&#x27;, &#x27;mixer&#x27;, &#x27;
      * @param {Object} assetArray
      */
     var Preloader = function(assetArray) {
-      mixer(Preloader.prototype, new EventMap());
+      mixer([this, Preloader.prototype], new EventMap());
 
       /**
        * @property assets
@@ -272,9 +272,7 @@ define(&#x27;lyria/preloader&#x27;, [&#x27;root&#x27;, &#x27;mixer&#x27;, &#x27;
           }
         });
       } else {
-        // TODO: This is bad, mkay? Find a way to asynchronously load no assets
-        // This is like jumping onto a moving car on the high way while you&#x27;re moving at 1mph
-        setTimeout(loadingProgress, 500);
+        loadingProgress();
       }
       
     };

@@ -135,7 +135,7 @@ define(&#x27;lyria/viewport&#x27;, [&#x27;root&#x27;, &#x27;jquery&#x27;, &#x27;
 
       options = $.extend(options, defaultOptions);
       
-      mixer(Viewport.prototype, new EventMap());
+      mixer([this, Viewport.prototype], new EventMap());
 
       this.scaleMode = options.scaleMode;
 

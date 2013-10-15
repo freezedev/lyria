@@ -135,7 +135,7 @@ define(&#x27;lyria/game&#x27;, [&#x27;eventmap&#x27;, &#x27;mixer&#x27;, &#x27;f
         startLoop: true
       });
       
-      mixer(Game.prototype, new EventMap());
+      mixer([this, Game.prototype], new EventMap());
 
       /**
        * @property viewport

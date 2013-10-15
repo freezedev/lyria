@@ -135,7 +135,7 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;mixer&#x27;, &
      * @param {Object} parent
      */
     function SceneDirector(container, parent) {
-      mixer(SceneDirector.prototype, new EventMap());
+      mixer([this, SceneDirector.prototype], new EventMap());
 
       if ( container instanceof Viewport) {
         this.viewport = container;
@@ -150,6 +150,12 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;mixer&#x27;, &
        * @type {Object}
        */
       this.sceneList = {};
+      
+      /**
+       * @property className
+       * @type {String} 
+       */
+      this.className = &#x27;scene&#x27;;
 
       /**
        * The current scene
@@ -184,10 +190,6 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;mixer&#x27;, &
       });
     }
 
-    // Properties
-    SceneDirector.prototype.sceneClassName = &#x27;scene&#x27;;
-
-    // Methods
 
     /**
      * Adds a scene to the scene director
@@ -242,10 +244,12 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;mixer&#x27;, &
 
       if (this.viewport.$element) {
         if ($(&#x27;#&#x27; + scene.name).length === 0) {
-          this.viewport.$element.prepend($(root.document.createElement(&#x27;div&#x27;)).attr(&#x27;id&#x27;, scene.name).attr(&#x27;class&#x27;, SceneDirector.prototype.sceneClassName));
+          this.viewport.$element.prepend($(root.document.createElement(&#x27;div&#x27;)).attr(&#x27;id&#x27;, scene.name).attr(&#x27;class&#x27;, this.className));
         }
       }
-
+      
+      scene.trigger(&#x27;added&#x27;);
+          
       return this;
     };
 
@@ -263,17 +267,17 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;mixer&#x27;, &
       }
       
       // More than one scene visible at the same time
-      if ($(&#x27;.&#x27; + SceneDirector.prototype.sceneClassName + &#x27;:visible&#x27;)) {
-        $(&#x27;.&#x27; + SceneDirector.prototype.sceneClassName).hide();
+      if ($(&#x27;.&#x27; + this.className + &#x27;:visible&#x27;)) {
+        $(&#x27;.&#x27; + this.className).hide();
       }
 
       if (this.currentScene) {
         if (this.currentScene.transition &amp;&amp; this.currentScene.length) {
           $(&#x27;#&#x27; + this.currentScene).hide(this.currentScene.transition.length, function() {
-            $(&#x27;.&#x27; + SceneDirector.prototype.sceneClassName).hide();
+            $(&#x27;.&#x27; + this.className).hide();
           });
         } else {
-          $(&#x27;.&#x27; + SceneDirector.prototype.sceneClassName).hide();
+          $(&#x27;.&#x27; + this.className).hide();
         }
 
         this.currentScene.trigger(&#x27;deactivate&#x27;, options);

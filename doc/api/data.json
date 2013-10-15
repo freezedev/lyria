@@ -641,6 +641,16 @@
         {
             "file": "src\\scene\\director.js",
             "line": 40,
+            "itemtype": "property",
+            "name": "className",
+            "type": "{String}",
+            "class": "Director",
+            "module": "Lyria",
+            "submodule": "Scene"
+        },
+        {
+            "file": "src\\scene\\director.js",
+            "line": 46,
             "description": "The current scene",
             "itemtype": "property",
             "name": "currentScene",
@@ -651,7 +661,7 @@
         },
         {
             "file": "src\\scene\\director.js",
-            "line": 48,
+            "line": 54,
             "description": "The default scene",
             "itemtype": "property",
             "name": "defaultScene",
@@ -662,7 +672,7 @@
         },
         {
             "file": "src\\scene\\director.js",
-            "line": 56,
+            "line": 62,
             "description": "Define events for scene director",
             "class": "Director",
             "module": "Lyria",
@@ -670,7 +680,7 @@
         },
         {
             "file": "src\\scene\\director.js",
-            "line": 78,
+            "line": 80,
             "description": "Adds a scene to the scene director",
             "itemtype": "method",
             "name": "add",
@@ -692,7 +702,7 @@
         },
         {
             "file": "src\\scene\\director.js",
-            "line": 138,
+            "line": 142,
             "description": "Shows a specified scene",
             "itemtype": "method",
             "name": "show",
@@ -719,7 +729,7 @@
         },
         {
             "file": "src\\scene\\director.js",
-            "line": 185,
+            "line": 189,
             "description": "Refreshes a scene",
             "itemtype": "method",
             "name": "refresh",
@@ -736,7 +746,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 209,
+            "line": 214,
             "description": "Adds a gameobject to the scene",
             "itemtype": "method",
             "name": "add",
@@ -752,7 +762,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 257,
+            "line": 262,
             "description": "Refreshes the scene (Re-renders the template)",
             "itemtype": "method",
             "name": "refresh",
@@ -768,7 +778,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 285,
+            "line": 290,
             "description": "Sets an event to the event object (DOM events)\nTODO: Not completely happy with the function name",
             "itemtype": "method",
             "name": "bindEvent",
@@ -794,7 +804,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 306,
+            "line": 311,
             "itemtype": "method",
             "name": "bindEvents",
             "class": "Scene",
@@ -802,7 +812,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 334,
+            "line": 339,
             "description": "Gets localized value",
             "params": [
                 {
@@ -816,7 +826,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 347,
+            "line": 352,
             "description": "Logging directly from the scene",
             "params": [
                 {
@@ -1136,15 +1146,15 @@
         },
         {
             "message": "Missing item type\nDefine events for scene director",
-            "line": " src\\scene\\director.js:56"
+            "line": " src\\scene\\director.js:62"
         },
         {
             "message": "Missing item type\nGets localized value",
-            "line": " src\\scene\\index.js:334"
+            "line": " src\\scene\\index.js:339"
         },
         {
             "message": "Missing item type\nLogging directly from the scene",
-            "line": " src\\scene\\index.js:347"
+            "line": " src\\scene\\index.js:352"
         },
         {
             "message": "Missing item type",
