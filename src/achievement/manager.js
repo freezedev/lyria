@@ -43,7 +43,6 @@ define('lyria/achievement/manager', ['jquery', 'lyria/achievement', 'lyria/templ
         separator: AchievementManager.progressSeparator
       });
 
-      var $currentAchievement = $('#' + currentAchievement.id);
 
       if (AchievementManager.viewport == null) {
         $('body').append(achTemplate);
@@ -51,7 +50,12 @@ define('lyria/achievement/manager', ['jquery', 'lyria/achievement', 'lyria/templ
         AchievementManager.viewport.$element.append(achTemplate);
       }
 
+      var $currentAchievement = $('#' + currentAchievement.id);
+
       // Refactor this if lyria/tween is available
+      $currentAchievement.css({
+        opacity: 0.0
+      });
       $currentAchievement.animate({
         opacity: 1.0
       }, 600).delay(2000).animate({
