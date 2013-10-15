@@ -124,7 +124,6 @@ define('lyria/achievement/manager', ['jquery', 'lyria/achievement', 'lyria/templ
         separator: AchievementManager.progressSeparator
       });
 
-      var $currentAchievement = $('#' + currentAchievement.id);
 
       if (AchievementManager.viewport == null) {
         $('body').append(achTemplate);
@@ -132,7 +131,12 @@ define('lyria/achievement/manager', ['jquery', 'lyria/achievement', 'lyria/templ
         AchievementManager.viewport.$element.append(achTemplate);
       }
 
+      var $currentAchievement = $('#' + currentAchievement.id);
+
       // Refactor this if lyria/tween is available
+      $currentAchievement.css({
+        opacity: 0.0
+      });
       $currentAchievement.animate({
         opacity: 1.0
       }, 600).delay(2000).animate({
@@ -226,7 +230,7 @@ define('lyria/animation', ['mixer', 'eventmap'], function(mixer, EventMap) {
       this.sprite.height;
       this.sprite.image = new Image();
       
-      mixer(this.prototype, new EventMap());
+      mixer([this, Animation.prototype], new EventMap());
     };
     
     Animation.prototype.reset = function() {
@@ -469,7 +473,7 @@ define('lyria/component', ['mixer', 'eventmap'], function(mixer, EventMap) {
   return (function() {
 
     function Component(name) {
-      mixer(Component.prototype, new EventMap());
+      mixer([this, Component.prototype], new EventMap());
       
       this.name = name != null ? name : this.constructor.name;
       
@@ -823,7 +827,7 @@ define('lyria/game', ['eventmap', 'mixer', 'fullscreen', 'jquery', 'lyria/viewpo
         startLoop: true
       });
       
-      mixer(Game.prototype, new EventMap());
+      mixer([this, Game.prototype], new EventMap());
 
       /**
        * @property viewport
@@ -927,7 +931,7 @@ define('lyria/gameobject', ['mixer', 'eventmap', 'lyria/component', 'lyria/log']
     
     // Constructor
     var GameObject = function() {
-      mixer(GameObject.prototype, new EventMap());
+      mixer([this, GameObject.prototype], new EventMap());
       
       var self = this;
       
@@ -1481,7 +1485,7 @@ define('lyria/preloader', ['root', 'mixer', 'jquery', 'lyria/resource', 'lyria/l
      * @param {Object} assetArray
      */
     var Preloader = function(assetArray) {
-      mixer(Preloader.prototype, new EventMap());
+      mixer([this, Preloader.prototype], new EventMap());
 
       /**
        * @property assets
@@ -1623,9 +1627,7 @@ define('lyria/preloader', ['root', 'mixer', 'jquery', 'lyria/resource', 'lyria/l
           }
         });
       } else {
-        // TODO: This is bad, mkay? Find a way to asynchronously load no assets
-        // This is like jumping onto a moving car on the high way while you're moving at 1mph
-        setTimeout(loadingProgress, 500);
+        loadingProgress();
       }
       
     };
@@ -1700,7 +1702,7 @@ define('lyria/scene/director', ['root', 'mixer', 'jquery', 'eventmap', 'lyria/sc
      * @param {Object} parent
      */
     function SceneDirector(container, parent) {
-      mixer(SceneDirector.prototype, new EventMap());
+      mixer([this, SceneDirector.prototype], new EventMap());
 
       if ( container instanceof Viewport) {
         this.viewport = container;
@@ -1715,6 +1717,12 @@ define('lyria/scene/director', ['root', 'mixer', 'jquery', 'eventmap', 'lyria/sc
        * @type {Object}
        */
       this.sceneList = {};
+      
+      /**
+       * @property className
+       * @type {String} 
+       */
+      this.className = 'scene';
 
       /**
        * The current scene
@@ -1749,10 +1757,6 @@ define('lyria/scene/director', ['root', 'mixer', 'jquery', 'eventmap', 'lyria/sc
       });
     }
 
-    // Properties
-    SceneDirector.prototype.sceneClassName = 'scene';
-
-    // Methods
 
     /**
      * Adds a scene to the scene director
@@ -1807,10 +1811,12 @@ define('lyria/scene/director', ['root', 'mixer', 'jquery', 'eventmap', 'lyria/sc
 
       if (this.viewport.$element) {
         if ($('#' + scene.name).length === 0) {
-          this.viewport.$element.prepend($(root.document.createElement('div')).attr('id', scene.name).attr('class', SceneDirector.prototype.sceneClassName));
+          this.viewport.$element.prepend($(root.document.createElement('div')).attr('id', scene.name).attr('class', this.className));
         }
       }
-
+      
+      scene.trigger('added');
+          
       return this;
     };
 
@@ -1828,17 +1834,17 @@ define('lyria/scene/director', ['root', 'mixer', 'jquery', 'eventmap', 'lyria/sc
       }
       
       // More than one scene visible at the same time
-      if ($('.' + SceneDirector.prototype.sceneClassName + ':visible')) {
-        $('.' + SceneDirector.prototype.sceneClassName).hide();
+      if ($('.' + this.className + ':visible')) {
+        $('.' + this.className).hide();
       }
 
       if (this.currentScene) {
         if (this.currentScene.transition && this.currentScene.length) {
           $('#' + this.currentScene).hide(this.currentScene.transition.length, function() {
-            $('.' + SceneDirector.prototype.sceneClassName).hide();
+            $('.' + this.className).hide();
           });
         } else {
-          $('.' + SceneDirector.prototype.sceneClassName).hide();
+          $('.' + this.className).hide();
         }
 
         this.currentScene.trigger('deactivate', options);
@@ -1920,7 +1926,7 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
 
       // Mixin event map into Scene
       // Sender: "scene:#{sceneName}"
-      mixer(Scene.prototype, new EventMap());
+      mixer([this, Scene.prototype], new EventMap());
 
       // We need a reference to the scene not being this
       var self = this;
@@ -1960,7 +1966,8 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
         }
       });
 
-      self.on('added', function() {
+      // Synchronizes events and scene view
+      self.on('synchronize', function() {
         self.refresh();
 
         if (self.DOMEvents) {
@@ -2017,8 +2024,7 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
             return console.error('Error while executing scene ' + self.name + ': ' + err);
           }
 
-          // It's always asynchronous
-          self.trigger('added');
+          self.trigger('synchronize');
         };
 
         var async = false;
@@ -2034,11 +2040,13 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
           };
         };
 
-        Object.defineProperty(self, 'isAsync', {
-          get: function() {
-            return async;
-          }
-        });
+        if (!self.hasOwnProperty('isAsync')) {
+          Object.defineProperty(self, 'isAsync', {
+            get: function() {
+              return async;
+            }
+          });
+        }
 
         context.modules = modules;
 
@@ -2056,34 +2064,37 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
       // Call scene
       var reqModules = Object.keys(Scene.requireAlways) || [];
 
-      require(reqModules, function() {
-        var importedModules = {};
-
-        for (var i = 0, j = arguments.length; i < j; i++) {
-          (function(dep) {
-            createNamespace(importedModules, Scene.requireAlways[reqModules[i]], dep);
-          })(arguments[i]);
-        }
-
-        sceneDeps = sceneDeps || {};
-        var reqSceneModules = Object.keys(sceneDeps) || [];
-
-        if (reqSceneModules.length) {
-          require(reqSceneModules, function() {
-
-            for (var k = 0, l = arguments.length; k < l; k++) {
-              (function(sceneDep) {
-                createNamespace(importedModules, sceneDeps[reqSceneModules[j]], sceneDep);
-              })(arguments[j]);
-            }
-
+      self.on('added', function() {
+        require(reqModules, function() {
+          var importedModules = {};
+  
+          for (var i = 0, j = arguments.length; i < j; i++) {
+            (function(dep) {
+              createNamespace(importedModules, Scene.requireAlways[reqModules[i]], dep);
+            })(arguments[i]);
+          }
+  
+          sceneDeps = sceneDeps || {};
+          var reqSceneModules = Object.keys(sceneDeps) || [];
+  
+          if (reqSceneModules.length) {
+            require(reqSceneModules, function() {
+  
+              for (var k = 0, l = arguments.length; k < l; k++) {
+                (function(sceneDep) {
+                  createNamespace(importedModules, sceneDeps[reqSceneModules[j]], sceneDep);
+                })(arguments[j]);
+              }
+  
+              createScene(importedModules);
+            });
+          } else {
             createScene(importedModules);
-          });
-        } else {
-          createScene(importedModules);
-        }
-
+          }
+  
+        });
       });
+      
     };
 
     /**
@@ -2431,7 +2442,7 @@ define('lyria/tween', ['eventmap', 'mixer', 'options', 'jqueryify'], function(Ev
 
       this.hwAccelerated = true;
 
-      mixer(Tween.prototype, new EventMap());
+      mixer([this, Tween.prototype], new EventMap());
 
       var self = this;
 
@@ -2568,7 +2579,7 @@ define('lyria/viewport', ['root', 'jquery', 'mixer', 'eventmap'], function(root,
 
       options = $.extend(options, defaultOptions);
       
-      mixer(Viewport.prototype, new EventMap());
+      mixer([this, Viewport.prototype], new EventMap());
 
       this.scaleMode = options.scaleMode;
 
@@ -2698,7 +2709,7 @@ define('lyria/world', ['mixer', 'eventmap'], function(mixer, EventMap) {
   return (function() {
 
     var World = function() {
-      mixer(World.prototype, new EventMap());
+      mixer([this, World.prototype], new EventMap());
     };
 
     return World;
