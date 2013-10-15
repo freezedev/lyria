@@ -17,7 +17,7 @@ define('lyria/tween', ['eventmap', 'mixer', 'options', 'jqueryify'], function(Ev
 
       this.hwAccelerated = true;
 
-      mixer(Tween.prototype, new EventMap());
+      mixer([this, Tween.prototype], new EventMap());
 
       var self = this;
 
