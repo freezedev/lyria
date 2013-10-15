@@ -40,7 +40,7 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
 
       // Mixin event map into Scene
       // Sender: "scene:#{sceneName}"
-      mixer(Scene.prototype, new EventMap());
+      mixer([this, Scene.prototype], new EventMap());
 
       // We need a reference to the scene not being this
       var self = this;
@@ -80,7 +80,8 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
         }
       });
 
-      self.on('added', function() {
+      // Synchronizes events and scene view
+      self.on('synchronize', function() {
         self.refresh();
 
         if (self.DOMEvents) {
@@ -137,8 +138,7 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
             return console.error('Error while executing scene ' + self.name + ': ' + err);
           }
 
-          // It's always asynchronous
-          self.trigger('added');
+          self.trigger('synchronize');
         };
 
         var async = false;
@@ -154,11 +154,13 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
           };
         };
 
-        Object.defineProperty(self, 'isAsync', {
-          get: function() {
-            return async;
-          }
-        });
+        if (!self.hasOwnProperty('isAsync')) {
+          Object.defineProperty(self, 'isAsync', {
+            get: function() {
+              return async;
+            }
+          });
+        }
 
         context.modules = modules;
 
@@ -176,34 +178,37 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
       // Call scene
       var reqModules = Object.keys(Scene.requireAlways) || [];
 
-      require(reqModules, function() {
-        var importedModules = {};
-
-        for (var i = 0, j = arguments.length; i < j; i++) {
-          (function(dep) {
-            createNamespace(importedModules, Scene.requireAlways[reqModules[i]], dep);
-          })(arguments[i]);
-        }
-
-        sceneDeps = sceneDeps || {};
-        var reqSceneModules = Object.keys(sceneDeps) || [];
-
-        if (reqSceneModules.length) {
-          require(reqSceneModules, function() {
-
-            for (var k = 0, l = arguments.length; k < l; k++) {
-              (function(sceneDep) {
-                createNamespace(importedModules, sceneDeps[reqSceneModules[j]], sceneDep);
-              })(arguments[j]);
-            }
-
+      self.on('added', function() {
+        require(reqModules, function() {
+          var importedModules = {};
+  
+          for (var i = 0, j = arguments.length; i < j; i++) {
+            (function(dep) {
+              createNamespace(importedModules, Scene.requireAlways[reqModules[i]], dep);
+            })(arguments[i]);
+          }
+  
+          sceneDeps = sceneDeps || {};
+          var reqSceneModules = Object.keys(sceneDeps) || [];
+  
+          if (reqSceneModules.length) {
+            require(reqSceneModules, function() {
+  
+              for (var k = 0, l = arguments.length; k < l; k++) {
+                (function(sceneDep) {
+                  createNamespace(importedModules, sceneDeps[reqSceneModules[j]], sceneDep);
+                })(arguments[j]);
+              }
+  
+              createScene(importedModules);
+            });
+          } else {
             createScene(importedModules);
-          });
-        } else {
-          createScene(importedModules);
-        }
-
+          }
+  
+        });
       });
+      
     };
 
     /**
