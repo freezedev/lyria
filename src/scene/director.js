@@ -21,7 +21,7 @@ define('lyria/scene/director', ['root', 'mixer', 'jquery', 'eventmap', 'lyria/sc
      * @param {Object} parent
      */
     function SceneDirector(container, parent) {
-      mixer(SceneDirector.prototype, new EventMap());
+      mixer([this, SceneDirector.prototype], new EventMap());
 
       if ( container instanceof Viewport) {
         this.viewport = container;
@@ -36,6 +36,12 @@ define('lyria/scene/director', ['root', 'mixer', 'jquery', 'eventmap', 'lyria/sc
        * @type {Object}
        */
       this.sceneList = {};
+      
+      /**
+       * @property className
+       * @type {String} 
+       */
+      this.className = 'scene';
 
       /**
        * The current scene
@@ -70,10 +76,6 @@ define('lyria/scene/director', ['root', 'mixer', 'jquery', 'eventmap', 'lyria/sc
       });
     }
 
-    // Properties
-    SceneDirector.prototype.sceneClassName = 'scene';
-
-    // Methods
 
     /**
      * Adds a scene to the scene director
@@ -128,10 +130,12 @@ define('lyria/scene/director', ['root', 'mixer', 'jquery', 'eventmap', 'lyria/sc
 
       if (this.viewport.$element) {
         if ($('#' + scene.name).length === 0) {
-          this.viewport.$element.prepend($(root.document.createElement('div')).attr('id', scene.name).attr('class', SceneDirector.prototype.sceneClassName));
+          this.viewport.$element.prepend($(root.document.createElement('div')).attr('id', scene.name).attr('class', this.className));
         }
       }
-
+      
+      scene.trigger('added');
+          
       return this;
     };
 
@@ -149,17 +153,17 @@ define('lyria/scene/director', ['root', 'mixer', 'jquery', 'eventmap', 'lyria/sc
       }
       
       // More than one scene visible at the same time
-      if ($('.' + SceneDirector.prototype.sceneClassName + ':visible')) {
-        $('.' + SceneDirector.prototype.sceneClassName).hide();
+      if ($('.' + this.className + ':visible')) {
+        $('.' + this.className).hide();
       }
 
       if (this.currentScene) {
         if (this.currentScene.transition && this.currentScene.length) {
           $('#' + this.currentScene).hide(this.currentScene.transition.length, function() {
-            $('.' + SceneDirector.prototype.sceneClassName).hide();
+            $('.' + this.className).hide();
           });
         } else {
-          $('.' + SceneDirector.prototype.sceneClassName).hide();
+          $('.' + this.className).hide();
         }
 
         this.currentScene.trigger('deactivate', options);
