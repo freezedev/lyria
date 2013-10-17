@@ -314,7 +314,7 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
      * @param {Object} eventObject
      * @see bindEvent
      */
-    Scene.prototype.bindEvents = function(eventObject) {
+    Scene.prototype.bindEvents = function(eventObject) {    
       for (var key in eventObject) {
         if (Object.hasOwnProperty.call(eventObject, key)) {
           this.DOMEvents[key] = eventObject[key];
@@ -341,6 +341,41 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
         delete this.DOMEvents[selector][eventName];
       }
     };
+    
+    /**
+     * Unbinds a lot of events
+     * 
+     * @method unbindEvents
+     * @param [Object] eventObject
+     */
+    Scene.prototype.unbindEvents = function(eventObject) {
+      if (eventObject == null) {
+        this.DOMEvents = {};
+        return;
+      }
+      
+      if (Array.isArray(eventObject)) {
+        for (var i = 0, j = eventObject.length; i < j; i++) {
+          if (this.DOMEvents[eventObject[i]]) {
+            delete this.DOMEvents[eventObject[i]];
+          }
+        }
+      } else {
+        for (var key in eventObject) {
+          if (Object.hasOwnProperty.call(eventObject, key)) {
+            var value = eventObject[key];
+            
+            if (Array.isArray(value)) {
+              for (var k = 0, l = value.length; k < l; k++) {
+                delete this.DOMEvents[key][value[k]];
+              }
+            } else {
+              delete this.DOMEvents[key][value];
+            }
+          }
+        }
+      }
+    }
 
     /**
      * Gets localized value
