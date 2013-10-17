@@ -359,6 +359,10 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
     };
 
     Scene.requireAlways = {
+      // Third-party modules
+      'jquery': '$',
+      
+      // Lyria modules
       'lyria/audio': 'Lyria.Audio',
       'lyria/achievement': 'Lyria.Achievement',
       'lyria/achievement/manager': 'Lyria.AchievementManager',
