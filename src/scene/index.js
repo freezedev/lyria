@@ -308,12 +308,18 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
     };
 
     /**
-     * 
+     * Binds a lot of events instead of a single one
      * 
      * @method bindEvents
+     * @param {Object} eventObject
+     * @see bindEvent
      */
-    Scene.prototype.bindEvents = function(obj) {
-      this.DOMEvents = obj;
+    Scene.prototype.bindEvents = function(eventObject) {
+      for (var key in eventObject) {
+        if (Object.hasOwnProperty.call(eventObject, key)) {
+          this.DOMEvents[key] = eventObject[key];
+        }
+      }
     };
 
     /*
