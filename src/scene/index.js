@@ -353,7 +353,7 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
      * @param [Object] eventObject
      */
     Scene.prototype.unbindEvents = function(eventObject) {
-      if (eventObject == null) {
+      if (eventObject == null || eventObject === '*') {
         this.DOMEvents = {};
         return;
       }
