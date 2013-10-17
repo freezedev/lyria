@@ -20,7 +20,7 @@ define('lyria/component/manager', function() {
   
   ComponentManager.get = function(name) {
     return components[name];
-  }
+  };
 
   return ComponentManager;
 
