@@ -81,9 +81,19 @@ The data section of a scene. You can use it to prepare data you want to display,
   buttonArray.push({id: button1, caption: self.t(button1)});
   buttonArray.push({id: button2, caption: self.t(button2)});
 
+  // Expose these values to the template engine
   this.expose({
     buttons: buttonArray,
     someText: 'Hello there.'
+  });
+  
+  // Bind events to the scene using our good friend jQuery
+  this.bindEvents({
+    'span': {
+      click: function() {
+        alert($(this).text());
+      }
+    }
   });
 
 }).call(this);
@@ -129,8 +139,6 @@ If the page is opened with a browser in a language that is not supported (i.e. n
 Of course, this only a simple example of what you can do with scenes. You can also add partials, helper functions and directly bind events to elements.
 
 
-If you are already have worked with the [CouchDB eventlys](https://github.com/jchris/evently), this concept might feel very familiar to you.
-
 Features
 --------
 
@@ -144,7 +152,7 @@ How do I get started?
 ---------------------
 
 You are already half-way there. Either download the latest stable version, the current development version if you are feeling adventurous or clone this repository.  
-Head on over to the [wiki](https://github.com/freezedev/Lyria.js/wiki) to have step by step instructions on how to use this framework.
+Head on over to the [wiki](https://github.com/freezedev/lyria/wiki) to have step by step instructions on how to use this framework.
 
 
 What does Lyria mean?
