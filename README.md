@@ -139,15 +139,6 @@ If the page is opened with a browser in a language that is not supported (i.e. n
 Of course, this only a simple example of what you can do with scenes. You can also add partials, helper functions and directly bind events to elements.
 
 
-Features
---------
-
-Here is the plain old feature list:
-
-* Scene management
-* Data bindings
-* High-level abstraction to DOM elements (or you can directly mess with the DOM elements if you prefer)
-
 How do I get started?
 ---------------------
 
