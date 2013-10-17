@@ -379,7 +379,7 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
           }
         }
       }
-    }
+    };
 
     /**
      * Gets localized value
