@@ -289,7 +289,6 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
 
     /**
      * Sets an event to the event object (DOM events)
-     * TODO: Not completely happy with the function name
      *
      * @method bindEvent
      * @param {String} selector
@@ -309,7 +308,8 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
     };
 
     /**
-     *
+     * 
+     * 
      * @method bindEvents
      */
     Scene.prototype.bindEvents = function(obj) {
