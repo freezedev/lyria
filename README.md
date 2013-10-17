@@ -18,12 +18,6 @@ If you have Bower installed, simply do:
 `bower install lyria`  
 (If you don't have bower installed, simply do a `npm install -g bower` in the command-line of your choice. To learn more about Bower, go to http://bower.io)
 
-Warning
--------
-
-Lyria is currently being reworked and the API changed and still changes a lot. There are bugs. Documentation is incomplete.
-
-
 
 
 What does it look like?
