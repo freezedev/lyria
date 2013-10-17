@@ -54,6 +54,21 @@ define('lyria/preloader', ['root', 'mixer', 'jquery', 'lyria/resource', 'lyria/l
        * @type {Array} 
        */
       this.steps = [];
+      
+      /**
+       * @property taskList
+       * @type {Array} 
+       */
+      this.taskList = [];
+    };
+
+    /**
+     * Adds a custom task to the preloader
+     * 
+     * @param {Function} taskFn 
+     */
+    Preloader.prototype.task = function(taskFn) {
+      taskList.add(taskFn);
     };
 
     /**
