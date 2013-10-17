@@ -3,7 +3,7 @@ define('lyria/component', ['mixer', 'eventmap', 'lyria/component/manager', 'lyri
   //Lyria.Component
   return (function() {
 
-    function Component(name, factory) {
+    var Component = function(name, factory) {
       mixer([this, Component.prototype], new EventMap());
       
       this.name = name != null ? name : this.constructor.name;
@@ -22,7 +22,7 @@ define('lyria/component', ['mixer', 'eventmap', 'lyria/component/manager', 'lyri
           }
         }
       });
-    }
+    };
     
     /**
      * Adds a component to this entity
