@@ -467,31 +467,113 @@ define('lyria/audio/manager', function() {
   return AudioManager;
 });
 
-define('lyria/component', ['mixer', 'eventmap'], function(mixer, EventMap) {
+define('lyria/component', ['mixer', 'eventmap', 'lyria/component/manager', 'lyria/log'], function(mixer, EventMap, ComponentManager, Log) {
 
   //Lyria.Component
   return (function() {
 
-    function Component(name) {
+    var Component = function(name, factory) {
       mixer([this, Component.prototype], new EventMap());
       
       this.name = name != null ? name : this.constructor.name;
       
+      this.type = 'Component';
+      
       this.children = {};
+      
+      factory.apply(this, [this]);
       
       this.on('update', function(dt) {
         for (var key in children) {
           var value = children[key];
-          if (value && value.update) {
-            value.update();
+          if (value && value.trigger) {
+            value.trigger('update', dt);
           }
         }
       });
-    }
+    };
+    
+    /**
+     * Adds a component to this entity
+     * 
+     * @method add
+     * @param {Object} child
+     */
+    Component.prototype.add = function(child) {
+      var name = 'anonymous-' + Date.now();
+      var childObject = null;
+      
+      if (typeof child === 'string') {
+        name = child;
+        childObject = ComponentManager.get(name);
+      } else {
+        name = child.name || name;
+        childObject = child;
+      }
+      
+      children[name] = childObject;
+      
+      this.trigger('add', name);
+      childObject.trigger('added', this);
+    };
+    
+    /**
+     * Removes a component from the entity
+     *  
+     * @method remove
+     * @param {String} name
+     */
+    Component.prototype.remove = function(name) {
+      if (name == null) {
+        return;
+      }
+      
+      delete children[name];
+      
+      this.trigger('remove', name);
+    };
+    
+    /**
+     * Logs from the component itself
+     * 
+     * @method log
+     * @param {String} text
+     */
+    Component.prototype.log = function(text) {
+      Log.i(this.type + ': ' + text);
+    };
 
     return Component;
 
   })();
+
+});
+
+define('lyria/component/manager', function() {
+
+  var components = {};
+
+  var ComponentManager = {};
+
+  ComponentManager.add = function(component) {
+    var name = component.name || 'anonymous-' + Date.now();
+
+    components[name] = component;
+  };
+
+  ComponentManager.remove = function(name) {
+    if (name == null) {
+      return;
+    }
+    
+    delete ComponentManager[name];
+  };
+  
+  ComponentManager.get = function(name) {
+    return components[name];
+  };
+
+  return ComponentManager;
 
 });
 
@@ -2175,7 +2257,6 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
 
     /**
      * Sets an event to the event object (DOM events)
-     * TODO: Not completely happy with the function name
      *
      * @method bindEvent
      * @param {String} selector
@@ -2195,11 +2276,22 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
     };
 
     /**
-     *
+     * Binds a lot of events instead of a single one
+     * 
      * @method bindEvents
+     * @param {Object} eventObject
+     * @see bindEvent
      */
-    Scene.prototype.bindEvents = function(obj) {
-      this.DOMEvents = obj;
+    Scene.prototype.bindEvents = function(eventObject) {
+      if (eventObject == null) {
+        return;
+      }
+      
+      for (var key in eventObject) {
+        if (Object.hasOwnProperty.call(eventObject, key)) {
+          this.DOMEvents[key] = eventObject[key];
+        }
+      }
     };
 
     /*
@@ -2219,6 +2311,41 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
         delete this.DOMEvents[selector];
       } else {
         delete this.DOMEvents[selector][eventName];
+      }
+    };
+    
+    /**
+     * Unbinds a lot of events
+     * 
+     * @method unbindEvents
+     * @param [Object] eventObject
+     */
+    Scene.prototype.unbindEvents = function(eventObject) {
+      if (eventObject == null || eventObject === '*') {
+        this.DOMEvents = {};
+        return;
+      }
+      
+      if (Array.isArray(eventObject)) {
+        for (var i = 0, j = eventObject.length; i < j; i++) {
+          if (this.DOMEvents[eventObject[i]]) {
+            delete this.DOMEvents[eventObject[i]];
+          }
+        }
+      } else {
+        for (var key in eventObject) {
+          if (Object.hasOwnProperty.call(eventObject, key)) {
+            var value = eventObject[key];
+            
+            if (Array.isArray(value)) {
+              for (var k = 0, l = value.length; k < l; k++) {
+                delete this.DOMEvents[key][value[k]];
+              }
+            } else {
+              delete this.DOMEvents[key][value];
+            }
+          }
+        }
       }
     };
 
@@ -2245,6 +2372,10 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
     };
 
     Scene.requireAlways = {
+      // Third-party modules
+      'jquery': '$',
+      
+      // Lyria modules
       'lyria/audio': 'Lyria.Audio',
       'lyria/achievement': 'Lyria.Achievement',
       'lyria/achievement/manager': 'Lyria.AchievementManager',
