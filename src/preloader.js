@@ -13,17 +13,17 @@ define('lyria/preloader', ['root', 'mixer', 'jquery', 'lyria/resource', 'lyria/l
     /**
      * @constructor
      * 
-     * @param {Object} assetArray
+     * @param {Object} assetObject
      */
-    var Preloader = function(assetArray) {
+    var Preloader = function(assetObject) {
       mixer([this, Preloader.prototype], new EventMap());
 
       /**
        * @property assets
        * @type {Array} 
        */
-      if (assetArray != null) {
-        this.assets = assetArray;
+      if (assetObject != null) {
+        this.assets = assetObject;
       } else {
         this.assets = {};
       }
