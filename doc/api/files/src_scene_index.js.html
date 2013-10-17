@@ -19,7 +19,7 @@
             
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.2.0-beta6</em>
+            <em>API Docs for: 0.2.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -403,7 +403,6 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;ne
 
     /**
      * Sets an event to the event object (DOM events)
-     * TODO: Not completely happy with the function name
      *
      * @method bindEvent
      * @param {String} selector
@@ -423,11 +422,22 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;ne
     };
 
     /**
-     *
+     * Binds a lot of events instead of a single one
+     * 
      * @method bindEvents
+     * @param {Object} eventObject
+     * @see bindEvent
      */
-    Scene.prototype.bindEvents = function(obj) {
-      this.DOMEvents = obj;
+    Scene.prototype.bindEvents = function(eventObject) {
+      if (eventObject == null) {
+        return;
+      }
+      
+      for (var key in eventObject) {
+        if (Object.hasOwnProperty.call(eventObject, key)) {
+          this.DOMEvents[key] = eventObject[key];
+        }
+      }
     };
 
     /*
@@ -447,6 +457,41 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;ne
         delete this.DOMEvents[selector];
       } else {
         delete this.DOMEvents[selector][eventName];
+      }
+    };
+    
+    /**
+     * Unbinds a lot of events
+     * 
+     * @method unbindEvents
+     * @param [Object] eventObject
+     */
+    Scene.prototype.unbindEvents = function(eventObject) {
+      if (eventObject == null || eventObject === &#x27;*&#x27;) {
+        this.DOMEvents = {};
+        return;
+      }
+      
+      if (Array.isArray(eventObject)) {
+        for (var i = 0, j = eventObject.length; i &lt; j; i++) {
+          if (this.DOMEvents[eventObject[i]]) {
+            delete this.DOMEvents[eventObject[i]];
+          }
+        }
+      } else {
+        for (var key in eventObject) {
+          if (Object.hasOwnProperty.call(eventObject, key)) {
+            var value = eventObject[key];
+            
+            if (Array.isArray(value)) {
+              for (var k = 0, l = value.length; k &lt; l; k++) {
+                delete this.DOMEvents[key][value[k]];
+              }
+            } else {
+              delete this.DOMEvents[key][value];
+            }
+          }
+        }
       }
     };
 
@@ -473,6 +518,10 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;ne
     };
 
     Scene.requireAlways = {
+      // Third-party modules
+      &#x27;jquery&#x27;: &#x27;$&#x27;,
+      
+      // Lyria modules
       &#x27;lyria/audio&#x27;: &#x27;Lyria.Audio&#x27;,
       &#x27;lyria/achievement&#x27;: &#x27;Lyria.Achievement&#x27;,
       &#x27;lyria/achievement/manager&#x27;: &#x27;Lyria.AchievementManager&#x27;,

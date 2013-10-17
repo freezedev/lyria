@@ -2,7 +2,7 @@
     "project": {
         "name": "lyria",
         "description": "",
-        "version": "0.2.0-beta6",
+        "version": "0.2.0",
         "url": ""
     },
     "files": {
@@ -14,6 +14,13 @@
             "classes": {
                 "Audio": 1
             },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\component\\index.js": {
+            "name": "src\\component\\index.js",
+            "modules": {},
+            "classes": {},
             "fors": {},
             "namespaces": {}
         },
@@ -592,6 +599,54 @@
             "module": "Lyria"
         },
         {
+            "file": "src\\component\\index.js",
+            "line": 27,
+            "description": "Adds a component to this entity",
+            "itemtype": "method",
+            "name": "add",
+            "params": [
+                {
+                    "name": "child",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "Director",
+            "module": "Lyria"
+        },
+        {
+            "file": "src\\component\\index.js",
+            "line": 51,
+            "description": "Removes a component from the entity",
+            "itemtype": "method",
+            "name": "remove",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "Director",
+            "module": "Lyria"
+        },
+        {
+            "file": "src\\component\\index.js",
+            "line": 67,
+            "description": "Logs from the component itself",
+            "itemtype": "method",
+            "name": "log",
+            "params": [
+                {
+                    "name": "text",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "Director",
+            "module": "Lyria"
+        },
+        {
             "file": "src\\core\\fisheryates.js",
             "line": 2,
             "description": "Randomize array element order in-place.\nUsing Fisher-Yates shuffle algorithm.",
@@ -779,7 +834,7 @@
         {
             "file": "src\\scene\\index.js",
             "line": 290,
-            "description": "Sets an event to the event object (DOM events)\nTODO: Not completely happy with the function name",
+            "description": "Sets an event to the event object (DOM events)",
             "itemtype": "method",
             "name": "bindEvent",
             "params": [
@@ -804,15 +859,42 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 311,
+            "line": 310,
+            "description": "Binds a lot of events instead of a single one",
             "itemtype": "method",
             "name": "bindEvents",
+            "params": [
+                {
+                    "name": "eventObject",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "see": [
+                "bindEvent"
+            ],
             "class": "Scene",
             "module": "Lyria"
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 339,
+            "line": 349,
+            "description": "Unbinds a lot of events",
+            "itemtype": "method",
+            "name": "unbindEvents",
+            "params": [
+                {
+                    "name": "Object",
+                    "description": "eventObject",
+                    "optional": true
+                }
+            ],
+            "class": "Scene",
+            "module": "Lyria"
+        },
+        {
+            "file": "src\\scene\\index.js",
+            "line": 384,
             "description": "Gets localized value",
             "params": [
                 {
@@ -826,7 +908,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 352,
+            "line": 397,
             "description": "Logging directly from the scene",
             "params": [
                 {
@@ -1150,11 +1232,11 @@
         },
         {
             "message": "Missing item type\nGets localized value",
-            "line": " src\\scene\\index.js:339"
+            "line": " src\\scene\\index.js:384"
         },
         {
             "message": "Missing item type\nLogging directly from the scene",
-            "line": " src\\scene\\index.js:352"
+            "line": " src\\scene\\index.js:397"
         },
         {
             "message": "Missing item type",

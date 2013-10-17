@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src\prefab\index.js - lyria</title>
+    <title>src\component\index.js - lyria</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -108,21 +108,92 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: src\prefab\index.js</h1>
+                        <h1 class="file-heading">File: src\component\index.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/**
- * @namespace Lyria
- * Lyria namespace decleration
- */
-define(&#x27;lyria/prefab&#x27;, [&#x27;lyria/scene&#x27;], function(Scene) {
-	&#x27;use strict&#x27;;
+define(&#x27;lyria/component&#x27;, [&#x27;mixer&#x27;, &#x27;eventmap&#x27;, &#x27;lyria/component/manager&#x27;, &#x27;lyria/log&#x27;], function(mixer, EventMap, ComponentManager, Log) {
 
-	//Lyria.Prefab
-	return Scene;
-  
+  //Lyria.Component
+  return (function() {
+
+    var Component = function(name, factory) {
+      mixer([this, Component.prototype], new EventMap());
+      
+      this.name = name != null ? name : this.constructor.name;
+      
+      this.type = &#x27;Component&#x27;;
+      
+      this.children = {};
+      
+      factory.apply(this, [this]);
+      
+      this.on(&#x27;update&#x27;, function(dt) {
+        for (var key in children) {
+          var value = children[key];
+          if (value &amp;&amp; value.trigger) {
+            value.trigger(&#x27;update&#x27;, dt);
+          }
+        }
+      });
+    };
+    
+    /**
+     * Adds a component to this entity
+     * 
+     * @method add
+     * @param {Object} child
+     */
+    Component.prototype.add = function(child) {
+      var name = &#x27;anonymous-&#x27; + Date.now();
+      var childObject = null;
+      
+      if (typeof child === &#x27;string&#x27;) {
+        name = child;
+        childObject = ComponentManager.get(name);
+      } else {
+        name = child.name || name;
+        childObject = child;
+      }
+      
+      children[name] = childObject;
+      
+      this.trigger(&#x27;add&#x27;, name);
+      childObject.trigger(&#x27;added&#x27;, this);
+    };
+    
+    /**
+     * Removes a component from the entity
+     *  
+     * @method remove
+     * @param {String} name
+     */
+    Component.prototype.remove = function(name) {
+      if (name == null) {
+        return;
+      }
+      
+      delete children[name];
+      
+      this.trigger(&#x27;remove&#x27;, name);
+    };
+    
+    /**
+     * Logs from the component itself
+     * 
+     * @method log
+     * @param {String} text
+     */
+    Component.prototype.log = function(text) {
+      Log.i(this.type + &#x27;: &#x27; + text);
+    };
+
+    return Component;
+
+  })();
+
 });
+
     </pre>
 </div>
 
