@@ -1,7 +1,7 @@
 /**
  * @module Lyria
  */
-define('lyria/game', ['eventmap', 'mixer', 'fullscreen', 'jquery', 'lyria/viewport', 'lyria/scene/director', 'lyria/preloader', 'lyria/loop', 'lyria/world'], function(EventMap, mixer, fullscreen, $, Viewport, Director, Preloader, Loop, World) {'use strict';
+define('lyria/game', ['eventmap', 'mixer', 'fullscreen', 'jquery', 'lyria/viewport', 'lyria/scene/director', 'lyria/preloader', 'lyria/loop', 'lyria/world', 'lyria/checkpoints'], function(EventMap, mixer, fullscreen, $, Viewport, Director, Preloader, Loop, World, Checkpoints) {'use strict';
 
   /**
    * Game class which has a viewport, scene director and preloader by
@@ -58,6 +58,9 @@ define('lyria/game', ['eventmap', 'mixer', 'fullscreen', 'jquery', 'lyria/viewpo
       // World reference
       this.world = new World();
       this.world.parent = this;
+      
+      // Checkpoints
+      this.checkpoints = new Checkpoints();
 
       // Add an update task to the loop with updates the scene director on each
       // frame
