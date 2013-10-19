@@ -30,5 +30,7 @@ define('lyria/checkpoints', ['eventmap', 'mixer', 'deleteitem'], function(EventM
 
     return Checkpoints;
   });
+  
+  return Checkpoints;
 
 });
