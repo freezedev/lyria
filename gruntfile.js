@@ -86,6 +86,22 @@ module.exports = function(grunt) {
       targetPath: 'src',
       outputPath: './doc/dependencies',
       format: 'amd'
+    },
+    plato: {
+      all: {
+        options: {
+          jshint: grunt.file.readJSON('.jshintrc'),
+          complexity: {
+            logicalor: false,
+            switchcase: false,
+            forin: true,
+            trycatch: true
+          }
+        },
+        files: {
+          'doc/reports/': ['src/**/*.js']
+        }
+      }
     }
   });
 
