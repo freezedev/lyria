@@ -47,6 +47,9 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
 
       // Set name
       this.name = sceneName;
+      
+      // Data
+      this.data = options.data || {};
 
       // Default values
       this.localization = new Localization();
