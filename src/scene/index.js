@@ -408,17 +408,18 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
       'jquery': '$',
       
       // Lyria modules
-      'lyria/audio': 'Lyria.Audio',
       'lyria/achievement': 'Lyria.Achievement',
       'lyria/achievement/manager': 'Lyria.AchievementManager',
-      'lyria/log': 'Lyria.Log',
+      'lyria/animation': 'Lyria.Animation',
+      'lyria/audio': 'Lyria.Audio',
       'lyria/component': 'Lyria.Component',
-      'lyria/gameobject': 'Lyria.GameObject',
       'lyria/events': 'Lyria.Events',
-      'lyria/resource': 'Lyria.Resource',
+      'lyria/gameobject': 'Lyria.GameObject',
+      'lyria/log': 'Lyria.Log',
       'lyria/loop': 'Lyria.Loop',
-      'lyria/tween': 'Lyria.Tween',
-      'lyria/animation': 'Lyria.Animation'
+      'lyria/prefab/manager': 'Lyria.PrefabManager',
+      'lyria/resource': 'Lyria.Resource',
+      'lyria/tween': 'Lyria.Tween'
     };
 
     return Scene;
