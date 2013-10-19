@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>viewport.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
+      <p class="stat">111.26</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
+      <p class="stat">144</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
+      <p class="stat">32.86</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
+      <p class="stat">0.95</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">/**
+ * @module Lyria
+ */
+define(&#039;lyria/viewport&#039;, [&#039;root&#039;, &#039;jquery&#039;, &#039;mixer&#039;, &#039;eventmap&#039;], function(root, $, mixer, EventMap) {&#039;use strict&#039;;
+
+  return (function() {
+
+    /**
+     * @class Viewport
+     * @constructor
+     */
+    function Viewport(container, options) {
+      var defaultOptions = {
+        parent: null,
+        trigger: {
+          element: window,
+          event: &#039;resize&#039;
+        },
+        scaleMode: &#039;scaleToFit&#039;
+      };
+
+      options = $.extend(options, defaultOptions);
+      
+      mixer([this, Viewport.prototype], new EventMap());
+
+      this.scaleMode = options.scaleMode;
+
+      // Defaults container to the string &#039;viewport&#039;
+      if (container == null) {
+        container = &#039;viewport&#039;;
+      }
+      
+      Object.defineProperty(this, &#039;$element&#039;, {
+        get: function() {
+          return $(&#039;#&#039; + container);
+        }
+      });
+
+      /**
+       * The viewport element (jQuery object)
+       *
+       * @property $element
+       * @type {jQuery}
+       */
+      if (this.$element.length === 0) {
+        var createdElement = $(root.document.createElement(&#039;div&#039;)).attr(&#039;id&#039;, container).attr(&#039;class&#039;, &#039;viewport&#039;);
+
+        if (options.parent) {
+          $(options.parent).prepend(createdElement);
+        } else {
+          $(&#039;body&#039;).prepend(createdElement);
+        }
+      }
+
+      Object.defineProperty(this, &#039;width&#039;, {
+        get: function() {
+          return this.$element.outerWidth();
+        }
+      });
+
+      Object.defineProperty(this, &#039;height&#039;, {
+        get: function() {
+          return this.$element.outerHeight();
+        }
+      });
+
+      var self = this;
+
+      this.on(&#039;scale&#039;, function() {
+        
+        // TODO: Reset scaling to 1.0
+        
+        var scaleElement = function(scaleFactor) {
+          var scaleExp = &#039;scale(&#039; + scaleFactor + &#039;, &#039; + scaleFactor + &#039;)&#039;;
+          self.$element.css(&#039;transform&#039;, scaleExp);
+        };
+
+        var scaleHeightToFit = function(doNotSetTransform) {
+          var scaleFactor = 0;
+          
+          if (self.height &gt; $(options.trigger.element).innerHeight()) {
+            scaleFactor = $(options.trigger.element).innerHeight() / self.height;
+
+            if (doNotSetTransform) {
+              return scaleFactor;
+            } else {
+              scaleElement(scaleFactor);
+              return scaleFactor;
+            }
+          }
+          
+          return 1.0;
+        };
+
+        var scaleWidthToFit = function(doNotSetTransform) {
+          var scaleFactor = 0;
+          
+          if (self.width &gt; $(options.trigger.element).innerWidth()) {
+            scaleFactor = $(options.trigger.element).innerWidth() / self.width;
+            
+            if (doNotSetTransform) {
+              return scaleFactor;
+            } else {
+              scaleElement(scaleFactor);
+              return scaleFactor;
+            }
+          }
+          
+          return 1.0;
+        };
+
+        switch (self.scaleMode) {
+          case &#039;scaleToFit&#039;:
+            var scaleX = 1;
+            var scaleY = 1;
+          
+            if ($(options.trigger.element).innerHeight() &lt; self.height) {
+              scaleY = scaleHeightToFit(true);
+            }
+            
+            if ($(options.trigger.element).innerWidth() &lt; self.width) { 
+              scaleX = scaleWidthToFit(true);                
+            }
+            
+            scaleElement(Math.min(scaleX, scaleY));
+            break;
+          case &#039;scaleHeightToFit&#039;:
+            scaleHeightToFit();
+            break;
+          case &#039;scaleWidthToFit&#039;:
+            scaleWidthToFit();
+            break;
+          default:
+            break;
+        }
+      });
+
+      $(options.trigger.element).on(options.trigger.event, self.trigger.bind(self, &#039;scale&#039;));
+      
+      // Call scale event
+      self.trigger(&#039;scale&#039;);
+    }
+
+    return Viewport;
+
+  })();
+});</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>
