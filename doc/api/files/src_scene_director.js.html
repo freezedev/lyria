@@ -140,7 +140,9 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;mixer&#x27;, &
       if ( container instanceof Viewport) {
         this.viewport = container;
       } else {
-        this.viewport = new Viewport(container, {parent: parent});
+        this.viewport = new Viewport(container, {
+          parent: parent
+        });
       }
 
       /**
@@ -150,10 +152,10 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;mixer&#x27;, &
        * @type {Object}
        */
       this.sceneList = {};
-      
+
       /**
        * @property className
-       * @type {String} 
+       * @type {String}
        */
       this.className = &#x27;scene&#x27;;
 
@@ -164,12 +166,12 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;mixer&#x27;, &
        * @type {Scene}
        */
       this.currentScene = null;
-      
+
       /**
        * The default scene
-       * 
+       *
        * @property defaultScene
-       * @type {String} 
+       * @type {String}
        */
       this.defaultScene = null;
 
@@ -190,51 +192,61 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;mixer&#x27;, &
       });
     }
 
-
     /**
      * Adds a scene to the scene director
      *
      * @method add
      * @param {Object} scene
-     * @param {Object} options
+     * @param {Object} data
      */
-    SceneDirector.prototype.add = function(scene, options) {
-      
+    SceneDirector.prototype.add = function(scene, data) {
+
       // Shorthand to add all scenes to the scene director
       if (scene === &#x27;*&#x27; &amp;&amp; this.scenes) {
         scene = Object.keys(this.scenes);
       }
-      
+
       // Allow array as scenes
       if (Array.isArray(scene)) {
         for (var i = 0, j = scene.length; i &lt; j; i++) {
-          this.add(scene[i], options);
+          this.add(scene[i], data);
         }
-        
         return;
       }
 
-      if (scene instanceof Scene) {
-        // Add to scenes if it&#x27;s an actual scene
-        this.scenes[scene.name] = scene;        
+      // Handle string - Check in scene list
+      if (this.scenes &amp;&amp; Object.keys(this.scenes).length &gt; 0) {
+        scene = this.scenes[scene](data);
       } else {
-        // Handle string
-        if (this.scenes &amp;&amp; Object.keys(this.scenes).length &gt; 0) {
-          scene = this.scenes[scene];
+        // Scene object
+        if ( scene instanceof Scene) {
+          // Add to scenes if it&#x27;s an actual scene
+          if (data) {
+            scene.data = data;
+          }
+          this.scenes[scene.name] = scene;
         } else {
-          throw new Error(&#x27;No valid scene found.&#x27;);
+          // Function
+          if ( typeof scene === &#x27;function&#x27;) {
+            var sceneObj = scene(data);
+
+            this.scenes[sceneObj.name] = sceneObj;
+          } else {
+            // Well, if none of these - There is only one choice
+            throw new Error(&#x27;No valid scene found.&#x27;);
+          }
         }
       }
 
       // Set scene parent
       scene.parent = this;
-      
+
       // Update reference to the game itself
       if (this.parent != null) {
         scene.game = this.parent;
       }
 
-      // Add first scene as a default scene      
+      // Add first scene as a default scene
       if (Object.keys(this.sceneList).length === 0) {
         this.defaultScene = scene.name;
       }
@@ -247,9 +259,9 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;mixer&#x27;, &
           this.viewport.$element.prepend($(root.document.createElement(&#x27;div&#x27;)).attr(&#x27;id&#x27;, scene.name).attr(&#x27;class&#x27;, this.className));
         }
       }
-      
+
       scene.trigger(&#x27;added&#x27;);
-          
+
       return this;
     };
 
@@ -265,7 +277,7 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;mixer&#x27;, &
       if (!sceneName) {
         return;
       }
-      
+
       // More than one scene visible at the same time
       if ($(&#x27;.&#x27; + this.className + &#x27;:visible&#x27;)) {
         $(&#x27;.&#x27; + this.className).hide();
@@ -286,7 +298,7 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;mixer&#x27;, &
       var self = this;
 
       self.currentScene = this.sceneList[sceneName];
-      
+
       if (self.currentScene.transition &amp;&amp; self.currentScene.transition.length) {
         $(&#x27;#&#x27; + sceneName).show(self.currentScene.transition.length);
       } else {
@@ -294,7 +306,7 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;mixer&#x27;, &
       }
       this.trigger(&#x27;scene:change&#x27;, sceneName);
       self.currentScene.trigger(&#x27;active&#x27;, options);
-      
+
       if (callback) {
         callback(sceneName);
       }
@@ -316,7 +328,7 @@ define(&#x27;lyria/scene/director&#x27;, [&#x27;root&#x27;, &#x27;mixer&#x27;, &
     return SceneDirector;
 
   })();
-});
+}); 
     </pre>
 </div>
 

@@ -684,7 +684,7 @@
         },
         {
             "file": "src\\scene\\director.js",
-            "line": 32,
+            "line": 34,
             "description": "All scenes",
             "itemtype": "property",
             "name": "sceneList",
@@ -695,7 +695,7 @@
         },
         {
             "file": "src\\scene\\director.js",
-            "line": 40,
+            "line": 42,
             "itemtype": "property",
             "name": "className",
             "type": "{String}",
@@ -705,7 +705,7 @@
         },
         {
             "file": "src\\scene\\director.js",
-            "line": 46,
+            "line": 48,
             "description": "The current scene",
             "itemtype": "property",
             "name": "currentScene",
@@ -716,7 +716,7 @@
         },
         {
             "file": "src\\scene\\director.js",
-            "line": 54,
+            "line": 56,
             "description": "The default scene",
             "itemtype": "property",
             "name": "defaultScene",
@@ -727,7 +727,7 @@
         },
         {
             "file": "src\\scene\\director.js",
-            "line": 62,
+            "line": 64,
             "description": "Define events for scene director",
             "class": "Director",
             "module": "Lyria",
@@ -735,7 +735,7 @@
         },
         {
             "file": "src\\scene\\director.js",
-            "line": 80,
+            "line": 81,
             "description": "Adds a scene to the scene director",
             "itemtype": "method",
             "name": "add",
@@ -746,7 +746,7 @@
                     "type": "Object"
                 },
                 {
-                    "name": "options",
+                    "name": "data",
                     "description": "",
                     "type": "Object"
                 }
@@ -757,7 +757,7 @@
         },
         {
             "file": "src\\scene\\director.js",
-            "line": 142,
+            "line": 154,
             "description": "Shows a specified scene",
             "itemtype": "method",
             "name": "show",
@@ -784,7 +784,7 @@
         },
         {
             "file": "src\\scene\\director.js",
-            "line": 189,
+            "line": 201,
             "description": "Refreshes a scene",
             "itemtype": "method",
             "name": "refresh",
@@ -801,7 +801,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 214,
+            "line": 217,
             "description": "Adds a gameobject to the scene",
             "itemtype": "method",
             "name": "add",
@@ -817,7 +817,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 262,
+            "line": 265,
             "description": "Refreshes the scene (Re-renders the template)",
             "itemtype": "method",
             "name": "refresh",
@@ -833,7 +833,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 290,
+            "line": 293,
             "description": "Sets an event to the event object (DOM events)",
             "itemtype": "method",
             "name": "bindEvent",
@@ -859,7 +859,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 310,
+            "line": 313,
             "description": "Binds a lot of events instead of a single one",
             "itemtype": "method",
             "name": "bindEvents",
@@ -878,7 +878,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 349,
+            "line": 352,
             "description": "Unbinds a lot of events",
             "itemtype": "method",
             "name": "unbindEvents",
@@ -894,7 +894,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 384,
+            "line": 387,
             "description": "Gets localized value",
             "params": [
                 {
@@ -908,7 +908,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 397,
+            "line": 400,
             "description": "Logging directly from the scene",
             "params": [
                 {
@@ -956,7 +956,7 @@
         },
         {
             "file": "src\\game.js",
-            "line": 104,
+            "line": 107,
             "itemtype": "property",
             "name": "Loop",
             "static": 1,
@@ -1000,7 +1000,7 @@
             "is_constructor": 1,
             "params": [
                 {
-                    "name": "assetArray",
+                    "name": "assetObject",
                     "description": "",
                     "type": "Object"
                 }
@@ -1058,7 +1058,30 @@
         },
         {
             "file": "src\\preloader.js",
-            "line": 59,
+            "line": 58,
+            "itemtype": "property",
+            "name": "taskList",
+            "type": "{Array}",
+            "class": "Preloader",
+            "module": "Lyria"
+        },
+        {
+            "file": "src\\preloader.js",
+            "line": 65,
+            "description": "Adds a custom task to the preloader",
+            "params": [
+                {
+                    "name": "taskFn",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "class": "Preloader",
+            "module": "Lyria"
+        },
+        {
+            "file": "src\\preloader.js",
+            "line": 74,
             "description": "Starts the preloader and loads all assets asynchronously. Triggers\nevents when necessary.",
             "itemtype": "method",
             "name": "start",
@@ -1228,15 +1251,15 @@
         },
         {
             "message": "Missing item type\nDefine events for scene director",
-            "line": " src\\scene\\director.js:62"
+            "line": " src\\scene\\director.js:64"
         },
         {
             "message": "Missing item type\nGets localized value",
-            "line": " src\\scene\\index.js:384"
+            "line": " src\\scene\\index.js:387"
         },
         {
             "message": "Missing item type\nLogging directly from the scene",
-            "line": " src\\scene\\index.js:397"
+            "line": " src\\scene\\index.js:400"
         },
         {
             "message": "Missing item type",
@@ -1249,6 +1272,10 @@
         {
             "message": "Missing item type",
             "line": " src\\preloader.js:13"
+        },
+        {
+            "message": "Missing item type\nAdds a custom task to the preloader",
+            "line": " src\\preloader.js:65"
         },
         {
             "message": "Missing item type",
