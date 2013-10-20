@@ -6,7 +6,7 @@ define('lyria/prefab/manager', ['jqueryify', 'jquery', 'root'], function($ify, $
   PrefabManager.className = 'prefab';
 
   var createElement = function(type) {
-    return function(name, parent) {
+    return function(name, parent, data) {
       if (parent == null) {
         parent = ((PrefabManager.viewport) ? PrefabManager.viewport.$element :
         void 0) || 'body';
@@ -16,6 +16,8 @@ define('lyria/prefab/manager', ['jqueryify', 'jquery', 'root'], function($ify, $
       
       if (!PrefabManager.prefabs[name]) {
         throw new Error('No valid prefab called ' + name + ' found.');
+      } else {
+        prefab = PrefabManager.prefabs[name](data);
       }
 
       var $parent = $ify(parent);
