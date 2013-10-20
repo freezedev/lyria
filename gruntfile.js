@@ -109,7 +109,7 @@ module.exports = function(grunt) {
   grunt.loadTasks('./tasks');
 
   grunt.registerTask('test', 'Lints and unit tests', ['jshint']);
-  grunt.registerTask('doc', 'Generated documentation', ['yuidoc', 'dependo']);
+  grunt.registerTask('doc', 'Generated documentation', ['yuidoc', 'dependo', 'plato']);
   grunt.registerTask('default', 'Default task', ['clean', 'test', 'handlebars', 'stylus', 'concat', 'uglify', 'cssmin', 'doc']);
 
 };
