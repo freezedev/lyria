@@ -99,7 +99,7 @@ module.exports = function(grunt) {
           }
         },
         files: {
-          'doc/reports/': ['src/**/*.js']
+          'doc/reports/': ['src/**/*.js', 'gruntfile.js']
         }
       }
     }
