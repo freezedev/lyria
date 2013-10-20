@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>src/audio/index.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
+      <p class="stat">113.74</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
+      <p class="stat">214</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
+      <p class="stat">50.33</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
+      <p class="stat">1.31</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">/**
+ * @module Lyria
+ */
+define(&#039;lyria/audio&#039;, [&#039;root&#039;, &#039;jquery&#039;], function(root, $) {&#039;use strict&#039;;
+
+  /**
+   * @class Audio
+   * @static 
+   */
+  var Audio = function() {
+    var muted = false;
+    /**
+     * Private audio elements
+     *
+     * @example : {
+     *  filepath : &#039;assets/audio/example.ogg&#039;,
+     *  playAfter : &#039;example2&#039;,
+     *  loop : false,
+     *  play : false
+     * }
+     */
+    var audioElements = {};
+    /**
+     * Loads one or multiple audio files
+     * @param {string}
+     *    id      identifier of this sound (has to be unique!)
+     * @param {object}
+     *    filepath  filepath of the sound
+     *    playAfter should sth be played after this sound has ended
+     *    loop    loop this sound
+     *    play    should this sound be played immediatelly?
+     */
+    var addAudioElement = function(id, fileObj) {
+      if (!fileObj || typeof (fileObj) !== &#039;object&#039;)
+        return;
+      var audioElement = document.createElement(&#039;audio&#039;);
+      audioElements[id] = fileObj;
+      $(audioElement).attr(&#039;id&#039;, id).attr(&#039;preload&#039;, &#039;auto&#039;).append(&#039;&lt;source src=&quot;&#039; + fileObj.filepath + &#039;&quot; /&gt;&#039;);
+
+      $(&#039;body&#039;).append(audioElement);
+      if (fileObj.play) {
+        this.play(id);
+      }
+    };
+    var removeAudioElement = function(id) {
+      if (!id || typeof (fileObj) != &#039;string&#039;)
+        return;
+      $(&#039;#&#039; + id).remove();
+      window.log(&#039;Lyria.audio.removeAudioElement: &#039; + id + &#039; removed&#039;);
+    };
+    /**
+     * Plays the audio file
+     *
+     * @param {string} element identifier
+     */
+    var play = function(elem) {
+      var sound = audioElements[elem];
+      $(&#039;#&#039; + elem).one(&#039;ended&#039;, {
+        audioManager: this
+      }, function(event) {
+        if (window.chrome)
+          $(this).load();
+        else
+          $(this).currentTime = 0;
+
+        var id = $(this).attr(&#039;id&#039;);
+        var sound = event.data.audioManager.getSound(id);
+        // only play after song defined in playAfter if song is initialized
+        if (sound.playAfter &amp;&amp; $(&#039;#&#039; + sound.playAfter).length &gt; 0) {
+          event.data.audioManager.play(sound.playAfter);
+        }
+        if (sound.loop) {
+          event.data.audioManager.play($(this).attr(&#039;id&#039;));
+        }
+      });
+      $(&#039;#&#039;+elem)[0].play();
+      if (muted) {
+        $(&#039;#&#039;+elem)[0].volume = 0;
+      }
+    };
+    /**
+     * Get the audio file object
+     *
+     * @param {string} element identifier
+     */
+    var getSound = function(elem) {
+      return audioElements[elem];
+    };
+    /**
+     * Pauses the audio file
+     *
+     * @param {string} element identifier
+     */
+    var pause = function(elem) {
+      if ($(&#039;#&#039; + elem).length &gt; 0) {
+        $(&#039;#&#039;+elem)[0].pause();
+      } else {
+        window.log(&#039;error&#039;, &#039;Lyria.Audio.pause: cant finde element &#039; + elem + &#039; to pause&#039;);
+      }
+    };
+    /**
+     * Stops playing the audio file
+     *
+     * @param {string} element identifier
+     */
+    var stop = function(elem) {
+      if ($(&#039;#&#039; + elem).length &gt; 0 &amp;&amp; $(&#039;#&#039;+elem)[0] &amp;&amp; $(&#039;#&#039;+elem)[0].pause) {
+        $(&#039;#&#039;+elem)[0].pause();
+        $(&#039;#&#039;+elem)[0].currentTime = 0;
+      }
+    };
+    /**
+     * Get the length of the sound file
+     *
+     * @param {string} element identifier
+     */
+    var getLength = function(elem) {
+      return $(&#039;#&#039;+elem)[0].duration;
+    };
+    /**
+     * Sets or gets the volume of the audio file
+     *
+     * @param {string} element identifier
+     * @param {number} value (between 0 .. 1)
+     */
+    var volume = function(elem, value) {
+      if ($(&#039;#&#039; + elem).length &gt; 0) {
+        if ( typeof (value) === &quot;number&quot;)
+          $(&#039;#&#039;+elem)[0].volume = value;
+        else
+          return $(&#039;#&#039;+elem)[0].volume;
+      } else {
+        return 0;
+      }
+
+    };
+    /**
+     * Sets or gets the position of the audio file
+     *
+     * @param {string} element identifier
+     * @param {number} value
+     */
+    var pos = function(elem, value) {
+      if ( typeof (value) === &quot;number&quot;)
+        $(&#039;#&#039;+elem)[0].currentTime = value;
+      else
+        return $(&#039;#&#039;+elem)[0].currentTime;
+    };
+    /**
+     * Sets or gets properties of the audio object
+     * TODO: Method chaining
+     *
+     * @param {Object} prop
+     * @param {Object} value (optional)
+     */
+    var attr = function(prop, value) {
+      switch (prop) {
+        case &#039;duration&#039;:
+        case &#039;length&#039;:
+          return getLength();
+
+        case &#039;position&#039;:
+        case &#039;pos&#039;:
+          {
+            if ( typeof (value) === &quot;undefined&quot;)
+              return pos();
+            else
+              pos(value);
+
+          }
+          break;
+
+        case &#039;volume&#039;:
+          {
+            if ( typeof (value) === &quot;undefined&quot;)
+              return volume();
+            else
+              volume(value);
+
+          }
+          break;
+      }
+    };
+
+    /**
+     * Mute all sound of the game
+     * @param {boolean} value
+     */
+    var muteSounds = function(value) {
+      muted = value;
+      for (var i in audioElements) {
+        if (audioElements.hasOwnProperty(i)) {
+          if ($(&#039;#&#039; + i).length &gt; 0) {
+            $(&#039;#&#039;+i)[0].volume = value ? 0 : 1;
+          }
+        }
+      }
+    };
+
+    return {
+      addAudioElement: addAudioElement,
+      removeAudioElement: removeAudioElement,
+      play: play,
+      getSound: getSound,
+      pause: pause,
+      stop: stop,
+      muteSounds: muteSounds,
+
+      getLength: getLength,
+      volume: volume,
+      pos: pos,
+      attr: attr
+    };
+  };
+  
+  return Audio;
+});</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

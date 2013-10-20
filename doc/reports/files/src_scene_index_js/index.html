@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>src/scene/index.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
+      <p class="stat">116.68</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
+      <p class="stat">431</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
+      <p class="stat">61.40</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
+      <p class="stat">3.31</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">/**
+ * @module Lyria
+ */
+define(&#039;lyria/scene&#039;, [&#039;jquery&#039;, &#039;mixer&#039;, &#039;nexttick&#039;, &#039;eventmap&#039;, &#039;lyria/gameobject&#039;, &#039;lyria/language&#039;, &#039;lyria/log&#039;, &#039;lyria/localization&#039;], function($, mixer, nextTick, EventMap, GameObject, Language, Log, Localization) {&#039;use strict&#039;;
+
+  var createNamespace = function(obj, chain, value) {
+    var chainArr = chain.split(&#039;.&#039;);
+
+    for (var i = 0, j = chainArr.length; i &lt; j; i++) {
+      (function(item, lastElem) {
+        if (lastElem) {
+          obj[item] = value;
+        } else {
+          obj[item] = obj[item] || {};
+        }
+
+        obj = obj[item];
+      })(chainArr[i], i === j - 1);
+    }
+  };
+
+  var Scene = (function() {
+
+    /**
+     * Scene constructor
+     *
+     * @class Scene
+     * @constructor
+     */
+    var Scene = function(sceneName, sceneDeps, sceneFunction, options) {
+      if (!sceneName) {
+        return;
+      }
+
+      if ( typeof sceneDeps === &#039;function&#039;) {
+        options = sceneFunction;
+        sceneFunction = sceneDeps;
+        sceneDeps = {};
+      }
+
+      // Mixin event map into Scene
+      // Sender: &quot;scene:#{sceneName}&quot;
+      mixer([this, Scene.prototype], new EventMap());
+
+      // We need a reference to the scene not being this
+      var self = this;
+
+      // Set name
+      this.name = sceneName;
+      
+      // Data
+      this.data = options.data || {};
+
+      // Default values
+      this.localization = new Localization();
+
+      // Default event value
+      this.defaultEvent = &#039;click&#039;;
+
+      this.template = {};
+      this.template.source = null;
+      this.template.helpers = {};
+      this.template.partials = {};
+      // Collect all template values
+      this.template.data = {};
+
+      this.children = this.children || {};
+      this.children.gameObjects = {};
+      this.children.prefabs = {};
+
+      // Expose function for template values
+      this.expose = function(obj) {
+        if (!obj || $.isEmptyObject(obj)) {
+          return;
+        }
+
+        self.template.data = $.extend(true, self.template.data, obj);
+      };
+
+      Object.defineProperty(self, &#039;$element&#039;, {
+        get: function() {
+          return $(&#039;#&#039; + self.name);
+        }
+      });
+
+      // Synchronizes events and scene view
+      self.on(&#039;synchronize&#039;, function() {
+        self.refresh();
+
+        if (self.DOMEvents) {
+          if (options &amp;&amp; options.isPrefab) {
+            self.DOMEvents.delegate = (options.target) ? options.target : &#039;body&#039;;
+          } else {
+            self.DOMEvents.delegate = &#039;#&#039; + sceneName;
+          }
+        }
+
+        self.on(&#039;update&#039;, function(dt) {
+          $.each(self.children, function(childKey, childValue) {
+            if (!$.isEmptyObject(childValue)) {
+              $.each(childValue, function(key, value) {
+                value.trigger(&#039;update&#039;, dt);
+              });
+            }
+          });
+        });
+
+        // Bind events
+        if (self.DOMEvents &amp;&amp; !$.isEmptyObject(self.DOMEvents)) {
+          $.each(self.DOMEvents, function(key, value) {
+            if (( typeof value === &#039;object&#039;) &amp;&amp; (key !== &#039;delegate&#039;)) {
+              $(self.DOMEvents.delegate).on(value, key, {
+                scene: self
+              });
+            }
+          });
+        }
+
+        // Data binding
+        // TODO: Find a better way than using Object.watch
+        if (self.template.data &amp;&amp; !$.isEmptyObject(self.template.data)) {
+          $(&#039;#&#039; + self.name + &#039; [data-bind]&#039;).each(function() {
+            var $dataElem = $(this);
+
+            var prop = $dataElem.data(&#039;bind&#039;);
+
+            self.template.data.watch(prop, function(id, oldval, newval) {
+              if (oldval !== newval) {
+                $dataElem.html(newval);
+              }
+
+              return newval;
+            });
+          });
+        }
+      });
+
+      var createScene = function(modules) {
+        var sceneDone = function(err, success) {
+          if (err) {
+            return console.error(&#039;Error while executing scene &#039; + self.name + &#039;: &#039; + err);
+          }
+
+          self.trigger(&#039;synchronize&#039;);
+        };
+
+        var async = false;
+
+        var context = self;
+        context.async = function() {
+          async = true;
+
+          return function() {
+            nextTick(function() {
+              sceneDone();
+            });
+          };
+        };
+
+        if (!self.hasOwnProperty(&#039;isAsync&#039;)) {
+          Object.defineProperty(self, &#039;isAsync&#039;, {
+            get: function() {
+              return async;
+            }
+          });
+        }
+
+        context.modules = modules;
+
+        try {
+          var success = sceneFunction.apply(context, [context, modules]);
+
+          if (!async) {
+            sceneDone(null, success);
+          }
+        } catch (e) {
+          sceneDone(e);
+        }
+      };
+
+      // Call scene
+      var reqModules = Object.keys(Scene.requireAlways) || [];
+
+      self.on(&#039;added&#039;, function() {
+        require(reqModules, function() {
+          var importedModules = {};
+  
+          for (var i = 0, j = arguments.length; i &lt; j; i++) {
+            (function(dep) {
+              createNamespace(importedModules, Scene.requireAlways[reqModules[i]], dep);
+            })(arguments[i]);
+          }
+  
+          sceneDeps = sceneDeps || {};
+          var reqSceneModules = Object.keys(sceneDeps) || [];
+  
+          if (reqSceneModules.length) {
+            require(reqSceneModules, function() {
+  
+              for (var k = 0, l = arguments.length; k &lt; l; k++) {
+                (function(sceneDep) {
+                  createNamespace(importedModules, sceneDeps[reqSceneModules[j]], sceneDep);
+                })(arguments[j]);
+              }
+  
+              createScene(importedModules);
+            });
+          } else {
+            createScene(importedModules);
+          }
+  
+        });
+      });
+      
+    };
+
+    /**
+     * Adds a gameobject to the scene
+     *
+     * @method add
+     * @param {Object} child
+     */
+    Scene.prototype.add = function(child) {
+      var self = this;
+
+      if ( child instanceof GameObject) {
+        this.children.gameObjects[child.name] = child;
+
+        this.template.data.gameobject = (function() {
+          var array = [];
+
+          $.each(self.children.gameObjects, function(key, value) {
+            array.push(value);
+          });
+
+          return array;
+        })();
+
+        this.trigger(&#039;add&#039;);
+
+        return true;
+      }
+
+      if ( child instanceof GameObject) {
+        this.children.prefabs[child.name] = child;
+
+        this.template.data.gameobject = (function() {
+          var array = [];
+
+          $.each(self.children.gameObjects, function(key, value) {
+            array.push(value);
+          });
+
+          return array;
+        })();
+
+        this.trigger(&#039;add&#039;);
+
+        return true;
+      }
+
+      return false;
+    };
+
+    /**
+     * Refreshes the scene (Re-renders the template)
+     *
+     * @method refresh
+     * @param {Object} val
+     */
+    Scene.prototype.refresh = function(val) {
+      if (val == null &amp;&amp; this.template) {
+        val = this.template.data;
+      }
+
+      // Add default helpers
+      this.template.helpers[&#039;translate&#039;] = Localization.elements(this.localization.data, this.localization.language);
+
+      if (this.template &amp;&amp; this.template.source) {
+        this.content = this.template.source(val, {
+          partials: this.template.partials,
+          helpers: this.template.helpers
+        });
+      }
+
+      if (this.$element.length &gt; 0) {
+        this.$element.html(this.content);
+      }
+
+      this.trigger(&#039;refresh&#039;);
+    };
+
+    /**
+     * Sets an event to the event object (DOM events)
+     *
+     * @method bindEvent
+     * @param {String} selector
+     * @param {String} eventName
+     * @param {Function} eventFunction
+     */
+    Scene.prototype.bindEvent = function(selector, eventName, eventFunction) {
+      if (selector == null) {
+        return;
+      }
+
+      if ( typeof eventName === &#039;function&#039;) {
+        this.DOMEvents[selector][this.defaultEvent] = eventFunction;
+      } else {
+        this.DOMEvents[selector][eventName] = eventFunction;
+      }
+    };
+
+    /**
+     * Binds a lot of events instead of a single one
+     * 
+     * @method bindEvents
+     * @param {Object} eventObject
+     * @see bindEvent
+     */
+    Scene.prototype.bindEvents = function(eventObject) {
+      if (eventObject == null) {
+        return;
+      }
+      
+      for (var key in eventObject) {
+        if (Object.hasOwnProperty.call(eventObject, key)) {
+          this.DOMEvents[key] = eventObject[key];
+        }
+      }
+    };
+
+    /*
+     * Unbinds a previously bound event
+     *
+     * @method unbindEvent
+     * @param {String} selector
+     * @param {String} eventName
+     * @param {Function} eventFunction
+     */
+    Scene.prototype.unbindEvent = function(selector, eventName) {
+      if (selector == null) {
+        return;
+      }
+
+      if (eventName == null) {
+        delete this.DOMEvents[selector];
+      } else {
+        delete this.DOMEvents[selector][eventName];
+      }
+    };
+    
+    /**
+     * Unbinds a lot of events
+     * 
+     * @method unbindEvents
+     * @param [Object] eventObject
+     */
+    Scene.prototype.unbindEvents = function(eventObject) {
+      if (eventObject == null || eventObject === &#039;*&#039;) {
+        this.DOMEvents = {};
+        return;
+      }
+      
+      if (Array.isArray(eventObject)) {
+        for (var i = 0, j = eventObject.length; i &lt; j; i++) {
+          if (this.DOMEvents[eventObject[i]]) {
+            delete this.DOMEvents[eventObject[i]];
+          }
+        }
+      } else {
+        for (var key in eventObject) {
+          if (Object.hasOwnProperty.call(eventObject, key)) {
+            var value = eventObject[key];
+            
+            if (Array.isArray(value)) {
+              for (var k = 0, l = value.length; k &lt; l; k++) {
+                delete this.DOMEvents[key][value[k]];
+              }
+            } else {
+              delete this.DOMEvents[key][value];
+            }
+          }
+        }
+      }
+    };
+
+    /**
+     * Gets localized value
+     *
+     * @param {Object} lang
+     */
+    Scene.prototype.t = function() {
+      if (this.localization &amp;&amp; this.localization.t) {
+        return this.localization.t.apply(this.localization, arguments);
+      } else {
+        return;
+      }
+    };
+
+    /**
+     * Logging directly from the scene
+     *
+     * @param {Object} text
+     */
+    Scene.prototype.log = function(text) {
+      Log.i(&#039;Scene &#039; + this.name + &#039;: &#039; + text);
+    };
+
+    Scene.requireAlways = {
+      // Third-party modules
+      &#039;jquery&#039;: &#039;$&#039;,
+      
+      // Lyria modules
+      &#039;lyria/achievement&#039;: &#039;Lyria.Achievement&#039;,
+      &#039;lyria/achievement/manager&#039;: &#039;Lyria.AchievementManager&#039;,
+      &#039;lyria/animation&#039;: &#039;Lyria.Animation&#039;,
+      &#039;lyria/audio&#039;: &#039;Lyria.Audio&#039;,
+      &#039;lyria/component&#039;: &#039;Lyria.Component&#039;,
+      &#039;lyria/events&#039;: &#039;Lyria.Events&#039;,
+      &#039;lyria/gameobject&#039;: &#039;Lyria.GameObject&#039;,
+      &#039;lyria/log&#039;: &#039;Lyria.Log&#039;,
+      &#039;lyria/loop&#039;: &#039;Lyria.Loop&#039;,
+      &#039;lyria/prefab/manager&#039;: &#039;Lyria.PrefabManager&#039;,
+      &#039;lyria/resource&#039;: &#039;Lyria.Resource&#039;,
+      &#039;lyria/tween&#039;: &#039;Lyria.Tween&#039;
+    };
+
+    return Scene;
+
+  })();
+
+  return Scene;
+
+});</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

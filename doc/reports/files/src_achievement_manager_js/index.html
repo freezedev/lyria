@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>src/achievement/manager.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
+      <p class="stat">115.62</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
+      <p class="stat">137</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
+      <p class="stat">36.81</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
+      <p class="stat">1.10</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">define(&#039;lyria/achievement/manager&#039;, [&#039;jquery&#039;, &#039;lyria/achievement&#039;, &#039;lyria/template/engine&#039;, &#039;lyria/template/list&#039;, &#039;lyria/localization&#039;], function($, Achievement, TemplateEngine, templateList, Localization) {
+
+  var achievementStore = {};
+
+  var AchievementManager = {
+    localization: new Localization(),
+    add: function(achievement) {
+      if ( achievement instanceof Achievement) {
+        if (!Object.hasOwnProperty.call(achievementStore, achievement.name)) {
+          achievementStore[achievement.name] = achievement;
+        }
+      }
+    },
+    progressSeparator: &#039;/&#039;,
+    viewport: null,
+    remove: function(achName) {
+      if (Object.hasOwnProperty.call(achievementStore, achName)) {
+        delete achievementStore[achName];
+      }
+    },
+    list: function() {
+      //TemplateEngine.compile()
+    },
+    show: function(achName) {
+      var currentAchievement = achievementStore[achName];
+
+      if (currentAchievement == null) {
+        throw new Error(&#039;Achievement &#039; + achName + &#039; not found.&#039;);
+      }
+
+      var title = (AchievementManager.localization.exists(currentAchievement.name)) ? AchievementManager.localization.t(currentAchievement.name) : currentAchievement.name;
+      var description = (AchievementManager.localization.exists(currentAchievement.name + &#039;-description&#039;)) ? AchievementManager.localization.t(currentAchievement.name + &#039;-description&#039;) : currentAchievement.description;
+
+      var achTemplate = TemplateEngine.compile(templateList[&#039;achievement&#039;])({
+        id: currentAchievement.id,
+        className: currentAchievement.name,
+        title: title,
+        description: description,
+        offscreen: true,
+        progressable: (currentAchievement.progress.max &gt; 0 &amp;&amp; currentAchievement.progress.max !== 1),
+        max: currentAchievement.progress.max,
+        current: currentAchievement.progress.current,
+        separator: AchievementManager.progressSeparator
+      });
+
+
+      if (AchievementManager.viewport == null) {
+        $(&#039;body&#039;).append(achTemplate);
+      } else {
+        AchievementManager.viewport.$element.append(achTemplate);
+      }
+
+      var $currentAchievement = $(&#039;#&#039; + currentAchievement.id);
+
+      // Refactor this if lyria/tween is available
+      $currentAchievement.css({
+        opacity: 0.0
+      });
+      $currentAchievement.animate({
+        opacity: 1.0
+      }, 600).delay(2000).animate({
+        opacity: 0.0
+      }, 600, function() {
+        $currentAchievement.remove();
+      });
+    },
+    toJSON: function() {
+      var key, value;
+      var result = {};
+
+      for (key in achievementStore) {
+        value = achievementStore[key];
+        result[key] = value.toJSON();
+      }
+
+      return result;
+    },
+    toString: function() {
+      var result = &#039;&#039;;
+
+      try {
+        result = JSON.stringify(AchievementManager.toJSON());
+      } catch (e) {
+        throw new Error(&#039;Error while serializing achievements in AchievementManager: &#039; + e);
+      }
+      return result;
+    },
+    fromJSON: function(achievements) {
+      var key, value;
+
+      for (key in achievements) {
+        value = achievements[key];
+        AchievementManager.add(value);
+      }
+    },
+    fromString: function(achievements) {
+      var deserializedValue = {};
+
+      try {
+        deserializedValue = JSON.parse(achievements);
+      } catch (e) {
+        throw new Error(&#039;Error while deserializing achivements in AchievementManager: &#039; + e);
+      }
+
+      return AchievementManager.fromJSON(deserializedValue);
+    }
+  };
+
+  Object.defineProperty(AchievementManager, &#039;length&#039;, {
+    get: function() {
+      return Object.keys(achievementStore).length;
+    }
+  });
+
+  Object.defineProperty(AchievementManager, &#039;unlockedCount&#039;, {
+    get: function() {
+      var counter = 0;
+
+      $.each(achievementStore, function(key, value) {
+        if (value.unlocked) {
+          counter++;
+        }
+      });
+
+      return counter;
+    }
+  });
+  
+  Object.defineProperty(AchievementManager, &#039;store&#039;, {
+    get: function() {
+      return achievementStore;
+    }
+  });
+
+  return AchievementManager;
+
+});</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>
