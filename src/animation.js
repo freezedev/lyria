@@ -11,6 +11,7 @@ define('lyria/animation', ['mixer', 'eventmap'], function(mixer, EventMap) {
       this.sprite.height;
       this.sprite.image = new Image();
       
+      // Mix-in eventmap
       mixer([this, Animation.prototype], new EventMap());
     };
     
