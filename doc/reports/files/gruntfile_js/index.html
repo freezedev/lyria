@@ -45,11 +45,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
-      <p class="stat">67.12</p>
+      <p class="stat">66.16</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
-      <p class="stat">115</p>
+      <p class="stat">121</p>
     </div>
   </div>
   <div class="row historical">
@@ -67,7 +67,7 @@
     </div>
     <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
-      <p class="stat">0.84</p>
+      <p class="stat">0.89</p>
     </div>
   </div>
 </div>
@@ -97,11 +97,17 @@
 
   grunt.initConfig({
     pkg: grunt.file.readJSON(&#039;package.json&#039;),
-    concat: {
+    concat_sourcemap: {
+      options: {
+        sourcesContent: true,
+        sourceRoot: &#039;/&#039;
+      },
       scripts: {
         src: [lyriaOrigin, generatedFiles],
         dest: &#039;dist/js/&lt;%= pkg.name %&gt;.js&#039;
-      },
+      }
+    },
+    concat: {
       styles: {
         src: [&#039;dist/css/*.css&#039;],
         dest: &#039;dist/css/&lt;%= pkg.name %&gt;.css&#039;
@@ -114,7 +120,7 @@
       },
       dist: {
         files: {
-          &#039;dist/js/&lt;%= pkg.name %&gt;.min.js&#039;: [&#039;&lt;%= concat.scripts.dest %&gt;&#039;]
+          &#039;dist/js/&lt;%= pkg.name %&gt;.min.js&#039;: [&#039;&lt;%= concat_sourcemap.scripts.dest %&gt;&#039;]
         }
       }
     },
@@ -202,7 +208,7 @@
 
   grunt.registerTask(&#039;test&#039;, &#039;Lints and unit tests&#039;, [&#039;jshint&#039;]);
   grunt.registerTask(&#039;doc&#039;, &#039;Generated documentation&#039;, [&#039;yuidoc&#039;, &#039;dependo&#039;, &#039;plato&#039;]);
-  grunt.registerTask(&#039;default&#039;, &#039;Default task&#039;, [&#039;clean&#039;, &#039;test&#039;, &#039;handlebars&#039;, &#039;stylus&#039;, &#039;concat&#039;, &#039;uglify&#039;, &#039;cssmin&#039;, &#039;doc&#039;]);
+  grunt.registerTask(&#039;default&#039;, &#039;Default task&#039;, [&#039;clean&#039;, &#039;test&#039;, &#039;handlebars&#039;, &#039;stylus&#039;, &#039;concat&#039;, &#039;concat_sourcemap&#039;, &#039;uglify&#039;, &#039;cssmin&#039;, &#039;doc&#039;]);
 
 };</textarea>
   </div>
