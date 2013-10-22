@@ -230,6 +230,7 @@ define('lyria/animation', ['mixer', 'eventmap'], function(mixer, EventMap) {
       this.sprite.height;
       this.sprite.image = new Image();
       
+      // Mix-in eventmap
       mixer([this, Animation.prototype], new EventMap());
     };
     
@@ -477,16 +478,37 @@ define('lyria/checkpoints', ['eventmap', 'mixer', 'deleteitem'], function(EventM
       this.checkpointList = [];
     };
 
+    /**
+     * Pass a checkpoint
+     * 
+     * @param {String} name
+     */
     Checkpoints.prototype.pass = function(name) {
       this.checkpointList.push(name);
       this.trigger('pass', name, performance.now() - startTime);
     };
 
+    /**
+     * Passes a checkpoint
+     * 
+     * @param {String} name
+     */
     Checkpoints.prototype.hasPassed = function(name) {
       return (this.checkpointList.indexOf(name) !== -1);
     };
 
+    /**
+     * Reset a single or all checkpoints
+     * 
+     * @param {String} name
+     */
     Checkpoints.prototype.reset = function(name) {
+      if (name == null) {
+        this.checkpointList = [];
+        this.trigger('reset');
+        return;
+      }
+      
       var index = this.checkpointList.indexOf(name);
 
       if (index === -1) {
@@ -1555,6 +1577,8 @@ define('lyria/mixin/language', function() {
 define('lyria/prefab', ['lyria/scene'], function(Scene) {
 	'use strict';
 
+  // TODO: Allow own Prefab.requireAlways similar to Scene.requireAlways
+
 	//Lyria.Prefab
 	return Scene;
   
@@ -2471,6 +2495,7 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
       'lyria/achievement/manager': 'Lyria.AchievementManager',
       'lyria/animation': 'Lyria.Animation',
       'lyria/audio': 'Lyria.Audio',
+      'lyria/checkpoints': 'Lyria.Checkpoints',
       'lyria/component': 'Lyria.Component',
       'lyria/events': 'Lyria.Events',
       'lyria/gameobject': 'Lyria.GameObject',
@@ -3169,3 +3194,4 @@ define('lyria/template/list', {
     }
   }
 });
+//@ sourceMappingURL=lyria.js.map
