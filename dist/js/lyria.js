@@ -471,10 +471,21 @@ define('lyria/audio/manager', function() {
 define('lyria/checkpoints', ['eventmap', 'mixer', 'deleteitem'], function(EventMap, mixer, deleteItem) {
 
   var Checkpoints = (function() {
-    var Checkponts = function() {
+    
+    /**
+     * Checkpoints constructor
+     *
+     * @class Checkpoints
+     * @constructor
+     */
+    var Checkpoints = function() {
+      // Mix-in eventmap
       mixer([this, Checkpoints.prototype], new EventMap());
 
+      // Set start time
       this.startTime = performance.now();
+      
+      // List of all passed checkpoints
       this.checkpointList = [];
     };
 
@@ -484,8 +495,13 @@ define('lyria/checkpoints', ['eventmap', 'mixer', 'deleteitem'], function(EventM
      * @param {String} name
      */
     Checkpoints.prototype.pass = function(name) {
+      // A checkpoint can only be passed once
+      if (this.hasPassed(name)) {
+        return;
+      }
+      
       this.checkpointList.push(name);
-      this.trigger('pass', name, performance.now() - startTime);
+      this.trigger('pass', name, performance.now() - this.startTime);
     };
 
     /**
@@ -520,7 +536,7 @@ define('lyria/checkpoints', ['eventmap', 'mixer', 'deleteitem'], function(EventM
     };
 
     return Checkpoints;
-  });
+  })();
   
   return Checkpoints;
 
@@ -1591,13 +1607,28 @@ define('lyria/prefab/manager', ['jqueryify', 'jquery', 'root'], function($ify, $
   PrefabManager.className = 'prefab';
 
   var createElement = function(type) {
-    return function(name, parent, data) {
+    return function(options, data) {
+      var name = options.name;
+      var parent = options.parent;
+      data = data || {};
+      
+      if (options.wrap == null) {
+        options.wrap = true;
+      }
+      
+      // TODO: Wrap typically wraps the content - this is default behavior right now
+      var wrap = options.wrap;
+      
       if (parent == null) {
         parent = ((PrefabManager.viewport) ? PrefabManager.viewport.$element :
         void 0) || 'body';
       }
       
       var prefab = null;
+      
+      var prefabId = PrefabManager.className + '-' + name + '-' + Date.now();
+      
+      data.id = prefabId;
       
       if (!PrefabManager.prefabs[name]) {
         throw new Error('No valid prefab called ' + name + ' found.');
@@ -1609,7 +1640,7 @@ define('lyria/prefab/manager', ['jqueryify', 'jquery', 'root'], function($ify, $
 
       if ($parent) {
         if ($('#' + prefab.name).length === 0) {
-          $parent[type]($(root.document.createElement('div')).attr('id', prefab.name).attr('class', PrefabManager.className));
+          $parent[type]($(root.document.createElement('div')).attr('id', prefabId).attr('class', PrefabManager.className));
         }
 
         if (!prefab.isAsync) {
@@ -2107,6 +2138,8 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
      * @class Scene
      * @constructor
      */
+    
+    // TODO: Having options as the last parameter is kinda unintuitive
     var Scene = function(sceneName, sceneDeps, sceneFunction, options) {
       if (!sceneName) {
         return;
@@ -2136,17 +2169,27 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
 
       // Default event value
       this.defaultEvent = 'click';
+      
+      // DOMEvents object
+      this.DOMEvents = {};
 
+      // Template values
       this.template = {};
       this.template.source = null;
       this.template.helpers = {};
       this.template.partials = {};
+      
       // Collect all template values
       this.template.data = {};
 
+      // Children object
+      // TODO: This is not needed, if a scene is actually a component - maaagic!
       this.children = this.children || {};
       this.children.gameObjects = {};
       this.children.prefabs = {};
+      
+      // Set Id
+      this.id = this.data.id || self.name;
 
       // Expose function for template values
       this.expose = function(obj) {
@@ -2157,9 +2200,10 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
         self.template.data = $.extend(true, self.template.data, obj);
       };
 
+      // Getter to have a safe way to the element of a scene
       Object.defineProperty(self, '$element', {
         get: function() {
-          return $('#' + self.name);
+          return $('#' + self.id);
         }
       });
 
@@ -2167,14 +2211,11 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
       self.on('synchronize', function() {
         self.refresh();
 
-        if (self.DOMEvents) {
-          if (options && options.isPrefab) {
-            self.DOMEvents.delegate = (options.target) ? options.target : 'body';
-          } else {
-            self.DOMEvents.delegate = '#' + sceneName;
-          }
+        if (self.DOMEvents && !$.isEmptyObject(self.DOMEvents)) {
+          self.DOMEvents.delegate = '#' + self.id;
         }
 
+        // Your typical stock-of-the-mill update function
         self.on('update', function(dt) {
           $.each(self.children, function(childKey, childValue) {
             if (!$.isEmptyObject(childValue)) {
@@ -2199,7 +2240,7 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
         // Data binding
         // TODO: Find a better way than using Object.watch
         if (self.template.data && !$.isEmptyObject(self.template.data)) {
-          $('#' + self.name + ' [data-bind]').each(function() {
+          self.$element.find('[data-bind]').each(function() {
             var $dataElem = $(this);
 
             var prop = $dataElem.data('bind');
