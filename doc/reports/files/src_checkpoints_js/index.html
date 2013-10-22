@@ -45,11 +45,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
-      <p class="stat">127.84</p>
+      <p class="stat">125.38</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
-      <p class="stat">57</p>
+      <p class="stat">73</p>
     </div>
   </div>
   <div class="row historical">
@@ -63,11 +63,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
-      <p class="stat">20.52</p>
+      <p class="stat">22.25</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
-      <p class="stat">0.28</p>
+      <p class="stat">0.30</p>
     </div>
   </div>
 </div>
@@ -93,10 +93,21 @@
     <textarea id="file-source" class="col-md-12">define(&#039;lyria/checkpoints&#039;, [&#039;eventmap&#039;, &#039;mixer&#039;, &#039;deleteitem&#039;], function(EventMap, mixer, deleteItem) {
 
   var Checkpoints = (function() {
-    var Checkponts = function() {
+    
+    /**
+     * Checkpoints constructor
+     *
+     * @class Checkpoints
+     * @constructor
+     */
+    var Checkpoints = function() {
+      // Mix-in eventmap
       mixer([this, Checkpoints.prototype], new EventMap());
 
+      // Set start time
       this.startTime = performance.now();
+      
+      // List of all passed checkpoints
       this.checkpointList = [];
     };
 
@@ -106,8 +117,13 @@
      * @param {String} name
      */
     Checkpoints.prototype.pass = function(name) {
+      // A checkpoint can only be passed once
+      if (this.hasPassed(name)) {
+        return;
+      }
+      
       this.checkpointList.push(name);
-      this.trigger(&#039;pass&#039;, name, performance.now() - startTime);
+      this.trigger(&#039;pass&#039;, name, performance.now() - this.startTime);
     };
 
     /**
@@ -142,7 +158,7 @@
     };
 
     return Checkpoints;
-  });
+  })();
   
   return Checkpoints;
 
