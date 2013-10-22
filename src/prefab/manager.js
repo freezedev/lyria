@@ -6,13 +6,26 @@ define('lyria/prefab/manager', ['jqueryify', 'jquery', 'root'], function($ify, $
   PrefabManager.className = 'prefab';
 
   var createElement = function(type) {
-    return function(name, parent, data) {
+    return function(options, data) {
+      var name = options.name;
+      var parent = options.parent;
+      
+      if (options.wrap == null) {
+        options.wrap = true;
+      }
+      
+      var wrap = options.wrap;
+      
       if (parent == null) {
         parent = ((PrefabManager.viewport) ? PrefabManager.viewport.$element :
         void 0) || 'body';
       }
       
       var prefab = null;
+      
+      var prefabId = PrefabManager.className + '-' + prefab.name + '-' + Date.now();
+      
+      data.id = prefabId;
       
       if (!PrefabManager.prefabs[name]) {
         throw new Error('No valid prefab called ' + name + ' found.');
@@ -24,7 +37,7 @@ define('lyria/prefab/manager', ['jqueryify', 'jquery', 'root'], function($ify, $
 
       if ($parent) {
         if ($('#' + prefab.name).length === 0) {
-          $parent[type]($(root.document.createElement('div')).attr('id', prefab.name).attr('class', PrefabManager.className));
+          $parent[type]($(root.document.createElement('div')).attr('id', prefabId).attr('class', PrefabManager.className));
         }
 
         if (!prefab.isAsync) {
