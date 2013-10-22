@@ -141,6 +141,8 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;ne
      * @class Scene
      * @constructor
      */
+    
+    // TODO: Having options as the last parameter is kinda unintuitive
     var Scene = function(sceneName, sceneDeps, sceneFunction, options) {
       if (!sceneName) {
         return;
@@ -170,17 +172,27 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;ne
 
       // Default event value
       this.defaultEvent = &#x27;click&#x27;;
+      
+      // DOMEvents object
+      this.DOMEvents = {};
 
+      // Template values
       this.template = {};
       this.template.source = null;
       this.template.helpers = {};
       this.template.partials = {};
+      
       // Collect all template values
       this.template.data = {};
 
+      // Children object
+      // TODO: This is not needed, if a scene is actually a component - maaagic!
       this.children = this.children || {};
       this.children.gameObjects = {};
       this.children.prefabs = {};
+      
+      // Set Id
+      this.id = this.data.id || self.name;
 
       // Expose function for template values
       this.expose = function(obj) {
@@ -191,9 +203,10 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;ne
         self.template.data = $.extend(true, self.template.data, obj);
       };
 
+      // Getter to have a safe way to the element of a scene
       Object.defineProperty(self, &#x27;$element&#x27;, {
         get: function() {
-          return $(&#x27;#&#x27; + self.name);
+          return $(&#x27;#&#x27; + self.id);
         }
       });
 
@@ -201,14 +214,11 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;ne
       self.on(&#x27;synchronize&#x27;, function() {
         self.refresh();
 
-        if (self.DOMEvents) {
-          if (options &amp;&amp; options.isPrefab) {
-            self.DOMEvents.delegate = (options.target) ? options.target : &#x27;body&#x27;;
-          } else {
-            self.DOMEvents.delegate = &#x27;#&#x27; + sceneName;
-          }
+        if (self.DOMEvents &amp;&amp; !$.isEmptyObject(self.DOMEvents)) {
+          self.DOMEvents.delegate = &#x27;#&#x27; + self.id;
         }
 
+        // Your typical stock-of-the-mill update function
         self.on(&#x27;update&#x27;, function(dt) {
           $.each(self.children, function(childKey, childValue) {
             if (!$.isEmptyObject(childValue)) {
@@ -233,7 +243,7 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;ne
         // Data binding
         // TODO: Find a better way than using Object.watch
         if (self.template.data &amp;&amp; !$.isEmptyObject(self.template.data)) {
-          $(&#x27;#&#x27; + self.name + &#x27; [data-bind]&#x27;).each(function() {
+          self.$element.find(&#x27;[data-bind]&#x27;).each(function() {
             var $dataElem = $(this);
 
             var prop = $dataElem.data(&#x27;bind&#x27;);
