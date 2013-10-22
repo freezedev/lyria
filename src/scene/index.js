@@ -76,6 +76,9 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
       this.children = this.children || {};
       this.children.gameObjects = {};
       this.children.prefabs = {};
+      
+      // Set Id
+      this.id = this.data.id || self.name;
 
       // Expose function for template values
       this.expose = function(obj) {
@@ -89,7 +92,7 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
       // Getter to have a safe way to the element of a scene
       Object.defineProperty(self, '$element', {
         get: function() {
-          return $('#' + self.name);
+          return $('#' + self.id);
         }
       });
 
@@ -98,11 +101,7 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
         self.refresh();
 
         if (self.DOMEvents && !$.isEmptyObject(self.DOMEvents)) {
-          if (options && options.isPrefab) {
-            self.DOMEvents.delegate = (options.target) ? options.target : 'body';
-          } else {
-            self.DOMEvents.delegate = '#' + sceneName;
-          }
+          self.DOMEvents.delegate = '#' + self.id;
         }
 
         // Your typical stock-of-the-mill update function
@@ -130,7 +129,7 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
         // Data binding
         // TODO: Find a better way than using Object.watch
         if (self.template.data && !$.isEmptyObject(self.template.data)) {
-          $('#' + self.name + ' [data-bind]').each(function() {
+          self.$element.find('[data-bind]').each(function() {
             var $dataElem = $(this);
 
             var prop = $dataElem.data('bind');
