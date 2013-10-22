@@ -9,11 +9,13 @@ define('lyria/prefab/manager', ['jqueryify', 'jquery', 'root'], function($ify, $
     return function(options, data) {
       var name = options.name;
       var parent = options.parent;
+      data = data || {};
       
       if (options.wrap == null) {
         options.wrap = true;
       }
       
+      // TODO: Wrap typically wraps the content - this is default behavior right now
       var wrap = options.wrap;
       
       if (parent == null) {
@@ -23,7 +25,7 @@ define('lyria/prefab/manager', ['jqueryify', 'jquery', 'root'], function($ify, $
       
       var prefab = null;
       
-      var prefabId = PrefabManager.className + '-' + prefab.name + '-' + Date.now();
+      var prefabId = PrefabManager.className + '-' + name + '-' + Date.now();
       
       data.id = prefabId;
       
