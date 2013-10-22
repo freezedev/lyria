@@ -101,6 +101,13 @@
             "fors": {},
             "namespaces": {}
         },
+        "src\\checkpoints.js": {
+            "name": "src\\checkpoints.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
         "src\\game.js": {
             "name": "src\\game.js",
             "modules": {},
@@ -921,6 +928,48 @@
             "module": "Lyria"
         },
         {
+            "file": "src\\checkpoints.js",
+            "line": 11,
+            "description": "Pass a checkpoint",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "Game",
+            "module": "Lyria"
+        },
+        {
+            "file": "src\\checkpoints.js",
+            "line": 21,
+            "description": "Passes a checkpoint",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "Game",
+            "module": "Lyria"
+        },
+        {
+            "file": "src\\checkpoints.js",
+            "line": 30,
+            "description": "Reset a single or all checkpoints",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "Game",
+            "module": "Lyria"
+        },
+        {
             "file": "src\\game.js",
             "line": 14,
             "is_constructor": 1,
@@ -1260,6 +1309,18 @@
         {
             "message": "Missing item type\nLogging directly from the scene",
             "line": " src\\scene\\index.js:400"
+        },
+        {
+            "message": "Missing item type\nPass a checkpoint",
+            "line": " src\\checkpoints.js:11"
+        },
+        {
+            "message": "Missing item type\nPasses a checkpoint",
+            "line": " src\\checkpoints.js:21"
+        },
+        {
+            "message": "Missing item type\nReset a single or all checkpoints",
+            "line": " src\\checkpoints.js:30"
         },
         {
             "message": "Missing item type",
