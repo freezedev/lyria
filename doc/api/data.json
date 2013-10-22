@@ -104,7 +104,9 @@
         "src\\checkpoints.js": {
             "name": "src\\checkpoints.js",
             "modules": {},
-            "classes": {},
+            "classes": {
+                "Checkpoints": 1
+            },
             "fors": {},
             "namespaces": {}
         },
@@ -208,6 +210,7 @@
                 "Scene": 1,
                 "Connector": 1,
                 "Engine": 1,
+                "Checkpoints": 1,
                 "Game": 1,
                 "Layer": 1,
                 "Log": 1,
@@ -348,6 +351,21 @@
                     "type": "Object"
                 }
             ]
+        },
+        "Checkpoints": {
+            "name": "Checkpoints",
+            "shortname": "Checkpoints",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Lyria",
+            "namespace": "",
+            "file": "src\\checkpoints.js",
+            "line": 5,
+            "description": "Checkpoints constructor",
+            "is_constructor": 1
         },
         "Game": {
             "name": "Game",
@@ -929,7 +947,7 @@
         },
         {
             "file": "src\\checkpoints.js",
-            "line": 11,
+            "line": 22,
             "description": "Pass a checkpoint",
             "params": [
                 {
@@ -938,12 +956,12 @@
                     "type": "String"
                 }
             ],
-            "class": "Game",
+            "class": "Checkpoints",
             "module": "Lyria"
         },
         {
             "file": "src\\checkpoints.js",
-            "line": 21,
+            "line": 37,
             "description": "Passes a checkpoint",
             "params": [
                 {
@@ -952,12 +970,12 @@
                     "type": "String"
                 }
             ],
-            "class": "Game",
+            "class": "Checkpoints",
             "module": "Lyria"
         },
         {
             "file": "src\\checkpoints.js",
-            "line": 30,
+            "line": 46,
             "description": "Reset a single or all checkpoints",
             "params": [
                 {
@@ -966,7 +984,7 @@
                     "type": "String"
                 }
             ],
-            "class": "Game",
+            "class": "Checkpoints",
             "module": "Lyria"
         },
         {
@@ -1312,15 +1330,15 @@
         },
         {
             "message": "Missing item type\nPass a checkpoint",
-            "line": " src\\checkpoints.js:11"
+            "line": " src\\checkpoints.js:22"
         },
         {
             "message": "Missing item type\nPasses a checkpoint",
-            "line": " src\\checkpoints.js:21"
+            "line": " src\\checkpoints.js:37"
         },
         {
             "message": "Missing item type\nReset a single or all checkpoints",
-            "line": " src\\checkpoints.js:30"
+            "line": " src\\checkpoints.js:46"
         },
         {
             "message": "Missing item type",
