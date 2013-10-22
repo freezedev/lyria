@@ -1,10 +1,21 @@
 define('lyria/checkpoints', ['eventmap', 'mixer', 'deleteitem'], function(EventMap, mixer, deleteItem) {
 
   var Checkpoints = (function() {
-    var Checkponts = function() {
+    
+    /**
+     * Checkpoints constructor
+     *
+     * @class Checkpoints
+     * @constructor
+     */
+    var Checkpoints = function() {
+      // Mix-in eventmap
       mixer([this, Checkpoints.prototype], new EventMap());
 
+      // Set start time
       this.startTime = performance.now();
+      
+      // List of all passed checkpoints
       this.checkpointList = [];
     };
 
@@ -14,8 +25,13 @@ define('lyria/checkpoints', ['eventmap', 'mixer', 'deleteitem'], function(EventM
      * @param {String} name
      */
     Checkpoints.prototype.pass = function(name) {
+      // A checkpoint can only be passed once
+      if (this.hasPassed(name)) {
+        return;
+      }
+      
       this.checkpointList.push(name);
-      this.trigger('pass', name, performance.now() - startTime);
+      this.trigger('pass', name, performance.now() - this.startTime);
     };
 
     /**
@@ -50,7 +66,7 @@ define('lyria/checkpoints', ['eventmap', 'mixer', 'deleteitem'], function(EventM
     };
 
     return Checkpoints;
-  });
+  })();
   
   return Checkpoints;
 
