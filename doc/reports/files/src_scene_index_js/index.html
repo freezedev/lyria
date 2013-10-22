@@ -45,11 +45,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
-      <p class="stat">116.60</p>
+      <p class="stat">116.62</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
-      <p class="stat">432</p>
+      <p class="stat">442</p>
     </div>
   </div>
   <div class="row historical">
@@ -63,11 +63,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
-      <p class="stat">60.86</p>
+      <p class="stat">59.77</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
-      <p class="stat">3.33</p>
+      <p class="stat">3.34</p>
     </div>
   </div>
 </div>
@@ -119,6 +119,8 @@ define(&#039;lyria/scene&#039;, [&#039;jquery&#039;, &#039;mixer&#039;, &#039;ne
      * @class Scene
      * @constructor
      */
+    
+    // TODO: Having options as the last parameter is kinda unintuitive
     var Scene = function(sceneName, sceneDeps, sceneFunction, options) {
       if (!sceneName) {
         return;
@@ -148,17 +150,27 @@ define(&#039;lyria/scene&#039;, [&#039;jquery&#039;, &#039;mixer&#039;, &#039;ne
 
       // Default event value
       this.defaultEvent = &#039;click&#039;;
+      
+      // DOMEvents object
+      this.DOMEvents = {};
 
+      // Template values
       this.template = {};
       this.template.source = null;
       this.template.helpers = {};
       this.template.partials = {};
+      
       // Collect all template values
       this.template.data = {};
 
+      // Children object
+      // TODO: This is not needed, if a scene is actually a component - maaagic!
       this.children = this.children || {};
       this.children.gameObjects = {};
       this.children.prefabs = {};
+      
+      // Set Id
+      this.id = this.data.id || self.name;
 
       // Expose function for template values
       this.expose = function(obj) {
@@ -169,9 +181,10 @@ define(&#039;lyria/scene&#039;, [&#039;jquery&#039;, &#039;mixer&#039;, &#039;ne
         self.template.data = $.extend(true, self.template.data, obj);
       };
 
+      // Getter to have a safe way to the element of a scene
       Object.defineProperty(self, &#039;$element&#039;, {
         get: function() {
-          return $(&#039;#&#039; + self.name);
+          return $(&#039;#&#039; + self.id);
         }
       });
 
@@ -179,14 +192,11 @@ define(&#039;lyria/scene&#039;, [&#039;jquery&#039;, &#039;mixer&#039;, &#039;ne
       self.on(&#039;synchronize&#039;, function() {
         self.refresh();
 
-        if (self.DOMEvents) {
-          if (options &amp;&amp; options.isPrefab) {
-            self.DOMEvents.delegate = (options.target) ? options.target : &#039;body&#039;;
-          } else {
-            self.DOMEvents.delegate = &#039;#&#039; + sceneName;
-          }
+        if (self.DOMEvents &amp;&amp; !$.isEmptyObject(self.DOMEvents)) {
+          self.DOMEvents.delegate = &#039;#&#039; + self.id;
         }
 
+        // Your typical stock-of-the-mill update function
         self.on(&#039;update&#039;, function(dt) {
           $.each(self.children, function(childKey, childValue) {
             if (!$.isEmptyObject(childValue)) {
@@ -211,7 +221,7 @@ define(&#039;lyria/scene&#039;, [&#039;jquery&#039;, &#039;mixer&#039;, &#039;ne
         // Data binding
         // TODO: Find a better way than using Object.watch
         if (self.template.data &amp;&amp; !$.isEmptyObject(self.template.data)) {
-          $(&#039;#&#039; + self.name + &#039; [data-bind]&#039;).each(function() {
+          self.$element.find(&#039;[data-bind]&#039;).each(function() {
             var $dataElem = $(this);
 
             var prop = $dataElem.data(&#039;bind&#039;);
