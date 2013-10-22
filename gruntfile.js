@@ -5,11 +5,17 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
-    concat: {
+    concat_sourcemap: {
+      options: {
+        sourcesContent: true,
+        sourceRoot: '/'
+      },
       scripts: {
         src: [lyriaOrigin, generatedFiles],
         dest: 'dist/js/<%= pkg.name %>.js'
-      },
+      }
+    },
+    concat: {
       styles: {
         src: ['dist/css/*.css'],
         dest: 'dist/css/<%= pkg.name %>.css'
@@ -110,6 +116,6 @@ module.exports = function(grunt) {
 
   grunt.registerTask('test', 'Lints and unit tests', ['jshint']);
   grunt.registerTask('doc', 'Generated documentation', ['yuidoc', 'dependo', 'plato']);
-  grunt.registerTask('default', 'Default task', ['clean', 'test', 'handlebars', 'stylus', 'concat', 'uglify', 'cssmin', 'doc']);
+  grunt.registerTask('default', 'Default task', ['clean', 'test', 'handlebars', 'stylus', 'concat', 'concat_sourcemap', 'uglify', 'cssmin', 'doc']);
 
 };
