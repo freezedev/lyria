@@ -27,6 +27,8 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
      * @class Scene
      * @constructor
      */
+    
+    // TODO: Having options as the last parameter is kinda unintuitive
     var Scene = function(sceneName, sceneDeps, sceneFunction, options) {
       if (!sceneName) {
         return;
@@ -56,14 +58,21 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
 
       // Default event value
       this.defaultEvent = 'click';
+      
+      // DOMEvents object
+      this.DOMEvents = {};
 
+      // Template values
       this.template = {};
       this.template.source = null;
       this.template.helpers = {};
       this.template.partials = {};
+      
       // Collect all template values
       this.template.data = {};
 
+      // Children object
+      // TODO: This is not needed, if a scene is actually a component - maaagic!
       this.children = this.children || {};
       this.children.gameObjects = {};
       this.children.prefabs = {};
@@ -77,6 +86,7 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
         self.template.data = $.extend(true, self.template.data, obj);
       };
 
+      // Getter to have a safe way to the element of a scene
       Object.defineProperty(self, '$element', {
         get: function() {
           return $('#' + self.name);
@@ -87,7 +97,7 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
       self.on('synchronize', function() {
         self.refresh();
 
-        if (self.DOMEvents) {
+        if (self.DOMEvents && !$.isEmptyObject(self.DOMEvents)) {
           if (options && options.isPrefab) {
             self.DOMEvents.delegate = (options.target) ? options.target : 'body';
           } else {
@@ -95,6 +105,7 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
           }
         }
 
+        // Your typical stock-of-the-mill update function
         self.on('update', function(dt) {
           $.each(self.children, function(childKey, childValue) {
             if (!$.isEmptyObject(childValue)) {
