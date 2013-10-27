@@ -1,9 +1,7 @@
-
 define('lyria/video', function() {
   'use strict';
 
-
-  return (function() {
+  var Video =  (function() {
     var Video = function() {
 
     };
@@ -26,5 +24,7 @@ define('lyria/video', function() {
 
     return Video;
   })();
+  
+  return Video;
   
 });
