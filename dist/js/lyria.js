@@ -232,11 +232,25 @@ define('lyria/animation', ['mixer', 'eventmap'], function(mixer, EventMap) {
       
       // Mix-in eventmap
       mixer([this, Animation.prototype], new EventMap());
+      
+      this.on('play', function() {
+        
+      });
+      
+      this.on('pause', function() {
+        
+      });
+      
+      this.on('reset', function() {
+        
+      });
+      
+      this.on('stop', function() {
+        
+      });
     };
     
-    Animation.prototype.reset = function() {
-      
-    };
+    return Animation;
   })();
   
   return Animation;
@@ -2814,12 +2828,10 @@ define('lyria/utils', ['jquery'], function($) {
   
 });
 
-
 define('lyria/video', function() {
   'use strict';
 
-
-  return (function() {
+  var Video =  (function() {
     var Video = function() {
 
     };
@@ -2842,6 +2854,8 @@ define('lyria/video', function() {
 
     return Video;
   })();
+  
+  return Video;
   
 });
 
@@ -2957,6 +2971,10 @@ define('lyria/viewport', ['root', 'jquery', 'mixer', 'eventmap'], function(root,
         };
 
         switch (self.scaleMode) {
+          case 'stretch':
+            break;
+          case 'cover':
+            break;
           case 'scaleToFit':
             var scaleX = 1;
             var scaleY = 1;
