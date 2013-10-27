@@ -110,6 +110,10 @@ define('lyria/viewport', ['root', 'jquery', 'mixer', 'eventmap'], function(root,
         };
 
         switch (self.scaleMode) {
+          case 'stretch':
+            break;
+          case 'cover':
+            break;
           case 'scaleToFit':
             var scaleX = 1;
             var scaleY = 1;
