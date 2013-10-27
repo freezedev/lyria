@@ -13,11 +13,25 @@ define('lyria/animation', ['mixer', 'eventmap'], function(mixer, EventMap) {
       
       // Mix-in eventmap
       mixer([this, Animation.prototype], new EventMap());
+      
+      this.on('play', function() {
+        
+      });
+      
+      this.on('pause', function() {
+        
+      });
+      
+      this.on('reset', function() {
+        
+      });
+      
+      this.on('stop', function() {
+        
+      });
     };
     
-    Animation.prototype.reset = function() {
-      
-    };
+    return Animation;
   })();
   
   return Animation;
