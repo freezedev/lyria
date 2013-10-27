@@ -316,7 +316,11 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
       if ( typeof eventName === 'function') {
         this.DOMEvents[selector][this.defaultEvent] = eventFunction;
       } else {
-        this.DOMEvents[selector][eventName] = eventFunction;
+        if (typeof eventName === 'string') {
+          this.DOMEvents[selector][eventName] = eventFunction;          
+        } else {
+          throw new Error('If you meant to bind more than one event, please use Scene#bindEvents');
+        }
       }
     };
 
