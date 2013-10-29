@@ -4,12 +4,9 @@ Lyria
 [![Dependency Status](https://david-dm.org/freezedev/lyria.png)](https://david-dm.org/freezedev/lyria)
 [![devDependency Status](https://david-dm.org/freezedev/lyria/dev-status.png)](https://david-dm.org/freezedev/lyria#info=devDependencies)
 
-Lightweight prototyping javascript game framework based on jQuery. 
+Lyria is a jQuery game framework.
 
 The Lyria template can be found here: https://github.com/freezedev/lyria-template
-
-If you are looking for something more CoffeeScript, take a look at [Elyssa](https://github.com/elysion-powered/elyssa).  
-If you are looking for something less game-related, take a look at [MilkSugar](https://github.com/freezedev/milksugar).
 
 Getting Lyria
 -------------
