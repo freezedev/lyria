@@ -884,7 +884,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 323,
+            "line": 327,
             "description": "Binds a lot of events instead of a single one",
             "itemtype": "method",
             "name": "bindEvents",
@@ -903,7 +903,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 362,
+            "line": 366,
             "description": "Unbinds a lot of events",
             "itemtype": "method",
             "name": "unbindEvents",
@@ -919,7 +919,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 397,
+            "line": 401,
             "description": "Gets localized value",
             "params": [
                 {
@@ -933,7 +933,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 410,
+            "line": 414,
             "description": "Logging directly from the scene",
             "params": [
                 {
@@ -1322,11 +1322,11 @@
         },
         {
             "message": "Missing item type\nGets localized value",
-            "line": " src\\scene\\index.js:397"
+            "line": " src\\scene\\index.js:401"
         },
         {
             "message": "Missing item type\nLogging directly from the scene",
-            "line": " src\\scene\\index.js:410"
+            "line": " src\\scene\\index.js:414"
         },
         {
             "message": "Missing item type\nPass a checkpoint",

@@ -432,7 +432,11 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;ne
       if ( typeof eventName === &#x27;function&#x27;) {
         this.DOMEvents[selector][this.defaultEvent] = eventFunction;
       } else {
-        this.DOMEvents[selector][eventName] = eventFunction;
+        if (typeof eventName === &#x27;string&#x27;) {
+          this.DOMEvents[selector][eventName] = eventFunction;          
+        } else {
+          throw new Error(&#x27;If you meant to bind more than one event, please use Scene#bindEvents&#x27;);
+        }
       }
     };
 
