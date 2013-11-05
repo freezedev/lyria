@@ -3053,7 +3053,7 @@ define('lyria/template/list', {
     }
 
     buffer += "<div class=\"achievement-list\">\r\n  ";
-    stack1 = helpers.each.call(depth0, depth0.achievement, {
+    stack1 = helpers.each.call(depth0, (depth0 && depth0.achievement), {
       hash: {},
       inverse: self.noop,
       fn: self.program(1, program1, data),
@@ -3091,8 +3091,11 @@ define('lyria/template/list', {
           data: data
         });
       } else {
-        stack1 = depth0.current;
-        stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
+        stack1 = (depth0 && depth0.current);
+        stack1 = typeof stack1 === functionType ? stack1.call(depth0, {
+          hash: {},
+          data: data
+        }) : stack1;
       }
       buffer += escapeExpression(stack1) + "</span>\r\n    <span class=\"separator\">";
       if (stack1 = helpers.separator) {
@@ -3101,8 +3104,11 @@ define('lyria/template/list', {
           data: data
         });
       } else {
-        stack1 = depth0.separator;
-        stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
+        stack1 = (depth0 && depth0.separator);
+        stack1 = typeof stack1 === functionType ? stack1.call(depth0, {
+          hash: {},
+          data: data
+        }) : stack1;
       }
       buffer += escapeExpression(stack1) + "</span>\r\n    <span class=\"max\">";
       if (stack1 = helpers.max) {
@@ -3111,8 +3117,11 @@ define('lyria/template/list', {
           data: data
         });
       } else {
-        stack1 = depth0.max;
-        stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
+        stack1 = (depth0 && depth0.max);
+        stack1 = typeof stack1 === functionType ? stack1.call(depth0, {
+          hash: {},
+          data: data
+        }) : stack1;
       }
       buffer += escapeExpression(stack1) + "</span>\r\n  </div>\r\n  ";
       return buffer;
@@ -3125,11 +3134,14 @@ define('lyria/template/list', {
         data: data
       });
     } else {
-      stack1 = depth0.id;
-      stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
+      stack1 = (depth0 && depth0.id);
+      stack1 = typeof stack1 === functionType ? stack1.call(depth0, {
+        hash: {},
+        data: data
+      }) : stack1;
     }
     buffer += escapeExpression(stack1) + "\" class=\"achievement ";
-    stack1 = helpers['if'].call(depth0, depth0.offscreen, {
+    stack1 = helpers['if'].call(depth0, (depth0 && depth0.offscreen), {
       hash: {},
       inverse: self.noop,
       fn: self.program(1, program1, data),
@@ -3145,8 +3157,11 @@ define('lyria/template/list', {
         data: data
       });
     } else {
-      stack1 = depth0.title;
-      stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
+      stack1 = (depth0 && depth0.title);
+      stack1 = typeof stack1 === functionType ? stack1.call(depth0, {
+        hash: {},
+        data: data
+      }) : stack1;
     }
     buffer += escapeExpression(stack1) + "</div>\r\n  <div class=\"icon ";
     if (stack1 = helpers.className) {
@@ -3155,8 +3170,11 @@ define('lyria/template/list', {
         data: data
       });
     } else {
-      stack1 = depth0.className;
-      stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
+      stack1 = (depth0 && depth0.className);
+      stack1 = typeof stack1 === functionType ? stack1.call(depth0, {
+        hash: {},
+        data: data
+      }) : stack1;
     }
     buffer += escapeExpression(stack1) + "\"></div>\r\n  <div class=\"description\">";
     if (stack1 = helpers.description) {
@@ -3165,11 +3183,14 @@ define('lyria/template/list', {
         data: data
       });
     } else {
-      stack1 = depth0.description;
-      stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
+      stack1 = (depth0 && depth0.description);
+      stack1 = typeof stack1 === functionType ? stack1.call(depth0, {
+        hash: {},
+        data: data
+      }) : stack1;
     }
     buffer += escapeExpression(stack1) + "</div>\r\n  ";
-    stack1 = helpers['if'].call(depth0, depth0.progressable, {
+    stack1 = helpers['if'].call(depth0, (depth0 && depth0.progressable), {
       hash: {},
       inverse: self.noop,
       fn: self.program(3, program3, data),
@@ -3200,8 +3221,11 @@ define('lyria/template/list', {
           data: data
         });
       } else {
-        stack1 = depth0.name;
-        stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
+        stack1 = (depth0 && depth0.name);
+        stack1 = typeof stack1 === functionType ? stack1.call(depth0, {
+          hash: {},
+          data: data
+        }) : stack1;
       }
       buffer += escapeExpression(stack1) + "\" class=\"";
       if (stack1 = helpers.type) {
@@ -3210,8 +3234,11 @@ define('lyria/template/list', {
           data: data
         });
       } else {
-        stack1 = depth0.type;
-        stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
+        stack1 = (depth0 && depth0.type);
+        stack1 = typeof stack1 === functionType ? stack1.call(depth0, {
+          hash: {},
+          data: data
+        }) : stack1;
       }
       buffer += escapeExpression(stack1) + "\"></canvas>\r\n";
       return buffer;
@@ -3228,8 +3255,11 @@ define('lyria/template/list', {
           data: data
         });
       } else {
-        stack1 = depth0.name;
-        stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
+        stack1 = (depth0 && depth0.name);
+        stack1 = typeof stack1 === functionType ? stack1.call(depth0, {
+          hash: {},
+          data: data
+        }) : stack1;
       }
       buffer += escapeExpression(stack1) + "\" class=\"";
       if (stack1 = helpers.type) {
@@ -3238,14 +3268,17 @@ define('lyria/template/list', {
           data: data
         });
       } else {
-        stack1 = depth0.type;
-        stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
+        stack1 = (depth0 && depth0.type);
+        stack1 = typeof stack1 === functionType ? stack1.call(depth0, {
+          hash: {},
+          data: data
+        }) : stack1;
       }
       buffer += escapeExpression(stack1) + "\"></div>\r\n";
       return buffer;
     }
 
-    stack1 = helpers['if'].call(depth0, depth0.canvas, {
+    stack1 = helpers['if'].call(depth0, (depth0 && depth0.canvas), {
       hash: {},
       inverse: self.program(3, program3, data),
       fn: self.program(1, program1, data),
