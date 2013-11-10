@@ -109,9 +109,18 @@ module.exports = function(grunt) {
         }
       }
     },
+    connect: {
+      test: {
+        options: {
+          port: 9001
+        }
+      }
+    },
     mocha: {
       options: {
-        reporter: 'Spec'
+        reporter: 'Spec',
+        timeout: 10000,
+        log: true
       },
       all: ['test/*.html']
     }
