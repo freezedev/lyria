@@ -2936,9 +2936,16 @@ define('lyria/viewport', ['root', 'jquery', 'mixer', 'eventmap'], function(root,
         
         // TODO: Reset scaling to 1.0
         
-        var scaleElement = function(scaleFactor) {
-          var scaleExp = 'scale(' + scaleFactor + ', ' + scaleFactor + ')';
+        var scaleElement = function(scaleX, scaleY) {
+          if (scaleY == null) {
+            scaleX = scaleY;
+          }
+          
+          var scaleExp = 'scale(' + scaleX + ', ' + scaleY + ')';
           self.$element.css('transform', scaleExp);
+          
+          self.scale.x = scaleX;
+          self.scale.y = scaleY;
         };
 
         var scaleHeightToFit = function(doNotSetTransform) {
