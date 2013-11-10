@@ -111,8 +111,7 @@ module.exports = function(grunt) {
     },
     mocha: {
       options: {
-        reporter: 'Spec',
-        run: true
+        reporter: 'Spec'
       },
       all: ['test/*.html']
     }
