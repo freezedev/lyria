@@ -19,7 +19,7 @@
             
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.2.1</em>
+            <em>API Docs for: 0.2.3</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -186,9 +186,16 @@ define(&#x27;lyria/viewport&#x27;, [&#x27;root&#x27;, &#x27;jquery&#x27;, &#x27;
         
         // TODO: Reset scaling to 1.0
         
-        var scaleElement = function(scaleFactor) {
-          var scaleExp = &#x27;scale(&#x27; + scaleFactor + &#x27;, &#x27; + scaleFactor + &#x27;)&#x27;;
+        var scaleElement = function(scaleX, scaleY) {
+          if (scaleY == null) {
+            scaleX = scaleY;
+          }
+          
+          var scaleExp = &#x27;scale(&#x27; + scaleX + &#x27;, &#x27; + scaleY + &#x27;)&#x27;;
           self.$element.css(&#x27;transform&#x27;, scaleExp);
+          
+          self.scale.x = scaleX;
+          self.scale.y = scaleY;
         };
 
         var scaleHeightToFit = function(doNotSetTransform) {
