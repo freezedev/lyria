@@ -42,7 +42,7 @@ module.exports = function(grunt) {
       }
     },
     jshint: {
-      files: ['gruntfile.js', lyriaOrigin],
+      files: ['gruntfile.js', lyriaOrigin, 'test/**/*.js'],
       options: grunt.file.readJSON('.jshintrc')
     },
     yuidoc: {
