@@ -23,7 +23,10 @@ define('lyria/viewport', ['root', 'jquery', 'mixer', 'eventmap'], function(root,
       
       mixer([this, Viewport.prototype], new EventMap());
 
-      this.scaleMode = options.scaleMode;
+      this.scale = {};
+      this.scale.mode = options.scaleMode;
+      this.scale.x = 1.0;
+      this.scale.y = 1.0;
 
       // Defaults container to the string 'viewport'
       if (container == null) {
@@ -116,7 +119,7 @@ define('lyria/viewport', ['root', 'jquery', 'mixer', 'eventmap'], function(root,
           return 1.0;
         };
 
-        switch (self.scaleMode) {
+        switch (self.scale.mode) {
           case 'stretch':
             break;
           case 'cover':
