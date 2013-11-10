@@ -98,9 +98,14 @@ define('lyria/game', ['eventmap', 'mixer', 'fullscreen', 'jquery', 'lyria/viewpo
         }
       });
       
-      $(document).ready(function() {       
-        $(window).blur(self.pause.bind(self));
-        $(window).focus(self.resume.bind(self));
+      $(document).ready(function() {
+        if (self.pause) {
+          $(window).blur(self.pause.bind(self));          
+        }
+        
+        if (self.resume) {
+          $(window).focus(self.resume.bind(self));          
+        }
       });
     };
     
