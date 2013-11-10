@@ -119,17 +119,20 @@ module.exports = function(grunt) {
     mocha: {
       options: {
         reporter: 'Spec',
-        timeout: 10000,
         log: true
       },
-      all: ['test/*.html']
+      all: {
+        options: {
+          urls: ['http://localhost:9001/test/game.html']
+        }
+      }
     }
   });
 
   require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
   grunt.loadTasks('./tasks');
 
-  grunt.registerTask('test', 'Lints and unit tests', ['jshint', 'mocha']);
+  grunt.registerTask('test', 'Lints and unit tests', ['jshint', 'connect:test', 'mocha']);
   grunt.registerTask('doc', 'Generated documentation', ['yuidoc', 'dependo', 'plato']);
   grunt.registerTask('default', 'Default task', ['clean', 'handlebars', 'stylus', 'concat', 'concat_sourcemap', 'test', 'uglify', 'cssmin', 'doc']);
 
