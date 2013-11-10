@@ -72,7 +72,7 @@ define('lyria/viewport', ['root', 'jquery', 'mixer', 'eventmap'], function(root,
         
         var scaleElement = function(scaleX, scaleY) {
           if (scaleY == null) {
-            scaleX = scaleY;
+            scaleY = scaleX;
           }
           
           var scaleExp = 'scale(' + scaleX + ', ' + scaleY + ')';
