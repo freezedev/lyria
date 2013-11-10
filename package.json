@@ -16,6 +16,7 @@
     "grunt-contrib-clean": "0.5.x",
     "grunt-contrib-concat": "0.3.x",
     "grunt-concat-sourcemap": "0.3.x",
+    "grunt-contrib-connect": "0.5.x",
     "grunt-dependo": "0.1.x",
     "grunt-plato": "0.2.x",
     "grunt-mocha": "0.4.x",
