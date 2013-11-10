@@ -108,13 +108,20 @@ module.exports = function(grunt) {
           'doc/reports/': ['src/**/*.js', 'gruntfile.js']
         }
       }
+    },
+    mocha: {
+      options: {
+        reporter: 'Spec',
+        run: true
+      },
+      all: ['test/*.html']
     }
   });
 
   require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
   grunt.loadTasks('./tasks');
 
-  grunt.registerTask('test', 'Lints and unit tests', ['jshint']);
+  grunt.registerTask('test', 'Lints and unit tests', ['jshint', 'mocha']);
   grunt.registerTask('doc', 'Generated documentation', ['yuidoc', 'dependo', 'plato']);
   grunt.registerTask('default', 'Default task', ['clean', 'test', 'handlebars', 'stylus', 'concat', 'concat_sourcemap', 'uglify', 'cssmin', 'doc']);
 
