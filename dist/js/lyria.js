@@ -1076,9 +1076,14 @@ define('lyria/game', ['eventmap', 'mixer', 'fullscreen', 'jquery', 'lyria/viewpo
         }
       });
       
-      $(document).ready(function() {       
-        $(window).blur(self.pause.bind(self));
-        $(window).focus(self.resume.bind(self));
+      $(document).ready(function() {
+        if (self.pause) {
+          $(window).blur(self.pause.bind(self));          
+        }
+        
+        if (self.resume) {
+          $(window).focus(self.resume.bind(self));          
+        }
       });
     };
     
@@ -2797,42 +2802,6 @@ define('lyria/tween', ['eventmap', 'mixer', 'options', 'jqueryify'], function(Ev
 
   return Tween;
 }); 
-/**
- * @namespace Lyria
- * Lyria namespace decleration
- */
-define('lyria/utils', ['jquery'], function($) {
-  
-  
-  var Utils = {};
-  
-  /**
-   *
-   * @param {Object} filename
-   *
-   * @returns {Boolean}
-   */
-  Utils.isFile = function(filename) {
-    var sepPos = filename.indexOf('.');
-    if (sepPos === -1) {
-      return false;
-    }
-
-    var filenameLength = filename.length;
-    var diff = filenameLength - sepPos;
-
-    // A filename extension is allowed to be one to four characters long.
-    if ((diff > 1) && (diff <= 5)) {
-      return true;
-    } else {
-      return false;
-    }
-  };
-  
-  return Utils;
-  
-});
-
 define('lyria/video', function() {
   'use strict';
 
@@ -2889,7 +2858,10 @@ define('lyria/viewport', ['root', 'jquery', 'mixer', 'eventmap'], function(root,
       
       mixer([this, Viewport.prototype], new EventMap());
 
-      this.scaleMode = options.scaleMode;
+      this.scale = {};
+      this.scale.mode = options.scaleMode;
+      this.scale.x = 1.0;
+      this.scale.y = 1.0;
 
       // Defaults container to the string 'viewport'
       if (container == null) {
@@ -2938,7 +2910,7 @@ define('lyria/viewport', ['root', 'jquery', 'mixer', 'eventmap'], function(root,
         
         var scaleElement = function(scaleX, scaleY) {
           if (scaleY == null) {
-            scaleX = scaleY;
+            scaleY = scaleX;
           }
           
           var scaleExp = 'scale(' + scaleX + ', ' + scaleY + ')';
@@ -2982,7 +2954,7 @@ define('lyria/viewport', ['root', 'jquery', 'mixer', 'eventmap'], function(root,
           return 1.0;
         };
 
-        switch (self.scaleMode) {
+        switch (self.scale.mode) {
           case 'stretch':
             break;
           case 'cover':
