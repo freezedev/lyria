@@ -178,15 +178,6 @@
             "fors": {},
             "namespaces": {}
         },
-        "src\\utils.js": {
-            "name": "src\\utils.js",
-            "modules": {},
-            "classes": {},
-            "fors": {},
-            "namespaces": {
-                "Lyria\nLyria namespace decleration": 1
-            }
-        },
         "src\\viewport.js": {
             "name": "src\\viewport.js",
             "modules": {},
@@ -1023,7 +1014,7 @@
         },
         {
             "file": "src\\game.js",
-            "line": 107,
+            "line": 112,
             "itemtype": "property",
             "name": "Loop",
             "static": 1,
@@ -1208,33 +1199,8 @@
             "namespace": "Lyria\nLyria namespace decleration"
         },
         {
-            "file": "src\\utils.js",
-            "line": 1,
-            "class": "Viewport",
-            "module": "Lyria",
-            "namespace": "Lyria\nLyria namespace decleration"
-        },
-        {
-            "file": "src\\utils.js",
-            "line": 10,
-            "params": [
-                {
-                    "name": "filename",
-                    "description": "",
-                    "type": "Object"
-                }
-            ],
-            "return": {
-                "description": "",
-                "type": "Boolean"
-            },
-            "class": "Viewport",
-            "module": "Lyria",
-            "namespace": "Lyria\nLyria namespace decleration"
-        },
-        {
             "file": "src\\viewport.js",
-            "line": 39,
+            "line": 42,
             "description": "The viewport element (jQuery object)",
             "itemtype": "property",
             "name": "$element",
@@ -1247,10 +1213,6 @@
         {
             "message": "replacing incorrect tag: returns with return",
             "line": " src\\serialize.js:3"
-        },
-        {
-            "message": "replacing incorrect tag: returns with return",
-            "line": " src\\utils.js:10"
         },
         {
             "message": "Missing item type\nPrivate audio elements",
@@ -1371,14 +1333,6 @@
         {
             "message": "Missing item type",
             "line": " src\\serialize.js:3"
-        },
-        {
-            "message": "Missing item type",
-            "line": " src\\utils.js:1"
-        },
-        {
-            "message": "Missing item type",
-            "line": " src\\utils.js:10"
         }
     ]
 }

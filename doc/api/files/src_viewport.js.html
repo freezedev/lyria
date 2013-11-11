@@ -139,7 +139,10 @@ define(&#x27;lyria/viewport&#x27;, [&#x27;root&#x27;, &#x27;jquery&#x27;, &#x27;
       
       mixer([this, Viewport.prototype], new EventMap());
 
-      this.scaleMode = options.scaleMode;
+      this.scale = {};
+      this.scale.mode = options.scaleMode;
+      this.scale.x = 1.0;
+      this.scale.y = 1.0;
 
       // Defaults container to the string &#x27;viewport&#x27;
       if (container == null) {
@@ -188,7 +191,7 @@ define(&#x27;lyria/viewport&#x27;, [&#x27;root&#x27;, &#x27;jquery&#x27;, &#x27;
         
         var scaleElement = function(scaleX, scaleY) {
           if (scaleY == null) {
-            scaleX = scaleY;
+            scaleY = scaleX;
           }
           
           var scaleExp = &#x27;scale(&#x27; + scaleX + &#x27;, &#x27; + scaleY + &#x27;)&#x27;;
@@ -232,7 +235,7 @@ define(&#x27;lyria/viewport&#x27;, [&#x27;root&#x27;, &#x27;jquery&#x27;, &#x27;
           return 1.0;
         };
 
-        switch (self.scaleMode) {
+        switch (self.scale.mode) {
           case &#x27;stretch&#x27;:
             break;
           case &#x27;cover&#x27;:

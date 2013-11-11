@@ -214,9 +214,14 @@ define(&#x27;lyria/game&#x27;, [&#x27;eventmap&#x27;, &#x27;mixer&#x27;, &#x27;f
         }
       });
       
-      $(document).ready(function() {       
-        $(window).blur(self.pause.bind(self));
-        $(window).focus(self.resume.bind(self));
+      $(document).ready(function() {
+        if (self.pause) {
+          $(window).blur(self.pause.bind(self));          
+        }
+        
+        if (self.resume) {
+          $(window).focus(self.resume.bind(self));          
+        }
       });
     };
     
