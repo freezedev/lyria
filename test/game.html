@@ -40,6 +40,15 @@
     <div id="mocha"></div>
     
     <script src="spec/game.js"></script>
+    <script>
+      mocha.setup('bdd');
+      window.expect = chai.expect;
+      console.log(spec);
+      
+      require(['spec/' + spec], function() {
+        mocha.run();
+      });
+    </script>
     <script src="runner.js"></script>
   </body>
 </html>
