@@ -45,11 +45,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
-      <p class="stat">109.47</p>
+      <p class="stat">108.60</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
-      <p class="stat">155</p>
+      <p class="stat">158</p>
     </div>
   </div>
   <div class="row historical">
@@ -63,11 +63,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
-      <p class="stat">32.87</p>
+      <p class="stat">34.19</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
-      <p class="stat">1.03</p>
+      <p class="stat">1.08</p>
     </div>
   </div>
 </div>
@@ -115,7 +115,10 @@ define(&#039;lyria/viewport&#039;, [&#039;root&#039;, &#039;jquery&#039;, &#039;
       
       mixer([this, Viewport.prototype], new EventMap());
 
-      this.scaleMode = options.scaleMode;
+      this.scale = {};
+      this.scale.mode = options.scaleMode;
+      this.scale.x = 1.0;
+      this.scale.y = 1.0;
 
       // Defaults container to the string &#039;viewport&#039;
       if (container == null) {
@@ -164,7 +167,7 @@ define(&#039;lyria/viewport&#039;, [&#039;root&#039;, &#039;jquery&#039;, &#039;
         
         var scaleElement = function(scaleX, scaleY) {
           if (scaleY == null) {
-            scaleX = scaleY;
+            scaleY = scaleX;
           }
           
           var scaleExp = &#039;scale(&#039; + scaleX + &#039;, &#039; + scaleY + &#039;)&#039;;
@@ -208,7 +211,7 @@ define(&#039;lyria/viewport&#039;, [&#039;root&#039;, &#039;jquery&#039;, &#039;
           return 1.0;
         };
 
-        switch (self.scaleMode) {
+        switch (self.scale.mode) {
           case &#039;stretch&#039;:
             break;
           case &#039;cover&#039;:
