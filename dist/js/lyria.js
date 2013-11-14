@@ -1341,6 +1341,9 @@ define('lyria/localization', ['lyria/language', 'lyria/template/string', 'lyria/
       langMixin(this, langValue, this);
     };
 
+    /**
+     * Gets all localizable elements from a localization 
+     */
     Localization.elements = function(localeData, localeLang, fallbackLang) {
       if (fallbackLang == null) {
         fallbackLang = 'en';
@@ -1380,10 +1383,18 @@ define('lyria/localization', ['lyria/language', 'lyria/template/string', 'lyria/
       };
     };
 
+    /**
+     * Check if name does exist in the localization
+     * 
+     * @param {String} name
+     */
     Localization.prototype.exists = function(name) {
       return !!(this.data && this.data[this.language] && this.data[this.language][name]);
     };
 
+    /**
+     * Shorthand function to use translation 
+     */
     Localization.prototype.t = function() {
       return Localization.elements(this.data, this.language).apply(this, arguments);
     };
@@ -1586,7 +1597,8 @@ define('lyria/math', ['random', 'clamp', 'fisheryates'], function(random, clamp,
 });
 
 /**
- * Mixin language property into objects 
+ * Mixin language property into objects
+ * TODO: Refactor this to use mixer library
  */
 
 define('lyria/mixin/language', function() {
