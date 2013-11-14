@@ -38,6 +38,13 @@
             "fors": {},
             "namespaces": {}
         },
+        "src\\localization\\index.js": {
+            "name": "src\\localization\\index.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
         "src\\mixin\\language.js": {
             "name": "src\\mixin\\language.js",
             "modules": {},
@@ -677,9 +684,37 @@
             "module": "Lyria"
         },
         {
+            "file": "src\\localization\\index.js",
+            "line": 16,
+            "description": "Gets all localizable elements from a localization",
+            "class": "Director",
+            "module": "Lyria"
+        },
+        {
+            "file": "src\\localization\\index.js",
+            "line": 58,
+            "description": "Check if name does exist in the localization",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "Director",
+            "module": "Lyria"
+        },
+        {
+            "file": "src\\localization\\index.js",
+            "line": 67,
+            "description": "Shorthand function to use translation",
+            "class": "Director",
+            "module": "Lyria"
+        },
+        {
             "file": "src\\mixin\\language.js",
             "line": 1,
-            "description": "Mixin language property into objects",
+            "description": "Mixin language property into objects\nTODO: Refactor this to use mixer library",
             "class": "Director",
             "module": "Lyria"
         },
@@ -1267,7 +1302,19 @@
             "line": " src\\core\\nexttick.js:1"
         },
         {
-            "message": "Missing item type\nMixin language property into objects",
+            "message": "Missing item type\nGets all localizable elements from a localization",
+            "line": " src\\localization\\index.js:16"
+        },
+        {
+            "message": "Missing item type\nCheck if name does exist in the localization",
+            "line": " src\\localization\\index.js:58"
+        },
+        {
+            "message": "Missing item type\nShorthand function to use translation",
+            "line": " src\\localization\\index.js:67"
+        },
+        {
+            "message": "Missing item type\nMixin language property into objects\nTODO: Refactor this to use mixer library",
             "line": " src\\mixin\\language.js:1"
         },
         {

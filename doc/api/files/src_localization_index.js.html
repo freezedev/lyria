@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src\mixin\language.js - lyria</title>
+    <title>src\localization\index.js - lyria</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -110,32 +110,88 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: src\mixin\language.js</h1>
+                        <h1 class="file-heading">File: src\localization\index.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/**
- * Mixin language property into objects
- * TODO: Refactor this to use mixer library
- */
+define(&#x27;lyria/localization&#x27;, [&#x27;lyria/language&#x27;, &#x27;lyria/template/string&#x27;, &#x27;lyria/mixin/language&#x27;], function(Language, templateString, langMixin) {
 
-define(&#x27;lyria/mixin/language&#x27;, function() {
-  return function(attachedObject, value, eventMap) {
+  var Localization = (function() {
+    var Localization = function(data) {
+      if (data == null) {
+        data = {};
+      }
+      
+      this.data = data;
 
-    Object.defineProperty(attachedObject, &#x27;language&#x27;, {
-      get: function() {
-        return value;
-      },
-      set: function(val) {
-        value = val;
-        eventMap.trigger(&#x27;language:change&#x27;, value);
-      },
-      configurable: true,
-      enumarable: true
-    });
+      var langValue = Language.language;
 
-  };
-}); 
+      langMixin(this, langValue, this);
+    };
+
+    /**
+     * Gets all localizable elements from a localization 
+     */
+    Localization.elements = function(localeData, localeLang, fallbackLang) {
+      if (fallbackLang == null) {
+        fallbackLang = &#x27;en&#x27;;
+      }
+      
+      return function(name, parameter) {
+        if (!localeData || Object.keys(localeData).length === 0) {
+          return &#x27;[[No language data found]]&#x27;;          
+        }
+        
+        if (!localeData[localeLang] || Object.keys(localeData[localeLang]).length === 0) {
+          localeLang = fallbackLang;
+        }
+        
+        if (localeData[localeLang]) {
+          
+          if (localeData[localeLang][name] == null) {
+            return &#x27;[[Missing localization for &#x27; + name + &#x27;]]&#x27;;
+          }
+
+          if ( typeof localeData[localeLang][name] === &#x27;string&#x27;) {
+            return templateString.process(localeData[localeLang][name], parameter);
+          } else {
+            return {
+              plural: function(n) {
+                if (localeData[localeLang][name][n]) {
+                  return templateString.process(localeData[localeLang][name][n], parameter);
+                } else {
+                  return templateString.process(localeData[localeLang][name][&#x27;n&#x27;], parameter);
+                }
+              }
+            };
+          }
+        } else {
+          return &#x27;[[No language definition found for &#x27; + localeLang + &#x27;]]&#x27;;
+        }
+      };
+    };
+
+    /**
+     * Check if name does exist in the localization
+     * 
+     * @param {String} name
+     */
+    Localization.prototype.exists = function(name) {
+      return !!(this.data &amp;&amp; this.data[this.language] &amp;&amp; this.data[this.language][name]);
+    };
+
+    /**
+     * Shorthand function to use translation 
+     */
+    Localization.prototype.t = function() {
+      return Localization.elements(this.data, this.language).apply(this, arguments);
+    };
+
+    return Localization;
+  })();
+
+  return Localization;
+});
     </pre>
 </div>
 
