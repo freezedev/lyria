@@ -49,7 +49,7 @@
     </div>
     <div class="col-md-6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
-      <p class="stat">67</p>
+      <p class="stat">78</p>
     </div>
   </div>
   <div class="row historical">
@@ -105,6 +105,9 @@
       langMixin(this, langValue, this);
     };
 
+    /**
+     * Gets all localizable elements from a localization 
+     */
     Localization.elements = function(localeData, localeLang, fallbackLang) {
       if (fallbackLang == null) {
         fallbackLang = &#039;en&#039;;
@@ -144,10 +147,18 @@
       };
     };
 
+    /**
+     * Check if name does exist in the localization
+     * 
+     * @param {String} name
+     */
     Localization.prototype.exists = function(name) {
       return !!(this.data &amp;&amp; this.data[this.language] &amp;&amp; this.data[this.language][name]);
     };
 
+    /**
+     * Shorthand function to use translation 
+     */
     Localization.prototype.t = function() {
       return Localization.elements(this.data, this.language).apply(this, arguments);
     };
