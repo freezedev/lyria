@@ -1,5 +1,6 @@
 /**
- * Mixin language property into objects 
+ * Mixin language property into objects
+ * TODO: Refactor this to use mixer library
  */
 
 define('lyria/mixin/language', function() {
