@@ -112,11 +112,10 @@ module.exports = function(grunt) {
     connect: {
       test: {
         options: {
-          port: 9001,
-          base: 'test/'
+          port: 9001
         }
       }
-    }/*,
+    },
     mocha: {
       options: {
         reporter: 'Spec',
@@ -127,7 +126,7 @@ module.exports = function(grunt) {
           urls: ['http://localhost:9001/test/game.html']
         }
       }
-    }*/
+    }
   });
 
   require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
