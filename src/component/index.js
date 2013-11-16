@@ -73,7 +73,7 @@ define('lyria/component', ['mixer', 'eventmap', 'lyria/component/manager', 'lyri
      * @param {String} text
      */
     Component.prototype.log = function(text) {
-      Log.i(this.type + ': ' + text);
+      Log.i('[' + this.type + '] ' + this.name + ': ' + text);
     };
 
     return Component;
