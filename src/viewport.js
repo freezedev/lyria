@@ -81,8 +81,12 @@ define('lyria/viewport', ['root', 'jquery', 'mixer', 'eventmap'], function(root,
           var scaleExp = 'scale(' + scaleX + ', ' + scaleY + ')';
           self.$element.css('transform', scaleExp);
           
-          self.scale.x = scaleX;
-          self.scale.y = scaleY;
+          if ((self.scale.x !== scaleX) || (self.scale.y !== scaleY)) {
+            self.scale.x = scaleX;
+            self.scale.y = scaleY;
+            
+            self.trigger('scale:change', self.scale.x, self.scale.y);            
+          }
         };
 
         var scaleHeightToFit = function(doNotSetTransform) {
