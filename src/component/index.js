@@ -12,7 +12,9 @@ define('lyria/component', ['mixer', 'eventmap', 'lyria/component/manager', 'lyri
       
       this.children = {};
       
-      factory.apply(this, [this]);
+      if (factory) {
+        factory.apply(this, [this]);        
+      }
       
       this.on('update', function(dt) {
         for (var key in children) {
