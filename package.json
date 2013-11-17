@@ -20,7 +20,8 @@
     "grunt-dependo": "0.1.x",
     "grunt-plato": "0.2.x",
     "grunt-mocha": "0.4.x",
-    "matchdep": "0.3.x"
+    "matchdep": "0.3.x",
+    "grunt-templater": "0.0.4-1"
   },
   "scripts": {
     "test": "grunt test"
