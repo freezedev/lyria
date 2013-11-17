@@ -1,7 +1,27 @@
+var fs = require('fs');
+var path = require('path');
+
 module.exports = function(grunt) {
 
   var lyriaOrigin = 'src/**/*.js';
   var generatedFiles = 'generated/**/*.js';
+
+  var testFolder = fs.readdirSync('test/spec');
+  var templateObject = {};
+  testFolder.forEach(function(elem) {
+    var extension = path.extname(elem);
+    var base = elem.split(extension)[0];
+
+    templateObject[base] = {
+      engine: 'handlebars',
+      src: 'test/templates/browser.html',
+      dest: 'test/' + base + '.html',
+      variables: {
+        script: 'spec/' + base,
+        title: base.charAt(0).toUpperCase() + base.slice(1)
+      }
+    };
+  });
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -116,6 +136,7 @@ module.exports = function(grunt) {
         }
       }
     },
+    template: templateObject,
     mocha: {
       options: {
         log: true,
