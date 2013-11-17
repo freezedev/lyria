@@ -15,7 +15,7 @@ module.exports = function(grunt) {
     templateObject[base] = {
       engine: 'handlebars',
       src: 'test/templates/browser.html',
-      dest: 'test/' + base + '.html',
+      dest: 'test/browser/' + base + '.html',
       variables: {
         script: 'spec/' + base,
         title: base.charAt(0).toUpperCase() + base.slice(1)
@@ -143,7 +143,7 @@ module.exports = function(grunt) {
         reporter: 'Spec'
       },
       all: {
-        src: ['test/*.html']
+        src: ['test/browser/**/*.html']
       }
     }
   });
