@@ -105,7 +105,7 @@ module.exports = function(grunt) {
           }
         },
         files: {
-          'doc/reports/': ['src/**/*.js', 'gruntfile.js']
+          'doc/reports/': ['src/**/*.js', 'test/**/*.js', 'gruntfile.js']
         }
       }
     },
@@ -117,14 +117,12 @@ module.exports = function(grunt) {
       }
     },
     mocha: {
-      options: {
-        reporter: 'Spec',
-        log: true
-      },
       all: {
         options: {
-          urls: ['http://localhost:9001/test/game.html']
-        }
+          reporter: 'Spec',
+          log: true
+        },
+        src: ['test/*.html']
       }
     }
   });
