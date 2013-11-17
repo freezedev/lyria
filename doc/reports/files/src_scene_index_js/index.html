@@ -45,11 +45,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
-      <p class="stat">116.35</p>
+      <p class="stat">116.01</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
-      <p class="stat">446</p>
+      <p class="stat">437</p>
     </div>
   </div>
   <div class="row historical">
@@ -63,11 +63,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
-      <p class="stat">61.11</p>
+      <p class="stat">60.87</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
-      <p class="stat">3.37</p>
+      <p class="stat">3.31</p>
     </div>
   </div>
 </div>
@@ -93,7 +93,7 @@
     <textarea id="file-source" class="col-md-12">/**
  * @module Lyria
  */
-define(&#039;lyria/scene&#039;, [&#039;jquery&#039;, &#039;mixer&#039;, &#039;nexttick&#039;, &#039;eventmap&#039;, &#039;lyria/gameobject&#039;, &#039;lyria/language&#039;, &#039;lyria/log&#039;, &#039;lyria/localization&#039;], function($, mixer, nextTick, EventMap, GameObject, Language, Log, Localization) {&#039;use strict&#039;;
+define(&#039;lyria/scene&#039;, [&#039;jquery&#039;, &#039;mixer&#039;, &#039;nexttick&#039;, &#039;lyria/component&#039;, &#039;lyria/gameobject&#039;, &#039;lyria/language&#039;, &#039;lyria/log&#039;, &#039;lyria/localization&#039;], function($, mixer, nextTick, Component, GameObject, Language, Log, Localization) {&#039;use strict&#039;;
 
   var createNamespace = function(obj, chain, value) {
     var chainArr = chain.split(&#039;.&#039;);
@@ -134,13 +134,13 @@ define(&#039;lyria/scene&#039;, [&#039;jquery&#039;, &#039;mixer&#039;, &#039;ne
 
       // Mixin event map into Scene
       // Sender: &quot;scene:#{sceneName}&quot;
-      mixer([this, Scene.prototype], new EventMap());
+      mixer([this, Scene.prototype], new Component(sceneName));
 
       // We need a reference to the scene not being this
       var self = this;
 
-      // Set name
-      this.name = sceneName;
+      // Set type
+      this.type = &#039;Scene&#039;;
       
       // Data
       this.data = options.data || {};
@@ -501,15 +501,6 @@ define(&#039;lyria/scene&#039;, [&#039;jquery&#039;, &#039;mixer&#039;, &#039;ne
       } else {
         return;
       }
-    };
-
-    /**
-     * Logging directly from the scene
-     *
-     * @param {Object} text
-     */
-    Scene.prototype.log = function(text) {
-      Log.i(&#039;Scene &#039; + this.name + &#039;: &#039; + text);
     };
 
     Scene.requireAlways = {

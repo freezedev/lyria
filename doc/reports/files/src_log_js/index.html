@@ -63,7 +63,7 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
-      <p class="stat">28.78</p>
+      <p class="stat">29.46</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
@@ -103,11 +103,11 @@ define(&#039;lyria/log&#039;, [&#039;root&#039;], function(root) {
 
     var Log = {};
 
-    Log.Connector = null;
+    Log.connector = null;
 
-    Log.Plugins = {};
+    Log.plugins = {};
 
-    Log.Plugins.Console = {
+    Log.plugins.console = {
       e: function() {
         if (root.console &amp;&amp; root.console.error) {
           return root.console.error.apply(console, arguments);
@@ -135,7 +135,7 @@ define(&#039;lyria/log&#039;, [&#039;root&#039;], function(root) {
       }
     };
 
-    Log.Connector = Log.Plugins.Console;
+    Log.connector = Log.plugins.console;
 
     Log.logLevelMap = {
       &#039;error&#039;: [&#039;e&#039;],
@@ -154,7 +154,7 @@ define(&#039;lyria/log&#039;, [&#039;root&#039;], function(root) {
       (function(iterator) {
         Log[iterator] = function() {
           if (Log.logLevelMap[Log.logLevel].indexOf(iterator) &gt;= 0) {
-            Log.Connector[iterator].apply(this, arguments);
+            Log.connector[iterator].apply(this, arguments);
           }
         };        
       })(logFunctions[i]);
