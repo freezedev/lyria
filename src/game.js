@@ -100,11 +100,15 @@ define('lyria/game', ['eventmap', 'mixer', 'fullscreen', 'jquery', 'lyria/viewpo
       
       $(document).ready(function() {
         if (self.pause) {
-          $(window).blur(self.pause.bind(self));          
+          $(window).blur(function() {
+            self.pause();
+          });          
         }
         
         if (self.resume) {
-          $(window).focus(self.resume.bind(self));          
+          $(window).focus(function() {
+            self.resume();
+          });          
         }
       });
     };
