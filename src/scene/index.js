@@ -411,15 +411,6 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'lyria/component', 'lyria/
       }
     };
 
-    /**
-     * Logging directly from the scene
-     *
-     * @param {Object} text
-     */
-    Scene.prototype.log = function(text) {
-      Log.i('Scene ' + this.name + ': ' + text);
-    };
-
     Scene.requireAlways = {
       // Third-party modules
       'jquery': '$',
