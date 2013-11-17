@@ -117,11 +117,11 @@ module.exports = function(grunt) {
       }
     },
     mocha: {
+      options: {
+        log: true,
+        reporter: 'Spec'
+      },
       all: {
-        options: {
-          reporter: 'Spec',
-          log: true
-        },
         src: ['test/*.html']
       }
     }
