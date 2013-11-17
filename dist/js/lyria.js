@@ -483,7 +483,7 @@ define('lyria/audio/manager', function() {
   return AudioManager;
 });
 
-define('lyria/checkpoints', ['eventmap', 'mixer', 'deleteitem'], function(EventMap, mixer, deleteItem) {
+define('lyria/checkpoints', ['eventmap', 'mixer', 'deleteitem', 'performance'], function(EventMap, mixer, deleteItem, performance) {
 
   var Checkpoints = (function() {
     
@@ -571,7 +571,9 @@ define('lyria/component', ['mixer', 'eventmap', 'lyria/component/manager', 'lyri
       
       this.children = {};
       
-      factory.apply(this, [this]);
+      if (factory) {
+        factory.apply(this, [this]);        
+      }
       
       this.on('update', function(dt) {
         for (var key in children) {
@@ -630,7 +632,11 @@ define('lyria/component', ['mixer', 'eventmap', 'lyria/component/manager', 'lyri
      * @param {String} text
      */
     Component.prototype.log = function(text) {
-      Log.i(this.type + ': ' + text);
+      if (this.type === this.name) {
+        Log.i(this.type + ': ' + text);                
+      } else {
+        Log.i('[' + this.type + '] ' + this.name + ': ' + text);        
+      }
     };
 
     return Component;
@@ -995,9 +1001,9 @@ define('lyria/game', ['eventmap', 'mixer', 'fullscreen', 'jquery', 'lyria/viewpo
     var Game = function(options) {
       var self = this;
 
-      options = $.extend(options, {
+      options = $.extend({
         startLoop: true
-      });
+      }, options);
       
       mixer([this, Game.prototype], new EventMap());
 
@@ -1078,11 +1084,15 @@ define('lyria/game', ['eventmap', 'mixer', 'fullscreen', 'jquery', 'lyria/viewpo
       
       $(document).ready(function() {
         if (self.pause) {
-          $(window).blur(self.pause.bind(self));          
+          $(window).blur(function() {
+            self.pause();
+          });          
         }
         
         if (self.resume) {
-          $(window).focus(self.resume.bind(self));          
+          $(window).focus(function() {
+            self.resume();
+          });          
         }
       });
     };
@@ -1417,11 +1427,11 @@ define('lyria/log', ['root'], function(root) {
 
     var Log = {};
 
-    Log.Connector = null;
+    Log.connector = null;
 
-    Log.Plugins = {};
+    Log.plugins = {};
 
-    Log.Plugins.Console = {
+    Log.plugins.console = {
       e: function() {
         if (root.console && root.console.error) {
           return root.console.error.apply(console, arguments);
@@ -1449,7 +1459,7 @@ define('lyria/log', ['root'], function(root) {
       }
     };
 
-    Log.Connector = Log.Plugins.Console;
+    Log.connector = Log.plugins.console;
 
     Log.logLevelMap = {
       'error': ['e'],
@@ -1468,7 +1478,7 @@ define('lyria/log', ['root'], function(root) {
       (function(iterator) {
         Log[iterator] = function() {
           if (Log.logLevelMap[Log.logLevel].indexOf(iterator) >= 0) {
-            Log.Connector[iterator].apply(this, arguments);
+            Log.connector[iterator].apply(this, arguments);
           }
         };        
       })(logFunctions[i]);
@@ -2144,7 +2154,7 @@ define('lyria/scene/director', ['root', 'mixer', 'jquery', 'eventmap', 'lyria/sc
 /**
  * @module Lyria
  */
-define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobject', 'lyria/language', 'lyria/log', 'lyria/localization'], function($, mixer, nextTick, EventMap, GameObject, Language, Log, Localization) {'use strict';
+define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'lyria/component', 'lyria/gameobject', 'lyria/language', 'lyria/log', 'lyria/localization'], function($, mixer, nextTick, Component, GameObject, Language, Log, Localization) {'use strict';
 
   var createNamespace = function(obj, chain, value) {
     var chainArr = chain.split('.');
@@ -2185,13 +2195,13 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
 
       // Mixin event map into Scene
       // Sender: "scene:#{sceneName}"
-      mixer([this, Scene.prototype], new EventMap());
+      mixer([this, Scene.prototype], new Component(sceneName));
 
       // We need a reference to the scene not being this
       var self = this;
 
-      // Set name
-      this.name = sceneName;
+      // Set type
+      this.type = 'Scene';
       
       // Data
       this.data = options.data || {};
@@ -2554,15 +2564,6 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'eventmap', 'lyria/gameobj
       }
     };
 
-    /**
-     * Logging directly from the scene
-     *
-     * @param {Object} text
-     */
-    Scene.prototype.log = function(text) {
-      Log.i('Scene ' + this.name + ': ' + text);
-    };
-
     Scene.requireAlways = {
       // Third-party modules
       'jquery': '$',
@@ -2618,6 +2619,41 @@ define('lyria/serialize', ['jquery'], function($) {
   };
 
   return serialize;
+});
+
+define('lyria/sprite', function() {
+  var Sprite = (function() {
+    
+    var Sprite = function() {
+      
+    };
+    
+    return Sprite;
+    
+  })();
+});
+
+define('lyria/sprite/manager', ['jquery', 'mixer', 'lyria/component', 'lyria/sprite/renderer'], function($, mixer, Component, Renderer) {
+  
+  var SpriteManager = (function() {
+    
+    var SpriteManager = function() {
+      var type = 'SpriteManager';
+      
+      mixer([this, SpriteManager.prototype], new Component(type));
+      this.type = type;
+    };
+    
+    return SpriteManager;
+    
+  })();
+  
+  return SpriteManager;
+  
+});
+
+define('lyria/sprite/renderer', function() {
+  
 });
 
  /**
@@ -2866,7 +2902,7 @@ define('lyria/viewport', ['root', 'jquery', 'mixer', 'eventmap'], function(root,
         scaleMode: 'scaleToFit'
       };
 
-      options = $.extend(options, defaultOptions);
+      options = $.extend(defaultOptions, options);
       
       mixer([this, Viewport.prototype], new EventMap());
 
@@ -2928,8 +2964,12 @@ define('lyria/viewport', ['root', 'jquery', 'mixer', 'eventmap'], function(root,
           var scaleExp = 'scale(' + scaleX + ', ' + scaleY + ')';
           self.$element.css('transform', scaleExp);
           
-          self.scale.x = scaleX;
-          self.scale.y = scaleY;
+          if ((self.scale.x !== scaleX) || (self.scale.y !== scaleY)) {
+            self.scale.x = scaleX;
+            self.scale.y = scaleY;
+            
+            self.trigger('scale:change', self.scale.x, self.scale.y);            
+          }
         };
 
         var scaleHeightToFit = function(doNotSetTransform) {
@@ -2996,7 +3036,9 @@ define('lyria/viewport', ['root', 'jquery', 'mixer', 'eventmap'], function(root,
         }
       });
 
-      $(options.trigger.element).on(options.trigger.event, self.trigger.bind(self, 'scale'));
+      $(options.trigger.element).on(options.trigger.event, function() {
+        self.trigger('scale');
+      });
       
       // Call scale event
       self.trigger('scale');
