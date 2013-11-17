@@ -128,7 +128,9 @@ define(&#x27;lyria/component&#x27;, [&#x27;mixer&#x27;, &#x27;eventmap&#x27;, &#
       
       this.children = {};
       
-      factory.apply(this, [this]);
+      if (factory) {
+        factory.apply(this, [this]);        
+      }
       
       this.on(&#x27;update&#x27;, function(dt) {
         for (var key in children) {
@@ -187,7 +189,11 @@ define(&#x27;lyria/component&#x27;, [&#x27;mixer&#x27;, &#x27;eventmap&#x27;, &#
      * @param {String} text
      */
     Component.prototype.log = function(text) {
-      Log.i(this.type + &#x27;: &#x27; + text);
+      if (this.type === this.name) {
+        Log.i(this.type + &#x27;: &#x27; + text);                
+      } else {
+        Log.i(&#x27;[&#x27; + this.type + &#x27;] &#x27; + this.name + &#x27;: &#x27; + text);        
+      }
     };
 
     return Component;

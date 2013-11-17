@@ -133,9 +133,9 @@ define(&#x27;lyria/game&#x27;, [&#x27;eventmap&#x27;, &#x27;mixer&#x27;, &#x27;f
     var Game = function(options) {
       var self = this;
 
-      options = $.extend(options, {
+      options = $.extend({
         startLoop: true
-      });
+      }, options);
       
       mixer([this, Game.prototype], new EventMap());
 
@@ -216,11 +216,15 @@ define(&#x27;lyria/game&#x27;, [&#x27;eventmap&#x27;, &#x27;mixer&#x27;, &#x27;f
       
       $(document).ready(function() {
         if (self.pause) {
-          $(window).blur(self.pause.bind(self));          
+          $(window).blur(function() {
+            self.pause();
+          });          
         }
         
         if (self.resume) {
-          $(window).focus(self.resume.bind(self));          
+          $(window).focus(function() {
+            self.resume();
+          });          
         }
       });
     };

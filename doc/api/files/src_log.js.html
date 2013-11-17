@@ -127,11 +127,11 @@ define(&#x27;lyria/log&#x27;, [&#x27;root&#x27;], function(root) {
 
     var Log = {};
 
-    Log.Connector = null;
+    Log.connector = null;
 
-    Log.Plugins = {};
+    Log.plugins = {};
 
-    Log.Plugins.Console = {
+    Log.plugins.console = {
       e: function() {
         if (root.console &amp;&amp; root.console.error) {
           return root.console.error.apply(console, arguments);
@@ -159,7 +159,7 @@ define(&#x27;lyria/log&#x27;, [&#x27;root&#x27;], function(root) {
       }
     };
 
-    Log.Connector = Log.Plugins.Console;
+    Log.connector = Log.plugins.console;
 
     Log.logLevelMap = {
       &#x27;error&#x27;: [&#x27;e&#x27;],
@@ -178,7 +178,7 @@ define(&#x27;lyria/log&#x27;, [&#x27;root&#x27;], function(root) {
       (function(iterator) {
         Log[iterator] = function() {
           if (Log.logLevelMap[Log.logLevel].indexOf(iterator) &gt;= 0) {
-            Log.Connector[iterator].apply(this, arguments);
+            Log.connector[iterator].apply(this, arguments);
           }
         };        
       })(logFunctions[i]);

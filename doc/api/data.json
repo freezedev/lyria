@@ -623,7 +623,7 @@
         },
         {
             "file": "src\\component\\index.js",
-            "line": 27,
+            "line": 29,
             "description": "Adds a component to this entity",
             "itemtype": "method",
             "name": "add",
@@ -639,7 +639,7 @@
         },
         {
             "file": "src\\component\\index.js",
-            "line": 51,
+            "line": 53,
             "description": "Removes a component from the entity",
             "itemtype": "method",
             "name": "remove",
@@ -655,7 +655,7 @@
         },
         {
             "file": "src\\component\\index.js",
-            "line": 67,
+            "line": 69,
             "description": "Logs from the component itself",
             "itemtype": "method",
             "name": "log",
@@ -958,20 +958,6 @@
             "module": "Lyria"
         },
         {
-            "file": "src\\scene\\index.js",
-            "line": 414,
-            "description": "Logging directly from the scene",
-            "params": [
-                {
-                    "name": "text",
-                    "description": "",
-                    "type": "Object"
-                }
-            ],
-            "class": "Scene",
-            "module": "Lyria"
-        },
-        {
             "file": "src\\checkpoints.js",
             "line": 22,
             "description": "Pass a checkpoint",
@@ -1049,7 +1035,7 @@
         },
         {
             "file": "src\\game.js",
-            "line": 112,
+            "line": 116,
             "itemtype": "property",
             "name": "Loop",
             "static": 1,
@@ -1332,10 +1318,6 @@
         {
             "message": "Missing item type\nGets localized value",
             "line": " src\\scene\\index.js:401"
-        },
-        {
-            "message": "Missing item type\nLogging directly from the scene",
-            "line": " src\\scene\\index.js:414"
         },
         {
             "message": "Missing item type\nPass a checkpoint",

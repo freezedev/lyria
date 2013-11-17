@@ -117,7 +117,7 @@
 /**
  * @module Lyria
  */
-define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;nexttick&#x27;, &#x27;eventmap&#x27;, &#x27;lyria/gameobject&#x27;, &#x27;lyria/language&#x27;, &#x27;lyria/log&#x27;, &#x27;lyria/localization&#x27;], function($, mixer, nextTick, EventMap, GameObject, Language, Log, Localization) {&#x27;use strict&#x27;;
+define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;nexttick&#x27;, &#x27;lyria/component&#x27;, &#x27;lyria/gameobject&#x27;, &#x27;lyria/language&#x27;, &#x27;lyria/log&#x27;, &#x27;lyria/localization&#x27;], function($, mixer, nextTick, Component, GameObject, Language, Log, Localization) {&#x27;use strict&#x27;;
 
   var createNamespace = function(obj, chain, value) {
     var chainArr = chain.split(&#x27;.&#x27;);
@@ -158,13 +158,13 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;ne
 
       // Mixin event map into Scene
       // Sender: &quot;scene:#{sceneName}&quot;
-      mixer([this, Scene.prototype], new EventMap());
+      mixer([this, Scene.prototype], new Component(sceneName));
 
       // We need a reference to the scene not being this
       var self = this;
 
-      // Set name
-      this.name = sceneName;
+      // Set type
+      this.type = &#x27;Scene&#x27;;
       
       // Data
       this.data = options.data || {};
@@ -525,15 +525,6 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;ne
       } else {
         return;
       }
-    };
-
-    /**
-     * Logging directly from the scene
-     *
-     * @param {Object} text
-     */
-    Scene.prototype.log = function(text) {
-      Log.i(&#x27;Scene &#x27; + this.name + &#x27;: &#x27; + text);
     };
 
     Scene.requireAlways = {

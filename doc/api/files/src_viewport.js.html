@@ -135,7 +135,7 @@ define(&#x27;lyria/viewport&#x27;, [&#x27;root&#x27;, &#x27;jquery&#x27;, &#x27;
         scaleMode: &#x27;scaleToFit&#x27;
       };
 
-      options = $.extend(options, defaultOptions);
+      options = $.extend(defaultOptions, options);
       
       mixer([this, Viewport.prototype], new EventMap());
 
@@ -197,8 +197,12 @@ define(&#x27;lyria/viewport&#x27;, [&#x27;root&#x27;, &#x27;jquery&#x27;, &#x27;
           var scaleExp = &#x27;scale(&#x27; + scaleX + &#x27;, &#x27; + scaleY + &#x27;)&#x27;;
           self.$element.css(&#x27;transform&#x27;, scaleExp);
           
-          self.scale.x = scaleX;
-          self.scale.y = scaleY;
+          if ((self.scale.x !== scaleX) || (self.scale.y !== scaleY)) {
+            self.scale.x = scaleX;
+            self.scale.y = scaleY;
+            
+            self.trigger(&#x27;scale:change&#x27;, self.scale.x, self.scale.y);            
+          }
         };
 
         var scaleHeightToFit = function(doNotSetTransform) {
@@ -265,7 +269,9 @@ define(&#x27;lyria/viewport&#x27;, [&#x27;root&#x27;, &#x27;jquery&#x27;, &#x27;
         }
       });
 
-      $(options.trigger.element).on(options.trigger.event, self.trigger.bind(self, &#x27;scale&#x27;));
+      $(options.trigger.element).on(options.trigger.event, function() {
+        self.trigger(&#x27;scale&#x27;);
+      });
       
       // Call scale event
       self.trigger(&#x27;scale&#x27;);
