@@ -17,9 +17,9 @@ define('lyria/game', ['eventmap', 'mixer', 'fullscreen', 'jquery', 'lyria/viewpo
     var Game = function(options) {
       var self = this;
 
-      options = $.extend(options, {
+      options = $.extend({
         startLoop: true
-      });
+      }, options);
       
       mixer([this, Game.prototype], new EventMap());
 
