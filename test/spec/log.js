@@ -9,7 +9,7 @@ define('spec/log', ['lyria/log'], function(Log) {
     describe('.plugins', function() {
       it('property exists', function() {
         expect(Log).to.have.property('plugins');
-        expect(Log.plugins).to.be.a('function');
+        expect(Log.plugins).to.be.a('object');
       });
       
       it('Console plugin does exist', function() {
