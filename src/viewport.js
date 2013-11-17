@@ -153,7 +153,9 @@ define('lyria/viewport', ['root', 'jquery', 'mixer', 'eventmap'], function(root,
         }
       });
 
-      $(options.trigger.element).on(options.trigger.event, self.trigger.bind(self, 'scale'));
+      $(options.trigger.element).on(options.trigger.event, function() {
+        self.trigger('scale');
+      });
       
       // Call scale event
       self.trigger('scale');
