@@ -1,4 +1,4 @@
-define('lyria/checkpoints', ['eventmap', 'mixer', 'deleteitem'], function(EventMap, mixer, deleteItem) {
+define('lyria/checkpoints', ['eventmap', 'mixer', 'deleteitem', 'performance'], function(EventMap, mixer, deleteItem, performance) {
 
   var Checkpoints = (function() {
     
