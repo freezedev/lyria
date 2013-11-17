@@ -8,10 +8,21 @@ define('spec/preloader', ['lyria/preloader'], function(Preloader) {
       expect(Preloader).to.be.a('function');
     });
     
-    it('can be instantiated', function() {
-      expect(preloader).to.be.a('object');
-      expect(preloader).to.be.an.instanceOf(Preloader);
+    describe('constructor', function() {
+      it('lyria/game is instantiable', function() {
+        expect(preloader).to.be.a('object');
+        expect(preloader).to.be.an.instanceOf(Preloader);
+      });
+      
+      it('Instance has default values', function() {
+        expect(preloader.assets).to.be.empty;
+        expect(preloader.maxAssets).to.equal(0);
+        expect(preloader.assetsLoaded).to.equal(0);
+        expect(preloader.steps).to.be.empty;
+        expect(preloader.taskList).to.be.empty;
+      });
     });
+    
     
     it('Instance has property assets', function() {
       expect(preloader).to.have.property('assets');
