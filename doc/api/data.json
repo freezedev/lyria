@@ -973,7 +973,7 @@
         },
         {
             "file": "src\\checkpoints.js",
-            "line": 37,
+            "line": 38,
             "description": "Passes a checkpoint",
             "params": [
                 {
@@ -987,7 +987,7 @@
         },
         {
             "file": "src\\checkpoints.js",
-            "line": 46,
+            "line": 47,
             "description": "Reset a single or all checkpoints",
             "params": [
                 {
@@ -1325,11 +1325,11 @@
         },
         {
             "message": "Missing item type\nPasses a checkpoint",
-            "line": " src\\checkpoints.js:37"
+            "line": " src\\checkpoints.js:38"
         },
         {
             "message": "Missing item type\nReset a single or all checkpoints",
-            "line": " src\\checkpoints.js:46"
+            "line": " src\\checkpoints.js:47"
         },
         {
             "message": "Missing item type",

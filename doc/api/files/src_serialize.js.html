@@ -123,8 +123,12 @@ define(&#x27;lyria/serialize&#x27;, [&#x27;jquery&#x27;], function($) {
    * @returns {String}
    */
   var serialize = function(anyObject) {
-    if (( typeof anyObject !== &#x27;object&#x27;) || ( anyObject instanceof $)) {
+    if ((anyObject === undefined) || ( anyObject instanceof $)) {
       return;
+    }
+    
+    if (typeof anyObject === &#x27;function&#x27;) {
+      return anyObject.toString();
     }
     
     return JSON.stringify(anyObject, function(key, value) {
