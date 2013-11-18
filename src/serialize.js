@@ -11,6 +11,10 @@ define('lyria/serialize', ['jquery'], function($) {
       return;
     }
     
+    if (typeof anyObject === 'function') {
+      return anyObject.toString();
+    }
+    
     return JSON.stringify(anyObject, function(key, value) {
       if (value instanceof $) {
         return null;
