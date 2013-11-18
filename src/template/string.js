@@ -8,6 +8,10 @@ define('lyria/template/string', function() {
       if (value == null) {
         return;
       }
+      
+      if (parameter == null) {
+        return value;
+      }
 
       // Array or object
       if ( typeof parameter === 'object') {
