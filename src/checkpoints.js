@@ -55,7 +55,7 @@ define('lyria/checkpoints', ['eventmap', 'mixer', 'deleteitem', 'performance'], 
       }
       
       if (name == null) {
-        var oldList = this.checkpointsList;
+        var oldList = this.checkpointList;
         this.checkpointList = [];
         this.trigger('reset', oldList);
         return;
