@@ -1,0 +1,8 @@
+{
+	"adjoining-classes": false,
+	"shorthand": false,
+	"box-model": false,
+	"gradients": false,
+	"compatible-vendor-prefixes": false,
+	"zero-units": false
+}
