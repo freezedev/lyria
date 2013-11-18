@@ -2,6 +2,10 @@ define('lyria/achievement', ['clamp'], function(clamp) {
 
   var Achievement = (function() {
     var Achievement = function(options) {
+      if (options == null) {
+        return;
+      }
+      
       if (typeof options === 'string') {
         options = {
           name: options
