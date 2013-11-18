@@ -17,14 +17,14 @@ define('lyria/template/string', function() {
       if ( typeof parameter === 'object') {
         if (Array.isArray(parameter)) {
           for (var i = 0, j = parameter.length; i < j; i++) {
-            value = value.replace(new RegExp(templateString.key.start + i + templateString.key.end), parameter[i]);
+            value = value.replace(new RegExp(templateString.key.start + i + templateString.key.end, 'g'), parameter[i]);
           }
         } else {
           var paramKeys = Object.keys(parameter);
 
           for (var k = 0, l = paramKeys.length; k < l; k++) {
             (function(item) {
-              value = value.replace(new RegExp(templateString.key.start + paramKeys[k] + templateString.key.end), item);
+              value = value.replace(new RegExp(templateString.key.start + paramKeys[k] + templateString.key.end, 'g'), item);
             })(parameter[paramKeys[k]]);
           }
         }
