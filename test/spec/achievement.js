@@ -26,6 +26,19 @@ define('spec/achievement', ['lyria/achievement'], function(Achievement) {
         }).to.throw(Error);
       });
       
+      it('calling with object parameter', function() {
+        var achievement = new Achievement({name: 'first'});
+        
+        expect(achievement).to.have.property('name');
+        expect(achievement.name).to.equal('first');
+      });
+      
+      it('calling with string parameter', function() {
+        var achievement = new Achievement('second');
+        
+        expect(achievement).to.have.property('name');
+        expect(achievement.name).to.equal('second');
+      });
     });
     
     
