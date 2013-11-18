@@ -16,12 +16,12 @@ define('spec/serialize', ['lyria/serialize', 'jquery'], function(serialize, $) {
       expect(serialize(true)).to.equal('true');
       expect(serialize(false)).to.equal('false');
     });
-    
+
     it('returns a stringified function when input parameter is a function', function() {
       var func = function() {
         return 5;
       };
-      
+
       expect(serialize(func)).to.equal(func.toString());
     });
 
@@ -46,6 +46,60 @@ define('spec/serialize', ['lyria/serialize', 'jquery'], function(serialize, $) {
         a: 1,
         b: 'test',
         c: false
+      }));
+    });
+
+    it('serializes objects', function() {
+      expect(serialize({
+        a: {
+          b: {
+            c: {
+              d: {
+                e: 'test'
+              }
+            }
+          }
+        }
+      })).to.deep.equal(JSON.stringify({
+        a: {
+          b: {
+            c: {
+              d: {
+                e: 'test'
+              }
+            }
+          }
+        }
+      }));
+    });
+
+    it('serializes objects and primitive types', function() {
+      expect(serialize({
+        a: 1,
+        b: 'test',
+        c: false,
+        e: {
+          b: {
+            c: {
+              d: {
+                e: 'test'
+              }
+            }
+          }
+        }
+      })).to.deep.equal(JSON.stringify({
+        a: 1,
+        b: 'test',
+        c: false,
+        e: {
+          b: {
+            c: {
+              d: {
+                e: 'test'
+              }
+            }
+          }
+        }
       }));
     });
 
