@@ -7,7 +7,7 @@
     Remove this if you use the .htaccess -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-    <title>Math</title>
+    <title>Inputkey</title>
     <meta name="description" content="" />
     <meta name="author" content="Johannes Stein" />
 
@@ -37,12 +37,12 @@
   <body>
     <div id="mocha"></div>
     
-    <script src="../spec/math.js"></script>
+    <script src="../spec/inputkey.js"></script>
     <script>
       mocha.setup('bdd');
       window.expect = chai.expect;
       
-      require(['spec/math'], function() {
+      require(['spec/inputkey'], function() {
         mocha.run();
       });
     </script>
