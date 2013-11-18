@@ -42,36 +42,36 @@ define('spec/templatestring', ['lyria/template/string'], function(templateString
       });
 
       it('calling with an array', function() {
-        var processedString = templateString.process('My {{0}} string with {{1}}');
+        var processedString = templateString.process('My {{0}} string with {{1}}', ['first', 'stuff']);
 
-        expect(processedString).to.be.a('string', ['first', 'stuff']);
+        expect(processedString).to.be.a('string');
         expect(processedString).to.equal('My first string with stuff');
       });
 
       it('calling with an object', function() {
-        var processedString = templateString.process('My {{bueno}} string with {{things}}');
-
-        expect(processedString).to.be.a('string', {
+        var processedString = templateString.process('My {{bueno}} string with {{things}}', {
           bueno: 'first',
           things: 'stuff'
         });
+
+        expect(processedString).to.be.a('string');
         expect(processedString).to.equal('My first string with stuff');
       });
-      
-      it('calling with an array and duplicate identifiers', function() {
-        var processedString = templateString.process('My {{0}} string with {{0}} {{1}}');
 
-        expect(processedString).to.be.a('string', ['nice', 'stuff']);
+      it('calling with an array and duplicate identifiers', function() {
+        var processedString = templateString.process('My {{0}} string with {{0}} {{1}}', ['nice', 'stuff']);
+
+        expect(processedString).to.be.a('string');
         expect(processedString).to.equal('My nice string with nice stuff');
       });
 
       it('calling with an object and duplicate identifiers', function() {
-        var processedString = templateString.process('My {{bueno}} string with {{bueno}} {{things}}');
-
-        expect(processedString).to.be.a('string', {
+        var processedString = templateString.process('My {{bueno}} string with {{bueno}} {{things}}', {
           bueno: 'nice',
           things: 'stuff'
         });
+
+        expect(processedString).to.be.a('string');
         expect(processedString).to.equal('My nice string with nice stuff');
       });
 
