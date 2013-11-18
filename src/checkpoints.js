@@ -31,7 +31,8 @@ define('lyria/checkpoints', ['eventmap', 'mixer', 'deleteitem', 'performance'], 
       }
       
       this.checkpointList.push(name);
-      this.trigger('pass', name, performance.now() - this.startTime);
+      
+      this.trigger('pass', name, (performance.now() - this.startTime));
     };
 
     /**
@@ -49,6 +50,10 @@ define('lyria/checkpoints', ['eventmap', 'mixer', 'deleteitem', 'performance'], 
      * @param {String} name
      */
     Checkpoints.prototype.reset = function(name) {
+      if (this.checkpointList.length === 0) {
+        return;
+      }
+      
       if (name == null) {
         this.checkpointList = [];
         this.trigger('reset');
