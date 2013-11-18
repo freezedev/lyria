@@ -1,13 +1,26 @@
-define('lyria/animation', ['mixer', 'eventmap'], function(mixer, EventMap) {
+define('lyria/animation', ['jquery', 'mixer', 'eventmap'], function($, mixer, EventMap) {
   var Animation = (function() {
     var Animation = function($elem, options) {
       this.$elem = $elem;
       
-      this.frame.width = 0 || options.width;
-      this.frame.height = 0 || options.height;
-      this.frame.current = 0;
-      this.speed = 1;
+      var defaultOptions = {
+        frame: {
+          width: 0,
+          height: 0,
+          current: 0
+        },
+        speed: 1
+      };
       
+      options = $.extend(true, defaultOptions, options);
+      
+      this.frame = {};
+      this.frame.width = options.frame.width;
+      this.frame.height = options.frame.height;
+      this.frame.current = options.frame.current;
+      this.speed = options.speed;
+      
+      this.sprite = {};
       this.sprite.width;
       this.sprite.height;
       this.sprite.image = new Image();
