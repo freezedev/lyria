@@ -102,6 +102,16 @@ define('spec/serialize', ['lyria/serialize', 'jquery'], function(serialize, $) {
         }
       }));
     });
+    
+    it('serializes functions', function() {
+      var func = function() { return 'test'; };
+      
+      expect(serialize({
+        a: func
+      })).to.deep.equal(JSON.stringify({
+        a: func.toString()
+      }));
+    });
 
   });
 
