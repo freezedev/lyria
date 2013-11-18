@@ -8,4 +8,6 @@ define('lyria/sprite', function() {
     return Sprite;
     
   })();
+  
+  return Sprite;
 });
