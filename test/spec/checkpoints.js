@@ -26,11 +26,13 @@ define('spec/checkpoints', ['lyria/checkpoints'], function(Checkpoints) {
       });
       
       describe('#pass', function() {
+        
+        
         it('pass a checkpoint', function() {
           checkpoints.pass('test');
           
-          expect(checkpoints.checkpointsList).to.be.a('array');
-          expect(checkpoints.checkpointsList.indexOf('test')).to.equal(0);
+          expect(checkpoints.checkpointList).to.be.a('array');
+          expect(checkpoints.checkpointList.indexOf('test')).to.equal(0);
         });
       });
     });
