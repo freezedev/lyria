@@ -111,7 +111,36 @@ define('spec/checkpoints', ['lyria/checkpoints'], function(Checkpoints) {
           checkpoints.reset();
           expect(checkpoints.checkpointList.length).to.equal(0);  
         });
+        
+        it('triggers an event when reseting any checkpoints', function(done) {
+          checkpoints.pass('test');
+          checkpoints.pass('test2');
+          checkpoints.pass('test3');
+          checkpoints.pass('test4');
+          
+          checkpoints.on('reset', function() {
+            done();
+          });
+          
+          checkpoints.reset('test');
+        });
+        
+        it('triggered event has the event name as its parameter', function(done) {
+          checkpoints.pass('test');
+          checkpoints.pass('test2');
+          checkpoints.pass('test3');
+          checkpoints.pass('test4');
+          
+          checkpoints.on('reset', function(param) {
+            expect(param).to.be.a('string');
+            expect(param).to.equal('test');
+            done();
+          });
+          
+          checkpoints.reset('test');
+        });
       });
+      
     });
     
   });
