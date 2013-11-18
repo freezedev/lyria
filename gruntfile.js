@@ -145,13 +145,21 @@ module.exports = function(grunt) {
       all: {
         src: ['test/browser/**/*.html']
       }
+    },
+    csslint: {
+      options: {
+        csslintrc: '.csslintrc'
+      },
+      all: {
+        src: ['dist/css/*.css']
+      }
     }
   });
 
   require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
   grunt.loadTasks('./tasks');
 
-  grunt.registerTask('test', 'Lints and unit tests', ['jshint', 'template', 'mocha']);
+  grunt.registerTask('test', 'Lints and unit tests', ['jshint', 'csslint', 'template', 'mocha']);
   grunt.registerTask('doc', 'Generated documentation', ['yuidoc', 'dependo', 'plato']);
   grunt.registerTask('default', 'Default task', ['clean', 'handlebars', 'stylus', 'concat', 'concat_sourcemap', 'test', 'uglify', 'cssmin', 'doc']);
 
