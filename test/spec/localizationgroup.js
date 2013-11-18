@@ -1,6 +1,6 @@
 define('spec/localizationgroup', ['lyria/localization/group'], function(LocalizationGroup) {
   
-  describe('lyria/localization', function() {
+  describe('lyria/localization/group', function() {
     
     var group = new LocalizationGroup();
     
