@@ -1,4 +1,4 @@
-define('lyria/template/string', function() {
+define('lyria/template/string', ['objectify'], function(objectify) {
   var templateString = {
     key: {
       start: '{{',
@@ -12,22 +12,19 @@ define('lyria/template/string', function() {
       if (parameter == null) {
         return value;
       }
-
+      
       // Array or object
       if ( typeof parameter === 'object') {
-        if (Array.isArray(parameter)) {
-          for (var i = 0, j = parameter.length; i < j; i++) {
-            value = value.replace(new RegExp(templateString.key.start + i + templateString.key.end, 'g'), parameter[i]);
-          }
-        } else {
-          var paramKeys = Object.keys(parameter);
-
-          for (var k = 0, l = paramKeys.length; k < l; k++) {
-            (function(item) {
-              value = value.replace(new RegExp(templateString.key.start + paramKeys[k] + templateString.key.end, 'g'), item);
-            })(parameter[paramKeys[k]]);
-          }
+        var templateObject = objectify(parameter);
+        
+        var keys = Object.keys(templateObject);
+        
+        for (var i = 0, j = keys.length; i < j; i++) {
+          (function(num, item) {
+            value = value.replace(new RegExp(templateString.key.start + num + templateString.key.end, 'g'), item);
+          })(keys[i], templateObject[keys[i]]);
         }
+        
       }
 
       return value;
