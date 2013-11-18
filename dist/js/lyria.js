@@ -2,6 +2,10 @@ define('lyria/achievement', ['clamp'], function(clamp) {
 
   var Achievement = (function() {
     var Achievement = function(options) {
+      if (options == null) {
+        throw new Error('An achievement constructor needs to be called with a parameter');
+      }
+      
       if (typeof options === 'string') {
         options = {
           name: options
@@ -217,16 +221,29 @@ define('lyria/achievement/manager', ['jquery', 'lyria/achievement', 'lyria/templ
 
 });
 
-define('lyria/animation', ['mixer', 'eventmap'], function(mixer, EventMap) {
+define('lyria/animation', ['jquery', 'mixer', 'eventmap'], function($, mixer, EventMap) {
   var Animation = (function() {
     var Animation = function($elem, options) {
       this.$elem = $elem;
       
-      this.frame.width = 0 || options.width;
-      this.frame.height = 0 || options.height;
-      this.frame.current = 0;
-      this.speed = 1;
+      var defaultOptions = {
+        frame: {
+          width: 0,
+          height: 0,
+          current: 0
+        },
+        speed: 1
+      };
       
+      options = $.extend(true, defaultOptions, options);
+      
+      this.frame = {};
+      this.frame.width = options.frame.width;
+      this.frame.height = options.frame.height;
+      this.frame.current = options.frame.current;
+      this.speed = options.speed;
+      
+      this.sprite = {};
       this.sprite.width;
       this.sprite.height;
       this.sprite.image = new Image();
@@ -516,7 +533,8 @@ define('lyria/checkpoints', ['eventmap', 'mixer', 'deleteitem', 'performance'], 
       }
       
       this.checkpointList.push(name);
-      this.trigger('pass', name, performance.now() - this.startTime);
+      
+      this.trigger('pass', name, (performance.now() - this.startTime));
     };
 
     /**
@@ -534,9 +552,14 @@ define('lyria/checkpoints', ['eventmap', 'mixer', 'deleteitem', 'performance'], 
      * @param {String} name
      */
     Checkpoints.prototype.reset = function(name) {
+      if (this.checkpointList.length === 0) {
+        return;
+      }
+      
       if (name == null) {
+        var oldList = this.checkpointList;
         this.checkpointList = [];
-        this.trigger('reset');
+        this.trigger('reset', oldList);
         return;
       }
       
@@ -826,6 +849,26 @@ define('nexttick', ['requestanimationframe', 'cancelanimationframe'], function(r
       }
       cancelAnimationFrame(id);
     });
+  };
+});
+
+define('objectify', function() {
+  return function(arr) {
+    if (typeof arr === 'object') {
+      if (!Array.isArray(arr)) {
+        return arr;
+      }
+    } else {
+      return {};
+    }
+
+    var rv = {};
+    for (var i = 0, j = arr.length; i < j; i++) {
+      if (arr[i] != null) {
+        rv[i] = arr[i];
+      }
+    }
+    return rv;
   };
 });
 
@@ -1288,7 +1331,19 @@ define('lyria/input/key', function() {
   };
   
   Key.define = function(name, key) {
-    Key[name] = key;
+    if (name == null || key == null) {
+      return;
+    }
+    
+    if (!Object.hasOwnProperty.call(Key, name)) {
+      if (typeof key === 'function') {
+        Object.defineProperty(Key, name, {
+          get: key
+        });
+      } else {
+        Key[name] = key;        
+      }
+    }
   };
 
   return Key;
@@ -2601,8 +2656,12 @@ define('lyria/serialize', ['jquery'], function($) {
    * @returns {String}
    */
   var serialize = function(anyObject) {
-    if (( typeof anyObject !== 'object') || ( anyObject instanceof $)) {
+    if ((anyObject === undefined) || ( anyObject instanceof $)) {
       return;
+    }
+    
+    if (typeof anyObject === 'function') {
+      return anyObject.toString();
     }
     
     return JSON.stringify(anyObject, function(key, value) {
@@ -2631,6 +2690,8 @@ define('lyria/sprite', function() {
     return Sprite;
     
   })();
+  
+  return Sprite;
 });
 
 define('lyria/sprite/manager', ['jquery', 'mixer', 'lyria/component', 'lyria/sprite/renderer'], function($, mixer, Component, Renderer) {
@@ -2749,7 +2810,7 @@ define('lyria/template/methods', function() {
   return ['compile'];
 });
 
-define('lyria/template/string', function() {
+define('lyria/template/string', ['objectify'], function(objectify) {
   var templateString = {
     key: {
       start: '{{',
@@ -2759,22 +2820,23 @@ define('lyria/template/string', function() {
       if (value == null) {
         return;
       }
-
+      
+      if (parameter == null) {
+        return value;
+      }
+      
       // Array or object
       if ( typeof parameter === 'object') {
-        if (Array.isArray(parameter)) {
-          for (var i = 0, j = parameter.length; i < j; i++) {
-            value = value.replace(new RegExp(templateString.key.start + i + templateString.key.end), parameter[i]);
-          }
-        } else {
-          var paramKeys = Object.keys(parameter);
-
-          for (var k = 0, l = paramKeys.length; k < l; k++) {
-            (function(item) {
-              value = value.replace(new RegExp(templateString.key.start + paramKeys[k] + templateString.key.end), item);
-            })(parameter[paramKeys[k]]);
-          }
+        var templateObject = objectify(parameter);
+        
+        var keys = Object.keys(templateObject);
+        
+        for (var i = 0, j = keys.length; i < j; i++) {
+          (function(num, item) {
+            value = value.replace(new RegExp(templateString.key.start + num + templateString.key.end, 'g'), item);
+          })(keys[i], templateObject[keys[i]]);
         }
+        
       }
 
       return value;
@@ -3324,4 +3386,4 @@ define('lyria/template/list', {
     }
   }
 });
-//@ sourceMappingURL=lyria.js.map
+//# sourceMappingURL=lyria.js.map
