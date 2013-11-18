@@ -1,10 +1,8 @@
 define('spec/achievementmanager', ['lyria/achievement/manager'], function(AchievementManager) {
   
-  describe('lyria/localization', function() {
+  describe('lyria/achievement/manager', function() {
     
-    var achievementManager = new AchievementManager();
-    
-    it('is a function', function() {
+    it('is an onject', function() {
       expect(AchievementManager).to.be.a('object');
     });
     
