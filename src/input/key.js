@@ -84,7 +84,19 @@ define('lyria/input/key', function() {
   };
   
   Key.define = function(name, key) {
-    Key[name] = key;
+    if (name == null || key == null) {
+      return;
+    }
+    
+    if (!Object.hasOwnProperty.call(Key, name)) {
+      if (typeof key === 'function') {
+        Object.defineProperty(Key, name, {
+          get: key
+        });
+      } else {
+        Key[name] = key;        
+      }
+    }
   };
 
   return Key;
