@@ -45,11 +45,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
-      <p class="stat">74.44</p>
+      <p class="stat">73.47</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
-      <p class="stat">158</p>
+      <p class="stat">166</p>
     </div>
   </div>
   <div class="row historical">
@@ -63,11 +63,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
-      <p class="stat">8.36</p>
+      <p class="stat">8.48</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
-      <p class="stat">1.28</p>
+      <p class="stat">1.34</p>
     </div>
   </div>
 </div>
@@ -237,13 +237,21 @@ module.exports = function(grunt) {
       all: {
         src: [&#039;test/browser/**/*.html&#039;]
       }
+    },
+    csslint: {
+      options: {
+        csslintrc: &#039;.csslintrc&#039;
+      },
+      all: {
+        src: [&#039;dist/css/*.css&#039;]
+      }
     }
   });
 
   require(&#039;matchdep&#039;).filterDev(&#039;grunt-*&#039;).forEach(grunt.loadNpmTasks);
   grunt.loadTasks(&#039;./tasks&#039;);
 
-  grunt.registerTask(&#039;test&#039;, &#039;Lints and unit tests&#039;, [&#039;jshint&#039;, &#039;template&#039;, &#039;mocha&#039;]);
+  grunt.registerTask(&#039;test&#039;, &#039;Lints and unit tests&#039;, [&#039;jshint&#039;, &#039;csslint&#039;, &#039;template&#039;, &#039;mocha&#039;]);
   grunt.registerTask(&#039;doc&#039;, &#039;Generated documentation&#039;, [&#039;yuidoc&#039;, &#039;dependo&#039;, &#039;plato&#039;]);
   grunt.registerTask(&#039;default&#039;, &#039;Default task&#039;, [&#039;clean&#039;, &#039;handlebars&#039;, &#039;stylus&#039;, &#039;concat&#039;, &#039;concat_sourcemap&#039;, &#039;test&#039;, &#039;uglify&#039;, &#039;cssmin&#039;, &#039;doc&#039;]);
 

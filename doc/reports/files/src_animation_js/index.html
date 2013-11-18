@@ -45,11 +45,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
-      <p class="stat">133.81</p>
+      <p class="stat">124.11</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
-      <p class="stat">39</p>
+      <p class="stat">52</p>
     </div>
   </div>
   <div class="row historical">
@@ -63,11 +63,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
-      <p class="stat">11.67</p>
+      <p class="stat">15.47</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
-      <p class="stat">0.21</p>
+      <p class="stat">0.31</p>
     </div>
   </div>
 </div>
@@ -90,16 +90,29 @@
 
 <div class="container">
   <div class="row">
-    <textarea id="file-source" class="col-md-12">define(&#039;lyria/animation&#039;, [&#039;mixer&#039;, &#039;eventmap&#039;], function(mixer, EventMap) {
+    <textarea id="file-source" class="col-md-12">define(&#039;lyria/animation&#039;, [&#039;jquery&#039;, &#039;mixer&#039;, &#039;eventmap&#039;], function($, mixer, EventMap) {
   var Animation = (function() {
     var Animation = function($elem, options) {
       this.$elem = $elem;
       
-      this.frame.width = 0 || options.width;
-      this.frame.height = 0 || options.height;
-      this.frame.current = 0;
-      this.speed = 1;
+      var defaultOptions = {
+        frame: {
+          width: 0,
+          height: 0,
+          current: 0
+        },
+        speed: 1
+      };
       
+      options = $.extend(true, defaultOptions, options);
+      
+      this.frame = {};
+      this.frame.width = options.frame.width;
+      this.frame.height = options.frame.height;
+      this.frame.current = options.frame.current;
+      this.speed = options.speed;
+      
+      this.sprite = {};
       this.sprite.width;
       this.sprite.height;
       this.sprite.image = new Image();
