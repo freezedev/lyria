@@ -3,7 +3,7 @@ define('lyria/achievement', ['clamp'], function(clamp) {
   var Achievement = (function() {
     var Achievement = function(options) {
       if (options == null) {
-        return;
+        throw new Error('An achievement constructor needs to be called with a parameter');
       }
       
       if (typeof options === 'string') {
