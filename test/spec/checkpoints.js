@@ -118,7 +118,7 @@ define('spec/checkpoints', ['lyria/checkpoints'], function(Checkpoints) {
           checkpoints.pass('test3');
           checkpoints.pass('test4');
           
-          checkpoints.on('reset', function() {
+          checkpoints.once('reset', function() {
             done();
           });
           
@@ -131,13 +131,29 @@ define('spec/checkpoints', ['lyria/checkpoints'], function(Checkpoints) {
           checkpoints.pass('test3');
           checkpoints.pass('test4');
           
-          checkpoints.on('reset', function(param) {
+          checkpoints.once('reset', function(param) {
             expect(param).to.be.a('string');
             expect(param).to.equal('test');
             done();
           });
           
           checkpoints.reset('test');
+        });
+        
+        it('triggered event has all event names as its parameter', function(done) {
+          checkpoints.pass('test');
+          checkpoints.pass('test2');
+          checkpoints.pass('test3');
+          checkpoints.pass('test4');
+          
+          checkpoints.once('reset', function(param) {
+            expect(param).to.be.a('array');
+            expect(param).to.not.be.empty;
+            expect(param).to.deep.equal(['test', 'test2', 'test3', 'test4']);
+            done();
+          });
+          
+          checkpoints.reset();
         });
       });
       
