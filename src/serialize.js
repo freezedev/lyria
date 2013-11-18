@@ -7,7 +7,7 @@ define('lyria/serialize', ['jquery'], function($) {
    * @returns {String}
    */
   var serialize = function(anyObject) {
-    if (( typeof anyObject !== 'object') || ( anyObject instanceof $)) {
+    if ((anyObject === undefined) || ( anyObject instanceof $)) {
       return;
     }
     
