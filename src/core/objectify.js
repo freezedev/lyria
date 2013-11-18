@@ -1,6 +1,10 @@
 define('objectify', function() {
   return function(arr) {
-    if (!Array.isArray(arr)) {
+    if (typeof arr === 'object') {
+      if (!Array.isArray(arr)) {
+        return arr;
+      }
+    } else {
       return {};
     }
 
