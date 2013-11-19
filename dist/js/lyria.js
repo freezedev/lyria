@@ -1649,18 +1649,6 @@ define('lyria/loop', ['requestanimationframe', 'eventmap'], function(requestAnim
   })();
   
 });
-define('lyria/math', ['random', 'clamp', 'fisheryates'], function(random, clamp, fisheryates) {
-
-  var Math = {
-    random: random,
-    clamp: clamp,
-    fisherYates: fisheryates
-  };
-
-  return Math;
-
-});
-
 /**
  * Mixin language property into objects
  * TODO: Refactor this to use mixer library
@@ -1683,6 +1671,12 @@ define('lyria/mixin/language', function() {
 
   };
 }); 
+define('lyria/mixin/templatable', function() {
+  return function() {
+    
+  };
+});
+
 /**
  * @namespace Lyria
  * Lyria namespace decleration

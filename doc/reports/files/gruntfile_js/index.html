@@ -63,7 +63,7 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
-      <p class="stat">8.48</p>
+      <p class="stat">8.46</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
@@ -199,7 +199,7 @@ module.exports = function(grunt) {
         }
       }
     },
-    clean: [&#039;dist&#039;, &#039;generated&#039;],
+    clean: [&#039;dist&#039;, &#039;generated&#039;, &#039;test/browser&#039;],
     dependo: {
       targetPath: &#039;src&#039;,
       outputPath: &#039;./doc/dependencies&#039;,
