@@ -422,7 +422,6 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'lyria/component', 'lyria/
       'lyria/audio': 'Lyria.Audio',
       'lyria/checkpoints': 'Lyria.Checkpoints',
       'lyria/component': 'Lyria.Component',
-      'lyria/events': 'Lyria.Events',
       'lyria/gameobject': 'Lyria.GameObject',
       'lyria/log': 'Lyria.Log',
       'lyria/loop': 'Lyria.Loop',
