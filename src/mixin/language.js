@@ -4,19 +4,29 @@
  */
 
 define('lyria/mixin/language', function() {
-  return function(attachedObject, value, eventMap) {
-
-    Object.defineProperty(attachedObject, 'language', {
-      get: function() {
-        return value;
-      },
-      set: function(val) {
-        value = val;
-        eventMap.trigger('language:change', value);
-      },
-      configurable: true,
-      enumarable: true
-    });
-
+  return function(propertyName, propertyTrigger) {
+    if (propertyName == null) {
+      propertyName = 'language';
+    }
+    
+    if (propertyTrigger == null) {
+      propertyTrigger = 'language:change';
+    }
+    
+    return function(attachedObject, value, eventMap) {
+  
+      Object.defineProperty(attachedObject, propertyName, {
+        get: function() {
+          return value;
+        },
+        set: function(val) {
+          value = val;
+          eventMap.trigger(propertyTrigger, value);
+        },
+        configurable: true,
+        enumarable: true
+      });
+  
+    };
   };
 }); 
