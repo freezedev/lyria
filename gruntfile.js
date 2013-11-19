@@ -161,6 +161,8 @@ module.exports = function(grunt) {
 
   grunt.registerTask('test', 'Lints and unit tests', ['jshint', 'csslint', 'template', 'mocha']);
   grunt.registerTask('doc', 'Generated documentation', ['yuidoc', 'dependo', 'plato']);
-  grunt.registerTask('default', 'Default task', ['clean', 'handlebars', 'stylus', 'concat', 'concat_sourcemap', 'test', 'uglify', 'cssmin', 'doc']);
+  grunt.registerTask('default', 'Default task', ['clean', 'handlebars', 'stylus', 'concat', 'concat_sourcemap', 'test', 'uglify', 'cssmin']);
+  
+  grunt.registerTask('release', 'When releasing this library', ['doc']);
 
 };
