@@ -10,7 +10,7 @@ define('lyria/localization', ['lyria/language', 'lyria/template/string', 'lyria/
 
       var langValue = Language.language;
 
-      langMixin(this, langValue, this);
+      langMixin('language', 'change')(this, langValue, this);
     };
 
     /**
