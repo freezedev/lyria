@@ -707,20 +707,6 @@ define('lyria/constants', function() {
     animSpeed: 300
   };
 });
-
-define('lyria/language', ['detectr', 'lyria/events', 'lyria/mixin/language'], function(detectr, Events, langMixin) {
-  // Fallback language
-  var langObject = {
-    defaultLanguage: 'en'
-  };
-
-  var langProp = detectr.Browser.language() || langObject.defaultLanguage;
-
-  langMixin(langObject, langProp, Events);
-
-  return langObject;
-});
-
 define('clamp', function() {
   var clamp = function(value, min, max) {
     var _ref, _ref1, _ref2;
@@ -1019,12 +1005,6 @@ if (!Object.prototype.unwatch) {
     }
   });
 }
-define('lyria/events', ['eventmap'], function(EventMap) {
-  var instance = instance || new EventMap();
-
-  return instance;
-});
-
 /**
  * @module Lyria
  */
@@ -1350,6 +1330,22 @@ define('lyria/input/key', function() {
 
 });
 
+define('lyria/language', ['detectr', 'eventmap', 'lyria/mixin/language'], function(detectr, EventMap, langMixin) {
+  var langEvents = new EventMap();
+  
+  // Fallback language
+  var langObject = {
+    defaultLanguage: 'en',
+    on: langEvents.on,
+    off: langEvents.off
+  };
+
+  var langProp = detectr.Browser.language() || langObject.defaultLanguage;
+
+  langMixin('value', 'change')(langObject, langProp, langEvents);
+
+  return langObject;
+});
 /**
  * Lyria module
  *
@@ -1403,7 +1399,7 @@ define('lyria/localization', ['lyria/language', 'lyria/template/string', 'lyria/
 
       var langValue = Language.language;
 
-      langMixin(this, langValue, this);
+      langMixin('language', 'change')(this, langValue, this);
     };
 
     /**
@@ -1655,20 +1651,30 @@ define('lyria/loop', ['requestanimationframe', 'eventmap'], function(requestAnim
  */
 
 define('lyria/mixin/language', function() {
-  return function(attachedObject, value, eventMap) {
-
-    Object.defineProperty(attachedObject, 'language', {
-      get: function() {
-        return value;
-      },
-      set: function(val) {
-        value = val;
-        eventMap.trigger('language:change', value);
-      },
-      configurable: true,
-      enumarable: true
-    });
-
+  return function(propertyName, propertyTrigger) {
+    if (propertyName == null) {
+      propertyName = 'language';
+    }
+    
+    if (propertyTrigger == null) {
+      propertyTrigger = 'language:change';
+    }
+    
+    return function(attachedObject, value, eventMap) {
+  
+      Object.defineProperty(attachedObject, propertyName, {
+        get: function() {
+          return value;
+        },
+        set: function(val) {
+          value = val;
+          eventMap.trigger(propertyTrigger, value);
+        },
+        configurable: true,
+        enumarable: true
+      });
+  
+    };
   };
 }); 
 define('lyria/mixin/templatable', function() {
@@ -2203,7 +2209,7 @@ define('lyria/scene/director', ['root', 'mixer', 'jquery', 'eventmap', 'lyria/sc
 /**
  * @module Lyria
  */
-define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'lyria/component', 'lyria/gameobject', 'lyria/language', 'lyria/log', 'lyria/localization'], function($, mixer, nextTick, Component, GameObject, Language, Log, Localization) {'use strict';
+define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'lyria/component', 'lyria/gameobject', 'lyria/log', 'lyria/localization'], function($, mixer, nextTick, Component, GameObject, Log, Localization) {'use strict';
 
   var createNamespace = function(obj, chain, value) {
     var chainArr = chain.split('.');
@@ -2624,7 +2630,6 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'lyria/component', 'lyria/
       'lyria/audio': 'Lyria.Audio',
       'lyria/checkpoints': 'Lyria.Checkpoints',
       'lyria/component': 'Lyria.Component',
-      'lyria/events': 'Lyria.Events',
       'lyria/gameobject': 'Lyria.GameObject',
       'lyria/log': 'Lyria.Log',
       'lyria/loop': 'Lyria.Loop',
