@@ -107,7 +107,7 @@ module.exports = function(grunt) {
         }
       }
     },
-    clean: ['dist', 'generated'],
+    clean: ['dist', 'generated', 'test/browser'],
     dependo: {
       targetPath: 'src',
       outputPath: './doc/dependencies',
