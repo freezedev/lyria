@@ -143,3 +143,7 @@ What does Lyria mean?
 * It's also a reference to Lyrium from Bioware's Dragon Age series, in which Lyrium is the essence for magic
 * It's a reference to Illyria, a powerful being from the TV series Angel
 	
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/freezedev/lyria/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
