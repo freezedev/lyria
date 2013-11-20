@@ -1,8 +1,8 @@
 define('lyria/template/string', ['objectify'], function(objectify) {
   var templateString = {
     key: {
-      start: '{{',
-      end: '}}'
+      start: '\\{{',
+      end: '\\}}'
     },
     process: function(value, parameter) {
       if (value == null) {
