@@ -1,4 +1,4 @@
-define('lyria/input', function() {
+define(function() {
   var Input = {};
   
   Input.key = {};
