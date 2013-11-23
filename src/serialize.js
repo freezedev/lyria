@@ -1,4 +1,4 @@
-define('lyria/serialize', ['jquery'], function($) {
+define(['jquery'], function($) {
   
   /**
    *
