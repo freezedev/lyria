@@ -1,4 +1,4 @@
-define('lyria/template/string', ['objectify'], function(objectify) {
+define(['objectify'], function(objectify) {
   var templateString = {
     key: {
       start: '\\{{',
