@@ -1,4 +1,4 @@
-define('lyria/component/manager', function() {
+define(function() {
 
   var components = {};
 
