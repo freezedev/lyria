@@ -1,4 +1,4 @@
-define('lyria/component', ['mixer', 'eventmap', 'lyria/component/manager', 'lyria/log'], function(mixer, EventMap, ComponentManager, Log) {
+define(['mixer', 'eventmap', 'lyria/component/manager', 'lyria/log'], function(mixer, EventMap, ComponentManager, Log) {
 
   //Lyria.Component
   return (function() {
