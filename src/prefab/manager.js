@@ -1,4 +1,4 @@
-define('lyria/prefab/manager', ['jqueryify', 'jquery', 'root'], function($ify, $, root) {
+define(['jqueryify', 'jquery', 'root'], function($ify, $, root) {
   var PrefabManager = {};
 
   PrefabManager.prefabs = {};
