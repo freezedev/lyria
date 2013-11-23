@@ -23,7 +23,8 @@
     "matchdep": "0.3.x",
     "grunt-templater": "0.0.4-1",
     "grunt-contrib-csslint": "~0.1.2",
-    "grunt-amd-tamer": "~0.1.0"
+    "grunt-amd-tamer": "~0.1.0",
+    "grunt-release": "~0.6.0"
   },
   "scripts": {
     "test": "grunt test"
