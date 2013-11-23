@@ -1,4 +1,4 @@
-define('lyria/input/key', function() {
+define(function() {
   var Key = {
     'backspace': 8,
     'tab': 9,
