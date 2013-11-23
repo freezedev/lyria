@@ -1,7 +1,7 @@
 /**
  * @module Lyria
  */
-define('lyria/gameobject', ['mixer', 'eventmap', 'lyria/component', 'lyria/log'], function(mixer, EventMap, Component, Log) {
+define(['mixer', 'eventmap', 'lyria/component', 'lyria/log'], function(mixer, EventMap, Component, Log) {
   'use strict';
   
   //Lyria.GameObject
