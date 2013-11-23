@@ -1,4 +1,4 @@
-define('lyria/audio/manager', function() {
+define(function() {
   var AudioManager = {
 
   };
