@@ -1,4 +1,4 @@
-define('lyria/video', function() {
+define(function() {
   'use strict';
 
   var Video =  (function() {
