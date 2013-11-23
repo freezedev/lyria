@@ -1,4 +1,4 @@
-define('lyria/tween', ['eventmap', 'mixer', 'options', 'jqueryify'], function(EventMap, mixer, options, $fy) {
+define(['eventmap', 'mixer', 'options', 'jqueryify'], function(EventMap, mixer, options, $fy) {
   var Tween = (function() {
     var Tween = function(opts) {
       opts = options(opts, {
