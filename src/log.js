@@ -1,7 +1,7 @@
 /**
  * @module Lyria
  */
-define('lyria/log', ['root'], function(root) {
+define(['root'], function(root) {
   'use strict';
   
   /**
