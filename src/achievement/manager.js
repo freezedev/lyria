@@ -1,4 +1,4 @@
-define('lyria/achievement/manager', ['jquery', 'lyria/achievement', 'lyria/template/engine', 'lyria/template/list', 'lyria/localization'], function($, Achievement, TemplateEngine, templateList, Localization) {
+define(['jquery', 'lyria/achievement', 'lyria/template/engine', 'lyria/template/list', 'lyria/localization'], function($, Achievement, TemplateEngine, templateList, Localization) {
 
   var achievementStore = {};
 
