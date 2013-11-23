@@ -1,3 +1,3 @@
-define('lyria/sprite/renderer', function() {
+define(function() {
   
 });
