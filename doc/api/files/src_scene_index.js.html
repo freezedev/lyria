@@ -117,7 +117,7 @@
 /**
  * @module Lyria
  */
-define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;nexttick&#x27;, &#x27;lyria/component&#x27;, &#x27;lyria/gameobject&#x27;, &#x27;lyria/language&#x27;, &#x27;lyria/log&#x27;, &#x27;lyria/localization&#x27;], function($, mixer, nextTick, Component, GameObject, Language, Log, Localization) {&#x27;use strict&#x27;;
+define([&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;nexttick&#x27;, &#x27;lyria/component&#x27;, &#x27;lyria/gameobject&#x27;, &#x27;lyria/log&#x27;, &#x27;lyria/localization&#x27;], function($, mixer, nextTick, Component, GameObject, Log, Localization) {&#x27;use strict&#x27;;
 
   var createNamespace = function(obj, chain, value) {
     var chainArr = chain.split(&#x27;.&#x27;);
@@ -538,7 +538,6 @@ define(&#x27;lyria/scene&#x27;, [&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;ne
       &#x27;lyria/audio&#x27;: &#x27;Lyria.Audio&#x27;,
       &#x27;lyria/checkpoints&#x27;: &#x27;Lyria.Checkpoints&#x27;,
       &#x27;lyria/component&#x27;: &#x27;Lyria.Component&#x27;,
-      &#x27;lyria/events&#x27;: &#x27;Lyria.Events&#x27;,
       &#x27;lyria/gameobject&#x27;: &#x27;Lyria.GameObject&#x27;,
       &#x27;lyria/log&#x27;: &#x27;Lyria.Log&#x27;,
       &#x27;lyria/loop&#x27;: &#x27;Lyria.Loop&#x27;,

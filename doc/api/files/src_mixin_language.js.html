@@ -119,21 +119,31 @@
  * TODO: Refactor this to use mixer library
  */
 
-define(&#x27;lyria/mixin/language&#x27;, function() {
-  return function(attachedObject, value, eventMap) {
-
-    Object.defineProperty(attachedObject, &#x27;language&#x27;, {
-      get: function() {
-        return value;
-      },
-      set: function(val) {
-        value = val;
-        eventMap.trigger(&#x27;language:change&#x27;, value);
-      },
-      configurable: true,
-      enumarable: true
-    });
-
+define(function() {
+  return function(propertyName, propertyTrigger) {
+    if (propertyName == null) {
+      propertyName = &#x27;language&#x27;;
+    }
+    
+    if (propertyTrigger == null) {
+      propertyTrigger = &#x27;language:change&#x27;;
+    }
+    
+    return function(attachedObject, value, eventMap) {
+  
+      Object.defineProperty(attachedObject, propertyName, {
+        get: function() {
+          return value;
+        },
+        set: function(val) {
+          value = val;
+          eventMap.trigger(propertyTrigger, value);
+        },
+        configurable: true,
+        enumarable: true
+      });
+  
+    };
   };
 }); 
     </pre>

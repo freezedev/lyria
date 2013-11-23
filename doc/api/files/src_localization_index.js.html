@@ -114,7 +114,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-define(&#x27;lyria/localization&#x27;, [&#x27;lyria/language&#x27;, &#x27;lyria/template/string&#x27;, &#x27;lyria/mixin/language&#x27;], function(Language, templateString, langMixin) {
+define([&#x27;lyria/language&#x27;, &#x27;lyria/template/string&#x27;, &#x27;lyria/mixin/language&#x27;], function(Language, templateString, langMixin) {
 
   var Localization = (function() {
     var Localization = function(data) {
@@ -126,7 +126,7 @@ define(&#x27;lyria/localization&#x27;, [&#x27;lyria/language&#x27;, &#x27;lyria/
 
       var langValue = Language.language;
 
-      langMixin(this, langValue, this);
+      langMixin(&#x27;language&#x27;, &#x27;change&#x27;)(this, langValue, this);
     };
 
     /**
