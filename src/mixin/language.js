@@ -3,7 +3,7 @@
  * TODO: Refactor this to use mixer library
  */
 
-define('lyria/mixin/language', function() {
+define(function() {
   return function(propertyName, propertyTrigger) {
     if (propertyName == null) {
       propertyName = 'language';
