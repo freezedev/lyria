@@ -1,7 +1,7 @@
 /**
  * @module Lyria
  */
-define('lyria/game', ['eventmap', 'mixer', 'fullscreen', 'jquery', 'lyria/viewport', 'lyria/scene/director', 'lyria/preloader', 'lyria/loop', 'lyria/world', 'lyria/checkpoints'], function(EventMap, mixer, fullscreen, $, Viewport, Director, Preloader, Loop, World, Checkpoints) {'use strict';
+define(['eventmap', 'mixer', 'fullscreen', 'jquery', 'lyria/viewport', 'lyria/scene/director', 'lyria/preloader', 'lyria/loop', 'lyria/world', 'lyria/checkpoints'], function(EventMap, mixer, fullscreen, $, Viewport, Director, Preloader, Loop, World, Checkpoints) {'use strict';
 
   /**
    * Game class which has a viewport, scene director and preloader by
