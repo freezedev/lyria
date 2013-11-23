@@ -2,7 +2,7 @@
  * @namespace Lyria
  * Lyria namespace decleration
  */
-define('lyria/resource', ['path'], function(Path) {
+define(['path'], function(Path) {
   
   var Resource = {
     /**
