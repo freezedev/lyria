@@ -1,4 +1,4 @@
-define('lyria/sprite/manager', ['jquery', 'mixer', 'lyria/component', 'lyria/sprite/renderer'], function($, mixer, Component, Renderer) {
+define(['jquery', 'mixer', 'lyria/component', 'lyria/sprite/renderer'], function($, mixer, Component, Renderer) {
   
   var SpriteManager = (function() {
     
