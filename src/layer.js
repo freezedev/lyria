@@ -3,7 +3,7 @@
  *
  * @module Lyria
  */
-define('lyria/layer', ['mixer', 'lyria/gameobject'], function(mixer, GameObject) {
+define(['mixer', 'lyria/gameobject'], function(mixer, GameObject) {
   'use strict';
 
   return (function() {
