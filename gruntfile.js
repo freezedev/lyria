@@ -35,6 +35,16 @@ module.exports = function(grunt) {
         dest: 'dist/js/<%= pkg.name %>.js'
       }
     },
+    amd_tamer: {
+      options: {
+        base: 'src/',
+        namespace: 'lyria'
+      },
+      scripts: {
+        src: [lyriaOrigin, generatedFiles],
+        dest: 'dist/js/<%= pkg.name %>.js'
+      }
+    },
     concat: {
       styles: {
         src: ['dist/css/*.css'],
@@ -108,11 +118,6 @@ module.exports = function(grunt) {
       }
     },
     clean: ['dist', 'generated', 'test/browser'],
-    dependo: {
-      targetPath: 'src',
-      outputPath: './doc/dependencies',
-      format: 'amd'
-    },
     plato: {
       all: {
         options: {
@@ -153,6 +158,21 @@ module.exports = function(grunt) {
       all: {
         src: ['dist/css/*.css']
       }
+    },
+    release: {
+      options: {
+        npm: false
+      },
+      bowerFile: {
+        options: {
+          file: 'bower.json'          
+        }
+      },
+      packageFile: {
+        options: {
+          file: 'package.json'          
+        }
+      }
     }
   });
 
@@ -160,9 +180,9 @@ module.exports = function(grunt) {
   grunt.loadTasks('./tasks');
 
   grunt.registerTask('test', 'Lints and unit tests', ['jshint', 'csslint', 'template', 'mocha']);
-  grunt.registerTask('doc', 'Generated documentation', ['yuidoc', 'dependo', 'plato']);
+  grunt.registerTask('doc', 'Generated documentation', ['yuidoc', 'plato']);
   grunt.registerTask('default', 'Default task', ['clean', 'handlebars', 'stylus', 'concat', 'concat_sourcemap', 'test', 'uglify', 'cssmin']);
   
-  grunt.registerTask('release', 'When releasing this library', ['doc']);
+  grunt.registerTask('releaser', 'When releasing this library', ['doc']);
 
 };
