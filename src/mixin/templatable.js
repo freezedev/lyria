@@ -1,4 +1,4 @@
-define('lyria/mixin/templatable', function() {
+define(function() {
   return function() {
     
   };
