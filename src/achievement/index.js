@@ -1,4 +1,4 @@
-define('lyria/achievement', ['clamp'], function(clamp) {
+define(['clamp'], function(clamp) {
 
   var Achievement = (function() {
     var Achievement = function(options) {
