@@ -1,7 +1,7 @@
 /**
  * @module Lyria
  */
-define('lyria/viewport', ['root', 'jquery', 'mixer', 'eventmap'], function(root, $, mixer, EventMap) {'use strict';
+define(['root', 'jquery', 'mixer', 'eventmap'], function(root, $, mixer, EventMap) {'use strict';
 
   return (function() {
 
