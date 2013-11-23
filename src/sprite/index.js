@@ -1,4 +1,4 @@
-define('lyria/sprite', function() {
+define(function() {
   var Sprite = (function() {
     
     var Sprite = function() {
