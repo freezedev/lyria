@@ -1,4 +1,4 @@
-define('lyria/world', ['mixer', 'eventmap'], function(mixer, EventMap) {
+define(['mixer', 'eventmap'], function(mixer, EventMap) {
 
   return (function() {
 
