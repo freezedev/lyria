@@ -1,4 +1,4 @@
-define('lyria/animation', ['jquery', 'mixer', 'eventmap'], function($, mixer, EventMap) {
+define(['jquery', 'mixer', 'eventmap'], function($, mixer, EventMap) {
   var Animation = (function() {
     var Animation = function($elem, options) {
       this.$elem = $elem;
