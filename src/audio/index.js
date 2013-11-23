@@ -1,7 +1,7 @@
 /**
  * @module Lyria
  */
-define('lyria/audio', ['root', 'jquery'], function(root, $) {'use strict';
+define(['root', 'jquery'], function(root, $) {'use strict';
 
   /**
    * @class Audio
