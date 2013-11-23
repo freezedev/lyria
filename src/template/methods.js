@@ -2,6 +2,6 @@
  * @module Lyria
  */
 
-define('lyria/template/methods', function() {
+define(function() {
   return ['compile'];
 });
