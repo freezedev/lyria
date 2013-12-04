@@ -191,7 +191,13 @@ define(['root', 'mixer', 'jquery', 'eventmap', 'lyria/scene', 'lyria/viewport'],
         $('#' + sceneName).show();
       }
       this.trigger('scene:change', sceneName);
-      self.currentScene.trigger('active', options);
+      
+      // Ugly fix for #41
+      // TODO: Find the root of the issue, scene's active event is not somehow
+      // available without this timeout
+      setTimeout(function() {
+        self.currentScene.trigger('active', options);        
+      }, 0);
 
       if (callback) {
         callback(sceneName);
