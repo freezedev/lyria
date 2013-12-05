@@ -25,16 +25,6 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
-    concat_sourcemap: {
-      options: {
-        sourcesContent: true,
-        sourceRoot: '/'
-      },
-      scripts: {
-        src: [lyriaOrigin, generatedFiles],
-        dest: 'dist/js/<%= pkg.name %>.js'
-      }
-    },
     amd_tamer: {
       options: {
         base: 'src/',
@@ -186,7 +176,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('test', 'Lints and unit tests', ['jshint', 'csslint', 'template', 'mocha']);
   grunt.registerTask('doc', 'Generated documentation', ['yuidoc', 'dependo', 'plato']);
-  grunt.registerTask('default', 'Default task', ['clean', 'handlebars', 'stylus', 'concat', 'concat_sourcemap', 'test', 'uglify', 'cssmin']);
+  grunt.registerTask('default', 'Default task', ['clean', 'handlebars', 'stylus', 'concat', 'amd_tamer', 'test', 'uglify', 'cssmin']);
   
   grunt.registerTask('releaser', 'When releasing this library', ['doc']);
 
