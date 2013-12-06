@@ -22,7 +22,7 @@
     "grunt-mocha": "0.4.x",
     "matchdep": "0.3.x",
     "grunt-templater": "0.0.4-1",
-    "grunt-contrib-csslint": "~0.1.2",
+    "grunt-contrib-csslint": "~0.2.0",
     "grunt-amd-tamer": "~0.1.0",
     "grunt-release": "~0.6.0"
   },
