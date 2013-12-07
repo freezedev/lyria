@@ -48,7 +48,7 @@ module.exports = function(grunt) {
       },
       dist: {
         files: {
-          'dist/js/<%= pkg.name %>.min.js': ['<%= concat_sourcemap.scripts.dest %>']
+          'dist/js/<%= pkg.name %>.min.js': ['<%= amd_tamer.scripts.dest %>']
         }
       }
     },
