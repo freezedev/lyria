@@ -1005,6 +1005,8 @@ if (!Object.prototype.unwatch) {
     }
   });
 }
+
+define('lyria/core/watch', function() {  });
 /**
  * @module Lyria
  */
@@ -2182,7 +2184,13 @@ define('lyria/scene/director', ['root', 'mixer', 'jquery', 'eventmap', 'lyria/sc
         $('#' + sceneName).show();
       }
       this.trigger('scene:change', sceneName);
-      self.currentScene.trigger('active', options);
+      
+      // Ugly fix for #41
+      // TODO: Find the root of the issue, scene's active event is not somehow
+      // available without this timeout
+      setTimeout(function() {
+        self.currentScene.trigger('active', options);        
+      }, 0);
 
       if (callback) {
         callback(sceneName);
@@ -3385,4 +3393,3 @@ define('lyria/template/list', {
     }
   }
 });
-//# sourceMappingURL=lyria.js.map
