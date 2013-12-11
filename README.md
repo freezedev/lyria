@@ -124,7 +124,7 @@ Assuming you opened the web application in a browser with an english language pa
 <div id="button2">Das ist der zweite Button.</div>
 ```
 
-If the page is opened with a browser in a language that is not supported (i.e. not defined in localization.json) the english version will be displayed, as english is the default fallback language in Lyria.
+If the page is opened with a browser in a language that is not supported (i.e. not defined in `localization.json`) the english version will be displayed, as english is the default fallback language in Lyria.
 
 
 Of course, this only a simple example of what you can do with scenes. You can also add partials, helper functions and directly bind events to elements.
