@@ -68,7 +68,9 @@ define(['root', 'mixer', 'jquery', 'lyria/resource', 'lyria/log', 'eventmap'], f
      * @param {Function} taskFn 
      */
     Preloader.prototype.task = function(taskFn) {
-      taskList.add(taskFn);
+      if (typeof taskFn === 'function') {
+        taskList.add(taskFn);
+      }
     };
 
     /**
@@ -129,6 +131,38 @@ define(['root', 'mixer', 'jquery', 'lyria/resource', 'lyria/log', 'eventmap'], f
 
           self.trigger('complete');
         }
+      };
+      
+      var loadCustomTasks = function() {
+        var context = this;
+        
+        var maxTasks = taskList.length;
+        var currentTasks = 0;
+        
+        var checkIfComplete = function() {
+          if (currentTasks === maxTasks) {
+            loadingComplete();
+          }
+        };
+        
+        for (var i = 0, j = taskList.length; i < j; i++) {
+          (function(item) {
+            var isAsync = false;
+            var done = function() {
+              isAsync = true;
+              currentTasks++;
+              checkIfComplete();
+            };
+            
+            item.call(this, done);
+            if (!isAsync) {
+              currentTasks++;
+              checkIfComplete();
+            }
+          })(taskList[i]);
+        }
+        
+        
       };
 
 
