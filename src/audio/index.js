@@ -9,12 +9,19 @@ define(['root', 'jquery'], function(root, $) {'use strict';
     'ogg' : 'audio/ogg'
   };
 
+  /**
+   * 
+   *
+   * @param {Object} options
+   * @param {String} options.id
+   * @param {String[]} options.paths
+   * @param {Number} options.volume Volume between 0..1
+   */
   var Audio = function(options) {
     options = $.extend({
       'id' : '',
-      'type' : 'sound',
-      'loop' : false,
       'volume' : 1.0,
+      'loop' : 1,
       'paths' : []
     }, options);
     this.options = options;
@@ -29,10 +36,19 @@ define(['root', 'jquery'], function(root, $) {'use strict';
       }
     }
     this.audio.volume = options.volume;
+    this.audio.id = options.id;
+    $('body').append(this.audio);
   };
 
-  Audio.prototype.play = function() {
-    if (this.options.loop && typeof this.options.loop === 'number') {
+  /**
+   *
+   * @param {String} loop amount of loops this song should be played (-1 if unlimited) 
+   */
+  Audio.prototype.play = function(loop) {
+    if (loop != null) {
+      this.options.loop = loop;
+    }
+    if (this.options.loop && this.options.loop > 0) {
       this.options.loop--;
     }
     this.audio.play();
@@ -43,6 +59,7 @@ define(['root', 'jquery'], function(root, $) {'use strict';
   };
 
   Audio.prototype.stop = function() {
+    this.options.loop = 1;
     this.audio.pause();
     this.audio.currentTime = 0;
   };
@@ -72,6 +89,7 @@ define(['root', 'jquery'], function(root, $) {'use strict';
         } else {
           this.options.loop = value;
         }
+        break;
       case 'volume':
       case 'vol':
         if ( typeof value === 'undefined') {

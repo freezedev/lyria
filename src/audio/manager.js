@@ -51,22 +51,28 @@ define(['jquery', 'clamp', 'lyria/log', 'lyria/audio', 'mixer', 'eventmap'], fun
     return this.audioFiles[options];
   };
 
-  AudioManager.prototype.play = function(id) {
+  AudioManager.prototype.play = function(id, loop) {
     if (!this.audioFiles[id]) {
       Log.e('AudioManager.play: No audio element found under id ' + id);
       return;
     }
-    this.audioFiles[id].play();
-    this.trigger('play', id, this.audioFiles[id]);
-    $('#' + id).one('ended', {
+    
+    $('#' + id).off('ended');
+    $('#' + id).on('ended', {
       'audioFile' : this.audioFiles[id],
+      'audioManager' : this,
       'id' : id
     }, function(event) {
-      if (event.data.audioFile.attr('loop')) {
+      if (event.data.audioFile.attr('loop') > 0 || event.data.audioFile.attr('loop') === -1) {
         event.data.audioFile.play();
+        event.data.audioManager.trigger('loopEnded', event.data.id, event.data.audioFile);
+      } else {
+        event.data.audioManager.trigger('ended', event.data.id, event.data.audioFile);
       }
-      this.trigger('ended', event.data.id, event.data.audioFile);
     });
+    
+    this.audioFiles[id].play(loop);
+    this.trigger('play', id, this.audioFiles[id]);
   };
 
   AudioManager.prototype.pause = function(id) {
