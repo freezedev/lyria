@@ -52,3 +52,7 @@ generated
 ###########
 *.sublime-project
 *.sublime-workspace
+
+# Komodo #
+##########
+*.komodoproject
