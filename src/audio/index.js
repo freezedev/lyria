@@ -3,215 +3,103 @@
  */
 define(['root', 'jquery'], function(root, $) {'use strict';
 
-  /**
-   * @class Audio
-   * @static 
-   */
-  var Audio = function() {
-    var muted = false;
-    /**
-     * Private audio elements
-     *
-     * @example : {
-     *  filepath : 'assets/audio/example.ogg',
-     *  playAfter : 'example2',
-     *  loop : false,
-     *  play : false
-     * }
-     */
-    var audioElements = {};
-    /**
-     * Loads one or multiple audio files
-     * @param {string}
-     *    id      identifier of this sound (has to be unique!)
-     * @param {object}
-     *    filepath  filepath of the sound
-     *    playAfter should sth be played after this sound has ended
-     *    loop    loop this sound
-     *    play    should this sound be played immediatelly?
-     */
-    var addAudioElement = function(id, fileObj) {
-      if (!fileObj || typeof (fileObj) !== 'object')
-        return;
-      var audioElement = document.createElement('audio');
-      audioElements[id] = fileObj;
-      $(audioElement).attr('id', id).attr('preload', 'auto').append('<source src="' + fileObj.filepath + '" />');
-
-      $('body').append(audioElement);
-      if (fileObj.play) {
-        this.play(id);
-      }
-    };
-    var removeAudioElement = function(id) {
-      if (!id || typeof (fileObj) != 'string')
-        return;
-      $('#' + id).remove();
-      window.log('Lyria.audio.removeAudioElement: ' + id + ' removed');
-    };
-    /**
-     * Plays the audio file
-     *
-     * @param {string} element identifier
-     */
-    var play = function(elem) {
-      var sound = audioElements[elem];
-      $('#' + elem).one('ended', {
-        audioManager: this
-      }, function(event) {
-        if (window.chrome)
-          $(this).load();
-        else
-          $(this).currentTime = 0;
-
-        var id = $(this).attr('id');
-        var sound = event.data.audioManager.getSound(id);
-        // only play after song defined in playAfter if song is initialized
-        if (sound.playAfter && $('#' + sound.playAfter).length > 0) {
-          event.data.audioManager.play(sound.playAfter);
-        }
-        if (sound.loop) {
-          event.data.audioManager.play($(this).attr('id'));
-        }
-      });
-      $('#'+elem)[0].play();
-      if (muted) {
-        $('#'+elem)[0].volume = 0;
-      }
-    };
-    /**
-     * Get the audio file object
-     *
-     * @param {string} element identifier
-     */
-    var getSound = function(elem) {
-      return audioElements[elem];
-    };
-    /**
-     * Pauses the audio file
-     *
-     * @param {string} element identifier
-     */
-    var pause = function(elem) {
-      if ($('#' + elem).length > 0) {
-        $('#'+elem)[0].pause();
-      } else {
-        window.log('error', 'Lyria.Audio.pause: cant finde element ' + elem + ' to pause');
-      }
-    };
-    /**
-     * Stops playing the audio file
-     *
-     * @param {string} element identifier
-     */
-    var stop = function(elem) {
-      if ($('#' + elem).length > 0 && $('#'+elem)[0] && $('#'+elem)[0].pause) {
-        $('#'+elem)[0].pause();
-        $('#'+elem)[0].currentTime = 0;
-      }
-    };
-    /**
-     * Get the length of the sound file
-     *
-     * @param {string} element identifier
-     */
-    var getLength = function(elem) {
-      return $('#'+elem)[0].duration;
-    };
-    /**
-     * Sets or gets the volume of the audio file
-     *
-     * @param {string} element identifier
-     * @param {number} value (between 0 .. 1)
-     */
-    var volume = function(elem, value) {
-      if ($('#' + elem).length > 0) {
-        if ( typeof (value) === "number")
-          $('#'+elem)[0].volume = value;
-        else
-          return $('#'+elem)[0].volume;
-      } else {
-        return 0;
-      }
-
-    };
-    /**
-     * Sets or gets the position of the audio file
-     *
-     * @param {string} element identifier
-     * @param {number} value
-     */
-    var pos = function(elem, value) {
-      if ( typeof (value) === "number")
-        $('#'+elem)[0].currentTime = value;
-      else
-        return $('#'+elem)[0].currentTime;
-    };
-    /**
-     * Sets or gets properties of the audio object
-     * TODO: Method chaining
-     *
-     * @param {Object} prop
-     * @param {Object} value (optional)
-     */
-    var attr = function(prop, value) {
-      switch (prop) {
-        case 'duration':
-        case 'length':
-          return getLength();
-
-        case 'position':
-        case 'pos':
-          {
-            if ( typeof (value) === "undefined")
-              return pos();
-            else
-              pos(value);
-
-          }
-          break;
-
-        case 'volume':
-          {
-            if ( typeof (value) === "undefined")
-              return volume();
-            else
-              volume(value);
-
-          }
-          break;
-      }
-    };
-
-    /**
-     * Mute all sound of the game
-     * @param {boolean} value
-     */
-    var muteSounds = function(value) {
-      muted = value;
-      for (var i in audioElements) {
-        if (audioElements.hasOwnProperty(i)) {
-          if ($('#' + i).length > 0) {
-            $('#'+i)[0].volume = value ? 0 : 1;
-          }
-        }
-      }
-    };
-
-    return {
-      addAudioElement: addAudioElement,
-      removeAudioElement: removeAudioElement,
-      play: play,
-      getSound: getSound,
-      pause: pause,
-      stop: stop,
-      muteSounds: muteSounds,
-
-      getLength: getLength,
-      volume: volume,
-      pos: pos,
-      attr: attr
-    };
+  var supportedTypes = {
+    'mp3' : 'audio/mpeg',
+    'wav' : 'audio/wav',
+    'ogg' : 'audio/ogg'
   };
-  
+
+  /**
+   * 
+   *
+   * @param {Object} options
+   * @param {String} options.id
+   * @param {String[]} options.paths
+   * @param {Number} options.volume Volume between 0..1
+   */
+  var Audio = function(options) {
+    options = $.extend({
+      'id' : '',
+      'volume' : 1.0,
+      'loop' : 1,
+      'paths' : []
+    }, options);
+    this.options = options;
+    this.audio = new window.Audio();
+    for (var i = 0; i < options.paths.length; i++) {
+      var fileExtension = options.paths[i].split('.').pop();
+
+      if (supportedTypes[fileExtension] && this.audio.canPlayType(supportedTypes[fileExtension])) {
+        this.audio.type = supportedTypes[fileExtension];
+        this.audio.src = options.paths[i];
+        break;
+      }
+    }
+    this.audio.volume = options.volume;
+    this.audio.id = options.id;
+    $('body').append(this.audio);
+  };
+
+  /**
+   *
+   * @param {String} loop amount of loops this song should be played (-1 if unlimited) 
+   */
+  Audio.prototype.play = function(loop) {
+    if (loop != null) {
+      this.options.loop = loop;
+    }
+    if (this.options.loop && this.options.loop > 0) {
+      this.options.loop--;
+    }
+    this.audio.play();
+  };
+
+  Audio.prototype.pause = function() {
+    this.audio.pause();
+  };
+
+  Audio.prototype.stop = function() {
+    this.options.loop = 1;
+    this.audio.pause();
+    this.audio.currentTime = 0;
+  };
+
+  /**
+   * Sets or gets properties of the audio object
+   *
+   * @param {Object} prop
+   * @param {Object} value (optional)
+   */
+  Audio.prototype.attr = function(prop, value) {
+    switch (prop) {
+      case 'duration':
+      case 'length':
+        return this.audio.duration;
+      case 'position':
+      case 'pos':
+        if ( typeof value === 'undefined') {
+          return this.audio.currentTime;
+        } else {
+          this.audio.currentTime = value;
+        }
+        break;
+      case 'loop':
+        if ( typeof value === 'undefined') {
+          return this.options.loop;
+        } else {
+          this.options.loop = value;
+        }
+        break;
+      case 'volume':
+      case 'vol':
+        if ( typeof value === 'undefined') {
+          return this.audio.volume;
+        } else {
+          this.audio.volume = value;
+        }
+        break;
+    }
+  };
+
   return Audio;
 });
