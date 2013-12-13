@@ -221,7 +221,7 @@ define('lyria/achievement/manager', ['jquery', 'lyria/achievement', 'lyria/templ
 
 });
 
-define('lyria/animation', ['jquery', 'mixer', 'eventmap'], function($, mixer, EventMap) {
+define('lyria/animation', ['jquery', 'mixedice', 'eventmap'], function($, mixedice, EventMap) {
   var Animation = (function() {
     var Animation = function($elem, options) {
       this.$elem = $elem;
@@ -249,7 +249,7 @@ define('lyria/animation', ['jquery', 'mixer', 'eventmap'], function($, mixer, Ev
       this.sprite.image = new Image();
       
       // Mix-in eventmap
-      mixer([this, Animation.prototype], new EventMap());
+      mixedice([this, Animation.prototype], new EventMap());
       
       this.on('play', function() {
         
@@ -279,228 +279,217 @@ define('lyria/animation', ['jquery', 'mixer', 'eventmap'], function($, mixer, Ev
  */
 define('lyria/audio', ['root', 'jquery'], function(root, $) {'use strict';
 
-  /**
-   * @class Audio
-   * @static 
-   */
-  var Audio = function() {
-    var muted = false;
-    /**
-     * Private audio elements
-     *
-     * @example : {
-     *  filepath : 'assets/audio/example.ogg',
-     *  playAfter : 'example2',
-     *  loop : false,
-     *  play : false
-     * }
-     */
-    var audioElements = {};
-    /**
-     * Loads one or multiple audio files
-     * @param {string}
-     *    id      identifier of this sound (has to be unique!)
-     * @param {object}
-     *    filepath  filepath of the sound
-     *    playAfter should sth be played after this sound has ended
-     *    loop    loop this sound
-     *    play    should this sound be played immediatelly?
-     */
-    var addAudioElement = function(id, fileObj) {
-      if (!fileObj || typeof (fileObj) !== 'object')
-        return;
-      var audioElement = document.createElement('audio');
-      audioElements[id] = fileObj;
-      $(audioElement).attr('id', id).attr('preload', 'auto').append('<source src="' + fileObj.filepath + '" />');
-
-      $('body').append(audioElement);
-      if (fileObj.play) {
-        this.play(id);
-      }
-    };
-    var removeAudioElement = function(id) {
-      if (!id || typeof (fileObj) != 'string')
-        return;
-      $('#' + id).remove();
-      window.log('Lyria.audio.removeAudioElement: ' + id + ' removed');
-    };
-    /**
-     * Plays the audio file
-     *
-     * @param {string} element identifier
-     */
-    var play = function(elem) {
-      var sound = audioElements[elem];
-      $('#' + elem).one('ended', {
-        audioManager: this
-      }, function(event) {
-        if (window.chrome)
-          $(this).load();
-        else
-          $(this).currentTime = 0;
-
-        var id = $(this).attr('id');
-        var sound = event.data.audioManager.getSound(id);
-        // only play after song defined in playAfter if song is initialized
-        if (sound.playAfter && $('#' + sound.playAfter).length > 0) {
-          event.data.audioManager.play(sound.playAfter);
-        }
-        if (sound.loop) {
-          event.data.audioManager.play($(this).attr('id'));
-        }
-      });
-      $('#'+elem)[0].play();
-      if (muted) {
-        $('#'+elem)[0].volume = 0;
-      }
-    };
-    /**
-     * Get the audio file object
-     *
-     * @param {string} element identifier
-     */
-    var getSound = function(elem) {
-      return audioElements[elem];
-    };
-    /**
-     * Pauses the audio file
-     *
-     * @param {string} element identifier
-     */
-    var pause = function(elem) {
-      if ($('#' + elem).length > 0) {
-        $('#'+elem)[0].pause();
-      } else {
-        window.log('error', 'Lyria.Audio.pause: cant finde element ' + elem + ' to pause');
-      }
-    };
-    /**
-     * Stops playing the audio file
-     *
-     * @param {string} element identifier
-     */
-    var stop = function(elem) {
-      if ($('#' + elem).length > 0 && $('#'+elem)[0] && $('#'+elem)[0].pause) {
-        $('#'+elem)[0].pause();
-        $('#'+elem)[0].currentTime = 0;
-      }
-    };
-    /**
-     * Get the length of the sound file
-     *
-     * @param {string} element identifier
-     */
-    var getLength = function(elem) {
-      return $('#'+elem)[0].duration;
-    };
-    /**
-     * Sets or gets the volume of the audio file
-     *
-     * @param {string} element identifier
-     * @param {number} value (between 0 .. 1)
-     */
-    var volume = function(elem, value) {
-      if ($('#' + elem).length > 0) {
-        if ( typeof (value) === "number")
-          $('#'+elem)[0].volume = value;
-        else
-          return $('#'+elem)[0].volume;
-      } else {
-        return 0;
-      }
-
-    };
-    /**
-     * Sets or gets the position of the audio file
-     *
-     * @param {string} element identifier
-     * @param {number} value
-     */
-    var pos = function(elem, value) {
-      if ( typeof (value) === "number")
-        $('#'+elem)[0].currentTime = value;
-      else
-        return $('#'+elem)[0].currentTime;
-    };
-    /**
-     * Sets or gets properties of the audio object
-     * TODO: Method chaining
-     *
-     * @param {Object} prop
-     * @param {Object} value (optional)
-     */
-    var attr = function(prop, value) {
-      switch (prop) {
-        case 'duration':
-        case 'length':
-          return getLength();
-
-        case 'position':
-        case 'pos':
-          {
-            if ( typeof (value) === "undefined")
-              return pos();
-            else
-              pos(value);
-
-          }
-          break;
-
-        case 'volume':
-          {
-            if ( typeof (value) === "undefined")
-              return volume();
-            else
-              volume(value);
-
-          }
-          break;
-      }
-    };
-
-    /**
-     * Mute all sound of the game
-     * @param {boolean} value
-     */
-    var muteSounds = function(value) {
-      muted = value;
-      for (var i in audioElements) {
-        if (audioElements.hasOwnProperty(i)) {
-          if ($('#' + i).length > 0) {
-            $('#'+i)[0].volume = value ? 0 : 1;
-          }
-        }
-      }
-    };
-
-    return {
-      addAudioElement: addAudioElement,
-      removeAudioElement: removeAudioElement,
-      play: play,
-      getSound: getSound,
-      pause: pause,
-      stop: stop,
-      muteSounds: muteSounds,
-
-      getLength: getLength,
-      volume: volume,
-      pos: pos,
-      attr: attr
-    };
+  var supportedTypes = {
+    'mp3' : 'audio/mpeg',
+    'wav' : 'audio/wav',
+    'ogg' : 'audio/ogg'
   };
-  
+
+  /**
+   * 
+   *
+   * @param {Object} options
+   * @param {String} options.id
+   * @param {String[]} options.paths
+   * @param {Number} options.volume Volume between 0..1
+   */
+  var Audio = function(options) {
+    options = $.extend({
+      'id' : '',
+      'volume' : 1.0,
+      'loop' : 1,
+      'paths' : []
+    }, options);
+    this.options = options;
+    this.audio = new window.Audio();
+    for (var i = 0; i < options.paths.length; i++) {
+      var fileExtension = options.paths[i].split('.').pop();
+
+      if (supportedTypes[fileExtension] && this.audio.canPlayType(supportedTypes[fileExtension])) {
+        this.audio.type = supportedTypes[fileExtension];
+        this.audio.src = options.paths[i];
+        break;
+      }
+    }
+    this.audio.volume = options.volume;
+    this.audio.id = options.id;
+    $('body').append(this.audio);
+  };
+
+  /**
+   *
+   * @param {String} loop amount of loops this song should be played (-1 if unlimited) 
+   */
+  Audio.prototype.play = function(loop) {
+    if (loop != null) {
+      this.options.loop = loop;
+    }
+    if (this.options.loop && this.options.loop > 0) {
+      this.options.loop--;
+    }
+    this.audio.play();
+  };
+
+  Audio.prototype.pause = function() {
+    this.audio.pause();
+  };
+
+  Audio.prototype.stop = function() {
+    this.options.loop = 1;
+    this.audio.pause();
+    this.audio.currentTime = 0;
+  };
+
+  /**
+   * Sets or gets properties of the audio object
+   *
+   * @param {Object} prop
+   * @param {Object} value (optional)
+   */
+  Audio.prototype.attr = function(prop, value) {
+    switch (prop) {
+      case 'duration':
+      case 'length':
+        return this.audio.duration;
+      case 'position':
+      case 'pos':
+        if ( typeof value === 'undefined') {
+          return this.audio.currentTime;
+        } else {
+          this.audio.currentTime = value;
+        }
+        break;
+      case 'loop':
+        if ( typeof value === 'undefined') {
+          return this.options.loop;
+        } else {
+          this.options.loop = value;
+        }
+        break;
+      case 'volume':
+      case 'vol':
+        if ( typeof value === 'undefined') {
+          return this.audio.volume;
+        } else {
+          this.audio.volume = value;
+        }
+        break;
+    }
+  };
+
   return Audio;
 });
 
-define('lyria/audio/manager', function() {
-  var AudioManager = {
+define('lyria/audio/manager', ['jquery', 'clamp', 'lyria/log', 'lyria/audio', 'mixedice', 'eventmap'], function($, clamp, Log, Audio, mixedice, EventMap) {
 
+
+  var AudioManager = function() {
+
+    mixedice([this, AudioManager.prototype], new EventMap());
+    this.audioFiles = {};
   };
 
+  var volume = 1;
+  // default
+
+  Object.defineProperty(AudioManager, 'volume', {
+    get : function() {
+      return volume;
+    },
+    set : function(value) {
+      volume = clamp(value, 0, 1);
+    }
+  });
+
+  /**
+   *
+   * @param {Object} options
+   * @param {String} options.type ['music', 'sound']
+   * @param {String} options id
+   * @param {Boolean} options loop
+   * @param {Number} options volume
+   * @param {Array} options paths paths to audio file with defined fallbacks
+   *
+   */
+  AudioManager.prototype.add = function(options) {
+    options = $.extend({
+      'id' : '',
+      'type' : 'sound',
+      'loop' : false,
+      'volume' : 1.0,
+      'paths' : []
+    }, options);
+
+    // set volume in relation to current max volume
+    options.volume *= volume;
+
+    if (options.id === '') {
+      Log.e('AudioManager.add: No id was given for new audio object');
+      return;
+    }
+
+    this.audioFiles[options.id] = new Audio(options);
+    this.trigger('added', options.id, this.audioFiles[options.id]);
+    return this.audioFiles[options];
+  };
+
+  AudioManager.prototype.play = function(id, loop) {
+    if (!this.audioFiles[id]) {
+      Log.e('AudioManager.play: No audio element found under id ' + id);
+      return;
+    }
+    
+    $('#' + id).off('ended');
+    $('#' + id).on('ended', {
+      'audioFile' : this.audioFiles[id],
+      'audioManager' : this,
+      'id' : id
+    }, function(event) {
+      if (event.data.audioFile.attr('loop') > 0 || event.data.audioFile.attr('loop') === -1) {
+        event.data.audioFile.play();
+        event.data.audioManager.trigger('loopEnded', event.data.id, event.data.audioFile);
+      } else {
+        event.data.audioManager.trigger('ended', event.data.id, event.data.audioFile);
+      }
+    });
+    
+    this.audioFiles[id].play(loop);
+    this.trigger('play', id, this.audioFiles[id]);
+  };
+
+  AudioManager.prototype.pause = function(id) {
+    if (!this.audioFiles[id]) {
+      Log.e('AudioManager.pause: No audio element found under id ' + id);
+      return;
+    }
+    this.audioFiles[id].pause();
+    this.trigger('paused', id, this.audioFiles[id]);
+  };
+
+  AudioManager.prototype.stop = function(id) {
+    if (!this.audioFiles[id]) {
+      Log.e('AudioManager.stop: No audio element found under id ' + id);
+      return;
+    }
+    this.audioFiles[id].stop();
+    // ended event should be triggered automatically
+  };
+
+  AudioManager.prototype.volume = function(id, volume) {
+    if (!this.audioFiles[id]) {
+      Log.e('AudioManager.volume: No audio element found under id ' + id);
+      return;
+    }
+    if (volume) {
+      this.audioFiles[id].volume = clamp(volume, 0, 1);
+    } else {
+      return this.audioFiles[id].volume;
+    }
+  };
   return AudioManager;
 });
 
-define('lyria/checkpoints', ['eventmap', 'mixer', 'deleteitem', 'performance'], function(EventMap, mixer, deleteItem, performance) {
+define('lyria/checkpoints', ['eventmap', 'mixedice', 'deleteitem', 'performance'], function(EventMap, mixedice, deleteItem, performance) {
 
   var Checkpoints = (function() {
     
@@ -512,7 +501,7 @@ define('lyria/checkpoints', ['eventmap', 'mixer', 'deleteitem', 'performance'], 
      */
     var Checkpoints = function() {
       // Mix-in eventmap
-      mixer([this, Checkpoints.prototype], new EventMap());
+      mixedice([this, Checkpoints.prototype], new EventMap());
 
       // Set start time
       this.startTime = performance.now();
@@ -580,13 +569,13 @@ define('lyria/checkpoints', ['eventmap', 'mixer', 'deleteitem', 'performance'], 
 
 });
 
-define('lyria/component', ['mixer', 'eventmap', 'lyria/component/manager', 'lyria/log'], function(mixer, EventMap, ComponentManager, Log) {
+define('lyria/component', ['mixedice', 'eventmap', 'lyria/component/manager', 'lyria/log'], function(mixedice, EventMap, ComponentManager, Log) {
 
   //Lyria.Component
   return (function() {
 
     var Component = function(name, factory) {
-      mixer([this, Component.prototype], new EventMap());
+      mixedice([this, Component.prototype], new EventMap());
       
       this.name = name != null ? name : this.constructor.name;
       
@@ -1010,7 +999,7 @@ define('lyria/core/watch', function() {  });
 /**
  * @module Lyria
  */
-define('lyria/game', ['eventmap', 'mixer', 'fullscreen', 'jquery', 'lyria/viewport', 'lyria/scene/director', 'lyria/preloader', 'lyria/loop', 'lyria/world', 'lyria/checkpoints'], function(EventMap, mixer, fullscreen, $, Viewport, Director, Preloader, Loop, World, Checkpoints) {'use strict';
+define('lyria/game', ['eventmap', 'mixedice', 'fullscreen', 'jquery', 'lyria/viewport', 'lyria/scene/director', 'lyria/preloader', 'lyria/loop', 'lyria/world', 'lyria/checkpoints'], function(EventMap, mixedice, fullscreen, $, Viewport, Director, Preloader, Loop, World, Checkpoints) {'use strict';
 
   /**
    * Game class which has a viewport, scene director and preloader by
@@ -1030,7 +1019,7 @@ define('lyria/game', ['eventmap', 'mixer', 'fullscreen', 'jquery', 'lyria/viewpo
         startLoop: true
       }, options);
       
-      mixer([this, Game.prototype], new EventMap());
+      mixedice([this, Game.prototype], new EventMap());
 
       /**
        * @property viewport
@@ -1138,7 +1127,7 @@ define('lyria/game', ['eventmap', 'mixer', 'fullscreen', 'jquery', 'lyria/viewpo
 /**
  * @module Lyria
  */
-define('lyria/gameobject', ['mixer', 'eventmap', 'lyria/component', 'lyria/log'], function(mixer, EventMap, Component, Log) {
+define('lyria/gameobject', ['mixedice', 'eventmap', 'lyria/component', 'lyria/log'], function(mixedice, EventMap, Component, Log) {
   'use strict';
   
   //Lyria.GameObject
@@ -1146,7 +1135,7 @@ define('lyria/gameobject', ['mixer', 'eventmap', 'lyria/component', 'lyria/log']
     
     // Constructor
     var GameObject = function() {
-      mixer([this, GameObject.prototype], new EventMap());
+      mixedice([this, GameObject.prototype], new EventMap());
       
       var self = this;
       
@@ -1353,7 +1342,7 @@ define('lyria/language', ['detectr', 'eventmap', 'lyria/mixin/language'], functi
  *
  * @module Lyria
  */
-define('lyria/layer', ['mixer', 'lyria/gameobject'], function(mixer, GameObject) {
+define('lyria/layer', ['mixedice', 'lyria/gameobject'], function(mixedice, GameObject) {
   'use strict';
 
   return (function() {
@@ -1364,7 +1353,7 @@ define('lyria/layer', ['mixer', 'lyria/gameobject'], function(mixer, GameObject)
      * @constructor
      */
     var Layer = function() {
-      mixer(this.prototype, new GameObject());
+      mixedice(this.prototype, new GameObject());
     };
 
     return Layer;
@@ -1649,7 +1638,7 @@ define('lyria/loop', ['requestanimationframe', 'eventmap'], function(requestAnim
 });
 /**
  * Mixin language property into objects
- * TODO: Refactor this to use mixer library
+ * TODO: Refactor this to use mixedice library
  */
 
 define('lyria/mixin/language', function() {
@@ -1767,88 +1756,106 @@ define('lyria/prefab/manager', ['jqueryify', 'jquery', 'root'], function($ify, $
 /**
  * @module Lyria
  */
-define('lyria/preloader', ['root', 'mixer', 'jquery', 'lyria/resource', 'lyria/log', 'eventmap'], function(root, mixer, $, Resource, Log, EventMap) {'use strict';
+define('lyria/preloader', ['root', 'mixedice', 'jquery', 'lyria/resource', 'lyria/log', 'eventmap'], function(root, mixedice, $, Resource, Log, EventMap) {'use strict';
 
   /**
    * Provides a preloader to load assets before they are needed
-   * 
+   *
    * @class Preloader
    */
   var Preloader = (function() {
 
     /**
      * @constructor
-     * 
+     *
      * @param {Object} assetObject
      */
     var Preloader = function(assetObject) {
-      mixer([this, Preloader.prototype], new EventMap());
+      mixedice([this, Preloader.prototype], new EventMap());
 
       /**
        * @property assets
-       * @type {Array} 
+       * @type {Array}
        */
       if (assetObject != null) {
         this.assets = assetObject;
       } else {
         this.assets = {};
       }
-  
+
       /**
        * @property maxAssets
        * @type {Number}
-       * @default 0 
+       * @default 0
        */
       this.maxAssets = 0;
-      
+
       /**
        * @property assetsLoaded
        * @type {Number}
-       * @default 0 
+       * @default 0
        */
       this.assetsLoaded = 0;
-      
+
       /**
        * @property percentLoaded
        * @type {Number}
-       * @default 0 
+       * @default 0
        */
       this.percentLoaded = 0;
-      
+
       /**
        * @property steps
-       * @type {Array} 
+       * @type {Array}
        */
       this.steps = [];
-      
+
       /**
        * @property taskList
-       * @type {Array} 
+       * @type {Array}
        */
       this.taskList = [];
     };
 
     /**
      * Adds a custom task to the preloader
-     * 
-     * @param {Function} taskFn 
+     *
+     * @param {Function} taskFn
      */
     Preloader.prototype.task = function(taskFn) {
-      taskList.add(taskFn);
+      if ( typeof taskFn === 'function') {
+        taskList.add({
+          task: taskFn,
+          async: false
+        });
+      }
+    };
+
+    /**
+     * Adds a custom asynchronous task to the preloader
+     *
+     * @param {Function} taskFn
+     */
+    Preloader.prototype.task.async = function(taskFn) {
+      if ( typeof taskFn === 'function') {
+        taskList.add({
+          task: taskFn,
+          async: true
+        });
+      }
     };
 
     /**
      * Starts the preloader and loads all assets asynchronously. Triggers
      * events when necessary.
-     * 
-     * @method start 
+     *
+     * @method start
      */
     Preloader.prototype.start = function() {
       // Check if it's valid
       if (this.assets == null) {
         throw new Error('Assets should not be null. Pass at least an empty object.');
       }
-      
 
       this.trigger('start');
 
@@ -1858,32 +1865,31 @@ define('lyria/preloader', ['root', 'mixer', 'jquery', 'lyria/resource', 'lyria/l
       if (Object.keys(this.assets).length > 0) {
         totalSize = this.assets.totalSize;
       }
-      
+
       var currentProgress = 0;
-      
+
       if ((this.steps == null) || (this.steps.length === 0)) {
-        
+
       }
-      
+
       var hasLoadingScene = this.sceneDirector != null && this.loadingScene != null;
-      
+
       if (hasLoadingScene) {
         this.sceneDirector.show(this.loadingScene);
       }
-      
-      
+
       var self = this;
 
       var loadingProgress = function() {
 
         var percentLoaded = 100;
-        
+
         if (currentProgress !== totalSize) {
           percentLoaded = currentProgress / totalSize;
         }
 
         self.trigger('progress', percentLoaded);
-        
+
         if (hasLoadingScene) {
           self.sceneDirector.currentScene.trigger('progress', percentLoaded, currentProgress, totalSize);
         }
@@ -1897,30 +1903,61 @@ define('lyria/preloader', ['root', 'mixer', 'jquery', 'lyria/resource', 'lyria/l
         }
       };
 
+      var loadCustomTasks = function() {
+        var maxTasks = taskList.length;
+        var currentTasks = 0;
+
+        var checkIfComplete = function() {
+          if (currentTasks === maxTasks) {
+            loadingComplete();
+          }
+        };
+        
+        var doneFn = function() {
+          currentTasks++;
+          checkIfComplete();
+        };
+
+        if (taskList.length === 0) {
+          loadingComplete();
+        } else {
+          for (var i = 0, j = taskList.length; i < j; i++) {
+            (function(item) {
+              if (item.async) {
+                item.task.call(this, doneFn);
+              } else {
+                item.task();
+                doneFn();
+              }
+            })(taskList[i]);
+          }
+        }
+
+      };
 
       if (Object.keys(this.assets).length > 0) {
         // Go through all assets and preload them
         $.each(this.assets, function(key, value) {
-          
+
           if (value.files == null || !Array.isArray(value.files) || value.files.length === 0) {
             return true;
           }
-          
+
           for (var i = 0, j = value.files.length; i < j; i++) {
             (function(iterator) {
-              
+
               if (iterator.type.indexOf('image') === 0) {
                 var img = new root.Image();
                 img.onload = function() {
                   currentProgress += iterator.size;
-      
+
                   loadingProgress();
                 };
-      
+
                 img.onerror = function(err) {
                   Log.e('Error while loading ' + iterator.name);
                 };
-      
+
                 img.src = iterator.name;
               } else {
                 $.ajax({
@@ -1928,20 +1965,20 @@ define('lyria/preloader', ['root', 'mixer', 'jquery', 'lyria/resource', 'lyria/l
                   dataType: 'text'
                 }).always(function() {
                   currentProgress += iterator.size;
-      
+
                   loadingProgress();
                 }).error(function(err) {
                   Log.e('Error while loading ' + iterator.name + ': ' + err);
                 });
               }
-              
+
             })(value.files[i]);
           }
         });
       } else {
         loadingProgress();
       }
-      
+
     };
 
     return Preloader;
@@ -1950,6 +1987,7 @@ define('lyria/preloader', ['root', 'mixer', 'jquery', 'lyria/resource', 'lyria/l
 
   return Preloader;
 });
+
 /**
  * @namespace Lyria
  * Lyria namespace decleration
@@ -1995,7 +2033,7 @@ define('lyria/resource', ['path'], function(Path) {
  * @module Lyria
  * @submodule Scene
  */
-define('lyria/scene/director', ['root', 'mixer', 'jquery', 'eventmap', 'lyria/scene', 'lyria/viewport'], function(root, mixer, $, EventMap, Scene, Viewport) {'use strict';
+define('lyria/scene/director', ['root', 'mixedice', 'jquery', 'eventmap', 'lyria/scene', 'lyria/viewport'], function(root, mixedice, $, EventMap, Scene, Viewport) {'use strict';
 
   /**
    * The scene director is the manager for all scenes
@@ -2014,7 +2052,7 @@ define('lyria/scene/director', ['root', 'mixer', 'jquery', 'eventmap', 'lyria/sc
      * @param {Object} parent
      */
     function SceneDirector(container, parent) {
-      mixer([this, SceneDirector.prototype], new EventMap());
+      mixedice([this, SceneDirector.prototype], new EventMap());
 
       if ( container instanceof Viewport) {
         this.viewport = container;
@@ -2217,7 +2255,7 @@ define('lyria/scene/director', ['root', 'mixer', 'jquery', 'eventmap', 'lyria/sc
 /**
  * @module Lyria
  */
-define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'lyria/component', 'lyria/gameobject', 'lyria/log', 'lyria/localization'], function($, mixer, nextTick, Component, GameObject, Log, Localization) {'use strict';
+define('lyria/scene', ['jquery', 'mixedice', 'nexttick', 'lyria/component', 'lyria/gameobject', 'lyria/log', 'lyria/localization'], function($, mixedice, nextTick, Component, GameObject, Log, Localization) {'use strict';
 
   var createNamespace = function(obj, chain, value) {
     var chainArr = chain.split('.');
@@ -2258,7 +2296,7 @@ define('lyria/scene', ['jquery', 'mixer', 'nexttick', 'lyria/component', 'lyria/
 
       // Mixin event map into Scene
       // Sender: "scene:#{sceneName}"
-      mixer([this, Scene.prototype], new Component(sceneName));
+      mixedice([this, Scene.prototype], new Component(sceneName));
 
       // We need a reference to the scene not being this
       var self = this;
@@ -2701,14 +2739,14 @@ define('lyria/sprite', function() {
   return Sprite;
 });
 
-define('lyria/sprite/manager', ['jquery', 'mixer', 'lyria/component', 'lyria/sprite/renderer'], function($, mixer, Component, Renderer) {
+define('lyria/sprite/manager', ['jquery', 'mixedice', 'lyria/component', 'lyria/sprite/renderer'], function($, mixedice, Component, Renderer) {
   
   var SpriteManager = (function() {
     
     var SpriteManager = function() {
       var type = 'SpriteManager';
       
-      mixer([this, SpriteManager.prototype], new Component(type));
+      mixedice([this, SpriteManager.prototype], new Component(type));
       this.type = type;
     };
     
@@ -2853,7 +2891,7 @@ define('lyria/template/string', ['objectify'], function(objectify) {
   return templateString;
 });
 
-define('lyria/tween', ['eventmap', 'mixer', 'options', 'jqueryify'], function(EventMap, mixer, options, $fy) {
+define('lyria/tween', ['eventmap', 'mixedice', 'options', 'jqueryify'], function(EventMap, mixedice, options, $fy) {
   var Tween = (function() {
     var Tween = function(opts) {
       opts = options(opts, {
@@ -2872,7 +2910,7 @@ define('lyria/tween', ['eventmap', 'mixer', 'options', 'jqueryify'], function(Ev
 
       this.hwAccelerated = true;
 
-      mixer([this, Tween.prototype], new EventMap());
+      mixedice([this, Tween.prototype], new EventMap());
 
       var self = this;
 
@@ -2953,7 +2991,7 @@ define('lyria/video', function() {
 /**
  * @module Lyria
  */
-define('lyria/viewport', ['root', 'jquery', 'mixer', 'eventmap'], function(root, $, mixer, EventMap) {'use strict';
+define('lyria/viewport', ['root', 'jquery', 'mixedice', 'eventmap'], function(root, $, mixedice, EventMap) {'use strict';
 
   return (function() {
 
@@ -2973,7 +3011,7 @@ define('lyria/viewport', ['root', 'jquery', 'mixer', 'eventmap'], function(root,
 
       options = $.extend(defaultOptions, options);
       
-      mixer([this, Viewport.prototype], new EventMap());
+      mixedice([this, Viewport.prototype], new EventMap());
 
       this.scale = {};
       this.scale.mode = options.scaleMode;
@@ -3118,12 +3156,12 @@ define('lyria/viewport', ['root', 'jquery', 'mixer', 'eventmap'], function(root,
   })();
 });
 
-define('lyria/world', ['mixer', 'eventmap'], function(mixer, EventMap) {
+define('lyria/world', ['mixedice', 'eventmap'], function(mixedice, EventMap) {
 
   return (function() {
 
     var World = function() {
-      mixer([this, World.prototype], new EventMap());
+      mixedice([this, World.prototype], new EventMap());
     };
 
     return World;
