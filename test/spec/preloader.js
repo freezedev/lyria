@@ -55,10 +55,20 @@ define('spec/preloader', ['lyria/preloader'], function(Preloader) {
       expect(preloader.start).to.equal(Preloader.prototype.start);
     });
     
-    it('#task', function() {
-      expect(Preloader.prototype.task).to.be.a('function');
-      expect(preloader).to.have.property('start');
-      expect(preloader.task).to.equal(Preloader.prototype.task);
+    describe('#task', function() {
+      it('exists', function() {
+        expect(Preloader.prototype.task).to.be.a('function');
+        expect(preloader).to.have.property('start');
+        expect(preloader.task).to.equal(Preloader.prototype.task);
+      });
+    });
+    
+    describe('#task.async', function() {
+      it('exists', function() {
+        expect(Preloader.prototype.task.async).to.be.a('function');
+        expect(preloader).to.have.property('start');
+        expect(preloader.task.async).to.equal(Preloader.prototype.task.async);
+      });
     });
     
     
