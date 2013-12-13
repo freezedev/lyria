@@ -1,9 +1,9 @@
-define(['mixer', 'eventmap'], function(mixer, EventMap) {
+define(['mixedice', 'eventmap'], function(mixedice, EventMap) {
 
   return (function() {
 
     var World = function() {
-      mixer([this, World.prototype], new EventMap());
+      mixedice([this, World.prototype], new EventMap());
     };
 
     return World;
