@@ -2,7 +2,7 @@
  * @module Lyria
  * @submodule Scene
  */
-define(['root', 'mixer', 'jquery', 'eventmap', 'lyria/scene', 'lyria/viewport'], function(root, mixer, $, EventMap, Scene, Viewport) {'use strict';
+define(['root', 'mixedice', 'jquery', 'eventmap', 'lyria/scene', 'lyria/viewport'], function(root, mixedice, $, EventMap, Scene, Viewport) {'use strict';
 
   /**
    * The scene director is the manager for all scenes
@@ -21,7 +21,7 @@ define(['root', 'mixer', 'jquery', 'eventmap', 'lyria/scene', 'lyria/viewport'],
      * @param {Object} parent
      */
     function SceneDirector(container, parent) {
-      mixer([this, SceneDirector.prototype], new EventMap());
+      mixedice([this, SceneDirector.prototype], new EventMap());
 
       if ( container instanceof Viewport) {
         this.viewport = container;
