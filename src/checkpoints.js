@@ -1,4 +1,4 @@
-define(['eventmap', 'mixer', 'deleteitem', 'performance'], function(EventMap, mixer, deleteItem, performance) {
+define(['eventmap', 'mixedice', 'deleteitem', 'performance'], function(EventMap, mixedice, deleteItem, performance) {
 
   var Checkpoints = (function() {
     
@@ -10,7 +10,7 @@ define(['eventmap', 'mixer', 'deleteitem', 'performance'], function(EventMap, mi
      */
     var Checkpoints = function() {
       // Mix-in eventmap
-      mixer([this, Checkpoints.prototype], new EventMap());
+      mixedice([this, Checkpoints.prototype], new EventMap());
 
       // Set start time
       this.startTime = performance.now();
