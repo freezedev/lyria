@@ -144,7 +144,9 @@ define(['jquery', 'mixedice', 'nexttick', 'lyria/component', 'lyria/gameobject',
           });
         }
         
-        callback();
+        if (callback) {
+          callback();          
+        }
       });
 
       var createScene = function(modules, callback) {
