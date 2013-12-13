@@ -61,6 +61,20 @@ define('spec/preloader', ['lyria/preloader'], function(Preloader) {
         expect(preloader).to.have.property('start');
         expect(preloader.task).to.equal(Preloader.prototype.task);
       });
+      
+      it('running synchronous tasks', function() {
+        var preloader = new Preloader();
+        var steps = 0;
+        
+        preloader.task(function() { steps++; });
+        preloader.task(function() { steps++; });
+        preloader.task(function() { steps++; });
+        
+        preloader.start();
+        
+        expect(steps).to.be.a('number');
+        expect(steps).to.equal(3);
+      });
     });
     
     describe('#task.async', function() {
