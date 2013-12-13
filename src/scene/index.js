@@ -1,7 +1,7 @@
 /**
  * @module Lyria
  */
-define(['jquery', 'mixer', 'nexttick', 'lyria/component', 'lyria/gameobject', 'lyria/log', 'lyria/localization'], function($, mixer, nextTick, Component, GameObject, Log, Localization) {'use strict';
+define(['jquery', 'mixedice', 'nexttick', 'lyria/component', 'lyria/gameobject', 'lyria/log', 'lyria/localization'], function($, mixedice, nextTick, Component, GameObject, Log, Localization) {'use strict';
 
   var createNamespace = function(obj, chain, value) {
     var chainArr = chain.split('.');
@@ -42,7 +42,7 @@ define(['jquery', 'mixer', 'nexttick', 'lyria/component', 'lyria/gameobject', 'l
 
       // Mixin event map into Scene
       // Sender: "scene:#{sceneName}"
-      mixer([this, Scene.prototype], new Component(sceneName));
+      mixedice([this, Scene.prototype], new Component(sceneName));
 
       // We need a reference to the scene not being this
       var self = this;
