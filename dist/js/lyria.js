@@ -1824,7 +1824,7 @@ define('lyria/preloader', ['root', 'mixedice', 'jquery', 'lyria/resource', 'lyri
      */
     Preloader.prototype.task = function(taskFn) {
       if ( typeof taskFn === 'function') {
-        taskList.add({
+        this.taskList.push({
           task: taskFn,
           async: false
         });
@@ -1836,9 +1836,9 @@ define('lyria/preloader', ['root', 'mixedice', 'jquery', 'lyria/resource', 'lyri
      *
      * @param {Function} taskFn
      */
-    Preloader.prototype.task.async = function(taskFn) {
+    Preloader.prototype.taskAsync = function(taskFn) {
       if ( typeof taskFn === 'function') {
-        taskList.add({
+        this.taskList.push({
           task: taskFn,
           async: true
         });
@@ -1879,6 +1879,38 @@ define('lyria/preloader', ['root', 'mixedice', 'jquery', 'lyria/resource', 'lyri
       }
 
       var self = this;
+      
+      var loadCustomTasks = function(done) {
+        var maxTasks = self.taskList.length;
+        var currentTasks = 0;
+
+        var checkIfComplete = function() {
+          if (currentTasks === maxTasks) {
+            done();
+          }
+        };
+        
+        var doneFn = function() {
+          currentTasks++;
+          checkIfComplete();
+        };
+
+        if (self.taskList.length === 0) {
+          done();
+        } else {
+          for (var i = 0, j = self.taskList.length; i < j; i++) {
+            (function(item) {
+              if (item.async) {
+                item.task.call(this, doneFn);
+              } else {
+                item.task();
+                doneFn();
+              }
+            })(self.taskList[i]);
+          }
+        }
+
+      };
 
       var loadingProgress = function() {
 
@@ -1895,44 +1927,14 @@ define('lyria/preloader', ['root', 'mixedice', 'jquery', 'lyria/resource', 'lyri
         }
 
         if (currentProgress >= totalSize) {
-          if (hasLoadingScene) {
-            self.sceneDirector.currentScene.trigger('complete');
-          }
-
-          self.trigger('complete');
+          loadCustomTasks(function() {
+            if (hasLoadingScene) {
+              self.sceneDirector.currentScene.trigger('complete');
+            }
+  
+            self.trigger('complete');
+          });
         }
-      };
-
-      var loadCustomTasks = function() {
-        var maxTasks = taskList.length;
-        var currentTasks = 0;
-
-        var checkIfComplete = function() {
-          if (currentTasks === maxTasks) {
-            loadingComplete();
-          }
-        };
-        
-        var doneFn = function() {
-          currentTasks++;
-          checkIfComplete();
-        };
-
-        if (taskList.length === 0) {
-          loadingComplete();
-        } else {
-          for (var i = 0, j = taskList.length; i < j; i++) {
-            (function(item) {
-              if (item.async) {
-                item.task.call(this, doneFn);
-              } else {
-                item.task();
-                doneFn();
-              }
-            })(taskList[i]);
-          }
-        }
-
       };
 
       if (Object.keys(this.assets).length > 0) {
@@ -2116,7 +2118,7 @@ define('lyria/scene/director', ['root', 'mixedice', 'jquery', 'eventmap', 'lyria
      * @param {Object} scene
      * @param {Object} data
      */
-    SceneDirector.prototype.add = function(scene, data) {
+    SceneDirector.prototype.add = function(scene, data, done) {
 
       // Shorthand to add all scenes to the scene director
       if (scene === '*' && this.scenes) {
@@ -2126,7 +2128,7 @@ define('lyria/scene/director', ['root', 'mixedice', 'jquery', 'eventmap', 'lyria
       // Allow array as scenes
       if (Array.isArray(scene)) {
         for (var i = 0, j = scene.length; i < j; i++) {
-          this.add(scene[i], data);
+          this.add(scene[i], data, done);
         }
         return;
       }
@@ -2177,7 +2179,7 @@ define('lyria/scene/director', ['root', 'mixedice', 'jquery', 'eventmap', 'lyria
         }
       }
 
-      scene.trigger('added');
+      scene.trigger('added', done);
 
       return this;
     };
@@ -2351,7 +2353,7 @@ define('lyria/scene', ['jquery', 'mixedice', 'nexttick', 'lyria/component', 'lyr
       });
 
       // Synchronizes events and scene view
-      self.on('synchronize', function() {
+      self.on('synchronize', function(callback) {
         self.refresh();
 
         if (self.DOMEvents && !$.isEmptyObject(self.DOMEvents)) {
@@ -2397,15 +2399,17 @@ define('lyria/scene', ['jquery', 'mixedice', 'nexttick', 'lyria/component', 'lyr
             });
           });
         }
+        
+        callback();
       });
 
-      var createScene = function(modules) {
+      var createScene = function(modules, callback) {
         var sceneDone = function(err, success) {
           if (err) {
             return console.error('Error while executing scene ' + self.name + ': ' + err);
           }
 
-          self.trigger('synchronize');
+          self.trigger('synchronize', callback);
         };
 
         var async = false;
@@ -2445,7 +2449,7 @@ define('lyria/scene', ['jquery', 'mixedice', 'nexttick', 'lyria/component', 'lyr
       // Call scene
       var reqModules = Object.keys(Scene.requireAlways) || [];
 
-      self.on('added', function() {
+      self.on('added', function(callback) {
         require(reqModules, function() {
           var importedModules = {};
   
@@ -2467,10 +2471,10 @@ define('lyria/scene', ['jquery', 'mixedice', 'nexttick', 'lyria/component', 'lyr
                 })(arguments[j]);
               }
   
-              createScene(importedModules);
+              createScene(importedModules, callback);
             });
           } else {
-            createScene(importedModules);
+            createScene(importedModules, callback);
           }
   
         });
