@@ -1,7 +1,7 @@
 /**
  * @module Lyria
  */
-define(['root', 'jquery', 'mixer', 'eventmap'], function(root, $, mixer, EventMap) {'use strict';
+define(['root', 'jquery', 'mixedice', 'eventmap'], function(root, $, mixedice, EventMap) {'use strict';
 
   return (function() {
 
@@ -21,7 +21,7 @@ define(['root', 'jquery', 'mixer', 'eventmap'], function(root, $, mixer, EventMa
 
       options = $.extend(defaultOptions, options);
       
-      mixer([this, Viewport.prototype], new EventMap());
+      mixedice([this, Viewport.prototype], new EventMap());
 
       this.scale = {};
       this.scale.mode = options.scaleMode;
