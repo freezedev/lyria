@@ -1,4 +1,4 @@
-define(['jquery', 'mixer', 'eventmap'], function($, mixer, EventMap) {
+define(['jquery', 'mixedice', 'eventmap'], function($, mixedice, EventMap) {
   var Animation = (function() {
     var Animation = function($elem, options) {
       this.$elem = $elem;
@@ -26,7 +26,7 @@ define(['jquery', 'mixer', 'eventmap'], function($, mixer, EventMap) {
       this.sprite.image = new Image();
       
       // Mix-in eventmap
-      mixer([this, Animation.prototype], new EventMap());
+      mixedice([this, Animation.prototype], new EventMap());
       
       this.on('play', function() {
         
