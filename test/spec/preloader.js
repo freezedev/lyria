@@ -15,11 +15,11 @@ define('spec/preloader', ['lyria/preloader'], function(Preloader) {
       });
 
       it('Instance has default values', function() {
-        expect(preloader.assets).to.be.empty
+        expect(preloader.assets).to.be.empty;
         expect(preloader.maxAssets).to.equal(0);
         expect(preloader.assetsLoaded).to.equal(0);
-        expect(preloader.steps).to.be.empty
-        expect(preloader.taskList).to.be.empty
+        expect(preloader.steps).to.be.empty;
+        expect(preloader.taskList).to.be.empty;
       });
     });
 
@@ -82,42 +82,81 @@ define('spec/preloader', ['lyria/preloader'], function(Preloader) {
       });
     });
 
-    describe('#task.async', function() {
+    describe('#taskAsync', function() {
       it('exists', function() {
-        expect(Preloader.prototype.task.async).to.be.a('function');
+        expect(Preloader.prototype.taskAsync).to.be.a('function');
         expect(preloader).to.have.property('start');
-        expect(preloader.task.async).to.equal(Preloader.prototype.task.async);
+        expect(preloader.taskAsync).to.equal(Preloader.prototype.taskAsync);
       });
 
       it('running asynchronous tasks', function(testDone) {
         var preloader = new Preloader();
         var steps = 0;
+        var maxTaskSteps = 3;
 
         var checkIfDone = function() {
-          expect(steps).to.be.a('number');
-          expect(steps).to.equal(3);
-          testDone();
+          if (steps === maxTaskSteps) {
+            expect(steps).to.be.a('number');
+            expect(steps).to.equal(3);
+            testDone();
+          }
         };
 
         var stepFn = function() {
           steps++;
         };
 
-        preloader.task.async(function(done) {
+        preloader.taskAsync(function(done) {
           setTimeout(function() {
             stepFn();
             checkIfDone();
             done();
           }, 200);
         });
-        preloader.task.async(function(done) {
+        preloader.taskAsync(function(done) {
           setTimeout(function() {
             stepFn();
             checkIfDone();
             done();
           }, 300);
         });
-        preloader.task.async(function(done) {
+        preloader.taskAsync(function(done) {
+          setTimeout(function() {
+            stepFn();
+            checkIfDone();
+            done();
+          }, 400);
+        });
+
+        preloader.start();
+      });
+      
+      it('mixing synchronous and asynchronous tasks', function(testDone) {
+        var preloader = new Preloader();
+        var steps = 0;
+        var maxTaskSteps = 3;
+
+        var checkIfDone = function() {
+          if (steps === maxTaskSteps) {
+            expect(steps).to.be.a('number');
+            expect(steps).to.equal(3);
+            testDone();
+          }
+        };
+
+        var stepFn = function() {
+          steps++;
+        };
+
+        preloader.taskAsync(function(done) {
+          setTimeout(function() {
+            stepFn();
+            checkIfDone();
+            done();
+          }, 200);
+        });
+        preloader.task(stepFn);
+        preloader.taskAsync(function(done) {
           setTimeout(function() {
             stepFn();
             checkIfDone();
