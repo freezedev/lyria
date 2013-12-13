@@ -1,7 +1,7 @@
 /**
  * @module Lyria
  */
-define(['root', 'mixer', 'jquery', 'lyria/resource', 'lyria/log', 'eventmap'], function(root, mixer, $, Resource, Log, EventMap) {'use strict';
+define(['root', 'mixedice', 'jquery', 'lyria/resource', 'lyria/log', 'eventmap'], function(root, mixedice, $, Resource, Log, EventMap) {'use strict';
 
   /**
    * Provides a preloader to load assets before they are needed
@@ -16,7 +16,7 @@ define(['root', 'mixer', 'jquery', 'lyria/resource', 'lyria/log', 'eventmap'], f
      * @param {Object} assetObject
      */
     var Preloader = function(assetObject) {
-      mixer([this, Preloader.prototype], new EventMap());
+      mixedice([this, Preloader.prototype], new EventMap());
 
       /**
        * @property assets
