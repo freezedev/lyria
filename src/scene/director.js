@@ -192,12 +192,7 @@ define(['root', 'mixedice', 'jquery', 'eventmap', 'lyria/scene', 'lyria/viewport
       }
       this.trigger('scene:change', sceneName);
       
-      // Ugly fix for #41
-      // TODO: Find the root of the issue, scene's active event is not somehow
-      // available without this timeout
-      setTimeout(function() {
-        self.currentScene.trigger('active', options);        
-      }, 0);
+      self.currentScene.trigger('active', options);
 
       if (callback) {
         callback(sceneName);
