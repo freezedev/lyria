@@ -1,6 +1,6 @@
 /**
  * Mixin language property into objects
- * TODO: Refactor this to use mixer library
+ * TODO: Refactor this to use mixedice library
  */
 
 define(function() {
