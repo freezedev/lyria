@@ -1,9 +1,9 @@
-define(['jquery', 'clamp', 'lyria/log', 'lyria/audio', 'mixer', 'eventmap'], function($, clamp, Log, Audio, mixer, EventMap) {
+define(['jquery', 'clamp', 'lyria/log', 'lyria/audio', 'mixedice', 'eventmap'], function($, clamp, Log, Audio, mixedice, EventMap) {
 
 
   var AudioManager = function() {
 
-    mixer([this, AudioManager.prototype], new EventMap());
+    mixedice([this, AudioManager.prototype], new EventMap());
     this.audioFiles = {};
   };
 
