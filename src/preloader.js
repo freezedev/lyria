@@ -69,7 +69,7 @@ define(['root', 'mixedice', 'jquery', 'lyria/resource', 'lyria/log', 'eventmap']
      */
     Preloader.prototype.task = function(taskFn) {
       if ( typeof taskFn === 'function') {
-        this.taskList.add({
+        this.taskList.push({
           task: taskFn,
           async: false
         });
@@ -83,7 +83,7 @@ define(['root', 'mixedice', 'jquery', 'lyria/resource', 'lyria/log', 'eventmap']
      */
     Preloader.prototype.task.async = function(taskFn) {
       if ( typeof taskFn === 'function') {
-        this.taskList.add({
+        this.taskList.push({
           task: taskFn,
           async: true
         });
