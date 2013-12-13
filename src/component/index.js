@@ -1,10 +1,10 @@
-define(['mixer', 'eventmap', 'lyria/component/manager', 'lyria/log'], function(mixer, EventMap, ComponentManager, Log) {
+define(['mixedice', 'eventmap', 'lyria/component/manager', 'lyria/log'], function(mixedice, EventMap, ComponentManager, Log) {
 
   //Lyria.Component
   return (function() {
 
     var Component = function(name, factory) {
-      mixer([this, Component.prototype], new EventMap());
+      mixedice([this, Component.prototype], new EventMap());
       
       this.name = name != null ? name : this.constructor.name;
       
