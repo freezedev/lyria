@@ -1,11 +1,11 @@
-define(['jquery', 'mixer', 'lyria/component', 'lyria/sprite/renderer'], function($, mixer, Component, Renderer) {
+define(['jquery', 'mixedice', 'lyria/component', 'lyria/sprite/renderer'], function($, mixedice, Component, Renderer) {
   
   var SpriteManager = (function() {
     
     var SpriteManager = function() {
       var type = 'SpriteManager';
       
-      mixer([this, SpriteManager.prototype], new Component(type));
+      mixedice([this, SpriteManager.prototype], new Component(type));
       this.type = type;
     };
     
