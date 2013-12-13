@@ -97,7 +97,7 @@ define(['jquery', 'mixedice', 'nexttick', 'lyria/component', 'lyria/gameobject',
       });
 
       // Synchronizes events and scene view
-      self.on('synchronize', function() {
+      self.on('synchronize', function(callback) {
         self.refresh();
 
         if (self.DOMEvents && !$.isEmptyObject(self.DOMEvents)) {
@@ -143,15 +143,17 @@ define(['jquery', 'mixedice', 'nexttick', 'lyria/component', 'lyria/gameobject',
             });
           });
         }
+        
+        callback();
       });
 
-      var createScene = function(modules) {
+      var createScene = function(modules, callback) {
         var sceneDone = function(err, success) {
           if (err) {
             return console.error('Error while executing scene ' + self.name + ': ' + err);
           }
 
-          self.trigger('synchronize');
+          self.trigger('synchronize', callback);
         };
 
         var async = false;
@@ -191,7 +193,7 @@ define(['jquery', 'mixedice', 'nexttick', 'lyria/component', 'lyria/gameobject',
       // Call scene
       var reqModules = Object.keys(Scene.requireAlways) || [];
 
-      self.on('added', function() {
+      self.on('added', function(callback) {
         require(reqModules, function() {
           var importedModules = {};
   
@@ -213,10 +215,10 @@ define(['jquery', 'mixedice', 'nexttick', 'lyria/component', 'lyria/gameobject',
                 })(arguments[j]);
               }
   
-              createScene(importedModules);
+              createScene(importedModules, callback);
             });
           } else {
-            createScene(importedModules);
+            createScene(importedModules, callback);
           }
   
         });
