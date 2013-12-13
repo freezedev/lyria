@@ -85,7 +85,7 @@ define(['root', 'mixedice', 'jquery', 'eventmap', 'lyria/scene', 'lyria/viewport
      * @param {Object} scene
      * @param {Object} data
      */
-    SceneDirector.prototype.add = function(scene, data) {
+    SceneDirector.prototype.add = function(scene, data, done) {
 
       // Shorthand to add all scenes to the scene director
       if (scene === '*' && this.scenes) {
@@ -95,7 +95,7 @@ define(['root', 'mixedice', 'jquery', 'eventmap', 'lyria/scene', 'lyria/viewport
       // Allow array as scenes
       if (Array.isArray(scene)) {
         for (var i = 0, j = scene.length; i < j; i++) {
-          this.add(scene[i], data);
+          this.add(scene[i], data, done);
         }
         return;
       }
@@ -146,7 +146,7 @@ define(['root', 'mixedice', 'jquery', 'eventmap', 'lyria/scene', 'lyria/viewport
         }
       }
 
-      scene.trigger('added');
+      scene.trigger('added', done);
 
       return this;
     };
