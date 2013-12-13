@@ -3,7 +3,7 @@
  *
  * @module Lyria
  */
-define(['mixer', 'lyria/gameobject'], function(mixer, GameObject) {
+define(['mixedice', 'lyria/gameobject'], function(mixedice, GameObject) {
   'use strict';
 
   return (function() {
@@ -14,7 +14,7 @@ define(['mixer', 'lyria/gameobject'], function(mixer, GameObject) {
      * @constructor
      */
     var Layer = function() {
-      mixer(this.prototype, new GameObject());
+      mixedice(this.prototype, new GameObject());
     };
 
     return Layer;
