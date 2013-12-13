@@ -81,7 +81,7 @@ define(['root', 'mixedice', 'jquery', 'lyria/resource', 'lyria/log', 'eventmap']
      *
      * @param {Function} taskFn
      */
-    Preloader.prototype.task.async = function(taskFn) {
+    Preloader.prototype.taskAsync = function(taskFn) {
       if ( typeof taskFn === 'function') {
         this.taskList.push({
           task: taskFn,
