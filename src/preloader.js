@@ -69,7 +69,7 @@ define(['root', 'mixedice', 'jquery', 'lyria/resource', 'lyria/log', 'eventmap']
      */
     Preloader.prototype.task = function(taskFn) {
       if ( typeof taskFn === 'function') {
-        taskList.add({
+        this.taskList.add({
           task: taskFn,
           async: false
         });
@@ -83,7 +83,7 @@ define(['root', 'mixedice', 'jquery', 'lyria/resource', 'lyria/log', 'eventmap']
      */
     Preloader.prototype.task.async = function(taskFn) {
       if ( typeof taskFn === 'function') {
-        taskList.add({
+        this.taskList.add({
           task: taskFn,
           async: true
         });
@@ -124,6 +124,38 @@ define(['root', 'mixedice', 'jquery', 'lyria/resource', 'lyria/log', 'eventmap']
       }
 
       var self = this;
+      
+      var loadCustomTasks = function(done) {
+        var maxTasks = self.taskList.length;
+        var currentTasks = 0;
+
+        var checkIfComplete = function() {
+          if (currentTasks === maxTasks) {
+            done();
+          }
+        };
+        
+        var doneFn = function() {
+          currentTasks++;
+          checkIfComplete();
+        };
+
+        if (taskList.length === 0) {
+          done();
+        } else {
+          for (var i = 0, j = taskList.length; i < j; i++) {
+            (function(item) {
+              if (item.async) {
+                item.task.call(this, doneFn);
+              } else {
+                item.task();
+                doneFn();
+              }
+            })(self.taskList[i]);
+          }
+        }
+
+      };
 
       var loadingProgress = function() {
 
@@ -140,44 +172,14 @@ define(['root', 'mixedice', 'jquery', 'lyria/resource', 'lyria/log', 'eventmap']
         }
 
         if (currentProgress >= totalSize) {
-          if (hasLoadingScene) {
-            self.sceneDirector.currentScene.trigger('complete');
-          }
-
-          self.trigger('complete');
+          loadCustomTasks(function() {
+            if (hasLoadingScene) {
+              self.sceneDirector.currentScene.trigger('complete');
+            }
+  
+            self.trigger('complete');
+          });
         }
-      };
-
-      var loadCustomTasks = function() {
-        var maxTasks = taskList.length;
-        var currentTasks = 0;
-
-        var checkIfComplete = function() {
-          if (currentTasks === maxTasks) {
-            loadingComplete();
-          }
-        };
-        
-        var doneFn = function() {
-          currentTasks++;
-          checkIfComplete();
-        };
-
-        if (taskList.length === 0) {
-          loadingComplete();
-        } else {
-          for (var i = 0, j = taskList.length; i < j; i++) {
-            (function(item) {
-              if (item.async) {
-                item.task.call(this, doneFn);
-              } else {
-                item.task();
-                doneFn();
-              }
-            })(taskList[i]);
-          }
-        }
-
       };
 
       if (Object.keys(this.assets).length > 0) {
