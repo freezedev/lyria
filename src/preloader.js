@@ -140,10 +140,10 @@ define(['root', 'mixedice', 'jquery', 'lyria/resource', 'lyria/log', 'eventmap']
           checkIfComplete();
         };
 
-        if (taskList.length === 0) {
+        if (self.taskList.length === 0) {
           done();
         } else {
-          for (var i = 0, j = taskList.length; i < j; i++) {
+          for (var i = 0, j = self.taskList.length; i < j; i++) {
             (function(item) {
               if (item.async) {
                 item.task.call(this, doneFn);
