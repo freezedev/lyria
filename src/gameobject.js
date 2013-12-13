@@ -1,7 +1,7 @@
 /**
  * @module Lyria
  */
-define(['mixer', 'eventmap', 'lyria/component', 'lyria/log'], function(mixer, EventMap, Component, Log) {
+define(['mixedice', 'eventmap', 'lyria/component', 'lyria/log'], function(mixedice, EventMap, Component, Log) {
   'use strict';
   
   //Lyria.GameObject
@@ -9,7 +9,7 @@ define(['mixer', 'eventmap', 'lyria/component', 'lyria/log'], function(mixer, Ev
     
     // Constructor
     var GameObject = function() {
-      mixer([this, GameObject.prototype], new EventMap());
+      mixedice([this, GameObject.prototype], new EventMap());
       
       var self = this;
       
