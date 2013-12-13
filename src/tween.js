@@ -1,4 +1,4 @@
-define(['eventmap', 'mixer', 'options', 'jqueryify'], function(EventMap, mixer, options, $fy) {
+define(['eventmap', 'mixedice', 'options', 'jqueryify'], function(EventMap, mixedice, options, $fy) {
   var Tween = (function() {
     var Tween = function(opts) {
       opts = options(opts, {
@@ -17,7 +17,7 @@ define(['eventmap', 'mixer', 'options', 'jqueryify'], function(EventMap, mixer, 
 
       this.hwAccelerated = true;
 
-      mixer([this, Tween.prototype], new EventMap());
+      mixedice([this, Tween.prototype], new EventMap());
 
       var self = this;
 
