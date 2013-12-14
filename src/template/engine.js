@@ -2,7 +2,7 @@
  * @module Lyria
  * @submodule Template
  */
-define(['root', 'lyria/template/connector', 'lyria/template/methods'], function(root, TemplateConnector, templateMethods) {
+define(['hbs', 'lyria/template/connector', 'lyria/template/methods'], function(Handlebars, TemplateConnector, templateMethods) {
 
   var noop = function() {
   };
@@ -27,13 +27,13 @@ define(['root', 'lyria/template/connector', 'lyria/template/methods'], function(
     }
   };
 
-  if (root.Handlebars) {
+  if (Handlebars) {
     var handlebarsConnector = new TemplateConnector({
       compile: function() {
-        return root.Handlebars.template.apply(this, arguments);
+        return Handlebars.template.apply(this, arguments);
       },
       globalHelpers: function() {
-        return root.Handlebars.helpers;
+        return Handlebars.helpers;
       }
     });
 
