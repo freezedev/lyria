@@ -807,6 +807,9 @@ define('fullscreen', ['requestfullscreen', 'fullscreenelement', 'cancelfullscree
     cancel: cf
   };
 });
+define('hbs', ['handlebars', 'handlebars.runtime'], function(hbs, hbsRuntime) {
+  return ((hbs && hbs['default']) || hbsRuntime);
+});
 define('jqueryify', ['jquery'], function($) {
   return function(sel) {
     return (sel instanceof $) ? sel : $(sel);
@@ -2225,12 +2228,7 @@ define('lyria/scene/director', ['root', 'mixedice', 'jquery', 'eventmap', 'lyria
       }
       this.trigger('scene:change', sceneName);
       
-      // Ugly fix for #41
-      // TODO: Find the root of the issue, scene's active event is not somehow
-      // available without this timeout
-      setTimeout(function() {
-        self.currentScene.trigger('active', options);        
-      }, 0);
+      self.currentScene.trigger('active', options);
 
       if (callback) {
         callback(sceneName);
@@ -2400,7 +2398,9 @@ define('lyria/scene', ['jquery', 'mixedice', 'nexttick', 'lyria/component', 'lyr
           });
         }
         
-        callback();
+        if (callback) {
+          callback();          
+        }
       });
 
       var createScene = function(modules, callback) {
@@ -2809,7 +2809,7 @@ define('lyria/template/connector', ['lyria/template/methods'], function(template
  * @module Lyria
  * @submodule Template
  */
-define('lyria/template/engine', ['root', 'lyria/template/connector', 'lyria/template/methods'], function(root, TemplateConnector, templateMethods) {
+define('lyria/template/engine', ['hbs', 'lyria/template/connector', 'lyria/template/methods'], function(Handlebars, TemplateConnector, templateMethods) {
 
   var noop = function() {
   };
@@ -2834,13 +2834,13 @@ define('lyria/template/engine', ['root', 'lyria/template/connector', 'lyria/temp
     }
   };
 
-  if (root.Handlebars) {
+  if (Handlebars) {
     var handlebarsConnector = new TemplateConnector({
       compile: function() {
-        return root.Handlebars.template.apply(this, arguments);
+        return Handlebars.template.apply(this, arguments);
       },
       globalHelpers: function() {
-        return root.Handlebars.helpers;
+        return Handlebars.helpers;
       }
     });
 
