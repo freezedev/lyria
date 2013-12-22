@@ -114,6 +114,26 @@ define(['eventmap', 'mixedice', 'fullscreen', 'jquery', 'lyria/viewport', 'lyria
     };
     
     /**
+     * 
+     */
+    Game.prototype.addScene = function(name, data) {
+      var self = this;
+      
+      this.preloader.taskAsync(function(done) {
+        self.director.add(name, data, done);
+      });
+      
+      return Game;
+    };
+    
+    /**
+     * 
+     */
+    Game.prototype.showScene = function(name) {
+      this.director.show(name);
+    };
+    
+    /**
      * @property Loop
      * @static
      * @type {Loop}
