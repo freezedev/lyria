@@ -1,7 +1,6 @@
 YUI.add("yuidoc-meta", function(Y) {
    Y.YUIDoc = { meta: {
     "classes": [
-        "Audio",
         "Checkpoints",
         "Connector",
         "Director",
@@ -17,12 +16,22 @@ YUI.add("yuidoc-meta", function(Y) {
     "modules": [
         "Lyria",
         "Scene",
-        "Template"
+        "Template",
+        "lyria_loop",
+        "lyria_preloader"
     ],
     "allModules": [
         {
             "displayName": "Lyria",
             "name": "Lyria"
+        },
+        {
+            "displayName": "lyria/loop",
+            "name": "lyria_loop"
+        },
+        {
+            "displayName": "lyria/preloader",
+            "name": "lyria_preloader"
         },
         {
             "displayName": "Scene",

@@ -19,7 +19,7 @@
             
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.2.5</em>
+            <em>API Docs for: 0.2.9</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -40,8 +40,6 @@
 
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
-            
-                <li><a href="../classes/Audio.html">Audio</a></li>
             
                 <li><a href="../classes/Checkpoints.html">Checkpoints</a></li>
             
@@ -70,6 +68,10 @@
             <ul id="api-modules" class="apis modules">
             
                 <li><a href="../modules/Lyria.html">Lyria</a></li>
+            
+                <li><a href="../modules/lyria_loop.html">lyria/loop</a></li>
+            
+                <li><a href="../modules/lyria_preloader.html">lyria/preloader</a></li>
             
                 <li><a href="../modules/Scene.html">Scene</a></li>
             
@@ -118,7 +120,7 @@
  * @module Lyria
  * @submodule Template
  */
-define([&#x27;root&#x27;, &#x27;lyria/template/connector&#x27;, &#x27;lyria/template/methods&#x27;], function(root, TemplateConnector, templateMethods) {
+define([&#x27;hbs&#x27;, &#x27;lyria/template/connector&#x27;, &#x27;lyria/template/methods&#x27;], function(Handlebars, TemplateConnector, templateMethods) {
 
   var noop = function() {
   };
@@ -143,13 +145,13 @@ define([&#x27;root&#x27;, &#x27;lyria/template/connector&#x27;, &#x27;lyria/temp
     }
   };
 
-  if (root.Handlebars) {
+  if (Handlebars) {
     var handlebarsConnector = new TemplateConnector({
       compile: function() {
-        return root.Handlebars.template.apply(this, arguments);
+        return Handlebars.template.apply(this, arguments);
       },
       globalHelpers: function() {
-        return root.Handlebars.helpers;
+        return Handlebars.helpers;
       }
     });
 

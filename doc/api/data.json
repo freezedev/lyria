@@ -2,18 +2,21 @@
     "project": {
         "name": "lyria",
         "description": "",
-        "version": "0.2.5",
+        "version": "0.2.9",
         "url": ""
     },
     "files": {
         "src\\audio\\index.js": {
             "name": "src\\audio\\index.js",
-            "modules": {
-                "Lyria": 1
-            },
-            "classes": {
-                "Audio": 1
-            },
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\audio\\manager.js": {
+            "name": "src\\audio\\manager.js",
+            "modules": {},
+            "classes": {},
             "fors": {},
             "namespaces": {}
         },
@@ -153,7 +156,9 @@
         },
         "src\\loop.js": {
             "name": "src\\loop.js",
-            "modules": {},
+            "modules": {
+                "lyria/loop": 1
+            },
             "classes": {
                 "Loop": 1
             },
@@ -162,7 +167,9 @@
         },
         "src\\preloader.js": {
             "name": "src\\preloader.js",
-            "modules": {},
+            "modules": {
+                "lyria/preloader": 1
+            },
             "classes": {
                 "Preloader": 1
             },
@@ -187,7 +194,9 @@
         },
         "src\\viewport.js": {
             "name": "src\\viewport.js",
-            "modules": {},
+            "modules": {
+                "Lyria": 1
+            },
             "classes": {
                 "Viewport": 1
             },
@@ -203,7 +212,6 @@
                 "Template": 1
             },
             "classes": {
-                "Audio": 1,
                 "Director": 1,
                 "Scene": 1,
                 "Connector": 1,
@@ -212,8 +220,6 @@
                 "Game": 1,
                 "Layer": 1,
                 "Log": 1,
-                "Loop": 1,
-                "Preloader": 1,
                 "Viewport": 1
             },
             "fors": {},
@@ -253,23 +259,35 @@
             "namespace": "",
             "file": "src\\template\\engine.js",
             "line": 10
+        },
+        "lyria/loop": {
+            "name": "lyria/loop",
+            "submodules": {},
+            "classes": {
+                "Loop": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "src\\loop.js",
+            "line": 11
+        },
+        "lyria/preloader": {
+            "name": "lyria/preloader",
+            "submodules": {},
+            "classes": {
+                "Preloader": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "Lyria\nLyria namespace decleration": 1
+            },
+            "tag": "module",
+            "file": "src\\preloader.js",
+            "line": 6
         }
     },
     "classes": {
-        "Audio": {
-            "name": "Audio",
-            "shortname": "Audio",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "module": "Lyria",
-            "namespace": "",
-            "file": "src\\audio\\index.js",
-            "line": 6,
-            "static": 1
-        },
         "Director": {
             "name": "Director",
             "shortname": "Director",
@@ -415,10 +433,10 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "module": "Lyria",
+            "module": "lyria/loop",
             "namespace": "",
             "file": "src\\loop.js",
-            "line": 10,
+            "line": 11,
             "static": 1
         },
         "Preloader": {
@@ -429,7 +447,7 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "module": "Lyria",
+            "module": "lyria/preloader",
             "namespace": "",
             "file": "src\\preloader.js",
             "line": 6,
@@ -454,144 +472,50 @@
         {
             "file": "src\\audio\\index.js",
             "line": 12,
-            "description": "Private audio elements",
-            "example": [
-                " : {\n filepath : 'assets/audio/example.ogg',\n playAfter : 'example2',\n loop : false,\n play : false\n}"
-            ],
-            "class": "Audio",
-            "module": "Lyria"
-        },
-        {
-            "file": "src\\audio\\index.js",
-            "line": 23,
-            "description": "Loads one or multiple audio files",
             "params": [
                 {
-                    "name": "!~YUIDOC_LINE~!",
-                    "description": "id      identifier of this sound (has to be unique!)",
-                    "type": "String"
-                },
-                {
-                    "name": "!~YUIDOC_LINE~!",
-                    "description": "filepath  filepath of the sound\n   playAfter should sth be played after this sound has ended\n   loop    loop this sound\n   play    should this sound be played immediatelly?",
-                    "type": "Object"
-                }
-            ],
-            "class": "Audio",
-            "module": "Lyria"
-        },
-        {
-            "file": "src\\audio\\index.js",
-            "line": 51,
-            "description": "Plays the audio file",
-            "params": [
-                {
-                    "name": "element",
-                    "description": "identifier",
-                    "type": "String"
-                }
-            ],
-            "class": "Audio",
-            "module": "Lyria"
-        },
-        {
-            "file": "src\\audio\\index.js",
-            "line": 81,
-            "description": "Get the audio file object",
-            "params": [
-                {
-                    "name": "element",
-                    "description": "identifier",
-                    "type": "String"
-                }
-            ],
-            "class": "Audio",
-            "module": "Lyria"
-        },
-        {
-            "file": "src\\audio\\index.js",
-            "line": 89,
-            "description": "Pauses the audio file",
-            "params": [
-                {
-                    "name": "element",
-                    "description": "identifier",
-                    "type": "String"
-                }
-            ],
-            "class": "Audio",
-            "module": "Lyria"
-        },
-        {
-            "file": "src\\audio\\index.js",
-            "line": 101,
-            "description": "Stops playing the audio file",
-            "params": [
-                {
-                    "name": "element",
-                    "description": "identifier",
-                    "type": "String"
-                }
-            ],
-            "class": "Audio",
-            "module": "Lyria"
-        },
-        {
-            "file": "src\\audio\\index.js",
-            "line": 112,
-            "description": "Get the length of the sound file",
-            "params": [
-                {
-                    "name": "element",
-                    "description": "identifier",
-                    "type": "String"
-                }
-            ],
-            "class": "Audio",
-            "module": "Lyria"
-        },
-        {
-            "file": "src\\audio\\index.js",
-            "line": 120,
-            "description": "Sets or gets the volume of the audio file",
-            "params": [
-                {
-                    "name": "element",
-                    "description": "identifier",
-                    "type": "String"
-                },
-                {
-                    "name": "value",
-                    "description": "(between 0 .. 1)",
-                    "type": "Number"
-                }
-            ],
-            "class": "Audio",
-            "module": "Lyria"
-        },
-        {
-            "file": "src\\audio\\index.js",
-            "line": 137,
-            "description": "Sets or gets the position of the audio file",
-            "params": [
-                {
-                    "name": "element",
-                    "description": "identifier",
-                    "type": "String"
-                },
-                {
-                    "name": "value",
+                    "name": "options",
                     "description": "",
-                    "type": "Number"
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "id",
+                            "description": "",
+                            "type": "String"
+                        },
+                        {
+                            "name": "paths",
+                            "description": "",
+                            "type": "String[]"
+                        },
+                        {
+                            "name": "volume",
+                            "description": "Volume between 0..1",
+                            "type": "Number"
+                        }
+                    ]
                 }
             ],
-            "class": "Audio",
+            "class": "Director",
             "module": "Lyria"
         },
         {
             "file": "src\\audio\\index.js",
-            "line": 149,
-            "description": "Sets or gets properties of the audio object\nTODO: Method chaining",
+            "line": 43,
+            "params": [
+                {
+                    "name": "loop",
+                    "description": "amount of loops this song should be played (-1 if unlimited)",
+                    "type": "String"
+                }
+            ],
+            "class": "Director",
+            "module": "Lyria"
+        },
+        {
+            "file": "src\\audio\\index.js",
+            "line": 67,
+            "description": "Sets or gets properties of the audio object",
             "params": [
                 {
                     "name": "prop",
@@ -604,21 +528,47 @@
                     "type": "Object"
                 }
             ],
-            "class": "Audio",
+            "class": "Director",
             "module": "Lyria"
         },
         {
-            "file": "src\\audio\\index.js",
-            "line": 185,
-            "description": "Mute all sound of the game",
+            "file": "src\\audio\\manager.js",
+            "line": 22,
             "params": [
                 {
-                    "name": "value",
+                    "name": "options",
                     "description": "",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "type",
+                            "description": "['music', 'sound']",
+                            "type": "String"
+                        }
+                    ]
+                },
+                {
+                    "name": "options",
+                    "description": "id",
+                    "type": "String"
+                },
+                {
+                    "name": "options",
+                    "description": "loop",
                     "type": "Boolean"
+                },
+                {
+                    "name": "options",
+                    "description": "volume",
+                    "type": "Number"
+                },
+                {
+                    "name": "options",
+                    "description": "paths paths to audio file with defined fallbacks",
+                    "type": "Array"
                 }
             ],
-            "class": "Audio",
+            "class": "Director",
             "module": "Lyria"
         },
         {
@@ -714,7 +664,7 @@
         {
             "file": "src\\mixin\\language.js",
             "line": 1,
-            "description": "Mixin language property into objects\nTODO: Refactor this to use mixer library",
+            "description": "Mixin language property into objects\nTODO: Refactor this to use mixedice library",
             "class": "Director",
             "module": "Lyria"
         },
@@ -835,7 +785,7 @@
         },
         {
             "file": "src\\scene\\director.js",
-            "line": 201,
+            "line": 202,
             "description": "Refreshes a scene",
             "itemtype": "method",
             "name": "refresh",
@@ -852,7 +802,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 227,
+            "line": 231,
             "description": "Adds a gameobject to the scene",
             "itemtype": "method",
             "name": "add",
@@ -868,7 +818,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 275,
+            "line": 279,
             "description": "Refreshes the scene (Re-renders the template)",
             "itemtype": "method",
             "name": "refresh",
@@ -884,7 +834,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 303,
+            "line": 307,
             "description": "Sets an event to the event object (DOM events)",
             "itemtype": "method",
             "name": "bindEvent",
@@ -910,7 +860,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 327,
+            "line": 331,
             "description": "Binds a lot of events instead of a single one",
             "itemtype": "method",
             "name": "bindEvents",
@@ -929,7 +879,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 366,
+            "line": 370,
             "description": "Unbinds a lot of events",
             "itemtype": "method",
             "name": "unbindEvents",
@@ -945,7 +895,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 401,
+            "line": 405,
             "description": "Gets localized value",
             "params": [
                 {
@@ -1036,6 +986,18 @@
         {
             "file": "src\\game.js",
             "line": 116,
+            "class": "Game",
+            "module": "Lyria"
+        },
+        {
+            "file": "src\\game.js",
+            "line": 129,
+            "class": "Game",
+            "module": "Lyria"
+        },
+        {
+            "file": "src\\game.js",
+            "line": 136,
             "itemtype": "property",
             "name": "Loop",
             "static": 1,
@@ -1059,19 +1021,19 @@
         },
         {
             "file": "src\\loop.js",
-            "line": 18,
+            "line": 19,
             "itemtype": "method",
             "name": "run",
             "class": "Loop",
-            "module": "Lyria"
+            "module": "lyria/loop"
         },
         {
             "file": "src\\loop.js",
-            "line": 48,
+            "line": 49,
             "itemtype": "method",
             "name": "stop",
             "class": "Loop",
-            "module": "Lyria"
+            "module": "lyria/loop"
         },
         {
             "file": "src\\preloader.js",
@@ -1085,7 +1047,7 @@
                 }
             ],
             "class": "Preloader",
-            "module": "Lyria"
+            "module": "lyria/preloader"
         },
         {
             "file": "src\\preloader.js",
@@ -1094,7 +1056,7 @@
             "name": "assets",
             "type": "{Array}",
             "class": "Preloader",
-            "module": "Lyria"
+            "module": "lyria/preloader"
         },
         {
             "file": "src\\preloader.js",
@@ -1104,7 +1066,7 @@
             "type": "{Number}",
             "default": "0",
             "class": "Preloader",
-            "module": "Lyria"
+            "module": "lyria/preloader"
         },
         {
             "file": "src\\preloader.js",
@@ -1114,7 +1076,7 @@
             "type": "{Number}",
             "default": "0",
             "class": "Preloader",
-            "module": "Lyria"
+            "module": "lyria/preloader"
         },
         {
             "file": "src\\preloader.js",
@@ -1124,7 +1086,7 @@
             "type": "{Number}",
             "default": "0",
             "class": "Preloader",
-            "module": "Lyria"
+            "module": "lyria/preloader"
         },
         {
             "file": "src\\preloader.js",
@@ -1133,7 +1095,7 @@
             "name": "steps",
             "type": "{Array}",
             "class": "Preloader",
-            "module": "Lyria"
+            "module": "lyria/preloader"
         },
         {
             "file": "src\\preloader.js",
@@ -1142,7 +1104,7 @@
             "name": "taskList",
             "type": "{Array}",
             "class": "Preloader",
-            "module": "Lyria"
+            "module": "lyria/preloader"
         },
         {
             "file": "src\\preloader.js",
@@ -1156,29 +1118,43 @@
                 }
             ],
             "class": "Preloader",
-            "module": "Lyria"
+            "module": "lyria/preloader"
         },
         {
             "file": "src\\preloader.js",
-            "line": 74,
+            "line": 79,
+            "description": "Adds a custom asynchronous task to the preloader",
+            "params": [
+                {
+                    "name": "taskFn",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "class": "Preloader",
+            "module": "lyria/preloader"
+        },
+        {
+            "file": "src\\preloader.js",
+            "line": 93,
             "description": "Starts the preloader and loads all assets asynchronously. Triggers\nevents when necessary.",
             "itemtype": "method",
             "name": "start",
             "class": "Preloader",
-            "module": "Lyria"
+            "module": "lyria/preloader"
         },
         {
             "file": "src\\resource.js",
             "line": 1,
             "class": "Viewport",
-            "module": "Lyria",
+            "module": "lyria/preloader",
             "namespace": "Lyria\nLyria namespace decleration"
         },
         {
             "file": "src\\resource.js",
             "line": 8,
             "class": "Viewport",
-            "module": "Lyria",
+            "module": "lyria/preloader",
             "namespace": "Lyria\nLyria namespace decleration"
         },
         {
@@ -1198,7 +1174,7 @@
                 }
             ],
             "class": "Viewport",
-            "module": "Lyria",
+            "module": "lyria/preloader",
             "namespace": "Lyria\nLyria namespace decleration"
         },
         {
@@ -1216,7 +1192,7 @@
                 "type": "String"
             },
             "class": "Viewport",
-            "module": "Lyria",
+            "module": "lyria/preloader",
             "namespace": "Lyria\nLyria namespace decleration"
         },
         {
@@ -1236,48 +1212,20 @@
             "line": " src\\serialize.js:3"
         },
         {
-            "message": "Missing item type\nPrivate audio elements",
+            "message": "Missing item type",
             "line": " src\\audio\\index.js:12"
         },
         {
-            "message": "Missing item type\nLoads one or multiple audio files",
-            "line": " src\\audio\\index.js:23"
+            "message": "Missing item type",
+            "line": " src\\audio\\index.js:43"
         },
         {
-            "message": "Missing item type\nPlays the audio file",
-            "line": " src\\audio\\index.js:51"
+            "message": "Missing item type\nSets or gets properties of the audio object",
+            "line": " src\\audio\\index.js:67"
         },
         {
-            "message": "Missing item type\nGet the audio file object",
-            "line": " src\\audio\\index.js:81"
-        },
-        {
-            "message": "Missing item type\nPauses the audio file",
-            "line": " src\\audio\\index.js:89"
-        },
-        {
-            "message": "Missing item type\nStops playing the audio file",
-            "line": " src\\audio\\index.js:101"
-        },
-        {
-            "message": "Missing item type\nGet the length of the sound file",
-            "line": " src\\audio\\index.js:112"
-        },
-        {
-            "message": "Missing item type\nSets or gets the volume of the audio file",
-            "line": " src\\audio\\index.js:120"
-        },
-        {
-            "message": "Missing item type\nSets or gets the position of the audio file",
-            "line": " src\\audio\\index.js:137"
-        },
-        {
-            "message": "Missing item type\nSets or gets properties of the audio object\nTODO: Method chaining",
-            "line": " src\\audio\\index.js:149"
-        },
-        {
-            "message": "Missing item type\nMute all sound of the game",
-            "line": " src\\audio\\index.js:185"
+            "message": "Missing item type",
+            "line": " src\\audio\\manager.js:22"
         },
         {
             "message": "Missing item type\nRandomize array element order in-place.\nUsing Fisher-Yates shuffle algorithm.",
@@ -1300,7 +1248,7 @@
             "line": " src\\localization\\index.js:67"
         },
         {
-            "message": "Missing item type\nMixin language property into objects\nTODO: Refactor this to use mixer library",
+            "message": "Missing item type\nMixin language property into objects\nTODO: Refactor this to use mixedice library",
             "line": " src\\mixin\\language.js:1"
         },
         {
@@ -1317,7 +1265,7 @@
         },
         {
             "message": "Missing item type\nGets localized value",
-            "line": " src\\scene\\index.js:401"
+            "line": " src\\scene\\index.js:405"
         },
         {
             "message": "Missing item type\nPass a checkpoint",
@@ -1336,6 +1284,14 @@
             "line": " src\\game.js:14"
         },
         {
+            "message": "Missing item type",
+            "line": " src\\game.js:116"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src\\game.js:129"
+        },
+        {
             "message": "Missing item type\nRefreshes the game object",
             "line": " src\\gameobject.js:33"
         },
@@ -1346,6 +1302,10 @@
         {
             "message": "Missing item type\nAdds a custom task to the preloader",
             "line": " src\\preloader.js:65"
+        },
+        {
+            "message": "Missing item type\nAdds a custom asynchronous task to the preloader",
+            "line": " src\\preloader.js:79"
         },
         {
             "message": "Missing item type",

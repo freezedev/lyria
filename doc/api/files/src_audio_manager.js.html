@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Audio - lyria</title>
+    <title>src\audio\manager.js - lyria</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -19,7 +19,7 @@
             
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.2.5</em>
+            <em>API Docs for: 0.2.9</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -40,8 +40,6 @@
 
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
-            
-                <li><a href="../classes/Audio.html">Audio</a></li>
             
                 <li><a href="../classes/Checkpoints.html">Checkpoints</a></li>
             
@@ -70,6 +68,10 @@
             <ul id="api-modules" class="apis modules">
             
                 <li><a href="../modules/Lyria.html">Lyria</a></li>
+            
+                <li><a href="../modules/lyria_loop.html">lyria/loop</a></li>
+            
+                <li><a href="../modules/lyria_preloader.html">lyria/preloader</a></li>
             
                 <li><a href="../modules/Scene.html">Scene</a></li>
             
@@ -110,66 +112,120 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1>Audio Class</h1>
-<div class="box meta">
+                        <h1 class="file-heading">File: src\audio\manager.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+define([&#x27;jquery&#x27;, &#x27;clamp&#x27;, &#x27;lyria/log&#x27;, &#x27;lyria/audio&#x27;, &#x27;mixedice&#x27;, &#x27;eventmap&#x27;], function($, clamp, Log, Audio, mixedice, EventMap) {
+
+
+  var AudioManager = function() {
+
+    mixedice([this, AudioManager.prototype], new EventMap());
+    this.audioFiles = {};
+  };
+
+  var volume = 1;
+  // default
+
+  Object.defineProperty(AudioManager, &#x27;volume&#x27;, {
+    get : function() {
+      return volume;
+    },
+    set : function(value) {
+      volume = clamp(value, 0, 1);
+    }
+  });
+
+  /**
+   *
+   * @param {Object} options
+   * @param {String} options.type [&#x27;music&#x27;, &#x27;sound&#x27;]
+   * @param {String} options id
+   * @param {Boolean} options loop
+   * @param {Number} options volume
+   * @param {Array} options paths paths to audio file with defined fallbacks
+   *
+   */
+  AudioManager.prototype.add = function(options) {
+    options = $.extend({
+      &#x27;id&#x27; : &#x27;&#x27;,
+      &#x27;type&#x27; : &#x27;sound&#x27;,
+      &#x27;loop&#x27; : false,
+      &#x27;volume&#x27; : 1.0,
+      &#x27;paths&#x27; : []
+    }, options);
+
+    // set volume in relation to current max volume
+    options.volume *= volume;
+
+    if (options.id === &#x27;&#x27;) {
+      Log.e(&#x27;AudioManager.add: No id was given for new audio object&#x27;);
+      return;
+    }
+
+    this.audioFiles[options.id] = new Audio(options);
+    this.trigger(&#x27;added&#x27;, options.id, this.audioFiles[options.id]);
+    return this.audioFiles[options];
+  };
+
+  AudioManager.prototype.play = function(id, loop) {
+    if (!this.audioFiles[id]) {
+      Log.e(&#x27;AudioManager.play: No audio element found under id &#x27; + id);
+      return;
+    }
     
-
+    $(&#x27;#&#x27; + id).off(&#x27;ended&#x27;);
+    $(&#x27;#&#x27; + id).on(&#x27;ended&#x27;, {
+      &#x27;audioFile&#x27; : this.audioFiles[id],
+      &#x27;audioManager&#x27; : this,
+      &#x27;id&#x27; : id
+    }, function(event) {
+      if (event.data.audioFile.attr(&#x27;loop&#x27;) &gt; 0 || event.data.audioFile.attr(&#x27;loop&#x27;) === -1) {
+        event.data.audioFile.play();
+        event.data.audioManager.trigger(&#x27;loopEnded&#x27;, event.data.id, event.data.audioFile);
+      } else {
+        event.data.audioManager.trigger(&#x27;ended&#x27;, event.data.id, event.data.audioFile);
+      }
+    });
     
+    this.audioFiles[id].play(loop);
+    this.trigger(&#x27;play&#x27;, id, this.audioFiles[id]);
+  };
 
-    
-        <div class="foundat">
-            Defined in: <a href="../files/src_audio_index.js.html#l6"><code>src\audio\index.js:6</code></a>
-        </div>
-    
+  AudioManager.prototype.pause = function(id) {
+    if (!this.audioFiles[id]) {
+      Log.e(&#x27;AudioManager.pause: No audio element found under id &#x27; + id);
+      return;
+    }
+    this.audioFiles[id].pause();
+    this.trigger(&#x27;paused&#x27;, id, this.audioFiles[id]);
+  };
 
-    
-        
-            Module: <a href="../modules/Lyria.html">Lyria</a>
-        
-    
+  AudioManager.prototype.stop = function(id) {
+    if (!this.audioFiles[id]) {
+      Log.e(&#x27;AudioManager.stop: No audio element found under id &#x27; + id);
+      return;
+    }
+    this.audioFiles[id].stop();
+    // ended event should be triggered automatically
+  };
 
-    
-</div>
+  AudioManager.prototype.volume = function(id, volume) {
+    if (!this.audioFiles[id]) {
+      Log.e(&#x27;AudioManager.volume: No audio element found under id &#x27; + id);
+      return;
+    }
+    if (volume) {
+      this.audioFiles[id].volume = clamp(volume, 0, 1);
+    } else {
+      return this.audioFiles[id].volume;
+    }
+  };
+  return AudioManager;
+});
 
-
-
-<div class="box intro">
-    
-</div>
-
-
-
-<div id="classdocs" class="tabview">
-    <ul class="api-class-tabs">
-        <li class="api-class-tab index"><a href="#index">Index</a></li>
-
-        
-        
-        
-        
-    </ul>
-
-    <div>
-        <div id="index" class="api-class-tabpanel index">
-            <h2 class="off-left">Item Index</h2>
-
-            
-
-            
-
-            
-
-            
-        </div>
-
-        
-
-        
-
-        
-
-        
-    </div>
+    </pre>
 </div>
 
                     </div>

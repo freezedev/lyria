@@ -19,7 +19,7 @@
             
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.2.5</em>
+            <em>API Docs for: 0.2.9</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -40,8 +40,6 @@
 
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
-            
-                <li><a href="../classes/Audio.html">Audio</a></li>
             
                 <li><a href="../classes/Checkpoints.html">Checkpoints</a></li>
             
@@ -70,6 +68,10 @@
             <ul id="api-modules" class="apis modules">
             
                 <li><a href="../modules/Lyria.html">Lyria</a></li>
+            
+                <li><a href="../modules/lyria_loop.html">lyria/loop</a></li>
+            
+                <li><a href="../modules/lyria_preloader.html">lyria/preloader</a></li>
             
                 <li><a href="../modules/Scene.html">Scene</a></li>
             
@@ -114,91 +116,109 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/**
- * @module Lyria
- */
-define([&#x27;root&#x27;, &#x27;mixer&#x27;, &#x27;jquery&#x27;, &#x27;lyria/resource&#x27;, &#x27;lyria/log&#x27;, &#x27;eventmap&#x27;], function(root, mixer, $, Resource, Log, EventMap) {&#x27;use strict&#x27;;
+define([&#x27;root&#x27;, &#x27;mixedice&#x27;, &#x27;jquery&#x27;, &#x27;lyria/resource&#x27;, &#x27;lyria/log&#x27;, &#x27;eventmap&#x27;], function(root, mixedice, $, Resource, Log, EventMap) {&#x27;use strict&#x27;;
+  /**
+   * @module lyria/preloader
+   */
 
   /**
    * Provides a preloader to load assets before they are needed
-   * 
+   *
    * @class Preloader
    */
   var Preloader = (function() {
 
     /**
      * @constructor
-     * 
+     *
      * @param {Object} assetObject
      */
     var Preloader = function(assetObject) {
-      mixer([this, Preloader.prototype], new EventMap());
+      mixedice([this, Preloader.prototype], new EventMap());
 
       /**
        * @property assets
-       * @type {Array} 
+       * @type {Array}
        */
       if (assetObject != null) {
         this.assets = assetObject;
       } else {
         this.assets = {};
       }
-  
+
       /**
        * @property maxAssets
        * @type {Number}
-       * @default 0 
+       * @default 0
        */
       this.maxAssets = 0;
-      
+
       /**
        * @property assetsLoaded
        * @type {Number}
-       * @default 0 
+       * @default 0
        */
       this.assetsLoaded = 0;
-      
+
       /**
        * @property percentLoaded
        * @type {Number}
-       * @default 0 
+       * @default 0
        */
       this.percentLoaded = 0;
-      
+
       /**
        * @property steps
-       * @type {Array} 
+       * @type {Array}
        */
       this.steps = [];
-      
+
       /**
        * @property taskList
-       * @type {Array} 
+       * @type {Array}
        */
       this.taskList = [];
     };
 
     /**
      * Adds a custom task to the preloader
-     * 
-     * @param {Function} taskFn 
+     *
+     * @param {Function} taskFn
      */
     Preloader.prototype.task = function(taskFn) {
-      taskList.add(taskFn);
+      if ( typeof taskFn === &#x27;function&#x27;) {
+        this.taskList.push({
+          task: taskFn,
+          async: false
+        });
+      }
+    };
+
+    /**
+     * Adds a custom asynchronous task to the preloader
+     *
+     * @param {Function} taskFn
+     */
+    Preloader.prototype.taskAsync = function(taskFn) {
+      if ( typeof taskFn === &#x27;function&#x27;) {
+        this.taskList.push({
+          task: taskFn,
+          async: true
+        });
+      }
     };
 
     /**
      * Starts the preloader and loads all assets asynchronously. Triggers
      * events when necessary.
-     * 
-     * @method start 
+     *
+     * @method start
      */
     Preloader.prototype.start = function() {
       // Check if it&#x27;s valid
       if (this.assets == null) {
         throw new Error(&#x27;Assets should not be null. Pass at least an empty object.&#x27;);
       }
-      
 
       this.trigger(&#x27;start&#x27;);
 
@@ -208,69 +228,101 @@ define([&#x27;root&#x27;, &#x27;mixer&#x27;, &#x27;jquery&#x27;, &#x27;lyria/res
       if (Object.keys(this.assets).length &gt; 0) {
         totalSize = this.assets.totalSize;
       }
-      
+
       var currentProgress = 0;
-      
+
       if ((this.steps == null) || (this.steps.length === 0)) {
-        
+
       }
-      
+
       var hasLoadingScene = this.sceneDirector != null &amp;&amp; this.loadingScene != null;
-      
+
       if (hasLoadingScene) {
         this.sceneDirector.show(this.loadingScene);
       }
-      
-      
+
       var self = this;
+      
+      var loadCustomTasks = function(done) {
+        var maxTasks = self.taskList.length;
+        var currentTasks = 0;
+
+        var checkIfComplete = function() {
+          if (currentTasks === maxTasks) {
+            done();
+          }
+        };
+        
+        var doneFn = function() {
+          currentTasks++;
+          checkIfComplete();
+        };
+
+        if (self.taskList.length === 0) {
+          done();
+        } else {
+          for (var i = 0, j = self.taskList.length; i &lt; j; i++) {
+            (function(item) {
+              if (item.async) {
+                item.task.call(this, doneFn);
+              } else {
+                item.task();
+                doneFn();
+              }
+            })(self.taskList[i]);
+          }
+        }
+
+      };
 
       var loadingProgress = function() {
 
         var percentLoaded = 100;
-        
+
         if (currentProgress !== totalSize) {
           percentLoaded = currentProgress / totalSize;
         }
 
         self.trigger(&#x27;progress&#x27;, percentLoaded);
-        
+
         if (hasLoadingScene) {
           self.sceneDirector.currentScene.trigger(&#x27;progress&#x27;, percentLoaded, currentProgress, totalSize);
         }
 
         if (currentProgress &gt;= totalSize) {
-          if (hasLoadingScene) {
-            self.sceneDirector.currentScene.trigger(&#x27;complete&#x27;);
-          }
-
-          self.trigger(&#x27;complete&#x27;);
+          loadCustomTasks(function() {
+            if (hasLoadingScene) {
+              self.sceneDirector.currentScene.trigger(&#x27;complete&#x27;);
+            }
+  
+            self.trigger(&#x27;complete&#x27;);
+          });
         }
       };
-
 
       if (Object.keys(this.assets).length &gt; 0) {
         // Go through all assets and preload them
         $.each(this.assets, function(key, value) {
-          
+
           if (value.files == null || !Array.isArray(value.files) || value.files.length === 0) {
             return true;
           }
-          
+
           for (var i = 0, j = value.files.length; i &lt; j; i++) {
             (function(iterator) {
-              
+
               if (iterator.type.indexOf(&#x27;image&#x27;) === 0) {
                 var img = new root.Image();
                 img.onload = function() {
                   currentProgress += iterator.size;
-      
+
                   loadingProgress();
                 };
-      
+
                 img.onerror = function(err) {
                   Log.e(&#x27;Error while loading &#x27; + iterator.name);
                 };
-      
+
                 img.src = iterator.name;
               } else {
                 $.ajax({
@@ -278,20 +330,20 @@ define([&#x27;root&#x27;, &#x27;mixer&#x27;, &#x27;jquery&#x27;, &#x27;lyria/res
                   dataType: &#x27;text&#x27;
                 }).always(function() {
                   currentProgress += iterator.size;
-      
+
                   loadingProgress();
                 }).error(function(err) {
                   Log.e(&#x27;Error while loading &#x27; + iterator.name + &#x27;: &#x27; + err);
                 });
               }
-              
+
             })(value.files[i]);
           }
         });
       } else {
         loadingProgress();
       }
-      
+
     };
 
     return Preloader;
@@ -300,6 +352,7 @@ define([&#x27;root&#x27;, &#x27;mixer&#x27;, &#x27;jquery&#x27;, &#x27;lyria/res
 
   return Preloader;
 });
+
     </pre>
 </div>
 

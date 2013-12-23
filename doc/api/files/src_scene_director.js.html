@@ -19,7 +19,7 @@
             
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.2.5</em>
+            <em>API Docs for: 0.2.9</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -40,8 +40,6 @@
 
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
-            
-                <li><a href="../classes/Audio.html">Audio</a></li>
             
                 <li><a href="../classes/Checkpoints.html">Checkpoints</a></li>
             
@@ -70,6 +68,10 @@
             <ul id="api-modules" class="apis modules">
             
                 <li><a href="../modules/Lyria.html">Lyria</a></li>
+            
+                <li><a href="../modules/lyria_loop.html">lyria/loop</a></li>
+            
+                <li><a href="../modules/lyria_preloader.html">lyria/preloader</a></li>
             
                 <li><a href="../modules/Scene.html">Scene</a></li>
             
@@ -118,7 +120,7 @@
  * @module Lyria
  * @submodule Scene
  */
-define([&#x27;root&#x27;, &#x27;mixer&#x27;, &#x27;jquery&#x27;, &#x27;eventmap&#x27;, &#x27;lyria/scene&#x27;, &#x27;lyria/viewport&#x27;], function(root, mixer, $, EventMap, Scene, Viewport) {&#x27;use strict&#x27;;
+define([&#x27;root&#x27;, &#x27;mixedice&#x27;, &#x27;jquery&#x27;, &#x27;eventmap&#x27;, &#x27;lyria/scene&#x27;, &#x27;lyria/viewport&#x27;], function(root, mixedice, $, EventMap, Scene, Viewport) {&#x27;use strict&#x27;;
 
   /**
    * The scene director is the manager for all scenes
@@ -137,7 +139,7 @@ define([&#x27;root&#x27;, &#x27;mixer&#x27;, &#x27;jquery&#x27;, &#x27;eventmap&
      * @param {Object} parent
      */
     function SceneDirector(container, parent) {
-      mixer([this, SceneDirector.prototype], new EventMap());
+      mixedice([this, SceneDirector.prototype], new EventMap());
 
       if ( container instanceof Viewport) {
         this.viewport = container;
@@ -201,7 +203,7 @@ define([&#x27;root&#x27;, &#x27;mixer&#x27;, &#x27;jquery&#x27;, &#x27;eventmap&
      * @param {Object} scene
      * @param {Object} data
      */
-    SceneDirector.prototype.add = function(scene, data) {
+    SceneDirector.prototype.add = function(scene, data, done) {
 
       // Shorthand to add all scenes to the scene director
       if (scene === &#x27;*&#x27; &amp;&amp; this.scenes) {
@@ -211,7 +213,7 @@ define([&#x27;root&#x27;, &#x27;mixer&#x27;, &#x27;jquery&#x27;, &#x27;eventmap&
       // Allow array as scenes
       if (Array.isArray(scene)) {
         for (var i = 0, j = scene.length; i &lt; j; i++) {
-          this.add(scene[i], data);
+          this.add(scene[i], data, done);
         }
         return;
       }
@@ -262,7 +264,7 @@ define([&#x27;root&#x27;, &#x27;mixer&#x27;, &#x27;jquery&#x27;, &#x27;eventmap&
         }
       }
 
-      scene.trigger(&#x27;added&#x27;);
+      scene.trigger(&#x27;added&#x27;, done);
 
       return this;
     };
@@ -307,6 +309,7 @@ define([&#x27;root&#x27;, &#x27;mixer&#x27;, &#x27;jquery&#x27;, &#x27;eventmap&
         $(&#x27;#&#x27; + sceneName).show();
       }
       this.trigger(&#x27;scene:change&#x27;, sceneName);
+      
       self.currentScene.trigger(&#x27;active&#x27;, options);
 
       if (callback) {

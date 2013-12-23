@@ -19,7 +19,7 @@
             
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.2.5</em>
+            <em>API Docs for: 0.2.9</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -40,8 +40,6 @@
 
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
-            
-                <li><a href="../classes/Audio.html">Audio</a></li>
             
                 <li><a href="../classes/Checkpoints.html">Checkpoints</a></li>
             
@@ -70,6 +68,10 @@
             <ul id="api-modules" class="apis modules">
             
                 <li><a href="../modules/Lyria.html">Lyria</a></li>
+            
+                <li><a href="../modules/lyria_loop.html">lyria/loop</a></li>
+            
+                <li><a href="../modules/lyria_preloader.html">lyria/preloader</a></li>
             
                 <li><a href="../modules/Scene.html">Scene</a></li>
             
@@ -117,7 +119,7 @@
 /**
  * @module Lyria
  */
-define([&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;nexttick&#x27;, &#x27;lyria/component&#x27;, &#x27;lyria/gameobject&#x27;, &#x27;lyria/log&#x27;, &#x27;lyria/localization&#x27;], function($, mixer, nextTick, Component, GameObject, Log, Localization) {&#x27;use strict&#x27;;
+define([&#x27;jquery&#x27;, &#x27;mixedice&#x27;, &#x27;nexttick&#x27;, &#x27;lyria/component&#x27;, &#x27;lyria/gameobject&#x27;, &#x27;lyria/log&#x27;, &#x27;lyria/localization&#x27;], function($, mixedice, nextTick, Component, GameObject, Log, Localization) {&#x27;use strict&#x27;;
 
   var createNamespace = function(obj, chain, value) {
     var chainArr = chain.split(&#x27;.&#x27;);
@@ -158,7 +160,7 @@ define([&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;nexttick&#x27;, &#x27;lyria
 
       // Mixin event map into Scene
       // Sender: &quot;scene:#{sceneName}&quot;
-      mixer([this, Scene.prototype], new Component(sceneName));
+      mixedice([this, Scene.prototype], new Component(sceneName));
 
       // We need a reference to the scene not being this
       var self = this;
@@ -213,7 +215,7 @@ define([&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;nexttick&#x27;, &#x27;lyria
       });
 
       // Synchronizes events and scene view
-      self.on(&#x27;synchronize&#x27;, function() {
+      self.on(&#x27;synchronize&#x27;, function(callback) {
         self.refresh();
 
         if (self.DOMEvents &amp;&amp; !$.isEmptyObject(self.DOMEvents)) {
@@ -259,15 +261,19 @@ define([&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;nexttick&#x27;, &#x27;lyria
             });
           });
         }
+        
+        if (callback) {
+          callback();          
+        }
       });
 
-      var createScene = function(modules) {
+      var createScene = function(modules, callback) {
         var sceneDone = function(err, success) {
           if (err) {
             return console.error(&#x27;Error while executing scene &#x27; + self.name + &#x27;: &#x27; + err);
           }
 
-          self.trigger(&#x27;synchronize&#x27;);
+          self.trigger(&#x27;synchronize&#x27;, callback);
         };
 
         var async = false;
@@ -307,7 +313,7 @@ define([&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;nexttick&#x27;, &#x27;lyria
       // Call scene
       var reqModules = Object.keys(Scene.requireAlways) || [];
 
-      self.on(&#x27;added&#x27;, function() {
+      self.on(&#x27;added&#x27;, function(callback) {
         require(reqModules, function() {
           var importedModules = {};
   
@@ -329,10 +335,10 @@ define([&#x27;jquery&#x27;, &#x27;mixer&#x27;, &#x27;nexttick&#x27;, &#x27;lyria
                 })(arguments[j]);
               }
   
-              createScene(importedModules);
+              createScene(importedModules, callback);
             });
           } else {
-            createScene(importedModules);
+            createScene(importedModules, callback);
           }
   
         });
