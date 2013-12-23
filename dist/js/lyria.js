@@ -1114,8 +1114,23 @@ define('lyria/game', ['eventmap', 'mixedice', 'fullscreen', 'jquery', 'lyria/vie
       });
     };
     
+    /**
+     * 
+     */
     Game.prototype.addScene = function(name, data) {
       var self = this;
+      
+      if (Array.isArray(name)) {
+        for (var i = 0, j = name.length; i < j; i++) {
+          (function(item) {
+            if (typeof item === 'object') {
+              self.addScene(name.name, name.data);
+            } else {
+              self.addScene(name);
+            }
+          })(name[i]);
+        }
+      }
       
       this.preloader.taskAsync(function(done) {
         self.director.add(name, data, done);
@@ -1124,6 +1139,9 @@ define('lyria/game', ['eventmap', 'mixedice', 'fullscreen', 'jquery', 'lyria/vie
       return Game;
     };
     
+    /**
+     * 
+     */
     Game.prototype.showScene = function(name) {
       this.director.show(name);
     };
@@ -1141,11 +1159,12 @@ define('lyria/game', ['eventmap', 'mixedice', 'fullscreen', 'jquery', 'lyria/vie
   })();
 
 }); 
-/**
- * @module Lyria
- */
 define('lyria/gameobject', ['mixedice', 'eventmap', 'lyria/component', 'lyria/log'], function(mixedice, EventMap, Component, Log) {
   'use strict';
+  
+  /**
+   * @module lyria/gameobject
+   */
   
   //Lyria.GameObject
   return (function() {
@@ -1339,6 +1358,12 @@ define('lyria/input/key', function() {
 });
 
 define('lyria/language', ['detectr', 'eventmap', 'lyria/mixin/language'], function(detectr, EventMap, langMixin) {
+  'use strict';
+  
+  /**
+   * @module lyria/language 
+   */
+  
   var langEvents = new EventMap();
   
   // Fallback language
@@ -1354,13 +1379,11 @@ define('lyria/language', ['detectr', 'eventmap', 'lyria/mixin/language'], functi
 
   return langObject;
 });
-/**
- * Lyria module
- *
- * @module Lyria
- */
 define('lyria/layer', ['mixedice', 'lyria/gameobject'], function(mixedice, GameObject) {
   'use strict';
+  /**
+   * @module lyria/layer
+   */
 
   return (function() {
 
@@ -1473,11 +1496,11 @@ define('lyria/localization', ['lyria/language', 'lyria/template/string', 'lyria/
 
   return Localization;
 });
-/**
- * @module Lyria
- */
 define('lyria/log', ['root'], function(root) {
   'use strict';
+  /**
+   * @module lyria/log
+   */
   
   /**
    * @class Log 
@@ -1553,10 +1576,11 @@ define('lyria/log', ['root'], function(root) {
   
   return Log;
 });
-/**
- * @module Lyria
- */
 define('lyria/loop', ['requestanimationframe', 'eventmap'], function(requestAnimationFrame, EventMap) {
+  /**
+   * @module lyria/loop
+   */
+  
   'use strict';
   
   var loopEvents = new EventMap();
@@ -1770,10 +1794,10 @@ define('lyria/prefab/manager', ['jqueryify', 'jquery', 'root'], function($ify, $
   return PrefabManager;
 });
 
-/**
- * @module Lyria
- */
 define('lyria/preloader', ['root', 'mixedice', 'jquery', 'lyria/resource', 'lyria/log', 'eventmap'], function(root, mixedice, $, Resource, Log, EventMap) {'use strict';
+  /**
+   * @module lyria/preloader
+   */
 
   /**
    * Provides a preloader to load assets before they are needed
