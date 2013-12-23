@@ -1,8 +1,8 @@
-/**
- * @module Lyria
- */
 define(['root'], function(root) {
   'use strict';
+  /**
+   * @module lyria/log
+   */
   
   /**
    * @class Log 

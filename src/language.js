@@ -1,4 +1,10 @@
 define(['detectr', 'eventmap', 'lyria/mixin/language'], function(detectr, EventMap, langMixin) {
+  'use strict';
+  
+  /**
+   * @module lyria/language 
+   */
+  
   var langEvents = new EventMap();
   
   // Fallback language

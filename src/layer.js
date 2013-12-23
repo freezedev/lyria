@@ -1,10 +1,8 @@
-/**
- * Lyria module
- *
- * @module Lyria
- */
 define(['mixedice', 'lyria/gameobject'], function(mixedice, GameObject) {
   'use strict';
+  /**
+   * @module lyria/layer
+   */
 
   return (function() {
 

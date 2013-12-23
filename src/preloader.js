@@ -1,7 +1,7 @@
-/**
- * @module Lyria
- */
 define(['root', 'mixedice', 'jquery', 'lyria/resource', 'lyria/log', 'eventmap'], function(root, mixedice, $, Resource, Log, EventMap) {'use strict';
+  /**
+   * @module lyria/preloader
+   */
 
   /**
    * Provides a preloader to load assets before they are needed

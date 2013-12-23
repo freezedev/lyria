@@ -1,8 +1,9 @@
-/**
- * @module Lyria
- */
 define(['mixedice', 'eventmap', 'lyria/component', 'lyria/log'], function(mixedice, EventMap, Component, Log) {
   'use strict';
+  
+  /**
+   * @module lyria/gameobject
+   */
   
   //Lyria.GameObject
   return (function() {
