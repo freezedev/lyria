@@ -119,6 +119,18 @@ define(['eventmap', 'mixedice', 'fullscreen', 'jquery', 'lyria/viewport', 'lyria
     Game.prototype.addScene = function(name, data) {
       var self = this;
       
+      if (Array.isArray(name)) {
+        for (var i = 0, j = name.length; i < j; i++) {
+          (function(item) {
+            if (typeof item === 'object') {
+              self.addScene(name.name, name.data);
+            } else {
+              self.addScene(name);
+            }
+          })(name[i]);
+        }
+      }
+      
       this.preloader.taskAsync(function(done) {
         self.director.add(name, data, done);
       });
