@@ -1120,6 +1120,10 @@ define('lyria/game', ['eventmap', 'mixedice', 'fullscreen', 'jquery', 'lyria/vie
     Game.prototype.addScene = function(name, data) {
       var self = this;
       
+      if (!name) {
+        return this;
+      }
+      
       if (Array.isArray(name)) {
         for (var i = 0, j = name.length; i < j; i++) {
           (function(item) {
@@ -1136,7 +1140,7 @@ define('lyria/game', ['eventmap', 'mixedice', 'fullscreen', 'jquery', 'lyria/vie
         self.director.add(name, data, done);
       });
       
-      return Game;
+      return this;
     };
     
     /**
