@@ -24,7 +24,7 @@
     "grunt-templater": "0.0.4-1",
     "grunt-contrib-csslint": "~0.2.0",
     "grunt-amd-tamer": "~0.1.0",
-    "grunt-release": "~0.6.0"
+    "grunt-bumper": "~1.0.2"
   },
   "scripts": {
     "test": "grunt test"
