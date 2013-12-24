@@ -1,4 +1,4 @@
-define(['jquery', 'clamp', 'lyria/log', 'lyria/audio', 'mixedice', 'eventmap'], function($, clamp, Log, Audio, mixedice, EventMap) {
+define(['jquery', 'clamp', '../log', '../audio', 'mixedice', 'eventmap'], function($, clamp, Log, Audio, mixedice, EventMap) {
 
 
   var AudioManager = function() {

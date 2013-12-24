@@ -1,4 +1,4 @@
-define(['mixedice', 'lyria/gameobject'], function(mixedice, GameObject) {
+define(['mixedice', './gameobject'], function(mixedice, GameObject) {
   'use strict';
   /**
    * @module lyria/layer

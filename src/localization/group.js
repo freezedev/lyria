@@ -1,4 +1,4 @@
-define(['lyria/localization'], function(Localization) {
+define(['../localization'], function(Localization) {
   
   var LocalizationGroup = (function() {
     var LocalizationGroup = function(groups) {

@@ -2,7 +2,7 @@
  * @module Lyria
  * @submodule Template
  */
-define(['hbs', 'lyria/template/connector', 'lyria/template/methods'], function(Handlebars, TemplateConnector, templateMethods) {
+define(['hbs', './connector', './methods'], function(Handlebars, TemplateConnector, templateMethods) {
 
   var noop = function() {
   };

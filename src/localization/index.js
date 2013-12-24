@@ -1,4 +1,4 @@
-define(['lyria/language', 'lyria/template/string', 'lyria/mixin/language'], function(Language, templateString, langMixin) {
+define(['./language', './template/string', './mixin/language'], function(Language, templateString, langMixin) {
 
   var Localization = (function() {
     var Localization = function(data) {

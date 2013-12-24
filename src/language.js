@@ -1,4 +1,4 @@
-define(['detectr', 'eventmap', 'lyria/mixin/language'], function(detectr, EventMap, langMixin) {
+define(['detectr', 'eventmap', './mixin/language'], function(detectr, EventMap, langMixin) {
   'use strict';
   
   /**

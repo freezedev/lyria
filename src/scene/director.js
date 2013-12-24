@@ -2,7 +2,7 @@
  * @module Lyria
  * @submodule Scene
  */
-define(['root', 'mixedice', 'jquery', 'eventmap', 'lyria/scene', 'lyria/viewport'], function(root, mixedice, $, EventMap, Scene, Viewport) {'use strict';
+define(['root', 'mixedice', 'jquery', 'eventmap', '../scene', '../viewport'], function(root, mixedice, $, EventMap, Scene, Viewport) {'use strict';
 
   /**
    * The scene director is the manager for all scenes

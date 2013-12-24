@@ -1,4 +1,4 @@
-define(['jquery', 'mixedice', 'lyria/component', 'lyria/sprite/renderer'], function($, mixedice, Component, Renderer) {
+define(['jquery', 'mixedice', '../component', '../sprite/renderer'], function($, mixedice, Component, Renderer) {
   
   var SpriteManager = (function() {
     

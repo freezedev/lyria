@@ -1,7 +1,7 @@
 /**
  * @module Lyria
  */
-define(['jquery', 'mixedice', 'nexttick', 'lyria/component', 'lyria/gameobject', 'lyria/log', 'lyria/localization'], function($, mixedice, nextTick, Component, GameObject, Log, Localization) {'use strict';
+define(['jquery', 'mixedice', 'nexttick', './component', './gameobject', './log', './localization'], function($, mixedice, nextTick, Component, GameObject, Log, Localization) {'use strict';
 
   var createNamespace = function(obj, chain, value) {
     var chainArr = chain.split('.');

@@ -1,4 +1,4 @@
-define(['mixedice', 'eventmap', 'lyria/component', 'lyria/log'], function(mixedice, EventMap, Component, Log) {
+define(['mixedice', 'eventmap', './component', './log'], function(mixedice, EventMap, Component, Log) {
   'use strict';
   
   /**

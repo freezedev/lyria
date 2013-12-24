@@ -1,4 +1,4 @@
-define(['mixedice', 'eventmap', 'lyria/component/manager', 'lyria/log'], function(mixedice, EventMap, ComponentManager, Log) {
+define(['mixedice', 'eventmap', './component/manager', './log'], function(mixedice, EventMap, ComponentManager, Log) {
 
   //Lyria.Component
   return (function() {
