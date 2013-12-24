@@ -107,11 +107,25 @@ module.exports = function(grunt) {
         }
       }
     },
+    changelog: {
+      all: {
+        options: {
+          before: '1 year ago',
+          fixRegex: /^(.*)Fixes #\d+:?(.*)$/gim
+        }        
+      }
+    },
     clean: ['dist', 'generated', 'test/browser'],
     dependo: {
-      targetPath: 'dist',
-      outputPath: './doc/dependencies',
-      format: 'amd'
+      options: {
+        format: 'amd'
+      },
+      all: {
+        options: {
+          targetPath: 'src',
+          outputPath: './doc/dependencies'
+        }
+      }
     },
     plato: {
       all: {
@@ -154,19 +168,13 @@ module.exports = function(grunt) {
         src: ['dist/css/*.css']
       }
     },
-    release: {
+    bumper: {
       options: {
-        npm: false
-      },
-      bowerFile: {
-        options: {
-          file: 'bower.json'          
-        }
-      },
-      packageFile: {
-        options: {
-          file: 'package.json'          
-        }
+      files: ['package.json', 'bower.json'],
+      tasks: ['default', 'doc'],
+      commitMessage: 'Release %VERSION%',
+      tagName: '%VERSION%',
+      tagMessage: 'Version %VERSION%'
       }
     }
   });
@@ -177,7 +185,5 @@ module.exports = function(grunt) {
   grunt.registerTask('test', 'Lints and unit tests', ['jshint', 'csslint', 'template', 'mocha']);
   grunt.registerTask('doc', 'Generated documentation', ['yuidoc', 'dependo', 'plato']);
   grunt.registerTask('default', 'Default task', ['clean', 'handlebars', 'stylus', 'concat', 'amd_tamer', 'test', 'uglify', 'cssmin']);
-  
-  grunt.registerTask('releaser', 'When releasing this library', ['doc']);
 
 };
