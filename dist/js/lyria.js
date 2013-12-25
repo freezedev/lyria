@@ -83,7 +83,7 @@ define('lyria/achievement', ['clamp'], function(clamp) {
 
 });
 
-define('lyria/achievement/manager', ['jquery', 'lyria/achievement', 'lyria/template/engine', 'lyria/template/list', 'lyria/localization'], function($, Achievement, TemplateEngine, templateList, Localization) {
+define('lyria/achievement/manager', ['jquery', '../achievement', '../template/engine', '../template/list', '../localization'], function($, Achievement, TemplateEngine, templateList, Localization) {
 
   var achievementStore = {};
 
@@ -380,7 +380,7 @@ define('lyria/audio', ['root', 'jquery'], function(root, $) {'use strict';
   return Audio;
 });
 
-define('lyria/audio/manager', ['jquery', 'clamp', 'lyria/log', 'lyria/audio', 'mixedice', 'eventmap'], function($, clamp, Log, Audio, mixedice, EventMap) {
+define('lyria/audio/manager', ['jquery', 'clamp', '../log', '../audio', 'mixedice', 'eventmap'], function($, clamp, Log, Audio, mixedice, EventMap) {
 
 
   var AudioManager = function() {
@@ -569,7 +569,7 @@ define('lyria/checkpoints', ['eventmap', 'mixedice', 'deleteitem', 'performance'
 
 });
 
-define('lyria/component', ['mixedice', 'eventmap', 'lyria/component/manager', 'lyria/log'], function(mixedice, EventMap, ComponentManager, Log) {
+define('lyria/component', ['mixedice', 'eventmap', './component/manager', './log'], function(mixedice, EventMap, ComponentManager, Log) {
 
   //Lyria.Component
   return (function() {
@@ -685,16 +685,9 @@ define('lyria/component/manager', function() {
 
 });
 
-// Debug settings
-define('lyria/debug', function() {
-  return true;
-});
-
 // General constants
-define('lyria/constants', function() {
-  return {
-    animSpeed: 300
-  };
+define('lyria/constants', {
+  animSpeed: 300
 });
 define('clamp', function() {
   var clamp = function(value, min, max) {
@@ -1002,7 +995,7 @@ define('lyria/core/watch', function() {  });
 /**
  * @module Lyria
  */
-define('lyria/game', ['eventmap', 'mixedice', 'fullscreen', 'jquery', 'lyria/viewport', 'lyria/scene/director', 'lyria/preloader', 'lyria/loop', 'lyria/world', 'lyria/checkpoints'], function(EventMap, mixedice, fullscreen, $, Viewport, Director, Preloader, Loop, World, Checkpoints) {'use strict';
+define('lyria/game', ['eventmap', 'mixedice', 'fullscreen', 'jquery', './viewport', './scene/director', './preloader', './loop', './world', './checkpoints'], function(EventMap, mixedice, fullscreen, $, Viewport, Director, Preloader, Loop, World, Checkpoints) {'use strict';
 
   /**
    * Game class which has a viewport, scene director and preloader by
@@ -1163,7 +1156,7 @@ define('lyria/game', ['eventmap', 'mixedice', 'fullscreen', 'jquery', 'lyria/vie
   })();
 
 }); 
-define('lyria/gameobject', ['mixedice', 'eventmap', 'lyria/component', 'lyria/log'], function(mixedice, EventMap, Component, Log) {
+define('lyria/gameobject', ['mixedice', 'eventmap', './component', './log'], function(mixedice, EventMap, Component, Log) {
   'use strict';
   
   /**
@@ -1361,7 +1354,7 @@ define('lyria/input/key', function() {
 
 });
 
-define('lyria/language', ['detectr', 'eventmap', 'lyria/mixin/language'], function(detectr, EventMap, langMixin) {
+define('lyria/language', ['detectr', 'eventmap', './mixin/language'], function(detectr, EventMap, langMixin) {
   'use strict';
   
   /**
@@ -1383,7 +1376,7 @@ define('lyria/language', ['detectr', 'eventmap', 'lyria/mixin/language'], functi
 
   return langObject;
 });
-define('lyria/layer', ['mixedice', 'lyria/gameobject'], function(mixedice, GameObject) {
+define('lyria/layer', ['mixedice', './gameobject'], function(mixedice, GameObject) {
   'use strict';
   /**
    * @module lyria/layer
@@ -1404,7 +1397,7 @@ define('lyria/layer', ['mixedice', 'lyria/gameobject'], function(mixedice, GameO
 
   })();
 }); 
-define('lyria/localization/group', ['lyria/localization'], function(Localization) {
+define('lyria/localization/group', ['../localization'], function(Localization) {
   
   var LocalizationGroup = (function() {
     var LocalizationGroup = function(groups) {
@@ -1422,7 +1415,7 @@ define('lyria/localization/group', ['lyria/localization'], function(Localization
   
 });
 
-define('lyria/localization', ['lyria/language', 'lyria/template/string', 'lyria/mixin/language'], function(Language, templateString, langMixin) {
+define('lyria/localization', ['./language', './template/string', './mixin/language'], function(Language, templateString, langMixin) {
 
   var Localization = (function() {
     var Localization = function(data) {
@@ -1723,7 +1716,7 @@ define('lyria/mixin/templatable', function() {
  * @namespace Lyria
  * Lyria namespace decleration
  */
-define('lyria/prefab', ['lyria/scene'], function(Scene) {
+define('lyria/prefab', ['./scene'], function(Scene) {
 	'use strict';
 
   // TODO: Allow own Prefab.requireAlways similar to Scene.requireAlways
@@ -1798,7 +1791,7 @@ define('lyria/prefab/manager', ['jqueryify', 'jquery', 'root'], function($ify, $
   return PrefabManager;
 });
 
-define('lyria/preloader', ['root', 'mixedice', 'jquery', 'lyria/resource', 'lyria/log', 'eventmap'], function(root, mixedice, $, Resource, Log, EventMap) {'use strict';
+define('lyria/preloader', ['root', 'mixedice', 'jquery', './resource', './log', 'eventmap'], function(root, mixedice, $, Resource, Log, EventMap) {'use strict';
   /**
    * @module lyria/preloader
    */
@@ -2080,7 +2073,7 @@ define('lyria/resource', ['path'], function(Path) {
  * @module Lyria
  * @submodule Scene
  */
-define('lyria/scene/director', ['root', 'mixedice', 'jquery', 'eventmap', 'lyria/scene', 'lyria/viewport'], function(root, mixedice, $, EventMap, Scene, Viewport) {'use strict';
+define('lyria/scene/director', ['root', 'mixedice', 'jquery', 'eventmap', '../scene', '../viewport'], function(root, mixedice, $, EventMap, Scene, Viewport) {'use strict';
 
   /**
    * The scene director is the manager for all scenes
@@ -2297,7 +2290,7 @@ define('lyria/scene/director', ['root', 'mixedice', 'jquery', 'eventmap', 'lyria
 /**
  * @module Lyria
  */
-define('lyria/scene', ['jquery', 'mixedice', 'nexttick', 'lyria/component', 'lyria/gameobject', 'lyria/log', 'lyria/localization'], function($, mixedice, nextTick, Component, GameObject, Log, Localization) {'use strict';
+define('lyria/scene', ['jquery', 'mixedice', 'nexttick', './component', './gameobject', './log', './localization'], function($, mixedice, nextTick, Component, GameObject, Log, Localization) {'use strict';
 
   var createNamespace = function(obj, chain, value) {
     var chainArr = chain.split('.');
@@ -2785,7 +2778,7 @@ define('lyria/sprite', function() {
   return Sprite;
 });
 
-define('lyria/sprite/manager', ['jquery', 'mixedice', 'lyria/component', 'lyria/sprite/renderer'], function($, mixedice, Component, Renderer) {
+define('lyria/sprite/manager', ['jquery', 'mixedice', '../component', '../sprite/renderer'], function($, mixedice, Component, Renderer) {
   
   var SpriteManager = (function() {
     
@@ -2812,7 +2805,7 @@ define('lyria/sprite/renderer', function() {
  * @module Lyria
  * @submodule Template 
  */
-define('lyria/template/connector', ['lyria/template/methods'], function(templateMethods) {
+define('lyria/template/connector', ['./methods'], function(templateMethods) {
   var noop = function() {
   };
 
@@ -2851,7 +2844,7 @@ define('lyria/template/connector', ['lyria/template/methods'], function(template
  * @module Lyria
  * @submodule Template
  */
-define('lyria/template/engine', ['hbs', 'lyria/template/connector', 'lyria/template/methods'], function(Handlebars, TemplateConnector, templateMethods) {
+define('lyria/template/engine', ['hbs', './connector', './methods'], function(Handlebars, TemplateConnector, templateMethods) {
 
   var noop = function() {
   };
