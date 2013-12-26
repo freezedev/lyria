@@ -19,7 +19,7 @@
             
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.2.12</em>
+            <em>API Docs for: 0.2.13</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -442,6 +442,8 @@ define([&#x27;jquery&#x27;, &#x27;mixedice&#x27;, &#x27;nexttick&#x27;, &#x27;./
       if (selector == null) {
         return;
       }
+
+      this.DOMEvents[selector] = this.DOMEvents[selector] || {};
 
       if ( typeof eventName === &#x27;function&#x27;) {
         this.DOMEvents[selector][this.defaultEvent] = eventName;

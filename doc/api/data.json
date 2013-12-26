@@ -2,7 +2,7 @@
     "project": {
         "name": "lyria",
         "description": "",
-        "version": "0.2.12",
+        "version": "0.2.13",
         "url": ""
     },
     "files": {
@@ -917,7 +917,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 331,
+            "line": 333,
             "description": "Binds a lot of events instead of a single one",
             "itemtype": "method",
             "name": "bindEvents",
@@ -936,7 +936,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 370,
+            "line": 372,
             "description": "Unbinds a lot of events",
             "itemtype": "method",
             "name": "unbindEvents",
@@ -952,7 +952,7 @@
         },
         {
             "file": "src\\scene\\index.js",
-            "line": 405,
+            "line": 407,
             "description": "Gets localized value",
             "params": [
                 {
@@ -1322,7 +1322,7 @@
         },
         {
             "message": "Missing item type\nGets localized value",
-            "line": " src\\scene\\index.js:405"
+            "line": " src\\scene\\index.js:407"
         },
         {
             "message": "Missing item type\nPass a checkpoint",

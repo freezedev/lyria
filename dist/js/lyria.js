@@ -2606,6 +2606,8 @@ define('lyria/scene', ['jquery', 'mixedice', 'nexttick', './component', './gameo
         return;
       }
 
+      this.DOMEvents[selector] = this.DOMEvents[selector] || {};
+
       if ( typeof eventName === 'function') {
         this.DOMEvents[selector][this.defaultEvent] = eventName;
       } else {
