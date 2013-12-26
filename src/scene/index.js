@@ -317,6 +317,8 @@ define(['jquery', 'mixedice', 'nexttick', './component', './gameobject', './log'
         return;
       }
 
+      this.DOMEvents[selector] = this.DOMEvents[selector] || {};
+
       if ( typeof eventName === 'function') {
         this.DOMEvents[selector][this.defaultEvent] = eventName;
       } else {
