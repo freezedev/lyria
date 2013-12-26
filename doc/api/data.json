@@ -2,7 +2,7 @@
     "project": {
         "name": "lyria",
         "description": "",
-        "version": "0.2.9",
+        "version": "0.2.12",
         "url": ""
     },
     "files": {
@@ -131,14 +131,27 @@
         },
         "src\\gameobject.js": {
             "name": "src\\gameobject.js",
-            "modules": {},
+            "modules": {
+                "lyria/gameobject": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src\\language.js": {
+            "name": "src\\language.js",
+            "modules": {
+                "lyria/language": 1
+            },
             "classes": {},
             "fors": {},
             "namespaces": {}
         },
         "src\\layer.js": {
             "name": "src\\layer.js",
-            "modules": {},
+            "modules": {
+                "lyria/layer": 1
+            },
             "classes": {
                 "Layer": 1
             },
@@ -147,7 +160,9 @@
         },
         "src\\log.js": {
             "name": "src\\log.js",
-            "modules": {},
+            "modules": {
+                "lyria/log": 1
+            },
             "classes": {
                 "Log": 1
             },
@@ -218,8 +233,6 @@
                 "Engine": 1,
                 "Checkpoints": 1,
                 "Game": 1,
-                "Layer": 1,
-                "Log": 1,
                 "Viewport": 1
             },
             "fors": {},
@@ -259,6 +272,50 @@
             "namespace": "",
             "file": "src\\template\\engine.js",
             "line": 10
+        },
+        "lyria/gameobject": {
+            "name": "lyria/gameobject",
+            "submodules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "src\\gameobject.js",
+            "line": 4
+        },
+        "lyria/language": {
+            "name": "lyria/language",
+            "submodules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "src\\language.js",
+            "line": 4
+        },
+        "lyria/layer": {
+            "name": "lyria/layer",
+            "submodules": {},
+            "classes": {
+                "Layer": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "src\\layer.js",
+            "line": 9
+        },
+        "lyria/log": {
+            "name": "lyria/log",
+            "submodules": {},
+            "classes": {
+                "Log": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "src\\log.js",
+            "line": 7
         },
         "lyria/loop": {
             "name": "lyria/loop",
@@ -405,10 +462,10 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "module": "Lyria",
+            "module": "lyria/layer",
             "namespace": "",
             "file": "src\\layer.js",
-            "line": 11,
+            "line": 9,
             "extends": "Lyria.GameObject",
             "is_constructor": 1
         },
@@ -420,7 +477,7 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "module": "Lyria",
+            "module": "lyria/log",
             "namespace": "",
             "file": "src\\log.js",
             "line": 7
@@ -991,13 +1048,13 @@
         },
         {
             "file": "src\\game.js",
-            "line": 129,
+            "line": 145,
             "class": "Game",
             "module": "Lyria"
         },
         {
             "file": "src\\game.js",
-            "line": 136,
+            "line": 152,
             "itemtype": "property",
             "name": "Loop",
             "static": 1,
@@ -1007,7 +1064,7 @@
         },
         {
             "file": "src\\gameobject.js",
-            "line": 33,
+            "line": 34,
             "description": "Refreshes the game object",
             "params": [
                 {
@@ -1017,7 +1074,7 @@
                 }
             ],
             "class": "Layer",
-            "module": "Lyria"
+            "module": "lyria/gameobject"
         },
         {
             "file": "src\\loop.js",
@@ -1289,11 +1346,11 @@
         },
         {
             "message": "Missing item type",
-            "line": " src\\game.js:129"
+            "line": " src\\game.js:145"
         },
         {
             "message": "Missing item type\nRefreshes the game object",
-            "line": " src\\gameobject.js:33"
+            "line": " src\\gameobject.js:34"
         },
         {
             "message": "Missing item type",

@@ -63,7 +63,7 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
-      <p class="stat">15.47</p>
+      <p class="stat">15.81</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
@@ -90,7 +90,7 @@
 
 <div class="container">
   <div class="row">
-    <textarea id="file-source" class="col-md-12">define(&#039;lyria/animation&#039;, [&#039;jquery&#039;, &#039;mixer&#039;, &#039;eventmap&#039;], function($, mixer, EventMap) {
+    <textarea id="file-source" class="col-md-12">define([&#039;jquery&#039;, &#039;mixedice&#039;, &#039;eventmap&#039;], function($, mixedice, EventMap) {
   var Animation = (function() {
     var Animation = function($elem, options) {
       this.$elem = $elem;
@@ -118,7 +118,7 @@
       this.sprite.image = new Image();
       
       // Mix-in eventmap
-      mixer([this, Animation.prototype], new EventMap());
+      mixedice([this, Animation.prototype], new EventMap());
       
       this.on(&#039;play&#039;, function() {
         

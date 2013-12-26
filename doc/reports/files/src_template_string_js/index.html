@@ -63,7 +63,7 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
-      <p class="stat">20.25</p>
+      <p class="stat">20.67</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
@@ -90,11 +90,11 @@
 
 <div class="container">
   <div class="row">
-    <textarea id="file-source" class="col-md-12">define(&#039;lyria/template/string&#039;, [&#039;objectify&#039;], function(objectify) {
+    <textarea id="file-source" class="col-md-12">define([&#039;objectify&#039;], function(objectify) {
   var templateString = {
     key: {
-      start: &#039;{{&#039;,
-      end: &#039;}}&#039;
+      start: &#039;\\{{&#039;,
+      end: &#039;\\}}&#039;
     },
     process: function(value, parameter) {
       if (value == null) {

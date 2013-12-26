@@ -19,7 +19,7 @@
             
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.2.9</em>
+            <em>API Docs for: 0.2.12</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -68,6 +68,14 @@
             <ul id="api-modules" class="apis modules">
             
                 <li><a href="../modules/Lyria.html">Lyria</a></li>
+            
+                <li><a href="../modules/lyria_gameobject.html">lyria/gameobject</a></li>
+            
+                <li><a href="../modules/lyria_language.html">lyria/language</a></li>
+            
+                <li><a href="../modules/lyria_layer.html">lyria/layer</a></li>
+            
+                <li><a href="../modules/lyria_log.html">lyria/log</a></li>
             
                 <li><a href="../modules/lyria_loop.html">lyria/loop</a></li>
             
@@ -119,7 +127,7 @@
 /**
  * @module Lyria
  */
-define([&#x27;jquery&#x27;, &#x27;mixedice&#x27;, &#x27;nexttick&#x27;, &#x27;lyria/component&#x27;, &#x27;lyria/gameobject&#x27;, &#x27;lyria/log&#x27;, &#x27;lyria/localization&#x27;], function($, mixedice, nextTick, Component, GameObject, Log, Localization) {&#x27;use strict&#x27;;
+define([&#x27;jquery&#x27;, &#x27;mixedice&#x27;, &#x27;nexttick&#x27;, &#x27;./component&#x27;, &#x27;./gameobject&#x27;, &#x27;./log&#x27;, &#x27;./localization&#x27;], function($, mixedice, nextTick, Component, GameObject, Log, Localization) {&#x27;use strict&#x27;;
 
   var createNamespace = function(obj, chain, value) {
     var chainArr = chain.split(&#x27;.&#x27;);
@@ -436,7 +444,7 @@ define([&#x27;jquery&#x27;, &#x27;mixedice&#x27;, &#x27;nexttick&#x27;, &#x27;ly
       }
 
       if ( typeof eventName === &#x27;function&#x27;) {
-        this.DOMEvents[selector][this.defaultEvent] = eventFunction;
+        this.DOMEvents[selector][this.defaultEvent] = eventName;
       } else {
         if (typeof eventName === &#x27;string&#x27;) {
           this.DOMEvents[selector][eventName] = eventFunction;          

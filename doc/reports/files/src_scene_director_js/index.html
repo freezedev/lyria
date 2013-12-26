@@ -45,11 +45,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
-      <p class="stat">105.57</p>
+      <p class="stat">105.53</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
-      <p class="stat">213</p>
+      <p class="stat">214</p>
     </div>
   </div>
   <div class="row historical">
@@ -63,11 +63,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
-      <p class="stat">49.83</p>
+      <p class="stat">50.17</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
-      <p class="stat">1.21</p>
+      <p class="stat">1.22</p>
     </div>
   </div>
 </div>
@@ -94,7 +94,7 @@
  * @module Lyria
  * @submodule Scene
  */
-define(&#039;lyria/scene/director&#039;, [&#039;root&#039;, &#039;mixer&#039;, &#039;jquery&#039;, &#039;eventmap&#039;, &#039;lyria/scene&#039;, &#039;lyria/viewport&#039;], function(root, mixer, $, EventMap, Scene, Viewport) {&#039;use strict&#039;;
+define([&#039;root&#039;, &#039;mixedice&#039;, &#039;jquery&#039;, &#039;eventmap&#039;, &#039;../scene&#039;, &#039;../viewport&#039;], function(root, mixedice, $, EventMap, Scene, Viewport) {&#039;use strict&#039;;
 
   /**
    * The scene director is the manager for all scenes
@@ -113,7 +113,7 @@ define(&#039;lyria/scene/director&#039;, [&#039;root&#039;, &#039;mixer&#039;, &
      * @param {Object} parent
      */
     function SceneDirector(container, parent) {
-      mixer([this, SceneDirector.prototype], new EventMap());
+      mixedice([this, SceneDirector.prototype], new EventMap());
 
       if ( container instanceof Viewport) {
         this.viewport = container;
@@ -177,7 +177,7 @@ define(&#039;lyria/scene/director&#039;, [&#039;root&#039;, &#039;mixer&#039;, &
      * @param {Object} scene
      * @param {Object} data
      */
-    SceneDirector.prototype.add = function(scene, data) {
+    SceneDirector.prototype.add = function(scene, data, done) {
 
       // Shorthand to add all scenes to the scene director
       if (scene === &#039;*&#039; &amp;&amp; this.scenes) {
@@ -187,7 +187,7 @@ define(&#039;lyria/scene/director&#039;, [&#039;root&#039;, &#039;mixer&#039;, &
       // Allow array as scenes
       if (Array.isArray(scene)) {
         for (var i = 0, j = scene.length; i &lt; j; i++) {
-          this.add(scene[i], data);
+          this.add(scene[i], data, done);
         }
         return;
       }
@@ -238,7 +238,7 @@ define(&#039;lyria/scene/director&#039;, [&#039;root&#039;, &#039;mixer&#039;, &
         }
       }
 
-      scene.trigger(&#039;added&#039;);
+      scene.trigger(&#039;added&#039;, done);
 
       return this;
     };
@@ -283,6 +283,7 @@ define(&#039;lyria/scene/director&#039;, [&#039;root&#039;, &#039;mixer&#039;, &
         $(&#039;#&#039; + sceneName).show();
       }
       this.trigger(&#039;scene:change&#039;, sceneName);
+      
       self.currentScene.trigger(&#039;active&#039;, options);
 
       if (callback) {

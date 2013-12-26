@@ -45,11 +45,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
-      <p class="stat">135.52</p>
+      <p class="stat">135.43</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
-      <p class="stat">67</p>
+      <p class="stat">173</p>
     </div>
   </div>
   <div class="row historical">
@@ -63,11 +63,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
-      <p class="stat">14.73</p>
+      <p class="stat">29.69</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
-      <p class="stat">0.71</p>
+      <p class="stat">1.45</p>
     </div>
   </div>
 </div>
@@ -91,21 +91,21 @@
 <div class="container">
   <div class="row">
     <textarea id="file-source" class="col-md-12">define(&#039;spec/preloader&#039;, [&#039;lyria/preloader&#039;], function(Preloader) {
-  
+
   describe(&#039;lyria/preloader&#039;, function() {
-    
+
     var preloader = new Preloader();
-    
+
     it(&#039;is a function&#039;, function() {
       expect(Preloader).to.be.a(&#039;function&#039;);
     });
-    
+
     describe(&#039;constructor&#039;, function() {
       it(&#039;lyria/game is instantiable&#039;, function() {
         expect(preloader).to.be.a(&#039;object&#039;);
         expect(preloader).to.be.an.instanceOf(Preloader);
       });
-      
+
       it(&#039;Instance has default values&#039;, function() {
         expect(preloader.assets).to.be.empty;
         expect(preloader.maxAssets).to.equal(0);
@@ -114,48 +114,154 @@
         expect(preloader.taskList).to.be.empty;
       });
     });
-    
-    
+
     it(&#039;Instance has property assets&#039;, function() {
       expect(preloader).to.have.property(&#039;assets&#039;);
       expect(preloader.assets).to.be.a(&#039;object&#039;);
     });
-    
+
     it(&#039;Instance has property maxAssets&#039;, function() {
       expect(preloader).to.have.property(&#039;maxAssets&#039;);
       expect(preloader.maxAssets).to.be.a(&#039;number&#039;);
     });
-    
+
     it(&#039;Instance has property assetsLoaded&#039;, function() {
       expect(preloader).to.have.property(&#039;assetsLoaded&#039;);
       expect(preloader.assetsLoaded).to.be.a(&#039;number&#039;);
     });
-    
+
     it(&#039;Instance has property steps&#039;, function() {
       expect(preloader).to.have.property(&#039;steps&#039;);
       expect(preloader.steps).to.be.a(&#039;array&#039;);
     });
-    
+
     it(&#039;Instance has property taskList&#039;, function() {
       expect(preloader).to.have.property(&#039;taskList&#039;);
       expect(preloader.taskList).to.be.a(&#039;array&#039;);
     });
-    
+
     it(&#039;#start&#039;, function() {
       expect(Preloader.prototype.start).to.be.a(&#039;function&#039;);
       expect(preloader).to.have.property(&#039;start&#039;);
       expect(preloader.start).to.equal(Preloader.prototype.start);
     });
-    
-    it(&#039;#task&#039;, function() {
-      expect(Preloader.prototype.task).to.be.a(&#039;function&#039;);
-      expect(preloader).to.have.property(&#039;start&#039;);
-      expect(preloader.task).to.equal(Preloader.prototype.task);
+
+    describe(&#039;#task&#039;, function() {
+      it(&#039;exists&#039;, function() {
+        expect(Preloader.prototype.task).to.be.a(&#039;function&#039;);
+        expect(preloader).to.have.property(&#039;start&#039;);
+        expect(preloader.task).to.equal(Preloader.prototype.task);
+      });
+
+      it(&#039;running synchronous tasks&#039;, function() {
+        var preloader = new Preloader();
+        var steps = 0;
+
+        preloader.task(function() {
+          steps++;
+        });
+        preloader.task(function() {
+          steps++;
+        });
+        preloader.task(function() {
+          steps++;
+        });
+
+        preloader.start();
+
+        expect(steps).to.be.a(&#039;number&#039;);
+        expect(steps).to.equal(3);
+      });
     });
-    
-    
+
+    describe(&#039;#taskAsync&#039;, function() {
+      it(&#039;exists&#039;, function() {
+        expect(Preloader.prototype.taskAsync).to.be.a(&#039;function&#039;);
+        expect(preloader).to.have.property(&#039;start&#039;);
+        expect(preloader.taskAsync).to.equal(Preloader.prototype.taskAsync);
+      });
+
+      it(&#039;running asynchronous tasks&#039;, function(testDone) {
+        var preloader = new Preloader();
+        var steps = 0;
+        var maxTaskSteps = 3;
+
+        var checkIfDone = function() {
+          if (steps === maxTaskSteps) {
+            expect(steps).to.be.a(&#039;number&#039;);
+            expect(steps).to.equal(3);
+            testDone();
+          }
+        };
+
+        var stepFn = function() {
+          steps++;
+        };
+
+        preloader.taskAsync(function(done) {
+          setTimeout(function() {
+            stepFn();
+            checkIfDone();
+            done();
+          }, 200);
+        });
+        preloader.taskAsync(function(done) {
+          setTimeout(function() {
+            stepFn();
+            checkIfDone();
+            done();
+          }, 300);
+        });
+        preloader.taskAsync(function(done) {
+          setTimeout(function() {
+            stepFn();
+            checkIfDone();
+            done();
+          }, 400);
+        });
+
+        preloader.start();
+      });
+      
+      it(&#039;mixing synchronous and asynchronous tasks&#039;, function(testDone) {
+        var preloader = new Preloader();
+        var steps = 0;
+        var maxTaskSteps = 3;
+
+        var checkIfDone = function() {
+          if (steps === maxTaskSteps) {
+            expect(steps).to.be.a(&#039;number&#039;);
+            expect(steps).to.equal(3);
+            testDone();
+          }
+        };
+
+        var stepFn = function() {
+          steps++;
+        };
+
+        preloader.taskAsync(function(done) {
+          setTimeout(function() {
+            stepFn();
+            checkIfDone();
+            done();
+          }, 200);
+        });
+        preloader.task(stepFn);
+        preloader.taskAsync(function(done) {
+          setTimeout(function() {
+            stepFn();
+            checkIfDone();
+            done();
+          }, 400);
+        });
+
+        preloader.start();
+      });
+    });
+
   });
-  
+
 });</textarea>
   </div>
 </div>

@@ -45,11 +45,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
-      <p class="stat">160.75</p>
+      <p class="stat">143.60</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
-      <p class="stat">11</p>
+      <p class="stat">45</p>
     </div>
   </div>
   <div class="row historical">
@@ -63,11 +63,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
-      <p class="stat">2.77</p>
+      <p class="stat">12.97</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
-      <p class="stat">0.04</p>
+      <p class="stat">0.41</p>
     </div>
   </div>
 </div>
@@ -91,15 +91,49 @@
 <div class="container">
   <div class="row">
     <textarea id="file-source" class="col-md-12">define(&#039;spec/audiomanager&#039;, [&#039;lyria/audio/manager&#039;], function(AudioManager) {
-  
+
   describe(&#039;lyria/audio/manager&#039;, function() {
-    
-    it(&#039;is an object&#039;, function() {
-      expect(AudioManager).to.be.a(&#039;object&#039;);
+
+    var audioManager = new AudioManager();
+
+    it(&#039;is a function&#039;, function() {
+      expect(AudioManager).to.be.a(&#039;function&#039;);
     });
-    
+
+    describe(&#039;constructor&#039;, function() {
+      it(&#039;can be instantiated&#039;, function() {
+        expect(audioManager).to.be.a(&#039;object&#039;);
+        expect(audioManager).to.be.an.instanceOf(AudioManager);
+      });
+    });
+
+    describe(&#039;Methods and functionality&#039;, function() {
+      describe(&#039;#add&#039;, function() {
+        it(&#039;exists&#039;, function() {
+          expect(audioManager).to.have.property(&#039;add&#039;);
+          expect(AudioManager.prototype.add).to.be.a(&#039;function&#039;);
+          expect(audioManager.add).to.equal(AudioManager.prototype.add);
+        });
+      });
+      
+      describe(&#039;#play&#039;, function() {
+        it(&#039;exists&#039;, function() {
+          expect(audioManager).to.have.property(&#039;play&#039;);
+          expect(AudioManager.prototype.play).to.be.a(&#039;function&#039;);
+          expect(audioManager.play).to.equal(AudioManager.prototype.play);
+        });
+      });
+      
+      describe(&#039;#stop&#039;, function() {
+        it(&#039;exists&#039;, function() {
+          expect(audioManager).to.have.property(&#039;stop&#039;);
+          expect(AudioManager.prototype.stop).to.be.a(&#039;function&#039;);
+          expect(audioManager.stop).to.equal(AudioManager.prototype.stop);
+        });
+      });
+    });
   });
-  
+
 });</textarea>
   </div>
 </div>

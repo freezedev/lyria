@@ -17,6 +17,10 @@ YUI.add("yuidoc-meta", function(Y) {
         "Lyria",
         "Scene",
         "Template",
+        "lyria_gameobject",
+        "lyria_language",
+        "lyria_layer",
+        "lyria_log",
         "lyria_loop",
         "lyria_preloader"
     ],
@@ -24,6 +28,22 @@ YUI.add("yuidoc-meta", function(Y) {
         {
             "displayName": "Lyria",
             "name": "Lyria"
+        },
+        {
+            "displayName": "lyria/gameobject",
+            "name": "lyria_gameobject"
+        },
+        {
+            "displayName": "lyria/language",
+            "name": "lyria_language"
+        },
+        {
+            "displayName": "lyria/layer",
+            "name": "lyria_layer"
+        },
+        {
+            "displayName": "lyria/log",
+            "name": "lyria_log"
         },
         {
             "displayName": "lyria/loop",

@@ -45,11 +45,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
-      <p class="stat">73.47</p>
+      <p class="stat">70.88</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
-      <p class="stat">166</p>
+      <p class="stat">189</p>
     </div>
   </div>
   <div class="row historical">
@@ -63,11 +63,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
-      <p class="stat">8.46</p>
+      <p class="stat">8.72</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
-      <p class="stat">1.34</p>
+      <p class="stat">1.50</p>
     </div>
   </div>
 </div>
@@ -117,10 +117,10 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
     pkg: grunt.file.readJSON(&#039;package.json&#039;),
-    concat_sourcemap: {
+    amd_tamer: {
       options: {
-        sourcesContent: true,
-        sourceRoot: &#039;/&#039;
+        base: &#039;src/&#039;,
+        namespace: &#039;lyria&#039;
       },
       scripts: {
         src: [lyriaOrigin, generatedFiles],
@@ -140,7 +140,7 @@ module.exports = function(grunt) {
       },
       dist: {
         files: {
-          &#039;dist/js/&lt;%= pkg.name %&gt;.min.js&#039;: [&#039;&lt;%= concat_sourcemap.scripts.dest %&gt;&#039;]
+          &#039;dist/js/&lt;%= pkg.name %&gt;.min.js&#039;: [&#039;&lt;%= amd_tamer.scripts.dest %&gt;&#039;]
         }
       }
     },
@@ -199,11 +199,25 @@ module.exports = function(grunt) {
         }
       }
     },
+    changelog: {
+      all: {
+        options: {
+          before: &#039;1 year ago&#039;,
+          fixRegex: /^(.*)Fixes #\d+:?(.*)$/gim
+        }        
+      }
+    },
     clean: [&#039;dist&#039;, &#039;generated&#039;, &#039;test/browser&#039;],
     dependo: {
-      targetPath: &#039;src&#039;,
-      outputPath: &#039;./doc/dependencies&#039;,
-      format: &#039;amd&#039;
+      options: {
+        format: &#039;amd&#039;
+      },
+      all: {
+        options: {
+          targetPath: &#039;src&#039;,
+          outputPath: &#039;./doc/dependencies&#039;
+        }
+      }
     },
     plato: {
       all: {
@@ -245,6 +259,15 @@ module.exports = function(grunt) {
       all: {
         src: [&#039;dist/css/*.css&#039;]
       }
+    },
+    bumper: {
+      options: {
+      files: [&#039;package.json&#039;, &#039;bower.json&#039;],
+      tasks: [&#039;default&#039;, &#039;doc&#039;],
+      commitMessage: &#039;Release %VERSION%&#039;,
+      tagName: &#039;%VERSION%&#039;,
+      tagMessage: &#039;Version %VERSION%&#039;
+      }
     }
   });
 
@@ -253,7 +276,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask(&#039;test&#039;, &#039;Lints and unit tests&#039;, [&#039;jshint&#039;, &#039;csslint&#039;, &#039;template&#039;, &#039;mocha&#039;]);
   grunt.registerTask(&#039;doc&#039;, &#039;Generated documentation&#039;, [&#039;yuidoc&#039;, &#039;dependo&#039;, &#039;plato&#039;]);
-  grunt.registerTask(&#039;default&#039;, &#039;Default task&#039;, [&#039;clean&#039;, &#039;handlebars&#039;, &#039;stylus&#039;, &#039;concat&#039;, &#039;concat_sourcemap&#039;, &#039;test&#039;, &#039;uglify&#039;, &#039;cssmin&#039;, &#039;doc&#039;]);
+  grunt.registerTask(&#039;default&#039;, &#039;Default task&#039;, [&#039;clean&#039;, &#039;handlebars&#039;, &#039;stylus&#039;, &#039;concat&#039;, &#039;amd_tamer&#039;, &#039;test&#039;, &#039;uglify&#039;, &#039;cssmin&#039;]);
 
 };</textarea>
   </div>

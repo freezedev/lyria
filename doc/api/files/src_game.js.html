@@ -19,7 +19,7 @@
             
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.2.9</em>
+            <em>API Docs for: 0.2.12</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -68,6 +68,14 @@
             <ul id="api-modules" class="apis modules">
             
                 <li><a href="../modules/Lyria.html">Lyria</a></li>
+            
+                <li><a href="../modules/lyria_gameobject.html">lyria/gameobject</a></li>
+            
+                <li><a href="../modules/lyria_language.html">lyria/language</a></li>
+            
+                <li><a href="../modules/lyria_layer.html">lyria/layer</a></li>
+            
+                <li><a href="../modules/lyria_log.html">lyria/log</a></li>
             
                 <li><a href="../modules/lyria_loop.html">lyria/loop</a></li>
             
@@ -119,7 +127,7 @@
 /**
  * @module Lyria
  */
-define([&#x27;eventmap&#x27;, &#x27;mixedice&#x27;, &#x27;fullscreen&#x27;, &#x27;jquery&#x27;, &#x27;lyria/viewport&#x27;, &#x27;lyria/scene/director&#x27;, &#x27;lyria/preloader&#x27;, &#x27;lyria/loop&#x27;, &#x27;lyria/world&#x27;, &#x27;lyria/checkpoints&#x27;], function(EventMap, mixedice, fullscreen, $, Viewport, Director, Preloader, Loop, World, Checkpoints) {&#x27;use strict&#x27;;
+define([&#x27;eventmap&#x27;, &#x27;mixedice&#x27;, &#x27;fullscreen&#x27;, &#x27;jquery&#x27;, &#x27;./viewport&#x27;, &#x27;./scene/director&#x27;, &#x27;./preloader&#x27;, &#x27;./loop&#x27;, &#x27;./world&#x27;, &#x27;./checkpoints&#x27;], function(EventMap, mixedice, fullscreen, $, Viewport, Director, Preloader, Loop, World, Checkpoints) {&#x27;use strict&#x27;;
 
   /**
    * Game class which has a viewport, scene director and preloader by
@@ -237,11 +245,27 @@ define([&#x27;eventmap&#x27;, &#x27;mixedice&#x27;, &#x27;fullscreen&#x27;, &#x2
     Game.prototype.addScene = function(name, data) {
       var self = this;
       
+      if (!name) {
+        return this;
+      }
+      
+      if (Array.isArray(name)) {
+        for (var i = 0, j = name.length; i &lt; j; i++) {
+          (function(item) {
+            if (typeof item === &#x27;object&#x27;) {
+              self.addScene(name.name, name.data);
+            } else {
+              self.addScene(name);
+            }
+          })(name[i]);
+        }
+      }
+      
       this.preloader.taskAsync(function(done) {
         self.director.add(name, data, done);
       });
       
-      return Game;
+      return this;
     };
     
     /**

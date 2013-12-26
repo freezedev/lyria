@@ -45,11 +45,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
-      <p class="stat">122.39</p>
+      <p class="stat">122.42</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
-      <p class="stat">125</p>
+      <p class="stat">161</p>
     </div>
   </div>
   <div class="row historical">
@@ -63,11 +63,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
-      <p class="stat">16.88</p>
+      <p class="stat">25.70</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
-      <p class="stat">0.58</p>
+      <p class="stat">0.84</p>
     </div>
   </div>
 </div>
@@ -93,7 +93,7 @@
     <textarea id="file-source" class="col-md-12">/**
  * @module Lyria
  */
-define(&#039;lyria/game&#039;, [&#039;eventmap&#039;, &#039;mixer&#039;, &#039;fullscreen&#039;, &#039;jquery&#039;, &#039;lyria/viewport&#039;, &#039;lyria/scene/director&#039;, &#039;lyria/preloader&#039;, &#039;lyria/loop&#039;, &#039;lyria/world&#039;, &#039;lyria/checkpoints&#039;], function(EventMap, mixer, fullscreen, $, Viewport, Director, Preloader, Loop, World, Checkpoints) {&#039;use strict&#039;;
+define([&#039;eventmap&#039;, &#039;mixedice&#039;, &#039;fullscreen&#039;, &#039;jquery&#039;, &#039;./viewport&#039;, &#039;./scene/director&#039;, &#039;./preloader&#039;, &#039;./loop&#039;, &#039;./world&#039;, &#039;./checkpoints&#039;], function(EventMap, mixedice, fullscreen, $, Viewport, Director, Preloader, Loop, World, Checkpoints) {&#039;use strict&#039;;
 
   /**
    * Game class which has a viewport, scene director and preloader by
@@ -113,7 +113,7 @@ define(&#039;lyria/game&#039;, [&#039;eventmap&#039;, &#039;mixer&#039;, &#039;f
         startLoop: true
       }, options);
       
-      mixer([this, Game.prototype], new EventMap());
+      mixedice([this, Game.prototype], new EventMap());
 
       /**
        * @property viewport
@@ -203,6 +203,42 @@ define(&#039;lyria/game&#039;, [&#039;eventmap&#039;, &#039;mixer&#039;, &#039;f
           });          
         }
       });
+    };
+    
+    /**
+     * 
+     */
+    Game.prototype.addScene = function(name, data) {
+      var self = this;
+      
+      if (!name) {
+        return this;
+      }
+      
+      if (Array.isArray(name)) {
+        for (var i = 0, j = name.length; i &lt; j; i++) {
+          (function(item) {
+            if (typeof item === &#039;object&#039;) {
+              self.addScene(name.name, name.data);
+            } else {
+              self.addScene(name);
+            }
+          })(name[i]);
+        }
+      }
+      
+      this.preloader.taskAsync(function(done) {
+        self.director.add(name, data, done);
+      });
+      
+      return this;
+    };
+    
+    /**
+     * 
+     */
+    Game.prototype.showScene = function(name) {
+      this.director.show(name);
     };
     
     /**

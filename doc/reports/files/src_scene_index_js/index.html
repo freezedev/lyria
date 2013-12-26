@@ -45,11 +45,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
-      <p class="stat">116.01</p>
+      <p class="stat">115.92</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
-      <p class="stat">437</p>
+      <p class="stat">440</p>
     </div>
   </div>
   <div class="row historical">
@@ -63,11 +63,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
-      <p class="stat">60.87</p>
+      <p class="stat">61.48</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
-      <p class="stat">3.31</p>
+      <p class="stat">3.32</p>
     </div>
   </div>
 </div>
@@ -93,7 +93,7 @@
     <textarea id="file-source" class="col-md-12">/**
  * @module Lyria
  */
-define(&#039;lyria/scene&#039;, [&#039;jquery&#039;, &#039;mixer&#039;, &#039;nexttick&#039;, &#039;lyria/component&#039;, &#039;lyria/gameobject&#039;, &#039;lyria/language&#039;, &#039;lyria/log&#039;, &#039;lyria/localization&#039;], function($, mixer, nextTick, Component, GameObject, Language, Log, Localization) {&#039;use strict&#039;;
+define([&#039;jquery&#039;, &#039;mixedice&#039;, &#039;nexttick&#039;, &#039;./component&#039;, &#039;./gameobject&#039;, &#039;./log&#039;, &#039;./localization&#039;], function($, mixedice, nextTick, Component, GameObject, Log, Localization) {&#039;use strict&#039;;
 
   var createNamespace = function(obj, chain, value) {
     var chainArr = chain.split(&#039;.&#039;);
@@ -134,7 +134,7 @@ define(&#039;lyria/scene&#039;, [&#039;jquery&#039;, &#039;mixer&#039;, &#039;ne
 
       // Mixin event map into Scene
       // Sender: &quot;scene:#{sceneName}&quot;
-      mixer([this, Scene.prototype], new Component(sceneName));
+      mixedice([this, Scene.prototype], new Component(sceneName));
 
       // We need a reference to the scene not being this
       var self = this;
@@ -189,7 +189,7 @@ define(&#039;lyria/scene&#039;, [&#039;jquery&#039;, &#039;mixer&#039;, &#039;ne
       });
 
       // Synchronizes events and scene view
-      self.on(&#039;synchronize&#039;, function() {
+      self.on(&#039;synchronize&#039;, function(callback) {
         self.refresh();
 
         if (self.DOMEvents &amp;&amp; !$.isEmptyObject(self.DOMEvents)) {
@@ -235,15 +235,19 @@ define(&#039;lyria/scene&#039;, [&#039;jquery&#039;, &#039;mixer&#039;, &#039;ne
             });
           });
         }
+        
+        if (callback) {
+          callback();          
+        }
       });
 
-      var createScene = function(modules) {
+      var createScene = function(modules, callback) {
         var sceneDone = function(err, success) {
           if (err) {
             return console.error(&#039;Error while executing scene &#039; + self.name + &#039;: &#039; + err);
           }
 
-          self.trigger(&#039;synchronize&#039;);
+          self.trigger(&#039;synchronize&#039;, callback);
         };
 
         var async = false;
@@ -283,7 +287,7 @@ define(&#039;lyria/scene&#039;, [&#039;jquery&#039;, &#039;mixer&#039;, &#039;ne
       // Call scene
       var reqModules = Object.keys(Scene.requireAlways) || [];
 
-      self.on(&#039;added&#039;, function() {
+      self.on(&#039;added&#039;, function(callback) {
         require(reqModules, function() {
           var importedModules = {};
   
@@ -305,10 +309,10 @@ define(&#039;lyria/scene&#039;, [&#039;jquery&#039;, &#039;mixer&#039;, &#039;ne
                 })(arguments[j]);
               }
   
-              createScene(importedModules);
+              createScene(importedModules, callback);
             });
           } else {
-            createScene(importedModules);
+            createScene(importedModules, callback);
           }
   
         });
@@ -406,7 +410,7 @@ define(&#039;lyria/scene&#039;, [&#039;jquery&#039;, &#039;mixer&#039;, &#039;ne
       }
 
       if ( typeof eventName === &#039;function&#039;) {
-        this.DOMEvents[selector][this.defaultEvent] = eventFunction;
+        this.DOMEvents[selector][this.defaultEvent] = eventName;
       } else {
         if (typeof eventName === &#039;string&#039;) {
           this.DOMEvents[selector][eventName] = eventFunction;          
@@ -514,7 +518,6 @@ define(&#039;lyria/scene&#039;, [&#039;jquery&#039;, &#039;mixer&#039;, &#039;ne
       &#039;lyria/audio&#039;: &#039;Lyria.Audio&#039;,
       &#039;lyria/checkpoints&#039;: &#039;Lyria.Checkpoints&#039;,
       &#039;lyria/component&#039;: &#039;Lyria.Component&#039;,
-      &#039;lyria/events&#039;: &#039;Lyria.Events&#039;,
       &#039;lyria/gameobject&#039;: &#039;Lyria.GameObject&#039;,
       &#039;lyria/log&#039;: &#039;Lyria.Log&#039;,
       &#039;lyria/loop&#039;: &#039;Lyria.Loop&#039;,

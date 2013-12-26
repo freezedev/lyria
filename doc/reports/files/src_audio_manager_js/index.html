@@ -45,11 +45,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
-      <p class="stat">146.11</p>
+      <p class="stat">116.68</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
-      <p class="stat">7</p>
+      <p class="stat">108</p>
     </div>
   </div>
   <div class="row historical">
@@ -63,11 +63,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
-      <p class="stat">4.50</p>
+      <p class="stat">35.77</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
-      <p class="stat">0.01</p>
+      <p class="stat">0.92</p>
     </div>
   </div>
 </div>
@@ -90,11 +90,112 @@
 
 <div class="container">
   <div class="row">
-    <textarea id="file-source" class="col-md-12">define(&#039;lyria/audio/manager&#039;, function() {
-  var AudioManager = {
+    <textarea id="file-source" class="col-md-12">define([&#039;jquery&#039;, &#039;clamp&#039;, &#039;../log&#039;, &#039;../audio&#039;, &#039;mixedice&#039;, &#039;eventmap&#039;], function($, clamp, Log, Audio, mixedice, EventMap) {
 
+
+  var AudioManager = function() {
+
+    mixedice([this, AudioManager.prototype], new EventMap());
+    this.audioFiles = {};
   };
 
+  var volume = 1;
+  // default
+
+  Object.defineProperty(AudioManager, &#039;volume&#039;, {
+    get : function() {
+      return volume;
+    },
+    set : function(value) {
+      volume = clamp(value, 0, 1);
+    }
+  });
+
+  /**
+   *
+   * @param {Object} options
+   * @param {String} options.type [&#039;music&#039;, &#039;sound&#039;]
+   * @param {String} options id
+   * @param {Boolean} options loop
+   * @param {Number} options volume
+   * @param {Array} options paths paths to audio file with defined fallbacks
+   *
+   */
+  AudioManager.prototype.add = function(options) {
+    options = $.extend({
+      &#039;id&#039; : &#039;&#039;,
+      &#039;type&#039; : &#039;sound&#039;,
+      &#039;loop&#039; : false,
+      &#039;volume&#039; : 1.0,
+      &#039;paths&#039; : []
+    }, options);
+
+    // set volume in relation to current max volume
+    options.volume *= volume;
+
+    if (options.id === &#039;&#039;) {
+      Log.e(&#039;AudioManager.add: No id was given for new audio object&#039;);
+      return;
+    }
+
+    this.audioFiles[options.id] = new Audio(options);
+    this.trigger(&#039;added&#039;, options.id, this.audioFiles[options.id]);
+    return this.audioFiles[options];
+  };
+
+  AudioManager.prototype.play = function(id, loop) {
+    if (!this.audioFiles[id]) {
+      Log.e(&#039;AudioManager.play: No audio element found under id &#039; + id);
+      return;
+    }
+    
+    $(&#039;#&#039; + id).off(&#039;ended&#039;);
+    $(&#039;#&#039; + id).on(&#039;ended&#039;, {
+      &#039;audioFile&#039; : this.audioFiles[id],
+      &#039;audioManager&#039; : this,
+      &#039;id&#039; : id
+    }, function(event) {
+      if (event.data.audioFile.attr(&#039;loop&#039;) &gt; 0 || event.data.audioFile.attr(&#039;loop&#039;) === -1) {
+        event.data.audioFile.play();
+        event.data.audioManager.trigger(&#039;loopEnded&#039;, event.data.id, event.data.audioFile);
+      } else {
+        event.data.audioManager.trigger(&#039;ended&#039;, event.data.id, event.data.audioFile);
+      }
+    });
+    
+    this.audioFiles[id].play(loop);
+    this.trigger(&#039;play&#039;, id, this.audioFiles[id]);
+  };
+
+  AudioManager.prototype.pause = function(id) {
+    if (!this.audioFiles[id]) {
+      Log.e(&#039;AudioManager.pause: No audio element found under id &#039; + id);
+      return;
+    }
+    this.audioFiles[id].pause();
+    this.trigger(&#039;paused&#039;, id, this.audioFiles[id]);
+  };
+
+  AudioManager.prototype.stop = function(id) {
+    if (!this.audioFiles[id]) {
+      Log.e(&#039;AudioManager.stop: No audio element found under id &#039; + id);
+      return;
+    }
+    this.audioFiles[id].stop();
+    // ended event should be triggered automatically
+  };
+
+  AudioManager.prototype.volume = function(id, volume) {
+    if (!this.audioFiles[id]) {
+      Log.e(&#039;AudioManager.volume: No audio element found under id &#039; + id);
+      return;
+    }
+    if (volume) {
+      this.audioFiles[id].volume = clamp(volume, 0, 1);
+    } else {
+      return this.audioFiles[id].volume;
+    }
+  };
   return AudioManager;
 });</textarea>
   </div>
