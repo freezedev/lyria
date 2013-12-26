@@ -127,9 +127,9 @@ define(['eventmap', 'mixedice', 'fullscreen', 'jquery', './viewport', './scene/d
         for (var i = 0, j = name.length; i < j; i++) {
           (function(item) {
             if (typeof item === 'object') {
-              self.addScene(name.name, name.data);
+              self.addScene(item.name, item.data);
             } else {
-              self.addScene(name);
+              self.addScene(item);
             }
           })(name[i]);
         }
