@@ -1,6 +1,6 @@
 {
   "name": "lyria",
-  "version": "0.2.11",
+  "version": "0.2.12",
   "dependencies": {
     "handlebars": "~1.2.0",
     "js-beautify": "~1.4.0"
