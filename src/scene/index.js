@@ -419,7 +419,8 @@ define(['jquery', 'mixedice', 'nexttick', './component', './gameobject', './log'
 
     Scene.requireAlways = {
       // Third-party modules
-      'jquery': '$',
+      'jquery': 'jQuery',
+      'jquery': '$', // Alias for jQuery
       
       // Lyria modules
       'lyria/achievement': 'Lyria.Achievement',
