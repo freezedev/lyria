@@ -50,12 +50,6 @@ define(['root', 'mixedice', 'jquery', './resource', './log', 'eventmap'], functi
       this.percentLoaded = 0;
 
       /**
-       * @property steps
-       * @type {Array}
-       */
-      this.steps = [];
-
-      /**
        * @property taskList
        * @type {Array}
        */
@@ -112,10 +106,6 @@ define(['root', 'mixedice', 'jquery', './resource', './log', 'eventmap'], functi
       }
 
       var currentProgress = 0;
-
-      if ((this.steps == null) || (this.steps.length === 0)) {
-
-      }
 
       var hasLoadingScene = this.sceneDirector != null && this.loadingScene != null;
 
