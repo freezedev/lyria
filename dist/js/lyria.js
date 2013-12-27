@@ -2007,6 +2007,8 @@ define('lyria/preloader', ['root', 'mixedice', 'jquery', './resource', './log', 
                 if (iterator.type.indexOf('audio') === 0) {
                   // TODO: Save preloaded files in the AudioManager
                   var audio = new root.Audio();
+                  audio.src = iterator.name;
+                  
                   audio.addEventListener('canplaythrough', function() {
                     currentProgress += iterator.size;
 
