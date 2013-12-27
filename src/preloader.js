@@ -214,6 +214,8 @@ define(['root', 'mixedice', 'jquery', './resource', './log', 'eventmap'], functi
                 if (iterator.type.indexOf('audio') === 0) {
                   // TODO: Save preloaded files in the AudioManager
                   var audio = new root.Audio();
+                  audio.src = iterator.name;
+                  
                   audio.addEventListener('canplaythrough', function() {
                     currentProgress += iterator.size;
 
