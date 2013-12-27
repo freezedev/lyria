@@ -4,6 +4,12 @@
 define(['jquery', 'mixedice', 'nexttick', './component', './gameobject', './log', './localization'], function($, mixedice, nextTick, Component, GameObject, Log, Localization) {'use strict';
 
   var createNamespace = function(obj, chain, value) {
+    if (Array.isArray(chain)) {
+      for (var c = 0, cl = chain.length; c < cl; c++) {
+        createNamespace(obj, chain[c], value);
+      }
+    }
+    
     var chainArr = chain.split('.');
 
     for (var i = 0, j = chainArr.length; i < j; i++) {
@@ -419,8 +425,7 @@ define(['jquery', 'mixedice', 'nexttick', './component', './gameobject', './log'
 
     Scene.requireAlways = {
       // Third-party modules
-      'jquery': 'jQuery',
-      'jquery': '$', // Alias for jQuery
+      'jquery': ['jQuery', '$'],
       
       // Lyria modules
       'lyria/achievement': 'Lyria.Achievement',
