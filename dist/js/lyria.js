@@ -1121,9 +1121,9 @@ define('lyria/game', ['eventmap', 'mixedice', 'fullscreen', 'jquery', './viewpor
         for (var i = 0, j = name.length; i < j; i++) {
           (function(item) {
             if (typeof item === 'object') {
-              self.addScene(name.name, name.data);
+              self.addScene(item.name, item.data);
             } else {
-              self.addScene(name);
+              self.addScene(item);
             }
           })(name[i]);
         }
@@ -1985,8 +1985,11 @@ define('lyria/preloader', ['root', 'mixedice', 'jquery', './resource', './log', 
 
           for (var i = 0, j = value.files.length; i < j; i++) {
             (function(iterator) {
+              // TODO: Define separate functions for loading process and error handling
 
+              // Handle images here
               if (iterator.type.indexOf('image') === 0) {
+                // TODO: Reflect: Does it make sense to put the cached images into an object?
                 var img = new root.Image();
                 img.onload = function() {
                   currentProgress += iterator.size;
@@ -2000,16 +2003,31 @@ define('lyria/preloader', ['root', 'mixedice', 'jquery', './resource', './log', 
 
                 img.src = iterator.name;
               } else {
-                $.ajax({
-                  url: iterator.name,
-                  dataType: 'text'
-                }).always(function() {
-                  currentProgress += iterator.size;
+                // Handle audio here
+                if (iterator.type.indexOf('audio') === 0) {
+                  // TODO: Save preloaded files in the AudioManager
+                  var audio = new root.Audio();
+                  audio.oncanplaythrough = function() {
+                    currentProgress += iterator.size;
 
-                  loadingProgress();
-                }).error(function(err) {
-                  Log.e('Error while loading ' + iterator.name + ': ' + err);
-                });
+                    loadingProgress();
+                  };
+                  
+                  audio.onerror = function(err) {
+                    Log.e('Error while loading '+ iterator.name);
+                  };
+                } else {
+                  $.ajax({
+                    url: iterator.name,
+                    dataType: 'text'
+                  }).always(function() {
+                    currentProgress += iterator.size;
+  
+                    loadingProgress();
+                  }).error(function(err) {
+                    Log.e('Error while loading ' + iterator.name + ': ' + err);
+                  });
+                }
               }
 
             })(value.files[i]);
@@ -2293,6 +2311,12 @@ define('lyria/scene/director', ['root', 'mixedice', 'jquery', 'eventmap', '../sc
 define('lyria/scene', ['jquery', 'mixedice', 'nexttick', './component', './gameobject', './log', './localization'], function($, mixedice, nextTick, Component, GameObject, Log, Localization) {'use strict';
 
   var createNamespace = function(obj, chain, value) {
+    if (Array.isArray(chain)) {
+      for (var c = 0, cl = chain.length; c < cl; c++) {
+        createNamespace(obj, chain[c], value);
+      }
+    }
+    
     var chainArr = chain.split('.');
 
     for (var i = 0, j = chainArr.length; i < j; i++) {
@@ -2708,7 +2732,7 @@ define('lyria/scene', ['jquery', 'mixedice', 'nexttick', './component', './gameo
 
     Scene.requireAlways = {
       // Third-party modules
-      'jquery': '$',
+      'jquery': ['jQuery', '$'],
       
       // Lyria modules
       'lyria/achievement': 'Lyria.Achievement',
