@@ -192,8 +192,11 @@ define(['root', 'mixedice', 'jquery', './resource', './log', 'eventmap'], functi
 
           for (var i = 0, j = value.files.length; i < j; i++) {
             (function(iterator) {
+              // TODO: Define separate functions for loading process and error handling
 
+              // Handle images here
               if (iterator.type.indexOf('image') === 0) {
+                // TODO: Reflect: Does it make sense to put the cached images into an object?
                 var img = new root.Image();
                 img.onload = function() {
                   currentProgress += iterator.size;
@@ -207,16 +210,31 @@ define(['root', 'mixedice', 'jquery', './resource', './log', 'eventmap'], functi
 
                 img.src = iterator.name;
               } else {
-                $.ajax({
-                  url: iterator.name,
-                  dataType: 'text'
-                }).always(function() {
-                  currentProgress += iterator.size;
+                // Handle audio here
+                if (iterator.type.indexOf('audio') === 0) {
+                  // TODO: Save preloaded files in the AudioManager
+                  var audio = new root.Audio();
+                  audio.oncanplaythrough = function() {
+                    currentProgress += iterator.size;
 
-                  loadingProgress();
-                }).error(function(err) {
-                  Log.e('Error while loading ' + iterator.name + ': ' + err);
-                });
+                    loadingProgress();
+                  };
+                  
+                  audio.onerror = function(err) {
+                    Log.e('Error while loading '+ iterator.name);
+                  };
+                } else {
+                  $.ajax({
+                    url: iterator.name,
+                    dataType: 'text'
+                  }).always(function() {
+                    currentProgress += iterator.size;
+  
+                    loadingProgress();
+                  }).error(function(err) {
+                    Log.e('Error while loading ' + iterator.name + ': ' + err);
+                  });
+                }
               }
 
             })(value.files[i]);
