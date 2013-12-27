@@ -214,11 +214,11 @@ define(['root', 'mixedice', 'jquery', './resource', './log', 'eventmap'], functi
                 if (iterator.type.indexOf('audio') === 0) {
                   // TODO: Save preloaded files in the AudioManager
                   var audio = new root.Audio();
-                  audio.oncanplaythrough = function() {
+                  audio.addEventListener('canplaythrough', function() {
                     currentProgress += iterator.size;
 
                     loadingProgress();
-                  };
+                  });
                   
                   audio.onerror = function(err) {
                     Log.e('Error while loading '+ iterator.name);
