@@ -8,6 +8,7 @@ define(['jquery', 'mixedice', 'nexttick', './component', './gameobject', './log'
       for (var c = 0, cl = chain.length; c < cl; c++) {
         createNamespace(obj, chain[c], value);
       }
+      return;
     }
     
     var chainArr = chain.split('.');
