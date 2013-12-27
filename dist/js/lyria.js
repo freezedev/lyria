@@ -2317,6 +2317,7 @@ define('lyria/scene', ['jquery', 'mixedice', 'nexttick', './component', './gameo
       for (var c = 0, cl = chain.length; c < cl; c++) {
         createNamespace(obj, chain[c], value);
       }
+      return;
     }
     
     var chainArr = chain.split('.');
