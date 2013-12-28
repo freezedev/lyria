@@ -3,6 +3,8 @@
  * @submodule Template 
  */
 define(['./methods'], function(templateMethods) {
+  'use strict';
+  
   var noop = function() {
   };
 

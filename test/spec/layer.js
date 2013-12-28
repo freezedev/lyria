@@ -1,4 +1,5 @@
 define('spec/layer', ['lyria/layer'], function(Layer) {
+  'use strict';
   
   describe('lyria/layer', function() {
     

@@ -1,4 +1,5 @@
 define(['mixedice', 'eventmap', './component/manager', './log'], function(mixedice, EventMap, ComponentManager, Log) {
+  'use strict';
 
   //Lyria.Component
   return (function() {

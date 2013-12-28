@@ -1,4 +1,5 @@
 define('spec/preloader', ['lyria/preloader'], function(Preloader) {
+  'use strict';
 
   describe('lyria/preloader', function() {
 

@@ -1,4 +1,5 @@
 define('spec/achievement', ['lyria/achievement'], function(Achievement) {
+  'use strict';
   
   describe('lyria/achievement', function() {
     

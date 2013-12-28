@@ -1,4 +1,5 @@
 define('spec/inputkey', ['lyria/input/key'], function(Key) {
+  'use strict';
   
   describe('lyria/input/key', function() {
     

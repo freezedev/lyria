@@ -3,6 +3,7 @@
  * @submodule Template
  */
 define(['hbs', './connector', './methods'], function(Handlebars, TemplateConnector, templateMethods) {
+  'use strict';
 
   var noop = function() {
   };
@@ -37,7 +38,7 @@ define(['hbs', './connector', './methods'], function(Handlebars, TemplateConnect
       }
     });
 
-    TemplateEngine(handlebarsConnector);
+    new TemplateEngine(handlebarsConnector);
   }
   
   return TemplateEngine;

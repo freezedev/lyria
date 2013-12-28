@@ -1,4 +1,5 @@
 define('spec/loop', ['lyria/loop'], function(Loop) {
+  'use strict';
   
   describe('lyria/loop', function() {
     

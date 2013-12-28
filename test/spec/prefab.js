@@ -1,4 +1,5 @@
 define('spec/prefab', ['lyria/prefab'], function(Prefab) {
+  'use strict';
   
   describe('lyria/prefab', function() {
     

@@ -1,4 +1,5 @@
 define('spec/viewport', ['lyria/viewport'], function(Viewport) {
+  'use strict';
   
   describe('lyria/viewport', function() {
     

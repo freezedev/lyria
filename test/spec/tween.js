@@ -1,4 +1,5 @@
 define('spec/tween', ['lyria/tween'], function(Tween) {
+  'use strict';
   
   describe('lyria/tween', function() {
     

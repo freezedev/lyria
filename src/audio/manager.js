@@ -1,5 +1,5 @@
 define(['jquery', 'clamp', '../log', '../audio', 'mixedice', 'eventmap'], function($, clamp, Log, Audio, mixedice, EventMap) {
-
+  'use strict';
 
   var AudioManager = function() {
 

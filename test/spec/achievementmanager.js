@@ -1,4 +1,5 @@
 define('spec/achievementmanager', ['lyria/achievement/manager'], function(AchievementManager) {
+  'use strict';
   
   describe('lyria/achievement/manager', function() {
     

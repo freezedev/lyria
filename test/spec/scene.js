@@ -1,4 +1,5 @@
 define('spec/scene', ['lyria/scene'], function(Scene) {
+  'use strict';
   
   describe('lyria/scene', function() {
     

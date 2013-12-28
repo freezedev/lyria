@@ -1,4 +1,5 @@
 define(['../localization'], function(Localization) {
+  'use strict';
   
   var LocalizationGroup = (function() {
     var LocalizationGroup = function(groups) {

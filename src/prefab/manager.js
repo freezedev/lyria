@@ -1,4 +1,6 @@
 define(['jqueryify', 'jquery', 'root'], function($ify, $, root) {
+  'use strict';
+  
   var PrefabManager = {};
 
   PrefabManager.prefabs = {};

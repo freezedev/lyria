@@ -1,4 +1,5 @@
 define(['./language', './template/string', './mixin/language'], function(Language, templateString, langMixin) {
+  'use strict';
 
   var Localization = (function() {
     var Localization = function(data) {

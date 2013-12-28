@@ -1,4 +1,5 @@
 define(['jquery', '../achievement', '../template/engine', '../template/list', '../localization'], function($, Achievement, TemplateEngine, templateList, Localization) {
+  'use strict';
 
   var achievementStore = {};
 

@@ -1,4 +1,5 @@
 define(['mixedice', 'eventmap'], function(mixedice, EventMap) {
+  'use strict';
 
   return (function() {
 

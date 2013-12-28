@@ -1,4 +1,6 @@
 define('path', function() {
+  'use strict';
+  
   var delimiter = '/';
 
   var Path = {

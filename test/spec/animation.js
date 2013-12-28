@@ -1,4 +1,5 @@
 define('spec/animation', ['lyria/animation'], function(Animation) {
+  'use strict';
   
   describe('lyria/animation', function() {
     

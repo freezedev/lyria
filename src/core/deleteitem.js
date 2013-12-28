@@ -1,4 +1,6 @@
 define('deleteitem', function() {
+  'use strict';
+  
   var deleteItem = function(obj, item) {
     var i, key, newObject, num, _i, _len, _results;
     if (Array.isArray(obj)) {

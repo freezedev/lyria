@@ -1,4 +1,5 @@
 define(['clamp'], function(clamp) {
+  'use strict';
 
   var Achievement = (function() {
     var Achievement = function(options) {

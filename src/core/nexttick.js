@@ -3,6 +3,8 @@
  * requestAnimationFrame should be a better alternative
  */
 define('nexttick', ['requestanimationframe', 'cancelanimationframe'], function(requestAnimationFrame, cancelAnimationFrame) {
+  'use strict';
+  
   return function(fn) {
     var id = requestAnimationFrame(function() {
       if (fn != null) {

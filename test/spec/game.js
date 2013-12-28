@@ -1,4 +1,5 @@
 define('spec/game', ['lyria/game', 'lyria/viewport', 'lyria/scene/director', 'lyria/preloader', 'lyria/world', 'lyria/checkpoints'], function(Game, Viewport, Director, Preloader, World, Checkpoints) {
+  'use strict';
 
   // Starting the loop doen't work in a test environment
   var game = new Game({

@@ -1,4 +1,5 @@
 define('spec/componentmanager', ['lyria/component/manager'], function(ComponentManager) {
+  'use strict';
   
   describe('lyria/component/manager', function() {
     

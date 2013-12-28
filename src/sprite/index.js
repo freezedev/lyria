@@ -1,4 +1,6 @@
 define(function() {
+  'use strict';
+  
   var Sprite = (function() {
     
     var Sprite = function() {

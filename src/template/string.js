@@ -1,4 +1,6 @@
 define(['objectify'], function(objectify) {
+  'use strict';
+  
   var templateString = {
     key: {
       start: '\\{{',

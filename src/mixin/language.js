@@ -4,6 +4,8 @@
  */
 
 define(function() {
+  'use strict';
+  
   return function(propertyName, propertyTrigger) {
     if (propertyName == null) {
       propertyName = 'language';

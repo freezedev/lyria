@@ -1,4 +1,5 @@
 define('spec/templatestring', ['lyria/template/string'], function(templateString) {
+  'use strict';
 
   describe('lyria/template/string', function() {
 

@@ -1,4 +1,5 @@
 define('spec/log', ['lyria/log'], function(Log) {
+  'use strict';
   
   describe('lyria/log', function() {
     

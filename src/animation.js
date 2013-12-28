@@ -1,4 +1,6 @@
 define(['jquery', 'mixedice', 'eventmap'], function($, mixedice, EventMap) {
+  'use strict';
+  
   var Animation = (function() {
     var Animation = function($elem, options) {
       this.$elem = $elem;

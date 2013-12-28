@@ -1,4 +1,5 @@
 define('spec/templateengine', ['lyria/template/engine'], function(TemplateEngine) {
+  'use strict';
   
   describe('lyria/template/engine', function() {
     

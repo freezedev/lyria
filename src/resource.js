@@ -3,6 +3,7 @@
  * Lyria namespace decleration
  */
 define(['path'], function(Path) {
+  'use strict';
   
   var Resource = {
     /**

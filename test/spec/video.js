@@ -1,4 +1,5 @@
 define('spec/video', ['lyria/video'], function(Video) {
+  'use strict';
   
   describe('lyria/video', function() {
     

@@ -1,4 +1,5 @@
 define('spec/spritemanager', ['lyria/sprite/manager'], function(SpriteManager) {
+  'use strict';
   
   describe('lyria/sprite/manager', function() {
     

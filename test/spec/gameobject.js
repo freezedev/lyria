@@ -1,4 +1,5 @@
 define('spec/gameobject', ['lyria/gameobject'], function(GameObject) {
+  'use strict';
   
   describe('lyria/gameobject', function() {
     

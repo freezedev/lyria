@@ -1,4 +1,6 @@
 define(function() {
+  'use strict';
+  
   var Key = {
     'backspace': 8,
     'tab': 9,

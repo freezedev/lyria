@@ -1,4 +1,5 @@
 define('spec/templateconnector', ['lyria/template/connector'], function(TemplateConnector) {
+  'use strict';
   
   describe('lyria/template/connector', function() {
     

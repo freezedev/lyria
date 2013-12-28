@@ -1,4 +1,5 @@
 define('spec/audiomanager', ['lyria/audio/manager'], function(AudioManager) {
+  'use strict';
 
   describe('lyria/audio/manager', function() {
 

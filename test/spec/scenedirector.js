@@ -1,4 +1,5 @@
 define('spec/scenedirector', ['lyria/scene/director'], function(SceneDirector) {
+  'use strict';
   
   describe('lyria/scene/director', function() {
     

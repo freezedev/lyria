@@ -1,4 +1,5 @@
 define(['eventmap', 'mixedice', 'deleteitem', 'performance'], function(EventMap, mixedice, deleteItem, performance) {
+  'use strict';
 
   var Checkpoints = (function() {
     

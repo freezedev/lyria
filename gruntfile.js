@@ -2,6 +2,7 @@ var fs = require('fs');
 var path = require('path');
 
 module.exports = function(grunt) {
+  'use strict';
 
   var lyriaOrigin = 'src/**/*.js';
   var generatedFiles = 'generated/**/*.js';

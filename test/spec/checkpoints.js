@@ -1,4 +1,5 @@
 define('spec/checkpoints', ['lyria/checkpoints'], function(Checkpoints) {
+  'use strict';
   
   describe('lyria/checkpoints', function() {
     

@@ -1,4 +1,5 @@
 define('spec/prefabmanager', ['lyria/prefab/manager'], function(PrefabManager) {
+  'use strict';
   
   describe('lyria/prefab/manager', function() {
     

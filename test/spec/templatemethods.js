@@ -1,4 +1,5 @@
 define('spec/templatemethods', ['lyria/template/methods'], function(methods) {
+  'use strict';
   
   describe('lyria/template/methods', function() {
     

@@ -1,4 +1,5 @@
 define('spec/component', ['lyria/component'], function(Component) {
+  'use strict';
   
   describe('lyria/component', function() {
     

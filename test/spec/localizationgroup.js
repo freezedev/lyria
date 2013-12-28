@@ -1,4 +1,5 @@
 define('spec/localizationgroup', ['lyria/localization/group'], function(LocalizationGroup) {
+  'use strict';
   
   describe('lyria/localization/group', function() {
     

@@ -1,4 +1,5 @@
 define('spec/resource', ['lyria/resource'], function(Resource) {
+  'use strict';
   
   describe('lyria/resource', function() {
     

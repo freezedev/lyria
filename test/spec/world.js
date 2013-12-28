@@ -1,4 +1,5 @@
 define('spec/world', ['lyria/world'], function(World) {
+  'use strict';
   
   describe('lyria/world', function() {
     

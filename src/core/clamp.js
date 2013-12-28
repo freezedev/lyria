@@ -1,4 +1,6 @@
 define('clamp', function() {
+  'use strict';
+  
   var clamp = function(value, min, max) {
     var _ref, _ref1, _ref2;
     if ( typeof value === 'object') {

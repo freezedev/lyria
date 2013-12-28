@@ -1,4 +1,6 @@
 define('fisheryates', ['random'], function(random) {
+  'use strict';
+  
   /**
    * Randomize array element order in-place.
    * Using Fisher-Yates shuffle algorithm.

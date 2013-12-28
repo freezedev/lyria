@@ -1,4 +1,6 @@
 define('objectify', function() {
+  'use strict';
+  
   return function(arr) {
     if (typeof arr === 'object') {
       if (!Array.isArray(arr)) {

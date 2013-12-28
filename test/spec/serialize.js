@@ -1,4 +1,5 @@
 define('spec/serialize', ['lyria/serialize', 'jquery'], function(serialize, $) {
+  'use strict';
 
   describe('serialize', function() {
 

@@ -1,4 +1,6 @@
 define(['eventmap', 'mixedice', 'options', 'jqueryify'], function(EventMap, mixedice, options, $fy) {
+  'use strict';
+  
   var Tween = (function() {
     var Tween = function(opts) {
       opts = options(opts, {

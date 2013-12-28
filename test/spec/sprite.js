@@ -1,4 +1,5 @@
 define('spec/sprite', ['lyria/sprite'], function(Sprite) {
+  'use strict';
   
   describe('lyria/sprite', function() {
     

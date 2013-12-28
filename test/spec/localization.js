@@ -1,4 +1,5 @@
 define('spec/localization', ['lyria/localization'], function(Localization) {
+  'use strict';
   
   describe('lyria/localization', function() {
     

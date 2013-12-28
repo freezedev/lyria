@@ -1,4 +1,5 @@
 define(['jquery', 'mixedice', '../component', '../sprite/renderer'], function($, mixedice, Component, Renderer) {
+  'use strict';
   
   var SpriteManager = (function() {
     

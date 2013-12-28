@@ -1,4 +1,6 @@
 define('random', function() {
+  'use strict';
+  
   return function(max, min) {
     if (max == null) {
       max = 1.0;
