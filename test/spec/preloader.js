@@ -39,11 +39,6 @@ define('spec/preloader', ['lyria/preloader'], function(Preloader) {
       expect(preloader.assetsLoaded).to.be.a('number');
     });
 
-    it('Instance has property steps', function() {
-      expect(preloader).to.have.property('steps');
-      expect(preloader.steps).to.be.a('array');
-    });
-
     it('Instance has property taskList', function() {
       expect(preloader).to.have.property('taskList');
       expect(preloader.taskList).to.be.a('array');
