@@ -1822,7 +1822,9 @@ define('lyria/prefab/manager', ['jqueryify', 'jquery', 'root'], function($ify, $
         }
 
         if (!prefab.isAsync) {
-          prefab.trigger('added');
+          prefab.trigger('added', function() {
+            prefab.trigger('active');
+          });
         }
       }
     };
