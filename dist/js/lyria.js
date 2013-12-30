@@ -1,4 +1,5 @@
 define('lyria/achievement', ['clamp'], function(clamp) {
+  'use strict';
 
   var Achievement = (function() {
     var Achievement = function(options) {
@@ -84,6 +85,7 @@ define('lyria/achievement', ['clamp'], function(clamp) {
 });
 
 define('lyria/achievement/manager', ['jquery', '../achievement', '../template/engine', '../template/list', '../localization'], function($, Achievement, TemplateEngine, templateList, Localization) {
+  'use strict';
 
   var achievementStore = {};
 
@@ -222,6 +224,8 @@ define('lyria/achievement/manager', ['jquery', '../achievement', '../template/en
 });
 
 define('lyria/animation', ['jquery', 'mixedice', 'eventmap'], function($, mixedice, EventMap) {
+  'use strict';
+  
   var Animation = (function() {
     var Animation = function($elem, options) {
       this.$elem = $elem;
@@ -381,7 +385,7 @@ define('lyria/audio', ['root', 'jquery'], function(root, $) {'use strict';
 });
 
 define('lyria/audio/manager', ['jquery', 'clamp', '../log', '../audio', 'mixedice', 'eventmap'], function($, clamp, Log, Audio, mixedice, EventMap) {
-
+  'use strict';
 
   var AudioManager = function() {
 
@@ -490,6 +494,7 @@ define('lyria/audio/manager', ['jquery', 'clamp', '../log', '../audio', 'mixedic
 });
 
 define('lyria/checkpoints', ['eventmap', 'mixedice', 'deleteitem', 'performance'], function(EventMap, mixedice, deleteItem, performance) {
+  'use strict';
 
   var Checkpoints = (function() {
     
@@ -570,6 +575,7 @@ define('lyria/checkpoints', ['eventmap', 'mixedice', 'deleteitem', 'performance'
 });
 
 define('lyria/component', ['mixedice', 'eventmap', './component/manager', './log'], function(mixedice, EventMap, ComponentManager, Log) {
+  'use strict';
 
   //Lyria.Component
   return (function() {
@@ -658,6 +664,7 @@ define('lyria/component', ['mixedice', 'eventmap', './component/manager', './log
 });
 
 define('lyria/component/manager', function() {
+  'use strict';
 
   var components = {};
 
@@ -690,6 +697,8 @@ define('lyria/constants', {
   animSpeed: 300
 });
 define('clamp', function() {
+  'use strict';
+  
   var clamp = function(value, min, max) {
     var _ref, _ref1, _ref2;
     if ( typeof value === 'object') {
@@ -722,6 +731,8 @@ define('clamp', function() {
 });
 
 define('deleteitem', function() {
+  'use strict';
+  
   var deleteItem = function(obj, item) {
     var i, key, newObject, num, _i, _len, _results;
     if (Array.isArray(obj)) {
@@ -748,6 +759,8 @@ define('deleteitem', function() {
 });
 
 define('fisheryates', ['random'], function(random) {
+  'use strict';
+  
   /**
    * Randomize array element order in-place.
    * Using Fisher-Yates shuffle algorithm.
@@ -763,47 +776,55 @@ define('fisheryates', ['random'], function(random) {
   };
 });
 
-define('requestfullscreen', function() {
-  return function(element) {
-    if (element.requestFullScreen) {
-      element.requestFullScreen();
-    } else if (element.mozRequestFullScreen) {
-      element.mozRequestFullScreen();
-    } else if (element.webkitRequestFullScreen) {
-      element.webkitRequestFullScreen();
-    }
-  };
-});
+(function() {'use strict';
 
-define('fullscreenelement', function() {
-  return function(element) {
-    return (element.fullscreenElement || element.mozFullScreenElement || element.webkitFullscreenElement);
-  };
-});
+  define('requestfullscreen', function() {
+    return function(element) {
+      if (element.requestFullScreen) {
+        element.requestFullScreen();
+      } else if (element.mozRequestFullScreen) {
+        element.mozRequestFullScreen();
+      } else if (element.webkitRequestFullScreen) {
+        element.webkitRequestFullScreen();
+      }
+    };
+  });
 
-define('cancelfullscreen', function() {
-  return function(element) {
-    if (element.cancelFullScreen) {
-      element.cancelFullScreen();
-    } else if (element.mozCancelFullScreen) {
-      element.mozCancelFullScreen();
-    } else if (element.webkitCancelFullScreen) {
-      element.webkitCancelFullScreen();
-    }
-  };
-});
+  define('fullscreenelement', function() {
+    return function(element) {
+      return (element.fullscreenElement || element.mozFullScreenElement || element.webkitFullscreenElement);
+    };
+  });
 
-define('fullscreen', ['requestfullscreen', 'fullscreenelement', 'cancelfullscreen'], function(rf, fs, cf) {
-  return {
-    request: rf,
-    isFullscreen: fs,
-    cancel: cf
-  };
-});
+  define('cancelfullscreen', function() {
+    return function(element) {
+      if (element.cancelFullScreen) {
+        element.cancelFullScreen();
+      } else if (element.mozCancelFullScreen) {
+        element.mozCancelFullScreen();
+      } else if (element.webkitCancelFullScreen) {
+        element.webkitCancelFullScreen();
+      }
+    };
+  });
+
+  define('fullscreen', ['requestfullscreen', 'fullscreenelement', 'cancelfullscreen'], function(rf, fs, cf) {
+    return {
+      request: rf,
+      isFullscreen: fs,
+      cancel: cf
+    };
+  });
+  
+})(); 
 define('hbs', ['handlebars', 'handlebars.runtime'], function(hbs, hbsRuntime) {
+  'use strict';
+  
   return ((hbs && hbs['default']) || hbsRuntime);
 });
 define('jqueryify', ['jquery'], function($) {
+  'use strict';
+  
   return function(sel) {
     return (sel instanceof $) ? sel : $(sel);
   };
@@ -813,6 +834,8 @@ define('jqueryify', ['jquery'], function($) {
  * requestAnimationFrame should be a better alternative
  */
 define('nexttick', ['requestanimationframe', 'cancelanimationframe'], function(requestAnimationFrame, cancelAnimationFrame) {
+  'use strict';
+  
   return function(fn) {
     var id = requestAnimationFrame(function() {
       if (fn != null) {
@@ -824,6 +847,8 @@ define('nexttick', ['requestanimationframe', 'cancelanimationframe'], function(r
 });
 
 define('objectify', function() {
+  'use strict';
+  
   return function(arr) {
     if (typeof arr === 'object') {
       if (!Array.isArray(arr)) {
@@ -844,12 +869,16 @@ define('objectify', function() {
 });
 
 define('options', ['jquery'], function($) {
+  'use strict';
+  
   return function(obj, defaultOptions) {
     return $.extend(true, obj, defaultOptions);
   };
 });
 
 define('path', function() {
+  'use strict';
+  
   var delimiter = '/';
 
   var Path = {
@@ -921,6 +950,8 @@ define('path', function() {
 });
 
 define('random', function() {
+  'use strict';
+  
   return function(max, min) {
     if (max == null) {
       max = 1.0;
@@ -934,6 +965,8 @@ define('random', function() {
   };
 });
 (function(root) {
+  'use strict';
+  
   define('root', function() {
     return root;
   });
@@ -948,48 +981,53 @@ define('random', function() {
 * NO WARRANTY EXPRESSED OR IMPLIED. USE AT YOUR OWN RISK.
 */
 
-// object.watch
-if (!Object.prototype.watch) {
-  Object.defineProperty(Object.prototype, "watch", {
-    enumerable: false,
-    configurable: true,
-    writable: false,
-    value: function(prop, handler) {
-      var oldval = this[prop], newval = oldval, getter = function() {
-        return newval;
-      }, setter = function(val) {
-        oldval = newval;
-        newval = handler.call(this, prop, oldval, val);
-        return newval;
-      };
-
-      if (
-      delete this[prop]) {// can't watch constants
-        Object.defineProperty(this, prop, {
-          get: getter,
-          set: setter,
-          enumerable: true,
-          configurable: true
-        });
+(function(Object) {
+  'use strict';
+  
+  // object.watch
+  if (!Object.prototype.watch) {
+    Object.defineProperty(Object.prototype, "watch", {
+      enumerable: false,
+      configurable: true,
+      writable: false,
+      value: function(prop, handler) {
+        var oldval = this[prop], newval = oldval, getter = function() {
+          return newval;
+        }, setter = function(val) {
+          oldval = newval;
+          newval = handler.call(this, prop, oldval, val);
+          return newval;
+        };
+  
+        if (
+        delete this[prop]) {// can't watch constants
+          Object.defineProperty(this, prop, {
+            get: getter,
+            set: setter,
+            enumerable: true,
+            configurable: true
+          });
+        }
       }
-    }
-  });
-}
+    });
+  }
+  
+  // object.unwatch
+  if (!Object.prototype.unwatch) {
+    Object.defineProperty(Object.prototype, "unwatch", {
+      enumerable: false,
+      configurable: true,
+      writable: false,
+      value: function(prop) {
+        var val = this[prop];
+        delete this[prop];
+        // remove accessors
+        this[prop] = val;
+      }
+    });
+  }
+})(Object);
 
-// object.unwatch
-if (!Object.prototype.unwatch) {
-  Object.defineProperty(Object.prototype, "unwatch", {
-    enumerable: false,
-    configurable: true,
-    writable: false,
-    value: function(prop) {
-      var val = this[prop];
-      delete this[prop];
-      // remove accessors
-      this[prop] = val;
-    }
-  });
-}
 
 define('lyria/core/watch', function() {  });
 /**
@@ -1226,6 +1264,8 @@ define('lyria/gameobject', ['mixedice', 'eventmap', './component', './log'], fun
   
 });
 define('lyria/input', function() {
+  'use strict';
+  
   var Input = {};
   
   Input.key = {};
@@ -1250,6 +1290,8 @@ define('lyria/input', function() {
   return Input;
 });
 define('lyria/input/key', function() {
+  'use strict';
+  
   var Key = {
     'backspace': 8,
     'tab': 9,
@@ -1398,6 +1440,7 @@ define('lyria/layer', ['mixedice', './gameobject'], function(mixedice, GameObjec
   })();
 }); 
 define('lyria/localization/group', ['../localization'], function(Localization) {
+  'use strict';
   
   var LocalizationGroup = (function() {
     var LocalizationGroup = function(groups) {
@@ -1416,6 +1459,7 @@ define('lyria/localization/group', ['../localization'], function(Localization) {
 });
 
 define('lyria/localization', ['./language', './template/string', './mixin/language'], function(Language, templateString, langMixin) {
+  'use strict';
 
   var Localization = (function() {
     var Localization = function(data) {
@@ -1680,6 +1724,8 @@ define('lyria/loop', ['requestanimationframe', 'eventmap'], function(requestAnim
  */
 
 define('lyria/mixin/language', function() {
+  'use strict';
+  
   return function(propertyName, propertyTrigger) {
     if (propertyName == null) {
       propertyName = 'language';
@@ -1707,6 +1753,8 @@ define('lyria/mixin/language', function() {
   };
 }); 
 define('lyria/mixin/templatable', function() {
+  'use strict';
+  
   return function() {
     
   };
@@ -1726,6 +1774,8 @@ define('lyria/prefab', ['./scene'], function(Scene) {
   
 });
 define('lyria/prefab/manager', ['jqueryify', 'jquery', 'root'], function($ify, $, root) {
+  'use strict';
+  
   var PrefabManager = {};
 
   PrefabManager.prefabs = {};
@@ -1843,12 +1893,6 @@ define('lyria/preloader', ['root', 'mixedice', 'jquery', './resource', './log', 
       this.percentLoaded = 0;
 
       /**
-       * @property steps
-       * @type {Array}
-       */
-      this.steps = [];
-
-      /**
        * @property taskList
        * @type {Array}
        */
@@ -1905,10 +1949,6 @@ define('lyria/preloader', ['root', 'mixedice', 'jquery', './resource', './log', 
       }
 
       var currentProgress = 0;
-
-      if ((this.steps == null) || (this.steps.length === 0)) {
-
-      }
 
       var hasLoadingScene = this.sceneDirector != null && this.loadingScene != null;
 
@@ -2053,6 +2093,7 @@ define('lyria/preloader', ['root', 'mixedice', 'jquery', './resource', './log', 
  * Lyria namespace decleration
  */
 define('lyria/resource', ['path'], function(Path) {
+  'use strict';
   
   var Resource = {
     /**
@@ -2761,6 +2802,7 @@ define('lyria/scene', ['jquery', 'mixedice', 'nexttick', './component', './gameo
 });
 
 define('lyria/serialize', ['jquery'], function($) {
+  'use strict';
   
   /**
    *
@@ -2794,6 +2836,8 @@ define('lyria/serialize', ['jquery'], function($) {
 });
 
 define('lyria/sprite', function() {
+  'use strict';
+  
   var Sprite = (function() {
     
     var Sprite = function() {
@@ -2808,6 +2852,7 @@ define('lyria/sprite', function() {
 });
 
 define('lyria/sprite/manager', ['jquery', 'mixedice', '../component', '../sprite/renderer'], function($, mixedice, Component, Renderer) {
+  'use strict';
   
   var SpriteManager = (function() {
     
@@ -2835,6 +2880,8 @@ define('lyria/sprite/renderer', function() {
  * @submodule Template 
  */
 define('lyria/template/connector', ['./methods'], function(templateMethods) {
+  'use strict';
+  
   var noop = function() {
   };
 
@@ -2874,6 +2921,7 @@ define('lyria/template/connector', ['./methods'], function(templateMethods) {
  * @submodule Template
  */
 define('lyria/template/engine', ['hbs', './connector', './methods'], function(Handlebars, TemplateConnector, templateMethods) {
+  'use strict';
 
   var noop = function() {
   };
@@ -2908,7 +2956,7 @@ define('lyria/template/engine', ['hbs', './connector', './methods'], function(Ha
       }
     });
 
-    TemplateEngine(handlebarsConnector);
+    new TemplateEngine(handlebarsConnector);
   }
   
   return TemplateEngine;
@@ -2920,10 +2968,14 @@ define('lyria/template/engine', ['hbs', './connector', './methods'], function(Ha
  */
 
 define('lyria/template/methods', function() {
+  'use strict';
+  
   return ['compile'];
 });
 
 define('lyria/template/string', ['objectify'], function(objectify) {
+  'use strict';
+  
   var templateString = {
     key: {
       start: '\\{{',
@@ -2960,6 +3012,8 @@ define('lyria/template/string', ['objectify'], function(objectify) {
 });
 
 define('lyria/tween', ['eventmap', 'mixedice', 'options', 'jqueryify'], function(EventMap, mixedice, options, $fy) {
+  'use strict';
+  
   var Tween = (function() {
     var Tween = function(opts) {
       opts = options(opts, {
@@ -3225,6 +3279,7 @@ define('lyria/viewport', ['root', 'jquery', 'mixedice', 'eventmap'], function(ro
 });
 
 define('lyria/world', ['mixedice', 'eventmap'], function(mixedice, EventMap) {
+  'use strict';
 
   return (function() {
 
