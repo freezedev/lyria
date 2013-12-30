@@ -8,10 +8,10 @@ define(['jqueryify', 'jquery', 'root'], function($ify, $, root) {
   PrefabManager.className = 'prefab';
 
   var createElement = function(type) {
-    return function(options, data) {
+    return function(options) {
       var name = options.name;
       var parent = options.parent;
-      data = data || {};
+      var data = options.data || {};
       
       if (options.wrap == null) {
         options.wrap = true;
