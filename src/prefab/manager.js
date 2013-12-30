@@ -8,10 +8,12 @@ define(['jqueryify', 'jquery', 'root'], function($ify, $, root) {
   PrefabManager.className = 'prefab';
 
   var createElement = function(type) {
-    return function(options) {
+    return function(options, data) {
       var name = options.name;
       var parent = options.parent;
-      var data = options.data || {};
+      
+      // TODO: Streamline the way of passing data to scenes and prefabs
+      data = data || options.data || {};
       
       if (options.wrap == null) {
         options.wrap = true;
