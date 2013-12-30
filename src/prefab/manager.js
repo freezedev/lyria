@@ -47,7 +47,9 @@ define(['jqueryify', 'jquery', 'root'], function($ify, $, root) {
         }
 
         if (!prefab.isAsync) {
-          prefab.trigger('added');
+          prefab.trigger('added', function() {
+            prefab.trigger('active');
+          });
         }
       }
     };
