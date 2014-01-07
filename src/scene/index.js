@@ -159,7 +159,11 @@ define(['jquery', 'mixedice', 'nexttick', './component', './gameobject', './log'
       var createScene = function(modules, callback) {
         var sceneDone = function(err, success) {
           if (err) {
-            return console.error('Error while executing scene ' + self.name + ': ' + err);
+            console.error('Error while executing scene ' + self.name + ': ' + err);
+            if (err.stack) {
+              console.error(err.stack);
+            }
+            return;
           }
 
           self.trigger('synchronize', callback);
