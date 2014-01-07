@@ -1785,7 +1785,8 @@ define('lyria/prefab/manager', ['jqueryify', 'jquery', 'root'], function($ify, $
   var createElement = function(type) {
     return function(options, data) {
       var name = options.name;
-      var parent = options.parent;
+      // Allow target to be an alias for parent
+      var parent = options.parent || options.target;
       
       // TODO: Streamline the way of passing data to scenes and prefabs
       data = data || options.data || {};
