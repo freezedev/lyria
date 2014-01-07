@@ -184,6 +184,10 @@ define(['root', 'mixedice', 'jquery', 'eventmap', '../scene', '../viewport'], fu
       var self = this;
 
       self.currentScene = this.sceneList[sceneName];
+      
+      if (self.currentScene == null) {
+        throw new Error('Scene ' + sceneName + ' not found.');
+      }
 
       if (self.currentScene.transition && self.currentScene.transition.length) {
         $('#' + sceneName).show(self.currentScene.transition.length);
