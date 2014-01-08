@@ -44,6 +44,14 @@ define(['mixedice', 'eventmap'], function(mixedice, EventMap) {'use strict';
 
       Object.defineProperty(this, name, propDef);
     };
+    
+    World.prototype.initialize = function(obj) {
+      
+    };
+    
+    World.prototype.reset = function() {
+      
+    };
 
     World.prototype.serialize = function() {
       return JSON.stringify(this);
