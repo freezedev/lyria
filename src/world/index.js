@@ -1,9 +1,12 @@
-define(['mixedice', 'eventmap'], function(mixedice, EventMap) {'use strict';
+define(['mixedice', 'eventmap', 'lyria/world/data'], function(mixedice, EventMap, WorldData) {'use strict';
 
   var World = (function() {
 
     var World = function() {
       mixedice([this, World.prototype], new EventMap());
+      
+      this.events = new EventMap();
+      this.data = new WorldData(this);
 
       this.register({
         name: 'state',
