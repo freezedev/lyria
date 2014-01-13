@@ -32,16 +32,18 @@ define(['jqueryify', 'jquery', 'root'], function($ify, $, root) {
       
       var elementId = name;
       
-      if (elementId.indexOf('.') >= 0) {
-        elementId = elementId.replace(/\./g, '--');
-      }
-      
-      if (elementId.indexOf('/') >= 0) {
-        elementId = elementId.replace(/\//g, '--');
-      }
-      
-      if (elementId.indexOf('#') >= 0) {
-        elementId = elementId.replace(/#/g, '--');
+      if (elementId) {
+        if (elementId.indexOf('.') >= 0) {
+          elementId = elementId.replace(/\./g, '--');
+        }
+        
+        if (elementId.indexOf('/') >= 0) {
+          elementId = elementId.replace(/\//g, '--');
+        }
+        
+        if (elementId.indexOf('#') >= 0) {
+          elementId = elementId.replace(/#/g, '--');
+        }
       }
       
       var prefabId = PrefabManager.className + '-' + elementId + '-' + Date.now();
