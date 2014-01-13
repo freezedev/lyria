@@ -1817,7 +1817,7 @@ define('lyria/prefab/manager', ['jqueryify', 'jquery', 'root'], function($ify, $
         name = name.replace(/#/g, '--');
       }
       
-      var prefabId = PrefabManager.className + '-' + name.replace + '-' + Date.now();
+      var prefabId = PrefabManager.className + '-' + name + '-' + Date.now();
       
       data.id = prefabId;
       
