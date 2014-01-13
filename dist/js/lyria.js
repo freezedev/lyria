@@ -1805,7 +1805,19 @@ define('lyria/prefab/manager', ['jqueryify', 'jquery', 'root'], function($ify, $
       
       var prefab = null;
       
-      var prefabId = PrefabManager.className + '-' + name + '-' + Date.now();
+      if (name.indexOf('.') >= 0) {
+        name = name.replace(/./g, '--');
+      }
+      
+      if (name.indexOf('/') >= 0) {
+        name = name.replace(/\//g, '--');
+      }
+      
+      if (name.indexOf('#') >= 0) {
+        name = name.replace(/#/g, '--');
+      }
+      
+      var prefabId = PrefabManager.className + '-' + name.replace + '-' + Date.now();
       
       data.id = prefabId;
       
