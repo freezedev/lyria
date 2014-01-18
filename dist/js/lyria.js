@@ -2789,6 +2789,18 @@ define('lyria/scene', ['jquery', 'mixedice', 'nexttick', './component', './gameo
         }
       }
     };
+    
+    /**
+     * Binds an DOM event to the specified data-behavior selector
+     *
+     * @method behavior
+     * @param {String} beviorName
+     * @param {String} eventName
+     * @param {Function} eventFunction
+     */
+    Scene.prototype.behavior = function(behaviorName, eventName, eventFunction) {
+      this.bindEvent('[data-behavior~=' + behaviorName +  ']', eventName, eventFunction);
+    };
 
     /**
      * Gets localized value
