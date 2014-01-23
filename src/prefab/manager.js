@@ -6,6 +6,7 @@ define(['jqueryify', 'jquery', 'root'], function($ify, $, root) {
   PrefabManager.prefabs = {};
   PrefabManager.viewport = null;
   PrefabManager.className = 'prefab';
+  PrefabManager.parent = null;
 
   var createElement = function(type) {
     return function(options, data) {
@@ -62,6 +63,8 @@ define(['jqueryify', 'jquery', 'root'], function($ify, $, root) {
         if ($('#' + prefab.name).length === 0) {
           $parent[type]($(root.document.createElement('div')).attr('id', prefabId).attr('class', PrefabManager.className));
         }
+        
+        prefab.parent = PrefabManager;
 
         if (!prefab.isAsync) {
           prefab.trigger('added', function() {
