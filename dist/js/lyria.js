@@ -1781,6 +1781,7 @@ define('lyria/prefab/manager', ['jqueryify', 'jquery', 'root'], function($ify, $
   PrefabManager.prefabs = {};
   PrefabManager.viewport = null;
   PrefabManager.className = 'prefab';
+  PrefabManager.parent = null;
 
   var createElement = function(type) {
     return function(options, data) {
@@ -1837,6 +1838,8 @@ define('lyria/prefab/manager', ['jqueryify', 'jquery', 'root'], function($ify, $
         if ($('#' + prefab.name).length === 0) {
           $parent[type]($(root.document.createElement('div')).attr('id', prefabId).attr('class', PrefabManager.className));
         }
+        
+        prefab.parent = PrefabManager;
 
         if (!prefab.isAsync) {
           prefab.trigger('added', function() {
