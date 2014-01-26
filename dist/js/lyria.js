@@ -2337,14 +2337,15 @@ define('lyria/scene', ['jquery', 'mixedice', 'nexttick', './component', './gameo
     // TODO: Having options as the last parameter is kinda unintuitive
     var Scene = function(sceneName, sceneDeps, sceneFunction, options) {
       if (!sceneName) {
-        return;
+        throw new Error('A scene needs to have a name');
       }
 
       if ( typeof sceneDeps === 'function') {
-        options = sceneFunction;
         sceneFunction = sceneDeps;
         sceneDeps = {};
       }
+      
+      options = options || {};
 
       // Mixin event map into Scene
       // Sender: "scene:#{sceneName}"
