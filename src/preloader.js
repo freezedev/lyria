@@ -1,12 +1,20 @@
 define(['root', 'mixedice', 'jquery', './resource', './log', 'eventmap'], function(root, mixedice, $, Resource, Log, EventMap) {'use strict';
   /**
    * @module lyria/preloader
+   * @requires root
+   * @requires mixedice
+   * @requires jquery
+   * @requires lyria/resource
+   * @requires lyria/log
+   * @requires eventmap
    */
 
   /**
    * Provides a preloader to load assets before they are needed
    *
-   * @class Preloader
+   * @class
+   * @alias module:lyria/preloader
+   * @augments module:eventmap
    */
   var Preloader = (function() {
 
@@ -87,8 +95,6 @@ define(['root', 'mixedice', 'jquery', './resource', './log', 'eventmap'], functi
     /**
      * Starts the preloader and loads all assets asynchronously. Triggers
      * events when necessary.
-     *
-     * @method start
      */
     Preloader.prototype.start = function() {
       // Check if it's valid
