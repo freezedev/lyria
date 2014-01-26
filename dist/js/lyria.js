@@ -2442,7 +2442,7 @@ define('lyria/scene', ['jquery', 'mixedice', 'nexttick', './component', './gameo
       this.localization = new Localization();
 
       // Default event value
-      this.defaultEvent = 'click';
+      this.defaultEvent = null;
       
       // DOMEvents object
       this.DOMEvents = {};
@@ -2705,6 +2705,8 @@ define('lyria/scene', ['jquery', 'mixedice', 'nexttick', './component', './gameo
       if (selector == null) {
         return;
       }
+      
+      var defaultEvent = this.defaultEvent || Scene.defaultEvent;
 
       this.DOMEvents[selector] = this.DOMEvents[selector] || {};
 
@@ -2817,6 +2819,8 @@ define('lyria/scene', ['jquery', 'mixedice', 'nexttick', './component', './gameo
         return;
       }
     };
+    
+    Scene.defaultEvent = 'click';
 
     Scene.requireAlways = {
       // Third-party modules
