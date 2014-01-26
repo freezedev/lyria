@@ -3,7 +3,7 @@ define('spec/prefab', ['lyria/prefab'], function(Prefab) {
   
   describe('lyria/prefab', function() {
     
-    var prefab = new Prefab();
+    var prefab = new Prefab('prefab');
     
     it('is a function', function() {
       expect(Prefab).to.be.a('function');
