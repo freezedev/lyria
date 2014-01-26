@@ -2749,7 +2749,6 @@ define('lyria/scene', ['jquery', 'mixedice', 'nexttick', './component', './gameo
       'lyria/component': 'Lyria.Component',
       'lyria/gameobject': 'Lyria.GameObject',
       'lyria/log': 'Lyria.Log',
-      'lyria/loop': 'Lyria.Loop',
       'lyria/prefab/manager': 'Lyria.PrefabManager',
       'lyria/resource': 'Lyria.Resource',
       'lyria/tween': 'Lyria.Tween'
