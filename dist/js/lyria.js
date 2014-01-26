@@ -226,7 +226,28 @@ define('lyria/achievement/manager', ['jquery', '../achievement', '../template/en
 define('lyria/animation', ['jquery', 'mixedice', 'eventmap'], function($, mixedice, EventMap) {
   'use strict';
   
+  /**
+   * @module lyria/animation
+   * @requires jquery
+   * @requires mixedice
+   * @requires eventmap 
+   */
+  
   var Animation = (function() {
+    
+    /**
+     * @class
+     * @alias module:lyria/animation
+     * 
+     * 
+     * @param {Object} $elem
+     * @param {Object} options
+     * 
+     * @fires play
+     * @fires pause
+     * @fires reset
+     * @fires stop
+     */
     var Animation = function($elem, options) {
       this.$elem = $elem;
       
@@ -496,13 +517,21 @@ define('lyria/audio/manager', ['jquery', 'clamp', '../log', '../audio', 'mixedic
 define('lyria/checkpoints', ['eventmap', 'mixedice', 'deleteitem', 'performance'], function(EventMap, mixedice, deleteItem, performance) {
   'use strict';
 
-  var Checkpoints = (function() {
+  /**
+   * @module lyria/checkpoints
+   * @requires eventmap
+   * @requires mixedice
+   * @requires deleteitem
+   * @requires performance 
+   */
+
+  return (function() {
     
     /**
-     * Checkpoints constructor
+     * Checkpoints
      *
-     * @class Checkpoints
-     * @constructor
+     * @class
+     * @alias module:lyria/checkpoints
      */
     var Checkpoints = function() {
       // Mix-in eventmap
@@ -532,7 +561,7 @@ define('lyria/checkpoints', ['eventmap', 'mixedice', 'deleteitem', 'performance'
     };
 
     /**
-     * Passes a checkpoint
+     * Checks if a checkpoint has been passed
      * 
      * @param {String} name
      */
@@ -570,15 +599,25 @@ define('lyria/checkpoints', ['eventmap', 'mixedice', 'deleteitem', 'performance'
     return Checkpoints;
   })();
   
-  return Checkpoints;
-
 });
 
 define('lyria/component', ['mixedice', 'eventmap', './component/manager', './log'], function(mixedice, EventMap, ComponentManager, Log) {
   'use strict';
+  
+  /**
+   * @module lyria/component
+   * @requires eventmap
+   * @requires lyria/component/manager
+   * @requires lyria/log 
+   */
 
-  //Lyria.Component
   return (function() {
+    
+    /**
+     * @class
+     * @alias module:lyria/component
+     * @lends module:eventmap 
+     */
 
     var Component = function(name, factory) {
       mixedice([this, Component.prototype], new EventMap());
@@ -606,7 +645,6 @@ define('lyria/component', ['mixedice', 'eventmap', './component/manager', './log
     /**
      * Adds a component to this entity
      * 
-     * @method add
      * @param {Object} child
      */
     Component.prototype.add = function(child) {
@@ -630,7 +668,6 @@ define('lyria/component', ['mixedice', 'eventmap', './component/manager', './log
     /**
      * Removes a component from the entity
      *  
-     * @method remove
      * @param {String} name
      */
     Component.prototype.remove = function(name) {
@@ -646,7 +683,6 @@ define('lyria/component', ['mixedice', 'eventmap', './component/manager', './log
     /**
      * Logs from the component itself
      * 
-     * @method log
      * @param {String} text
      */
     Component.prototype.log = function(text) {
@@ -665,6 +701,10 @@ define('lyria/component', ['mixedice', 'eventmap', './component/manager', './log
 
 define('lyria/component/manager', function() {
   'use strict';
+  
+  /**
+   * exports module/component/manager 
+   */
 
   var components = {};
 
@@ -693,9 +733,17 @@ define('lyria/component/manager', function() {
 });
 
 // General constants
-define('lyria/constants', {
-  animSpeed: 300
-});
+define('lyria/constants', function() {
+  'use strict';
+  
+  /**
+   * @exports lyria/constants 
+   */
+  
+  return {
+    animSpeed: 300
+  };
+}); 
 define('clamp', function() {
   'use strict';
   
@@ -1031,21 +1079,30 @@ define('random', function() {
 
 
 define('lyria/core/watch', function() {  });
-/**
- * @module Lyria
- */
 define('lyria/game', ['eventmap', 'mixedice', 'fullscreen', 'jquery', 'gameboard/loop', './viewport', './scene/director', './preloader', './world', './checkpoints'], function(EventMap, mixedice, fullscreen, $, Loop, Viewport, Director, Preloader, World, Checkpoints) {'use strict';
 
   /**
-   * Game class which has a viewport, scene director and preloader by
-   * default.
-   *
-   * @class Game
+   * @module lyria/game
+   * @requires eventmap
+   * @requires mixedice
+   * @requires fullscreen
+   * @requires jquery
+   * @requires gameboard/loop
+   * @requires lyria/viewport
+   * @requires lyria/scene/director
+   * @requires lyria/preloader
+   * @requires lyria/world
+   * @requires lyria/checkpoints
    */
+
   return (function() {
 
     /**
+     * Game class which has a viewport, scene director and preloader by
+     * default.
+     * 
      * @constructor
+     * @alias module:lyria/game
      */
     var Game = function(options) {
       var self = this;
@@ -1147,7 +1204,8 @@ define('lyria/game', ['eventmap', 'mixedice', 'fullscreen', 'jquery', 'gameboard
     };
     
     /**
-     * 
+     * @param {String} name
+     * @param {Object} data
      */
     Game.prototype.addScene = function(name, data) {
       var self = this;
@@ -1176,7 +1234,7 @@ define('lyria/game', ['eventmap', 'mixedice', 'fullscreen', 'jquery', 'gameboard
     };
     
     /**
-     * 
+     * @param {String}
      */
     Game.prototype.showScene = function(name) {
       this.director.show(name);
@@ -1200,12 +1258,19 @@ define('lyria/gameobject', ['mixedice', 'eventmap', './component', './log'], fun
   
   /**
    * @module lyria/gameobject
+   * @requires mixedice
+   * @requires eventmap
+   * @requires lyria/component
+   * @requires lyria/log
    */
   
-  //Lyria.GameObject
   return (function() {
     
-    // Constructor
+    /**
+     * @class
+     * @alias module:lyria/gameobject
+     * 
+     */
     var GameObject = function() {
       mixedice([this, GameObject.prototype], new EventMap());
       
@@ -1245,16 +1310,29 @@ define('lyria/gameobject', ['mixedice', 'eventmap', './component', './log'], fun
       this.trigger('refresh');
     };
     
+    /**
+     * 
+     * @param {module:lyria/component} component
+     */
     GameObject.prototype.add = function(component) {
       if (component instanceof Component) {
         this.components[component.name] = component;
       }
     };
     
+    /**
+     * 
+     * @param {Function} functionBody
+     */
     GameObject.prototype.execute = function(functionBody) {
       functionBody.apply(this, this);
     };
     
+    /**
+     * Logs from the game object itself
+     * 
+     * @param {String} text
+     */
     GameObject.prototype.log = function(text) {
       Log.i('GameObject: ' + text);
     };
@@ -1269,6 +1347,9 @@ define('lyria/language', ['detectr', 'eventmap', './mixin/language'], function(d
   
   /**
    * @module lyria/language 
+   * @requires detectr
+   * @requires eventmap
+   * @requires lyria/mixin/language
    */
   
   var langEvents = new EventMap();
@@ -1290,14 +1371,17 @@ define('lyria/layer', ['mixedice', './gameobject'], function(mixedice, GameObjec
   'use strict';
   /**
    * @module lyria/layer
+   * @requires mixedice
+   * @requires lyria/gameobject
    */
 
   return (function() {
 
     /**
-     * @class Layer
-     * @extends Lyria.GameObject 
-     * @constructor
+     * @class
+     * @alias module:lyria/layer
+     * 
+     * @augments module:lyria/eventmap 
      */
     var Layer = function() {
       mixedice(this.prototype, new GameObject());
@@ -1409,10 +1493,12 @@ define('lyria/log', ['root'], function(root) {
   'use strict';
   /**
    * @module lyria/log
+   * @requires root
    */
   
   /**
-   * @class Log 
+   * @class
+   * @alias module:lyria/log
    */
   var Log = (function() {
 
@@ -1493,6 +1579,16 @@ define('lyria/log', ['root'], function(root) {
 define('lyria/mixin/language', function() {
   'use strict';
   
+  /**
+   * @module lyria/mixin/language
+   */
+  
+  /**
+   * @mixin
+   * 
+   * @param {String} propertyName
+   * @param {Function} propertyTrigger
+   */
   return function(propertyName, propertyTrigger) {
     if (propertyName == null) {
       propertyName = 'language';
@@ -1527,12 +1623,13 @@ define('lyria/mixin/templatable', function() {
   };
 });
 
-/**
- * @namespace Lyria
- * Lyria namespace decleration
- */
 define('lyria/prefab', ['./scene'], function(Scene) {
 	'use strict';
+	
+	/**
+	 * @module lyria/prefab
+	 * @requires lyria/scene 
+	 */
 
   // TODO: Allow own Prefab.requireAlways similar to Scene.requireAlways
 
@@ -1542,6 +1639,13 @@ define('lyria/prefab', ['./scene'], function(Scene) {
 });
 define('lyria/prefab/manager', ['jqueryify', 'jquery', 'root'], function($ify, $, root) {
   'use strict';
+  
+  /**
+   * @exports lyria/prefab/manager
+   * @requires jqueryify
+   * @requires jquery
+   * @requires root 
+   */
   
   var PrefabManager = {};
 
@@ -1635,12 +1739,20 @@ define('lyria/prefab/manager', ['jqueryify', 'jquery', 'root'], function($ify, $
 define('lyria/preloader', ['root', 'mixedice', 'jquery', './resource', './log', 'eventmap'], function(root, mixedice, $, Resource, Log, EventMap) {'use strict';
   /**
    * @module lyria/preloader
+   * @requires root
+   * @requires mixedice
+   * @requires jquery
+   * @requires lyria/resource
+   * @requires lyria/log
+   * @requires eventmap
    */
 
   /**
    * Provides a preloader to load assets before they are needed
    *
-   * @class Preloader
+   * @class
+   * @alias module:lyria/preloader
+   * @augments module:eventmap
    */
   var Preloader = (function() {
 
@@ -1721,8 +1833,6 @@ define('lyria/preloader', ['root', 'mixedice', 'jquery', './resource', './log', 
     /**
      * Starts the preloader and loads all assets asynchronously. Triggers
      * events when necessary.
-     *
-     * @method start
      */
     Preloader.prototype.start = function() {
       // Check if it's valid
@@ -1879,18 +1989,28 @@ define('lyria/preloader', ['root', 'mixedice', 'jquery', './resource', './log', 
   return Preloader;
 });
 
-/**
- * @namespace Lyria
- * Lyria namespace decleration
- */
 define('lyria/resource', ['path'], function(Path) {
   'use strict';
+
+  /**
+   * @exports lyria/resource
+   * @requires path 
+   */
   
   var Resource = {
     /**
-     *
+     * @member {Object} module:lyria/resource.path
      */
     path: {
+      /**
+       * @member {String} module:lyria/resource.path.assets=assets
+       * @member {String} module:lyria/resource.path.audio=audio
+       * @member {String} module:lyria/resource.path.data=data
+       * @member {String} module:lyria/resource.path.image=images
+       * @member {String} module:lyria/resource.path.scene=scenes
+       * @member {String} module:lyria/resource.path.video=video
+       * @member {String} module:lyria/resource.path.prefab=prefabs
+       */
       assets: 'assets',
       audio: 'audio',
       data: 'data',
@@ -1903,8 +2023,15 @@ define('lyria/resource', ['path'], function(Path) {
     /**
      * Returns the relative filename to an asset by filename and type
      * 
-     * @param {String} filename
-     * @param {String} type
+     * @param {String} filename The filename
+     * @param {String} type The type of the asset
+     * @returns {String}
+     * 
+     * @example
+     * Resource.name('mything.json'); // => "assets/mything.json"
+     * 
+     * @example
+     * Resource.name('myimage.png', 'image'); // => "assets/images/myimage.png"
      */
     name: function(filename, type) {
       if (!filename) {
@@ -1921,11 +2048,16 @@ define('lyria/resource', ['path'], function(Path) {
   
   return Resource;
 }); 
-/**
- * @module Lyria
- * @submodule Scene
- */
 define('lyria/scene/director', ['root', 'mixedice', 'jquery', 'eventmap', '../scene', '../viewport'], function(root, mixedice, $, EventMap, Scene, Viewport) {'use strict';
+  /**
+   * @module lyria/scene/director
+   * @requires root
+   * @requires mixedice
+   * @requires jquery
+   * @requires eventmap
+   * @requires lyria/scene
+   * @requires lyria/viewport 
+   */
 
   /**
    * The scene director is the manager for all scenes
@@ -1937,11 +2069,12 @@ define('lyria/scene/director', ['root', 'mixedice', 'jquery', 'eventmap', '../sc
      * The scene director constructor
      * Attaches a scene director to a container, the parent is optional
      *
-     * @class Director
-     * @constructor
+     * @class
+     * @alias module:lyria/scene/director
+     * @augments EventMap
      *
-     * @param {Object} container
-     * @param {Object} parent
+     * @param {Viewport} [container]
+     * @param {jQuery|String} [parent]
      */
     function SceneDirector(container, parent) {
       mixedice([this, SceneDirector.prototype], new EventMap());
@@ -1957,36 +2090,34 @@ define('lyria/scene/director', ['root', 'mixedice', 'jquery', 'eventmap', '../sc
       /**
        * All scenes
        *
-       * @property sceneList
-       * @type {Object}
+       * @member {Object} sceneList
        */
       this.sceneList = {};
 
       /**
-       * @property className
-       * @type {String}
+       * @member {String} className
        */
       this.className = 'scene';
 
       /**
        * The current scene
        *
-       * @property currentScene
-       * @type {Scene}
+       * @member {Scene} currentScene
        */
       this.currentScene = null;
 
       /**
        * The default scene
        *
-       * @property defaultScene
-       * @type {String}
+       * @member {String} defaultScene
        */
       this.defaultScene = null;
 
       /**
        * Define events for scene director
        *
+       * @fires Scene#render
+       * @fires Scene#update
        */
       this.on('render', function() {
         if (this.currentScene) {
@@ -2004,7 +2135,6 @@ define('lyria/scene/director', ['root', 'mixedice', 'jquery', 'eventmap', '../sc
     /**
      * Adds a scene to the scene director
      *
-     * @method add
      * @param {Object} scene
      * @param {Object} data
      */
@@ -2077,7 +2207,6 @@ define('lyria/scene/director', ['root', 'mixedice', 'jquery', 'eventmap', '../sc
     /**
      * Shows a specified scene
      *
-     * @method show
      * @param {String} scene name of scene
      * @param {Object} options
      * @param {Function} callback
@@ -2129,7 +2258,6 @@ define('lyria/scene/director', ['root', 'mixedice', 'jquery', 'eventmap', '../sc
     /**
      * Refreshes a scene
      *
-     * @method refresh
      * @param {String} scene
      */
     SceneDirector.prototype.refresh = function(scene) {
@@ -2143,10 +2271,18 @@ define('lyria/scene/director', ['root', 'mixedice', 'jquery', 'eventmap', '../sc
 
   })();
 }); 
-/**
- * @module Lyria
- */
 define('lyria/scene', ['jquery', 'mixedice', 'nexttick', './component', './gameobject', './log', './localization'], function($, mixedice, nextTick, Component, GameObject, Log, Localization) {'use strict';
+
+  /**
+   * @module lyria/scene
+   * @requires jquery
+   * @requires mixedice
+   * @requires nexttick
+   * @requires lyria/component
+   * @requires lyria/gameobject
+   * @requires lyria/log
+   * @requires lyria/localization
+   */
 
   var createNamespace = function(obj, chain, value) {
     if (Array.isArray(chain)) {
@@ -2176,8 +2312,8 @@ define('lyria/scene', ['jquery', 'mixedice', 'nexttick', './component', './gameo
     /**
      * Scene constructor
      *
-     * @class Scene
-     * @constructor
+     * @class
+     * @alias module:lyria/scene
      */
     
     // TODO: Having options as the last parameter is kinda unintuitive
@@ -2387,7 +2523,6 @@ define('lyria/scene', ['jquery', 'mixedice', 'nexttick', './component', './gameo
     /**
      * Adds a gameobject to the scene
      *
-     * @method add
      * @param {Object} child
      */
     Scene.prototype.add = function(child) {
@@ -2435,7 +2570,6 @@ define('lyria/scene', ['jquery', 'mixedice', 'nexttick', './component', './gameo
     /**
      * Refreshes the scene (Re-renders the template)
      *
-     * @method refresh
      * @param {Object} val
      */
     Scene.prototype.refresh = function(val) {
@@ -2463,7 +2597,6 @@ define('lyria/scene', ['jquery', 'mixedice', 'nexttick', './component', './gameo
     /**
      * Sets an event to the event object (DOM events)
      *
-     * @method bindEvent
      * @param {String} selector
      * @param {String} eventName
      * @param {Function} eventFunction
@@ -2491,7 +2624,6 @@ define('lyria/scene', ['jquery', 'mixedice', 'nexttick', './component', './gameo
     /**
      * Binds a lot of events instead of a single one
      * 
-     * @method bindEvents
      * @param {Object} eventObject
      * @see bindEvent
      */
@@ -2510,7 +2642,6 @@ define('lyria/scene', ['jquery', 'mixedice', 'nexttick', './component', './gameo
     /*
      * Unbinds a previously bound event
      *
-     * @method unbindEvent
      * @param {String} selector
      * @param {String} eventName
      * @param {Function} eventFunction
@@ -2530,7 +2661,6 @@ define('lyria/scene', ['jquery', 'mixedice', 'nexttick', './component', './gameo
     /**
      * Unbinds a lot of events
      * 
-     * @method unbindEvents
      * @param [Object] eventObject
      */
     Scene.prototype.unbindEvents = function(eventObject) {
@@ -2565,8 +2695,7 @@ define('lyria/scene', ['jquery', 'mixedice', 'nexttick', './component', './gameo
     /**
      * Binds an DOM event to the specified data-behavior selector
      *
-     * @method behavior
-     * @param {String} beviorName
+     * @param {String} behaviorName
      * @param {String} eventName
      * @param {Function} eventFunction
      */
@@ -2618,6 +2747,11 @@ define('lyria/scene', ['jquery', 'mixedice', 'nexttick', './component', './gameo
 
 define('lyria/serialize', ['jquery'], function($) {
   'use strict';
+  
+  /**
+   * @exports lyria/serialize
+   * @requires jquery 
+   */
   
   /**
    *
@@ -2690,12 +2824,13 @@ define('lyria/sprite/renderer', function() {
   
 });
 
- /**
- * @module Lyria
- * @submodule Template 
- */
 define('lyria/template/connector', ['./methods'], function(templateMethods) {
   'use strict';
+  
+  /**
+   * @module lyria/template/connector
+   * @requires lyria/template/methods 
+   */
   
   var noop = function() {
   };
@@ -2703,8 +2838,8 @@ define('lyria/template/connector', ['./methods'], function(templateMethods) {
   return (function() {
 
     /**
-     * @class Connector 
-     * @constructor
+     * @class
+     * @alias module:lyria/template/connector
      */
     var TemplateConnector = function(functionRefs) {
       if ( typeof functionRefs === 'object') {
@@ -2829,7 +2964,22 @@ define('lyria/template/string', ['objectify'], function(objectify) {
 define('lyria/tween', ['eventmap', 'mixedice', 'options', 'jqueryify'], function(EventMap, mixedice, options, $fy) {
   'use strict';
   
+  /**
+   * @module lyria/tween
+   * @requires eventmap
+   * @requires mixedice
+   * @requires options
+   * @requires jqueryify 
+   */
+  
   var Tween = (function() {
+    
+    /**
+     * @class
+     * @alias module:lyria/tween
+     * 
+     * @param {Object} opts
+     */
     var Tween = function(opts) {
       opts = options(opts, {
         elem: null,
@@ -2883,6 +3033,9 @@ define('lyria/tween', ['eventmap', 'mixedice', 'options', 'jqueryify'], function
       });
     };
     
+    /**
+     * @member module:lyria/tween.defaults 
+     */
     Tween.defaults = {
       easing: 'linear',
       duration: '300ms',
@@ -2896,8 +3049,16 @@ define('lyria/tween', ['eventmap', 'mixedice', 'options', 'jqueryify'], function
 }); 
 define('lyria/video', function() {
   'use strict';
+  
+  /**
+   * @module lyria/video 
+   */
 
   var Video =  (function() {
+    /**
+     * @class
+     * @alias module:lyria/video 
+     */
     var Video = function() {
 
     };
@@ -2925,10 +3086,15 @@ define('lyria/video', function() {
   
 });
 
-/**
- * @module Lyria
- */
 define('lyria/viewport', ['root', 'jquery', 'mixedice', 'eventmap'], function(root, $, mixedice, EventMap) {'use strict';
+
+  /**
+   * @module lyria/viewport
+   * @requires root
+   * @requires jquery
+   * @requires mixedice
+   * @requires eventmap 
+   */
 
   return (function() {
 
