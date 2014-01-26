@@ -88,7 +88,7 @@ define('spec/game', ['lyria/game', 'lyria/viewport', 'lyria/scene/director', 'ly
       expect(game.showScene).to.equal(Game.prototype.showScene);
     });
 
-    it('has a reference to lyria/loop', function() {
+    it('has a reference to gameboard/loop', function() {
       expect(Game).to.have.a.property('Loop');
       expect(Game.Loop).to.be.a('object');
     });

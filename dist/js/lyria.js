@@ -832,6 +832,7 @@ define('jqueryify', ['jquery'], function($) {
 /**
  * Trying to find a better alternative than setTimeout(fn, 0)
  * requestAnimationFrame should be a better alternative
+ * TODO: Evaluate setImmediate shims
  */
 define('nexttick', ['requestanimationframe', 'cancelanimationframe'], function(requestAnimationFrame, cancelAnimationFrame) {
   'use strict';
@@ -1033,7 +1034,7 @@ define('lyria/core/watch', function() {  });
 /**
  * @module Lyria
  */
-define('lyria/game', ['eventmap', 'mixedice', 'fullscreen', 'jquery', './viewport', './scene/director', './preloader', './loop', './world', './checkpoints'], function(EventMap, mixedice, fullscreen, $, Viewport, Director, Preloader, Loop, World, Checkpoints) {'use strict';
+define('lyria/game', ['eventmap', 'mixedice', 'fullscreen', 'jquery', 'gameboard/loop', './viewport', './scene/director', './preloader', './world', './checkpoints'], function(EventMap, mixedice, fullscreen, $, Loop, Viewport, Director, Preloader, World, Checkpoints) {'use strict';
 
   /**
    * Game class which has a viewport, scene director and preloader by
@@ -1263,139 +1264,6 @@ define('lyria/gameobject', ['mixedice', 'eventmap', './component', './log'], fun
   })();
   
 });
-define('lyria/input', function() {
-  'use strict';
-  
-  var Input = {};
-  
-  Input.key = {};
-  Input.mouse = {};
-  
-  Input.key.down = function(key) {
-    
-  };
-  
-  Input.key.up = function(key) {
-    
-  };
-  
-  Input.mouse.down = function() {
-    
-  };
-  
-  Input.mouse.up = function() {
-    
-  };
-  
-  return Input;
-});
-define('lyria/input/key', function() {
-  'use strict';
-  
-  var Key = {
-    'backspace': 8,
-    'tab': 9,
-    'enter': 13,
-    'shift': 16,
-    'ctrl': 17,
-    'alt': 18,
-    'escape': 27,
-    'left': 37,
-    'up': 38,
-    'right': 39,
-    'down': 40,
-    'insert': 45,
-    'delete': 46,
-    '0': 48,
-    '1': 49,
-    '2': 50,
-    '3': 51,
-    '4': 52,
-    '5': 53,
-    '6': 54,
-    '7': 55,
-    '8': 56,
-    '9': 57,
-    'a': 65,
-    'b': 66,
-    'c': 67,
-    'd': 68,
-    'e': 69,
-    'f': 70,
-    'g': 71,
-    'h': 72,
-    'i': 73,
-    'j': 74,
-    'k': 75,
-    'l': 76,
-    'm': 77,
-    'n': 78,
-    'o': 79,
-    'p': 80,
-    'q': 81,
-    'r': 82,
-    's': 83,
-    't': 84,
-    'u': 85,
-    'v': 86,
-    'w': 87,
-    'x': 88,
-    'y': 89,
-    'z': 90,
-    'numpad0': 96,
-    'numpad1': 97,
-    'numpad2': 98,
-    'numpad3': 99,
-    'numpad4': 100,
-    'numpad5': 101,
-    'numpad6': 102,
-    'numpad7': 103,
-    'numpad8': 104,
-    'numpad9': 105,
-    'f1': 112,
-    'f2': 113,
-    'f3': 114,
-    'f4': 115,
-    'f5': 116,
-    'f6': 117,
-    'f7': 118,
-    'f8': 119,
-    'f9': 120,
-    'f10': 121,
-    'f11': 122,
-    'f12': 123,
-    'semiColon': 186,
-    'equalSign': 187,
-    'comma': 188,
-    'dash': 189,
-    'period': 190,
-    'forwardSlash': 191,
-    'openBracket': 219,
-    'backSlash': 220,
-    'closeBraket': 221,
-    'singleQuote': 222
-  };
-  
-  Key.define = function(name, key) {
-    if (name == null || key == null) {
-      return;
-    }
-    
-    if (!Object.hasOwnProperty.call(Key, name)) {
-      if (typeof key === 'function') {
-        Object.defineProperty(Key, name, {
-          get: key
-        });
-      } else {
-        Key[name] = key;        
-      }
-    }
-  };
-
-  return Key;
-
-});
-
 define('lyria/language', ['detectr', 'eventmap', './mixin/language'], function(detectr, EventMap, langMixin) {
   'use strict';
   
@@ -1616,107 +1484,6 @@ define('lyria/log', ['root'], function(root) {
   root.log = root.out = Log.i;
   
   return Log;
-});
-define('lyria/loop', ['requestanimationframe', 'eventmap'], function(requestAnimationFrame, EventMap) {
-  /**
-   * @module lyria/loop
-   */
-  
-  'use strict';
-  
-  var loopEvents = new EventMap();
-  var pausedEvents = {};
-  
-  /**
-   * @class Loop
-   * @static 
-   */
-  return (function() {
-
-    var isRunning = true;
-
-    /**
-     * @method run 
-     */
-    var run = function() {
-      var time;
-
-      (function loop() {
-        requestAnimationFrame(loop);
-
-        var now = performance.now() || Date.now();
-        var dt = now - (time || now);
-
-        time = now;
-
-        if (!isRunning) {
-          return;
-        }
-
-        var eventKeys = Object.keys(loopEvents.events);
-        
-        for (var i = 0, j = eventKeys.length; i < j; i++) {
-          (function(key) {
-            if (!pausedEvents[key]) {
-              loopEvents.trigger(key, dt);
-            }
-          })(eventKeys[i]);
-        }
-      })();
-    };
-
-    /**
-     * @method stop 
-     */
-    var stop = function() {
-      isRunning = false;
-    };
-
-    var clear = function() {
-      loopEvents.clear();
-      pausedEvents = {};
-    };
-    
-    var on = function(taskName, taskFunction) {
-      loopEvents.on(taskName, taskFunction);
-      pausedEvents[taskName] = false;
-    };
-    
-    var off = function(taskName) {
-      loopEvents.off(taskName);
-      if (pausedEvents[taskName] != null) {
-        delete pausedEvents[taskName];        
-      }
-    };
-
-    var pause = function(taskName) {
-      pausedEvents[taskName].paused = true;
-    };
-
-    var resume = function(taskName) {
-      if (taskName == null) {
-        isRunning = true;
-        return;
-      }
-      
-      pausedEvents[taskName].paused = false;
-    };
-
-
-    return {
-      run: run,
-      
-      stop: stop,
-      clear: clear,
-      
-      on: on,
-      off: off,
-      
-      pause: pause,
-      resume: resume
-    };
-  })();
-  
 });
 /**
  * Mixin language property into objects
