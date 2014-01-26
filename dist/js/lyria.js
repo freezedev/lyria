@@ -299,10 +299,13 @@ define('lyria/animation', ['jquery', 'mixedice', 'eventmap'], function($, mixedi
   return Animation;
 });
 
-/**
- * @module Lyria
- */
 define('lyria/audio', ['root', 'jquery'], function(root, $) {'use strict';
+
+  /**
+   * @module lyria/audio
+   * @requires root
+   * @requires jquery 
+   */
 
   var supportedTypes = {
     'mp3' : 'audio/mpeg',
@@ -311,7 +314,8 @@ define('lyria/audio', ['root', 'jquery'], function(root, $) {'use strict';
   };
 
   /**
-   * 
+   * @class
+   * @alias module:lyria/audio
    *
    * @param {Object} options
    * @param {String} options.id
@@ -2072,6 +2076,9 @@ define('lyria/scene/director', ['root', 'mixedice', 'jquery', 'eventmap', '../sc
      * @class
      * @alias module:lyria/scene/director
      * @augments EventMap
+     * 
+     * @fires module:lyria/scene/director#render
+     * @fires module:lyria/scene/director#update
      *
      * @param {Viewport} [container]
      * @param {jQuery|String} [parent]
@@ -2091,11 +2098,13 @@ define('lyria/scene/director', ['root', 'mixedice', 'jquery', 'eventmap', '../sc
        * All scenes
        *
        * @member {Object} sceneList
+       * @memberof module:lyria/scene/director
        */
       this.sceneList = {};
 
       /**
        * @member {String} className
+       * @memberof module:lyria/scene/director
        */
       this.className = 'scene';
 
@@ -2103,6 +2112,7 @@ define('lyria/scene/director', ['root', 'mixedice', 'jquery', 'eventmap', '../sc
        * The current scene
        *
        * @member {Scene} currentScene
+       * @memberof module:lyria/scene/director
        */
       this.currentScene = null;
 
@@ -2110,15 +2120,23 @@ define('lyria/scene/director', ['root', 'mixedice', 'jquery', 'eventmap', '../sc
        * The default scene
        *
        * @member {String} defaultScene
+       * @memberof module:lyria/scene/director
        */
       this.defaultScene = null;
 
       /**
-       * Define events for scene director
-       *
-       * @fires Scene#render
-       * @fires Scene#update
+       * Event for rendering all scenes
+       *  
+       * @event module:lyria/scene/director#render
        */
+      
+      /**
+       * Event for updating all scenes 
+       *
+       * @event module:lyria/scene/director#update
+       * @property {Number} dt Delta time
+       */
+      
       this.on('render', function() {
         if (this.currentScene) {
           this.currentScene.trigger('render');
@@ -2866,19 +2884,22 @@ define('lyria/template/connector', ['./methods'], function(templateMethods) {
 
   })();
 }); 
-/**
- * @module Lyria
- * @submodule Template
- */
 define('lyria/template/engine', ['hbs', './connector', './methods'], function(Handlebars, TemplateConnector, templateMethods) {
   'use strict';
+
+  /**
+   * @module lyria/template/engine
+   * @requires hbs
+   * @requires lyria/template/connector
+   * @requires lyria/template/methods
+   */
 
   var noop = function() {
   };
 
   /**
-   * @class Engine
-   * @constructor
+   * @class
+   * @alias module:lyria/template/engine
    *
    * @param {Object} templateConnector
    */
@@ -2912,10 +2933,6 @@ define('lyria/template/engine', ['hbs', './connector', './methods'], function(Ha
   return TemplateEngine;
 
 });
-
-/**
- * @module Lyria
- */
 
 define('lyria/template/methods', function() {
   'use strict';
