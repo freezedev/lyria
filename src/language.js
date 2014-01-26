@@ -3,6 +3,9 @@ define(['detectr', 'eventmap', './mixin/language'], function(detectr, EventMap, 
   
   /**
    * @module lyria/language 
+   * @requires detectr
+   * @requires eventmap
+   * @requires lyria/mixin/language
    */
   
   var langEvents = new EventMap();
