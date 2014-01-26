@@ -1,7 +1,10 @@
-/**
- * @module Lyria
- */
 define(['root', 'jquery'], function(root, $) {'use strict';
+
+  /**
+   * @module lyria/audio
+   * @requires root
+   * @requires jquery 
+   */
 
   var supportedTypes = {
     'mp3' : 'audio/mpeg',
@@ -10,7 +13,8 @@ define(['root', 'jquery'], function(root, $) {'use strict';
   };
 
   /**
-   * 
+   * @class
+   * @alias module:lyria/audio
    *
    * @param {Object} options
    * @param {String} options.id
