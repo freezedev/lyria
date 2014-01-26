@@ -1,18 +1,27 @@
-/**
- * @module Lyria
- */
 define(['eventmap', 'mixedice', 'fullscreen', 'jquery', 'gameboard/loop', './viewport', './scene/director', './preloader', './world', './checkpoints'], function(EventMap, mixedice, fullscreen, $, Loop, Viewport, Director, Preloader, World, Checkpoints) {'use strict';
 
   /**
-   * Game class which has a viewport, scene director and preloader by
-   * default.
-   *
-   * @class Game
+   * @module lyria/game
+   * @requires eventmap
+   * @requires mixedice
+   * @requires fullscreen
+   * @requires jquery
+   * @requires gameboard/loop
+   * @requires lyria/viewport
+   * @requires lyria/scene/director
+   * @requires lyria/preloader
+   * @requires lyria/world
+   * @requires lyria/checkpoints
    */
+
   return (function() {
 
     /**
+     * Game class which has a viewport, scene director and preloader by
+     * default.
+     * 
      * @constructor
+     * @alias module:lyria/game
      */
     var Game = function(options) {
       var self = this;
@@ -114,7 +123,8 @@ define(['eventmap', 'mixedice', 'fullscreen', 'jquery', 'gameboard/loop', './vie
     };
     
     /**
-     * 
+     * @param {String} name
+     * @param {Object} data
      */
     Game.prototype.addScene = function(name, data) {
       var self = this;
@@ -143,7 +153,7 @@ define(['eventmap', 'mixedice', 'fullscreen', 'jquery', 'gameboard/loop', './vie
     };
     
     /**
-     * 
+     * @param {String}
      */
     Game.prototype.showScene = function(name) {
       this.director.show(name);
