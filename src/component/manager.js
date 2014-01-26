@@ -1,5 +1,9 @@
 define(function() {
   'use strict';
+  
+  /**
+   * exports module/component/manager 
+   */
 
   var components = {};
 

@@ -1,7 +1,15 @@
 define(function() {
   'use strict';
+  
+  /**
+   * @module lyria/video 
+   */
 
   var Video =  (function() {
+    /**
+     * @class
+     * @alias module:lyria/video 
+     */
     var Video = function() {
 
     };

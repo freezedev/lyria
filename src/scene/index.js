@@ -1,7 +1,15 @@
-/**
- * @module Lyria
- */
 define(['jquery', 'mixedice', 'nexttick', './component', './gameobject', './log', './localization'], function($, mixedice, nextTick, Component, GameObject, Log, Localization) {'use strict';
+
+  /**
+   * @module lyria/scene
+   * @requires jquery
+   * @requires mixedice
+   * @requires nexttick
+   * @requires lyria/component
+   * @requires lyria/gameobject
+   * @requires lyria/log
+   * @requires lyria/localization
+   */
 
   var createNamespace = function(obj, chain, value) {
     if (Array.isArray(chain)) {
@@ -31,8 +39,8 @@ define(['jquery', 'mixedice', 'nexttick', './component', './gameobject', './log'
     /**
      * Scene constructor
      *
-     * @class Scene
-     * @constructor
+     * @class
+     * @alias module:lyria/scene
      */
     
     // TODO: Having options as the last parameter is kinda unintuitive
@@ -242,7 +250,6 @@ define(['jquery', 'mixedice', 'nexttick', './component', './gameobject', './log'
     /**
      * Adds a gameobject to the scene
      *
-     * @method add
      * @param {Object} child
      */
     Scene.prototype.add = function(child) {
@@ -290,7 +297,6 @@ define(['jquery', 'mixedice', 'nexttick', './component', './gameobject', './log'
     /**
      * Refreshes the scene (Re-renders the template)
      *
-     * @method refresh
      * @param {Object} val
      */
     Scene.prototype.refresh = function(val) {
@@ -318,7 +324,6 @@ define(['jquery', 'mixedice', 'nexttick', './component', './gameobject', './log'
     /**
      * Sets an event to the event object (DOM events)
      *
-     * @method bindEvent
      * @param {String} selector
      * @param {String} eventName
      * @param {Function} eventFunction
@@ -346,7 +351,6 @@ define(['jquery', 'mixedice', 'nexttick', './component', './gameobject', './log'
     /**
      * Binds a lot of events instead of a single one
      * 
-     * @method bindEvents
      * @param {Object} eventObject
      * @see bindEvent
      */
@@ -365,7 +369,6 @@ define(['jquery', 'mixedice', 'nexttick', './component', './gameobject', './log'
     /*
      * Unbinds a previously bound event
      *
-     * @method unbindEvent
      * @param {String} selector
      * @param {String} eventName
      * @param {Function} eventFunction
@@ -385,7 +388,6 @@ define(['jquery', 'mixedice', 'nexttick', './component', './gameobject', './log'
     /**
      * Unbinds a lot of events
      * 
-     * @method unbindEvents
      * @param [Object] eventObject
      */
     Scene.prototype.unbindEvents = function(eventObject) {
@@ -420,8 +422,7 @@ define(['jquery', 'mixedice', 'nexttick', './component', './gameobject', './log'
     /**
      * Binds an DOM event to the specified data-behavior selector
      *
-     * @method behavior
-     * @param {String} beviorName
+     * @param {String} behaviorName
      * @param {String} eventName
      * @param {Function} eventFunction
      */

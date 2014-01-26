@@ -1,4 +1,12 @@
 // General constants
-define({
-  animSpeed: 300
-});
+define(function() {
+  'use strict';
+  
+  /**
+   * @exports lyria/constants 
+   */
+  
+  return {
+    animSpeed: 300
+  };
+}); 

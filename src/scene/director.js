@@ -1,8 +1,13 @@
-/**
- * @module Lyria
- * @submodule Scene
- */
 define(['root', 'mixedice', 'jquery', 'eventmap', '../scene', '../viewport'], function(root, mixedice, $, EventMap, Scene, Viewport) {'use strict';
+  /**
+   * @module lyria/scene/director
+   * @requires root
+   * @requires mixedice
+   * @requires jquery
+   * @requires eventmap
+   * @requires lyria/scene
+   * @requires lyria/viewport 
+   */
 
   /**
    * The scene director is the manager for all scenes
@@ -14,11 +19,15 @@ define(['root', 'mixedice', 'jquery', 'eventmap', '../scene', '../viewport'], fu
      * The scene director constructor
      * Attaches a scene director to a container, the parent is optional
      *
-     * @class Director
-     * @constructor
+     * @class
+     * @alias module:lyria/scene/director
+     * @augments EventMap
+     * 
+     * @fires module:lyria/scene/director#render
+     * @fires module:lyria/scene/director#update
      *
-     * @param {Object} container
-     * @param {Object} parent
+     * @param {Viewport} [container]
+     * @param {jQuery|String} [parent]
      */
     function SceneDirector(container, parent) {
       mixedice([this, SceneDirector.prototype], new EventMap());
@@ -34,37 +43,46 @@ define(['root', 'mixedice', 'jquery', 'eventmap', '../scene', '../viewport'], fu
       /**
        * All scenes
        *
-       * @property sceneList
-       * @type {Object}
+       * @member {Object} sceneList
+       * @memberof module:lyria/scene/director
        */
       this.sceneList = {};
 
       /**
-       * @property className
-       * @type {String}
+       * @member {String} className
+       * @memberof module:lyria/scene/director
        */
       this.className = 'scene';
 
       /**
        * The current scene
        *
-       * @property currentScene
-       * @type {Scene}
+       * @member {Scene} currentScene
+       * @memberof module:lyria/scene/director
        */
       this.currentScene = null;
 
       /**
        * The default scene
        *
-       * @property defaultScene
-       * @type {String}
+       * @member {String} defaultScene
+       * @memberof module:lyria/scene/director
        */
       this.defaultScene = null;
 
       /**
-       * Define events for scene director
-       *
+       * Event for rendering all scenes
+       *  
+       * @event module:lyria/scene/director#render
        */
+      
+      /**
+       * Event for updating all scenes 
+       *
+       * @event module:lyria/scene/director#update
+       * @property {Number} dt Delta time
+       */
+      
       this.on('render', function() {
         if (this.currentScene) {
           this.currentScene.trigger('render');
@@ -81,7 +99,6 @@ define(['root', 'mixedice', 'jquery', 'eventmap', '../scene', '../viewport'], fu
     /**
      * Adds a scene to the scene director
      *
-     * @method add
      * @param {Object} scene
      * @param {Object} data
      */
@@ -154,7 +171,6 @@ define(['root', 'mixedice', 'jquery', 'eventmap', '../scene', '../viewport'], fu
     /**
      * Shows a specified scene
      *
-     * @method show
      * @param {String} scene name of scene
      * @param {Object} options
      * @param {Function} callback
@@ -206,7 +222,6 @@ define(['root', 'mixedice', 'jquery', 'eventmap', '../scene', '../viewport'], fu
     /**
      * Refreshes a scene
      *
-     * @method refresh
      * @param {String} scene
      */
     SceneDirector.prototype.refresh = function(scene) {

@@ -2,6 +2,11 @@ define(['jquery'], function($) {
   'use strict';
   
   /**
+   * @exports lyria/serialize
+   * @requires jquery 
+   */
+  
+  /**
    *
    * @param {Object} anyObject
    *

@@ -6,6 +6,16 @@
 define(function() {
   'use strict';
   
+  /**
+   * @module lyria/mixin/language
+   */
+  
+  /**
+   * @mixin
+   * 
+   * @param {String} propertyName
+   * @param {Function} propertyTrigger
+   */
   return function(propertyName, propertyTrigger) {
     if (propertyName == null) {
       propertyName = 'language';

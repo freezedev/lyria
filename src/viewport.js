@@ -1,7 +1,12 @@
-/**
- * @module Lyria
- */
 define(['root', 'jquery', 'mixedice', 'eventmap'], function(root, $, mixedice, EventMap) {'use strict';
+
+  /**
+   * @module lyria/viewport
+   * @requires root
+   * @requires jquery
+   * @requires mixedice
+   * @requires eventmap 
+   */
 
   return (function() {
 

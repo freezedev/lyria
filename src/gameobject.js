@@ -3,12 +3,19 @@ define(['mixedice', 'eventmap', './component', './log'], function(mixedice, Even
   
   /**
    * @module lyria/gameobject
+   * @requires mixedice
+   * @requires eventmap
+   * @requires lyria/component
+   * @requires lyria/log
    */
   
-  //Lyria.GameObject
   return (function() {
     
-    // Constructor
+    /**
+     * @class
+     * @alias module:lyria/gameobject
+     * 
+     */
     var GameObject = function() {
       mixedice([this, GameObject.prototype], new EventMap());
       
@@ -48,16 +55,29 @@ define(['mixedice', 'eventmap', './component', './log'], function(mixedice, Even
       this.trigger('refresh');
     };
     
+    /**
+     * 
+     * @param {module:lyria/component} component
+     */
     GameObject.prototype.add = function(component) {
       if (component instanceof Component) {
         this.components[component.name] = component;
       }
     };
     
+    /**
+     * 
+     * @param {Function} functionBody
+     */
     GameObject.prototype.execute = function(functionBody) {
       functionBody.apply(this, this);
     };
     
+    /**
+     * Logs from the game object itself
+     * 
+     * @param {String} text
+     */
     GameObject.prototype.log = function(text) {
       Log.i('GameObject: ' + text);
     };

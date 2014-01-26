@@ -1,9 +1,10 @@
- /**
- * @module Lyria
- * @submodule Template 
- */
 define(['./methods'], function(templateMethods) {
   'use strict';
+  
+  /**
+   * @module lyria/template/connector
+   * @requires lyria/template/methods 
+   */
   
   var noop = function() {
   };
@@ -11,8 +12,8 @@ define(['./methods'], function(templateMethods) {
   return (function() {
 
     /**
-     * @class Connector 
-     * @constructor
+     * @class
+     * @alias module:lyria/template/connector
      */
     var TemplateConnector = function(functionRefs) {
       if ( typeof functionRefs === 'object') {

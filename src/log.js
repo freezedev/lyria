@@ -2,10 +2,12 @@ define(['root'], function(root) {
   'use strict';
   /**
    * @module lyria/log
+   * @requires root
    */
   
   /**
-   * @class Log 
+   * @class
+   * @alias module:lyria/log
    */
   var Log = (function() {
 

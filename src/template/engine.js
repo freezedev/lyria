@@ -1,16 +1,19 @@
-/**
- * @module Lyria
- * @submodule Template
- */
 define(['hbs', './connector', './methods'], function(Handlebars, TemplateConnector, templateMethods) {
   'use strict';
+
+  /**
+   * @module lyria/template/engine
+   * @requires hbs
+   * @requires lyria/template/connector
+   * @requires lyria/template/methods
+   */
 
   var noop = function() {
   };
 
   /**
-   * @class Engine
-   * @constructor
+   * @class
+   * @alias module:lyria/template/engine
    *
    * @param {Object} templateConnector
    */

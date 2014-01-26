@@ -1,13 +1,21 @@
 define(['eventmap', 'mixedice', 'deleteitem', 'performance'], function(EventMap, mixedice, deleteItem, performance) {
   'use strict';
 
-  var Checkpoints = (function() {
+  /**
+   * @module lyria/checkpoints
+   * @requires eventmap
+   * @requires mixedice
+   * @requires deleteitem
+   * @requires performance 
+   */
+
+  return (function() {
     
     /**
-     * Checkpoints constructor
+     * Checkpoints
      *
-     * @class Checkpoints
-     * @constructor
+     * @class
+     * @alias module:lyria/checkpoints
      */
     var Checkpoints = function() {
       // Mix-in eventmap
@@ -37,7 +45,7 @@ define(['eventmap', 'mixedice', 'deleteitem', 'performance'], function(EventMap,
     };
 
     /**
-     * Passes a checkpoint
+     * Checks if a checkpoint has been passed
      * 
      * @param {String} name
      */
@@ -75,6 +83,4 @@ define(['eventmap', 'mixedice', 'deleteitem', 'performance'], function(EventMap,
     return Checkpoints;
   })();
   
-  return Checkpoints;
-
 });

@@ -1,6 +1,13 @@
 define(['jqueryify', 'jquery', 'root'], function($ify, $, root) {
   'use strict';
   
+  /**
+   * @exports lyria/prefab/manager
+   * @requires jqueryify
+   * @requires jquery
+   * @requires root 
+   */
+  
   var PrefabManager = {};
 
   PrefabManager.prefabs = {};

@@ -66,17 +66,15 @@ module.exports = function(grunt) {
       files: ['gruntfile.js', lyriaOrigin, 'test/**/*.js'],
       options: grunt.file.readJSON('.jshintrc')
     },
-    yuidoc: {
+    jsdoc: {
+      options: {
+        lenient: true,
+        template: "node_modules/grunt-jsdoc/node_modules/ink-docstrap/template",
+        configure: "node_modules/grunt-jsdoc/node_modules/ink-docstrap/template/jsdoc.conf.json"
+      },
       compile: {
-        name: '<%= pkg.name %>',
-        description: '<%= pkg.description %>',
-        version: '<%= pkg.version %>',
-        url: '<%= pkg.homepage %>',
-        options: {
-          linkNatives: true,
-          paths: 'src/',
-          outdir: 'doc/api'
-        }
+        src: ['src/**/*.js', 'README.md'],
+        dest: 'doc/api',
       }
     },
     stylus: {

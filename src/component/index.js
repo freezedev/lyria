@@ -1,8 +1,20 @@
 define(['mixedice', 'eventmap', './component/manager', './log'], function(mixedice, EventMap, ComponentManager, Log) {
   'use strict';
+  
+  /**
+   * @module lyria/component
+   * @requires eventmap
+   * @requires lyria/component/manager
+   * @requires lyria/log 
+   */
 
-  //Lyria.Component
   return (function() {
+    
+    /**
+     * @class
+     * @alias module:lyria/component
+     * @lends module:eventmap 
+     */
 
     var Component = function(name, factory) {
       mixedice([this, Component.prototype], new EventMap());
@@ -30,7 +42,6 @@ define(['mixedice', 'eventmap', './component/manager', './log'], function(mixedi
     /**
      * Adds a component to this entity
      * 
-     * @method add
      * @param {Object} child
      */
     Component.prototype.add = function(child) {
@@ -54,7 +65,6 @@ define(['mixedice', 'eventmap', './component/manager', './log'], function(mixedi
     /**
      * Removes a component from the entity
      *  
-     * @method remove
      * @param {String} name
      */
     Component.prototype.remove = function(name) {
@@ -70,7 +80,6 @@ define(['mixedice', 'eventmap', './component/manager', './log'], function(mixedi
     /**
      * Logs from the component itself
      * 
-     * @method log
      * @param {String} text
      */
     Component.prototype.log = function(text) {
