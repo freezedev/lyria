@@ -1,7 +1,22 @@
 define(['eventmap', 'mixedice', 'options', 'jqueryify'], function(EventMap, mixedice, options, $fy) {
   'use strict';
   
+  /**
+   * @module lyria/tween
+   * @requires eventmap
+   * @requires mixedice
+   * @requires options
+   * @requires jqueryify 
+   */
+  
   var Tween = (function() {
+    
+    /**
+     * @class
+     * @alias module:lyria/tween
+     * 
+     * @param {Object} opts
+     */
     var Tween = function(opts) {
       opts = options(opts, {
         elem: null,
@@ -55,6 +70,9 @@ define(['eventmap', 'mixedice', 'options', 'jqueryify'], function(EventMap, mixe
       });
     };
     
+    /**
+     * @member module:lyria/tween.defaults 
+     */
     Tween.defaults = {
       easing: 'linear',
       duration: '300ms',
