@@ -64,7 +64,7 @@ define(['jquery', 'mixedice', 'nexttick', './component', './gameobject', './log'
       this.localization = new Localization();
 
       // Default event value
-      this.defaultEvent = 'click';
+      this.defaultEvent = null;
       
       // DOMEvents object
       this.DOMEvents = {};
@@ -327,6 +327,8 @@ define(['jquery', 'mixedice', 'nexttick', './component', './gameobject', './log'
       if (selector == null) {
         return;
       }
+      
+      var defaultEvent = this.defaultEvent || Scene.defaultEvent;
 
       this.DOMEvents[selector] = this.DOMEvents[selector] || {};
 
@@ -439,6 +441,8 @@ define(['jquery', 'mixedice', 'nexttick', './component', './gameobject', './log'
         return;
       }
     };
+    
+    Scene.defaultEvent = 'click';
 
     Scene.requireAlways = {
       // Third-party modules
