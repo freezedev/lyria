@@ -1,7 +1,28 @@
 define(['jquery', 'mixedice', 'eventmap'], function($, mixedice, EventMap) {
   'use strict';
   
+  /**
+   * @module lyria/animation
+   * @requires jquery
+   * @requires mixedice
+   * @requires eventmap 
+   */
+  
   var Animation = (function() {
+    
+    /**
+     * @class
+     * @alias module:lyria/animation
+     * 
+     * 
+     * @param {Object} $elem
+     * @param {Object} options
+     * 
+     * @fires play
+     * @fires pause
+     * @fires reset
+     * @fires stop
+     */
     var Animation = function($elem, options) {
       this.$elem = $elem;
       
