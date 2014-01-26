@@ -68,7 +68,9 @@ module.exports = function(grunt) {
     },
     jsdoc: {
       options: {
-        lenient: true
+        lenient: true,
+        template: "node_modules/grunt-jsdoc/node_modules/ink-docstrap/template",
+        configure: "node_modules/grunt-jsdoc/node_modules/ink-docstrap/template/jsdoc.conf.json"
       },
       compile: {
         src: ['src/**/*.js', 'README.md'],
