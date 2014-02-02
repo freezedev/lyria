@@ -16,6 +16,11 @@ define(['eventmap', 'mixedice', 'options', 'jqueryify'], function (EventMap, mix
      * @alias module:lyria/tween
      *
      * @param {Object} opts
+     * @param {String} opts.property - The property that gets animated
+     * @param {String|jQuery} opts.target - The target of the tween
+     * @param {String} opts.easing - The easing of the tween, for example linear
+     * @param {Number} opts.duration - How long the tween is being animated
+     * @param {Number} opts.delay - Delays the tween at the beginning
      */
     var Tween = function (opts) {
       opts = options(opts, {
