@@ -151,9 +151,9 @@ define(['eventmap', 'mixedice', 'fullscreen', 'jquery', 'gameboard/loop', './vie
       
       return this;
     };
-    
+
     /**
-     * @param {String}
+     * @param {String} name
      */
     Game.prototype.showScene = function(name) {
       this.director.show(name);
