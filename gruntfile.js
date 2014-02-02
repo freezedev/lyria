@@ -74,7 +74,7 @@ module.exports = function(grunt) {
       },
       compile: {
         src: ['src/**/*.js', 'README.md'],
-        dest: 'doc/api',
+        dest: 'doc/api'
       }
     },
     stylus: {
@@ -85,7 +85,7 @@ module.exports = function(grunt) {
       },
       compile: {
         options: {
-          compress: false,
+          compress: false
         },
         files: [{
           expand: true,
@@ -98,7 +98,7 @@ module.exports = function(grunt) {
     },
     handlebars: {
       options: {
-        namespace: 'lyria/template/list',
+        namespace: 'lyria/template/list'
       },
       compile: {
         files: {
