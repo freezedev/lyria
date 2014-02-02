@@ -1236,9 +1236,9 @@ define('lyria/game', ['eventmap', 'mixedice', 'fullscreen', 'jquery', 'gameboard
       
       return this;
     };
-    
+
     /**
-     * @param {String}
+     * @param name
      */
     Game.prototype.showScene = function(name) {
       this.director.show(name);
@@ -2978,37 +2978,39 @@ define('lyria/template/string', ['objectify'], function(objectify) {
   return templateString;
 });
 
-define('lyria/tween', ['eventmap', 'mixedice', 'options', 'jqueryify'], function(EventMap, mixedice, options, $fy) {
+define('lyria/tween', ['eventmap', 'mixedice', 'options', 'jqueryify'], function (EventMap, mixedice, options, $fy) {
   'use strict';
-  
+
   /**
    * @module lyria/tween
    * @requires eventmap
    * @requires mixedice
    * @requires options
-   * @requires jqueryify 
+   * @requires jqueryify
    */
-  
-  var Tween = (function() {
-    
+
+  var Tween = (function () {
+
     /**
      * @class
      * @alias module:lyria/tween
-     * 
+     *
      * @param {Object} opts
      */
-    var Tween = function(opts) {
+    var Tween = function (opts) {
       opts = options(opts, {
         elem: null,
-        effects: [{
-          property: null,
-          target: null,
-          easing: Tween.defaults.easing,
-          duration: Tween.defaults.duration,
-          delay: Tween.defaults.delay
-        }]
+        effects: [
+          {
+            property: null,
+            target: null,
+            easing: Tween.defaults.easing,
+            duration: Tween.defaults.duration,
+            delay: Tween.defaults.delay
+          }
+        ]
       });
-      
+
       this.$elem = $fy(opts.elem);
       this.effects = opts.effects;
 
@@ -3018,40 +3020,40 @@ define('lyria/tween', ['eventmap', 'mixedice', 'options', 'jqueryify'], function
 
       var self = this;
 
-      this.on('start', function() {
+      this.on('start', function () {
         if (self.$elem) {
           return;
         }
-        
+
         var effects = [];
         var properties = {};
-        
+
         for (var i = 0, j = self.effects.length; i < j; i++) {
-          (function(item) {
+          (function (item) {
             if (item.property == null || item.target == null) {
               return;
             }
-            
+
             item.duration = item.duration || Tween.defaults.duration;
             item.easing = item.easing || Tween.defaults.easing;
             item.delay = item.delay || Tween.defaults.delay;
-            
+
             effects.push([item.property, item.duration, item.easing, item.delay].join(' '));
             properties[item.property] = item.target;
           })(self.effects[i]);
         }
-        
+
         properties['transition'] = effects.join(', ');
         self.$elem.css(properties);
-        
-        $(document).one('transitionend', function(e) {
+
+        $(document).one('transitionend', function (e) {
           console.log(e.target);
         });
       });
     };
-    
+
     /**
-     * @member module:lyria/tween.defaults 
+     * @member module:lyria/tween.defaults
      */
     Tween.defaults = {
       easing: 'linear',
@@ -3063,7 +3065,9 @@ define('lyria/tween', ['eventmap', 'mixedice', 'options', 'jqueryify'], function
   })();
 
   return Tween;
-}); 
+
+});
+
 define('lyria/video', function() {
   'use strict';
   
