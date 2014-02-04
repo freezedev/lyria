@@ -341,7 +341,7 @@ define('lyria/audio', ['root', 'jquery'], function(root, $) {'use strict';
       }
     }
     this.audio.volume = options.volume;
-    this.audio.id = options.id;
+    this.audio.id = 'lyria-audio-'+options.id;
     $('body').append(this.audio);
   };
 
@@ -468,8 +468,8 @@ define('lyria/audio/manager', ['jquery', 'clamp', '../log', '../audio', 'mixedic
       return;
     }
     
-    $('#' + id).off('ended');
-    $('#' + id).on('ended', {
+    $('#lyria-audio-' + id).off('ended');
+    $('#lyria-audio-' + id).on('ended', {
       'audioFile' : this.audioFiles[id],
       'audioManager' : this,
       'id' : id
@@ -637,8 +637,8 @@ define('lyria/component', ['mixedice', 'eventmap', './component/manager', './log
       }
       
       this.on('update', function(dt) {
-        for (var key in children) {
-          var value = children[key];
+        for (var key in this.children) {
+          var value = this.children[key];
           if (value && value.trigger) {
             value.trigger('update', dt);
           }
@@ -663,7 +663,7 @@ define('lyria/component', ['mixedice', 'eventmap', './component/manager', './log
         childObject = child;
       }
       
-      children[name] = childObject;
+      this.children[name] = childObject;
       
       this.trigger('add', name);
       childObject.trigger('added', this);
@@ -679,7 +679,7 @@ define('lyria/component', ['mixedice', 'eventmap', './component/manager', './log
         return;
       }
       
-      delete children[name];
+      delete this.children[name];
       
       this.trigger('remove', name);
     };
@@ -1238,7 +1238,7 @@ define('lyria/game', ['eventmap', 'mixedice', 'fullscreen', 'jquery', 'gameboard
     };
 
     /**
-     * @param name
+     * @param {String} name
      */
     Game.prototype.showScene = function(name) {
       this.director.show(name);
@@ -2996,6 +2996,11 @@ define('lyria/tween', ['eventmap', 'mixedice', 'options', 'jqueryify'], function
      * @alias module:lyria/tween
      *
      * @param {Object} opts
+     * @param {String} opts.property - The property that gets animated
+     * @param {String|jQuery} opts.target - The target of the tween
+     * @param {String} opts.easing - The easing of the tween, for example linear
+     * @param {Number} opts.duration - How long the tween is being animated
+     * @param {Number} opts.delay - Delays the tween at the beginning
      */
     var Tween = function (opts) {
       opts = options(opts, {
