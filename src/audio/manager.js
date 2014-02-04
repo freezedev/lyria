@@ -57,8 +57,8 @@ define(['jquery', 'clamp', '../log', '../audio', 'mixedice', 'eventmap'], functi
       return;
     }
     
-    $('#' + id).off('ended');
-    $('#' + id).on('ended', {
+    $('#lyria-audio-' + id).off('ended');
+    $('#lyria-audio-' + id).on('ended', {
       'audioFile' : this.audioFiles[id],
       'audioManager' : this,
       'id' : id

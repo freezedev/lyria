@@ -40,7 +40,7 @@ define(['root', 'jquery'], function(root, $) {'use strict';
       }
     }
     this.audio.volume = options.volume;
-    this.audio.id = options.id;
+    this.audio.id = 'lyria-audio-'+options.id;
     $('body').append(this.audio);
   };
 
