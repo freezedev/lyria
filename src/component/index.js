@@ -30,8 +30,8 @@ define(['mixedice', 'eventmap', './component/manager', './log'], function(mixedi
       }
       
       this.on('update', function(dt) {
-        for (var key in children) {
-          var value = children[key];
+        for (var key in this.children) {
+          var value = this.children[key];
           if (value && value.trigger) {
             value.trigger('update', dt);
           }
@@ -56,7 +56,7 @@ define(['mixedice', 'eventmap', './component/manager', './log'], function(mixedi
         childObject = child;
       }
       
-      children[name] = childObject;
+      this.children[name] = childObject;
       
       this.trigger('add', name);
       childObject.trigger('added', this);
@@ -72,7 +72,7 @@ define(['mixedice', 'eventmap', './component/manager', './log'], function(mixedi
         return;
       }
       
-      delete children[name];
+      delete this.children[name];
       
       this.trigger('remove', name);
     };
