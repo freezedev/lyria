@@ -165,6 +165,19 @@ define(['root', 'jquery', 'mixedice', 'eventmap'], function(root, $, mixedice, E
       // Call scale event
       self.trigger('scale');
     }
+    
+    Viewport.prototype.fitToAspectRatio = function(dimension) {
+      var windowRatio = $(window).width() / $(window).height();
+      
+      switch (dimension) {
+        case 'width':
+          this.$element.width(this.height * windowRatio);
+          break;
+        case 'height':
+          this.$element.height(this.width / windowRatio);        
+          break;
+      }
+    };
 
     return Viewport;
 
