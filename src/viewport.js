@@ -179,7 +179,7 @@ define(['root', 'jquery', 'mixedice', 'eventmap'], function(root, $, mixedice, E
         case 'height':
           var newHeight = this.width / windowRatio;
           this.$element.height(newHeight);
-          this.$element.css('margin-top', (newWidth / (-2)) + 'px');        
+          this.$element.css('margin-top', (newHeight / (-2)) + 'px');        
           break;
       }
     };
