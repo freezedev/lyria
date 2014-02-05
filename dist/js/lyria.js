@@ -3279,6 +3279,19 @@ define('lyria/viewport', ['root', 'jquery', 'mixedice', 'eventmap'], function(ro
       // Call scale event
       self.trigger('scale');
     }
+    
+    Viewport.prototype.fitToAspectRatio = function(dimension) {
+      var windowRatio = $(window).width() / $(window).height();
+      
+      switch (dimension) {
+        case 'width':
+          this.$element.width(this.height * windowRatio);
+          break;
+        case 'height':
+          this.$element.height(this.width / windowRatio);        
+          break;
+      }
+    };
 
     return Viewport;
 
