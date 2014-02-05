@@ -52,6 +52,7 @@ define(['root', 'jquery', 'mixedice', 'eventmap'], function(root, $, mixedice, E
        */
       if (this.$element.length === 0) {
         var createdElement = $(root.document.createElement('div')).attr('id', container).attr('class', 'viewport');
+        // TODO: Set properties to set origin to center
 
         if (options.parent) {
           $(options.parent).prepend(createdElement);
@@ -171,10 +172,14 @@ define(['root', 'jquery', 'mixedice', 'eventmap'], function(root, $, mixedice, E
       
       switch (dimension) {
         case 'width':
-          this.$element.width(this.height * windowRatio);
+          var newWidth = this.height * windowRatio;
+          this.$element.width(newWidth);
+          this.$element.css('margin-left', (newWidth / (-2)) + 'px');
           break;
         case 'height':
-          this.$element.height(this.width / windowRatio);        
+          var newHeight = this.width / windowRatio;
+          this.$element.height(newHeight);
+          this.$element.css('margin-top', (newWidth / (-2)) + 'px');        
           break;
       }
     };
