@@ -167,6 +167,8 @@ define(['root', 'jquery', 'mixedice', 'eventmap'], function(root, $, mixedice, E
       self.trigger('scale');
     }
     
+    // TODO: Reflect if it should be fitWidthToAspectRatio and fitHeightToAspectRatio
+    // TODO: Reflect if this should be done when resizing (scale event)
     Viewport.prototype.fitToAspectRatio = function(dimension) {
       var windowRatio = $(window).width() / $(window).height();
       
