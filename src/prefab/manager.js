@@ -79,19 +79,21 @@ define(['jqueryify', 'jquery', 'root'], function($ify, $, root) {
           });
         }
       }
+      
+      return prefab;
     };
   };
 
   PrefabManager.append = function() {
-    createElement('append').apply(this, arguments);
+    return createElement('append').apply(this, arguments);
   };
 
   PrefabManager.prepend = function() {
-    createElement('prepend').apply(this, arguments);
+    return createElement('prepend').apply(this, arguments);
   };
   
   PrefabManager.insert = function() {
-    createElement('html').apply(this, arguments);
+    return createElement('html').apply(this, arguments);
   };
 
   return PrefabManager;
