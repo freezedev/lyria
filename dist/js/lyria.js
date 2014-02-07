@@ -1722,19 +1722,21 @@ define('lyria/prefab/manager', ['jqueryify', 'jquery', 'root'], function($ify, $
           });
         }
       }
+      
+      return prefab;
     };
   };
 
   PrefabManager.append = function() {
-    createElement('append').apply(this, arguments);
+    return createElement('append').apply(this, arguments);
   };
 
   PrefabManager.prepend = function() {
-    createElement('prepend').apply(this, arguments);
+    return createElement('prepend').apply(this, arguments);
   };
   
   PrefabManager.insert = function() {
-    createElement('html').apply(this, arguments);
+    return createElement('html').apply(this, arguments);
   };
 
   return PrefabManager;
@@ -3281,6 +3283,8 @@ define('lyria/viewport', ['root', 'jquery', 'mixedice', 'eventmap'], function(ro
       self.trigger('scale');
     }
     
+    // TODO: Reflect if it should be fitWidthToAspectRatio and fitHeightToAspectRatio
+    // TODO: Reflect if this should be done when resizing (scale event)
     Viewport.prototype.fitToAspectRatio = function(dimension) {
       var windowRatio = $(window).width() / $(window).height();
       
@@ -3293,7 +3297,7 @@ define('lyria/viewport', ['root', 'jquery', 'mixedice', 'eventmap'], function(ro
         case 'height':
           var newHeight = this.width / windowRatio;
           this.$element.height(newHeight);
-          this.$element.css('margin-top', (newWidth / (-2)) + 'px');        
+          this.$element.css('margin-top', (newHeight / (-2)) + 'px');        
           break;
       }
     };
