@@ -2632,7 +2632,7 @@ define('lyria/scene', ['jquery', 'mixedice', 'nexttick', './component', './gameo
       this.DOMEvents[selector] = this.DOMEvents[selector] || {};
 
       if ( typeof eventName === 'function') {
-        this.DOMEvents[selector][this.defaultEvent] = eventName;
+        this.DOMEvents[selector][defaultEvent] = eventName;
       } else {
         if (typeof eventName === 'string') {
           this.DOMEvents[selector][eventName] = eventFunction;          
