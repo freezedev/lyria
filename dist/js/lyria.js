@@ -2174,7 +2174,7 @@ define('lyria/scene/director', ['root', 'mixedice', 'jquery', 'eventmap', '../sc
       }
 
       // Handle string - Check in scene list
-      if (this.scenes && Object.keys(this.scenes).length > 0) {
+      if (this.scenes && Object.keys(this.scenes).length > 0 && this.scenes[scene]) {
         scene = this.scenes[scene](data);
       } else {
         // Scene object
