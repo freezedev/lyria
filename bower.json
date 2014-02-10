@@ -40,6 +40,7 @@
   "description": "Game engine based on jQuery",
   "keywords": [
     "jquery",
+    "css",
     "game",
     "engine",
     "dom",
