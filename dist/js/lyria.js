@@ -343,7 +343,7 @@ define('lyria/audio', ['root', 'jquery'], function(root, $) {'use strict';
     this.audio.volume = options.volume;
     this.audio.id = 'lyria-audio-'+options.id;
     // Preloading is set to false, as this is handled by lyria/preloader
-    this.audio.preload = false;
+    this.audio.preload = 'none';
     $('body').append(this.audio);
   };
 
@@ -1964,11 +1964,12 @@ define('lyria/preloader', ['root', 'mixedice', 'jquery', './resource', './log', 
                 if (iterator.type.indexOf('audio') === 0) {
                   // TODO: Save preloaded files in the AudioManager
                   var audio = new root.Audio();
-                  audio.src = iterator.name;
                   
-                  audio.addEventListener('canplaythrough', loadSuccess(iterator));
-                  
+                  audio.addEventListener('canplaythrough', loadSuccess(iterator));                  
                   audio.onerror = loadError(iterator);
+                  
+                  audio.src = iterator.name;
+                  audio.load();
                 } else {
                   $.ajax({
                     url: iterator.name,
