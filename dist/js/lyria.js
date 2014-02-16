@@ -1921,6 +1921,21 @@ define('lyria/preloader', ['root', 'mixedice', 'jquery', './resource', './log', 
           });
         }
       };
+      
+      var loadSuccess = function(iterator) {
+        return function() {
+          currentProgress += iterator.size;
+          self.assetsLoaded++;
+
+          loadingProgress();
+        };
+      };
+      
+      var loadError = function(iterator) {
+        return function(err) {
+          Log.e('Error while loading ' + iterator.name + ': ' + err);
+        };
+      };
 
       if (Object.keys(this.assets).length > 0) {
         // Go through all assets and preload them
@@ -1929,24 +1944,17 @@ define('lyria/preloader', ['root', 'mixedice', 'jquery', './resource', './log', 
           if (value.files == null || !Array.isArray(value.files) || value.files.length === 0) {
             return true;
           }
+          
+          self.maxAssets += value.files.length;
 
           for (var i = 0, j = value.files.length; i < j; i++) {
             (function(iterator) {
-              // TODO: Define separate functions for loading process and error handling
-
               // Handle images here
               if (iterator.type.indexOf('image') === 0) {
                 // TODO: Reflect: Does it make sense to put the cached images into an object?
                 var img = new root.Image();
-                img.onload = function() {
-                  currentProgress += iterator.size;
-
-                  loadingProgress();
-                };
-
-                img.onerror = function(err) {
-                  Log.e('Error while loading ' + iterator.name);
-                };
+                img.onload = loadSuccess(iterator);
+                img.onerror = loadError(iterator);
 
                 img.src = iterator.name;
               } else {
@@ -1956,26 +1964,14 @@ define('lyria/preloader', ['root', 'mixedice', 'jquery', './resource', './log', 
                   var audio = new root.Audio();
                   audio.src = iterator.name;
                   
-                  audio.addEventListener('canplaythrough', function() {
-                    currentProgress += iterator.size;
-
-                    loadingProgress();
-                  });
+                  audio.addEventListener('canplaythrough', loadSuccess(iterator));
                   
-                  audio.onerror = function(err) {
-                    Log.e('Error while loading '+ iterator.name);
-                  };
+                  audio.onerror = loadError(iterator);
                 } else {
                   $.ajax({
                     url: iterator.name,
                     dataType: 'text'
-                  }).always(function() {
-                    currentProgress += iterator.size;
-  
-                    loadingProgress();
-                  }).error(function(err) {
-                    Log.e('Error while loading ' + iterator.name + ': ' + err);
-                  });
+                  }).always(loadSuccess(iterator)).error(loadError(iterator));
                 }
               }
 
