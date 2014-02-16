@@ -342,6 +342,8 @@ define('lyria/audio', ['root', 'jquery'], function(root, $) {'use strict';
     }
     this.audio.volume = options.volume;
     this.audio.id = 'lyria-audio-'+options.id;
+    // Preloading is set to false, as this is handled by lyria/preloader
+    this.audio.preload = false;
     $('body').append(this.audio);
   };
 
