@@ -16,7 +16,7 @@ If you have Bower installed, simply do:
 (If you don't have bower installed, simply do a `npm install -g bower` in the command-line of your choice. To learn more about Bower, go to http://bower.io)
 If you want to save lyria in your `bower.json` file, use `bower install lyria --save`.
 
-If you have Yeoman installed, you can actually just type `yo lyria` in the terminal when inside an empty folder. This will automatically get the lyria template.
+If you have Yeoman installed, you can actually just type `yo lyria` in the terminal when inside an empty folder. This will automatically get the lyria template and get started.
 
 
 What does it look like?
