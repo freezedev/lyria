@@ -352,6 +352,14 @@ define('lyria/audio', ['root', 'jquery'], function(root, $) {'use strict';
    * @param {String} loop amount of loops this song should be played (-1 if unlimited) 
    */
   Audio.prototype.play = function(loop) {
+    // reset currentTime to 0 if already played
+    if (this.audio.currentTime) {
+      this.audio.currentTime = 0;
+    }
+    // reload audio file on chrome to be able to play an audio file more than once
+    if (detectr.is('browser-chrome')) {
+      this.audio.load();
+    }
     if (loop != null) {
       this.options.loop = loop;
     }
