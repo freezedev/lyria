@@ -192,7 +192,11 @@ define(['root', 'mixedice', 'jquery', './resource', './log', 'eventmap'], functi
           Log.e('Error while loading ' + iterator.name + ': ' + err);
         };
       };
-
+      var supportedTypes = {
+        'mp3' : 'audio/mpeg',
+        'wav' : 'audio/wav',
+        'ogg' : 'audio/ogg'
+      };
       if (Object.keys(this.assets).length > 0) {
         // Go through all assets and preload them
         $.each(this.assets, function(key, value) {
@@ -218,12 +222,16 @@ define(['root', 'mixedice', 'jquery', './resource', './log', 'eventmap'], functi
                 if (iterator.type.indexOf('audio') === 0) {
                   // TODO: Save preloaded files in the AudioManager
                   var audio = new root.Audio();
-                  
-                  audio.addEventListener('canplaythrough', loadSuccess(iterator));                  
-                  audio.onerror = loadError(iterator);
-                  
-                  audio.src = iterator.name;
-                  audio.load();
+                  if (supportedTypes[fileExtension] && audio.canPlayType(supportedTypes[fileExtension])) {
+                    audio.addEventListener('canplaythrough', loadSuccess(iterator));
+                    audio.onerror = loadError(iterator);
+                    
+                    audio.src = iterator.name;
+                    audio.load();
+                  } else {
+                    Log.w('Skipped unsupported audio file ('+supportedTypes[fileExtension]+') ' + iterator.name);
+                    loadSuccess(iterator)();
+                  }
                 } else {
                   $.ajax({
                     url: iterator.name,
