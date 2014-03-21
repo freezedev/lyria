@@ -1975,8 +1975,9 @@ define('lyria/preloader', ['root', 'mixedice', 'jquery', './resource', './log', 
                 // Handle audio here
                 if (iterator.type.indexOf('audio') === 0) {
                   // TODO: Save preloaded files in the AudioManager
+                  var audioType = iterator.name.split('.').pop();
                   var audio = new root.Audio();
-                  if (supportedTypes[fileExtension] && audio.canPlayType(supportedTypes[fileExtension])) {
+                  if (supportedTypes[audioType] && audio.canPlayType(supportedTypes[audioType])) {
                     audio.addEventListener('canplaythrough', loadSuccess(iterator));
                     audio.onerror = loadError(iterator);
                     
