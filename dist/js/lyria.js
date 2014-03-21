@@ -1435,7 +1435,7 @@ define('lyria/localization', ['./language', './template/string', './mixin/langua
       
       this.data = data;
 
-      var langValue = Language.language;
+      var langValue = Language.value;
 
       langMixin('language', 'change')(this, langValue, this);
     };
