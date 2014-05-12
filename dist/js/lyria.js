@@ -1984,7 +1984,7 @@ define('lyria/preloader', ['root', 'mixedice', 'jquery', './resource', './log', 
                     audio.src = iterator.name;
                     audio.load();
                   } else {
-                    Log.w('Skipped unsupported audio file ('+supportedTypes[fileExtension]+') ' + iterator.name);
+                    Log.w('Skipped unsupported audio file ('+supportedTypes[audioType]+') ' + iterator.name);
                     loadSuccess(iterator)();
                   }
                 } else {
