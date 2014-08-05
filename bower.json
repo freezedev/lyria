@@ -24,14 +24,14 @@
     "detectr": "~0.2.0",
     "handlebars": "~1.1.2",
     "jquery": "~2.1.0",
-    "modernizr": "~2.6.2",
+    "modernizr": "~2.8.3",
     "eventmap": "~1.3.0",
     "mixedice": "~0.5.1",
     "gameboard": "~0.1.0"
   },
   "devDependencies": {
-    "mocha": "~1.15.0",
-    "chai": "~1.8.0"
+    "mocha": "~1.21.0",
+    "chai": "~1.9.0"
   },
   "homepage": "https://github.com/freezedev/lyria",
   "authors": [
