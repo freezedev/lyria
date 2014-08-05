@@ -1435,7 +1435,7 @@ define('lyria/localization', ['./language', './template/string', './mixin/langua
       
       this.data = data;
 
-      var langValue = Language.language;
+      var langValue = Language.value;
 
       langMixin('language', 'change')(this, langValue, this);
     };
@@ -1946,7 +1946,11 @@ define('lyria/preloader', ['root', 'mixedice', 'jquery', './resource', './log', 
           Log.e('Error while loading ' + iterator.name + ': ' + err);
         };
       };
-
+      var supportedTypes = {
+        'mp3' : 'audio/mpeg',
+        'wav' : 'audio/wav',
+        'ogg' : 'audio/ogg'
+      };
       if (Object.keys(this.assets).length > 0) {
         // Go through all assets and preload them
         $.each(this.assets, function(key, value) {
@@ -1971,13 +1975,18 @@ define('lyria/preloader', ['root', 'mixedice', 'jquery', './resource', './log', 
                 // Handle audio here
                 if (iterator.type.indexOf('audio') === 0) {
                   // TODO: Save preloaded files in the AudioManager
+                  var audioType = iterator.name.split('.').pop();
                   var audio = new root.Audio();
-                  
-                  audio.addEventListener('canplaythrough', loadSuccess(iterator));                  
-                  audio.onerror = loadError(iterator);
-                  
-                  audio.src = iterator.name;
-                  audio.load();
+                  if (supportedTypes[audioType] && audio.canPlayType(supportedTypes[audioType])) {
+                    audio.addEventListener('canplaythrough', loadSuccess(iterator));
+                    audio.onerror = loadError(iterator);
+                    
+                    audio.src = iterator.name;
+                    audio.load();
+                  } else {
+                    Log.w('Skipped unsupported audio file ('+supportedTypes[audioType]+') ' + iterator.name);
+                    loadSuccess(iterator)();
+                  }
                 } else {
                   $.ajax({
                     url: iterator.name,
@@ -3418,16 +3427,16 @@ define('lyria/template/list', {
 
       var buffer = "",
         stack1;
-      buffer += "\r\n    ";
+      buffer += "\n    ";
       stack1 = self.invokePartial(partials.achievement, 'achievement', depth0, helpers, partials, data);
       if (stack1 || stack1 === 0) {
         buffer += stack1;
       }
-      buffer += "\r\n  ";
+      buffer += "\n  ";
       return buffer;
     }
 
-    buffer += "<div class=\"achievement-list\">\r\n  ";
+    buffer += "<div class=\"achievement-list\">\n  ";
     stack1 = helpers.each.call(depth0, (depth0 && depth0.achievement), {
       hash: {},
       inverse: self.noop,
@@ -3437,7 +3446,7 @@ define('lyria/template/list', {
     if (stack1 || stack1 === 0) {
       buffer += stack1;
     }
-    buffer += "\r\n</div>";
+    buffer += "\n</div>";
     return buffer;
   },
   'achievement': function(Handlebars, depth0, helpers, partials, data) {
@@ -3459,7 +3468,7 @@ define('lyria/template/list', {
 
       var buffer = "",
         stack1;
-      buffer += "\r\n  <div class=\"progress-status\">\r\n    <span class=\"current\">";
+      buffer += "\n  <div class=\"progress-status\">\n    <span class=\"current\">";
       if (stack1 = helpers.current) {
         stack1 = stack1.call(depth0, {
           hash: {},
@@ -3472,7 +3481,7 @@ define('lyria/template/list', {
           data: data
         }) : stack1;
       }
-      buffer += escapeExpression(stack1) + "</span>\r\n    <span class=\"separator\">";
+      buffer += escapeExpression(stack1) + "</span>\n    <span class=\"separator\">";
       if (stack1 = helpers.separator) {
         stack1 = stack1.call(depth0, {
           hash: {},
@@ -3485,7 +3494,7 @@ define('lyria/template/list', {
           data: data
         }) : stack1;
       }
-      buffer += escapeExpression(stack1) + "</span>\r\n    <span class=\"max\">";
+      buffer += escapeExpression(stack1) + "</span>\n    <span class=\"max\">";
       if (stack1 = helpers.max) {
         stack1 = stack1.call(depth0, {
           hash: {},
@@ -3498,7 +3507,7 @@ define('lyria/template/list', {
           data: data
         }) : stack1;
       }
-      buffer += escapeExpression(stack1) + "</span>\r\n  </div>\r\n  ";
+      buffer += escapeExpression(stack1) + "</span>\n  </div>\n  ";
       return buffer;
     }
 
@@ -3525,7 +3534,7 @@ define('lyria/template/list', {
     if (stack1 || stack1 === 0) {
       buffer += stack1;
     }
-    buffer += "\">\r\n  <div class=\"title\">";
+    buffer += "\">\n  <div class=\"title\">";
     if (stack1 = helpers.title) {
       stack1 = stack1.call(depth0, {
         hash: {},
@@ -3538,7 +3547,7 @@ define('lyria/template/list', {
         data: data
       }) : stack1;
     }
-    buffer += escapeExpression(stack1) + "</div>\r\n  <div class=\"icon ";
+    buffer += escapeExpression(stack1) + "</div>\n  <div class=\"icon ";
     if (stack1 = helpers.className) {
       stack1 = stack1.call(depth0, {
         hash: {},
@@ -3551,7 +3560,7 @@ define('lyria/template/list', {
         data: data
       }) : stack1;
     }
-    buffer += escapeExpression(stack1) + "\"></div>\r\n  <div class=\"description\">";
+    buffer += escapeExpression(stack1) + "\"></div>\n  <div class=\"description\">";
     if (stack1 = helpers.description) {
       stack1 = stack1.call(depth0, {
         hash: {},
@@ -3564,7 +3573,7 @@ define('lyria/template/list', {
         data: data
       }) : stack1;
     }
-    buffer += escapeExpression(stack1) + "</div>\r\n  ";
+    buffer += escapeExpression(stack1) + "</div>\n  ";
     stack1 = helpers['if'].call(depth0, (depth0 && depth0.progressable), {
       hash: {},
       inverse: self.noop,
@@ -3574,7 +3583,7 @@ define('lyria/template/list', {
     if (stack1 || stack1 === 0) {
       buffer += stack1;
     }
-    buffer += "\r\n</div>";
+    buffer += "\n</div>";
     return buffer;
   },
   'scene': function(Handlebars, depth0, helpers, partials, data) {
@@ -3589,7 +3598,7 @@ define('lyria/template/list', {
 
       var buffer = "",
         stack1;
-      buffer += "\r\n  <canvas id=\"";
+      buffer += "\n  <canvas id=\"";
       if (stack1 = helpers.name) {
         stack1 = stack1.call(depth0, {
           hash: {},
@@ -3615,7 +3624,7 @@ define('lyria/template/list', {
           data: data
         }) : stack1;
       }
-      buffer += escapeExpression(stack1) + "\"></canvas>\r\n";
+      buffer += escapeExpression(stack1) + "\"></canvas>\n";
       return buffer;
     }
 
@@ -3623,7 +3632,7 @@ define('lyria/template/list', {
 
       var buffer = "",
         stack1;
-      buffer += "\r\n  <div id=\"";
+      buffer += "\n  <div id=\"";
       if (stack1 = helpers.name) {
         stack1 = stack1.call(depth0, {
           hash: {},
@@ -3649,7 +3658,7 @@ define('lyria/template/list', {
           data: data
         }) : stack1;
       }
-      buffer += escapeExpression(stack1) + "\"></div>\r\n";
+      buffer += escapeExpression(stack1) + "\"></div>\n";
       return buffer;
     }
 

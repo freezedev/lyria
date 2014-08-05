@@ -9,7 +9,7 @@ define(['./language', './template/string', './mixin/language'], function(Languag
       
       this.data = data;
 
-      var langValue = Language.language;
+      var langValue = Language.value;
 
       langMixin('language', 'change')(this, langValue, this);
     };
