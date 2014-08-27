@@ -139,6 +139,11 @@ You are already half-way there. Either download the latest stable version, the c
 Head on over to the [wiki](https://github.com/freezedev/lyria/wiki) to have step by step instructions on how to use this framework.
 
 
+License
+-------
+Lyria is public domain. If this doesn't suit you, feel free to use it under the terms of the MIT license.
+
+
 What does Lyria mean?
 ---------------------
 * It's "freedom" in albanian (free as in not proprietary, free as in open-source)
