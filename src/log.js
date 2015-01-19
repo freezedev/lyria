@@ -1,4 +1,4 @@
-define(['gemabord/log'], function(Log) {
+define(['root', 'gemabord/log'], function(root, Log) {
   'use strict';
   
   // Map shorthand functions to Log.i
