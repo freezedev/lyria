@@ -1,4 +1,12 @@
-define(['jquery', 'mixedice', 'nexttick', './component', './gameobject', './log', './localization'], function($, mixedice, nextTick, Component, GameObject, Log, Localization) {'use strict';
+define(['require'], function(require) {'use strict';
+
+  var $ = require('jquery');
+  var mixedice = require('mixedice');
+  var nextTick = require('nexttick');
+  var Component = require('./component');
+  var GameObject = require('./gameobject');
+  var Log = require('./log');
+  var Localization = require('./localization');
 
   /**
    * @module lyria/scene
