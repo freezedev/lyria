@@ -6,9 +6,11 @@
     "js-beautify": "~1.5.0"
   },
   "devDependencies": {
+    "bower": "^1.3.12",
     "grunt": "0.4.x",
     "grunt-amd-tamer": "~0.1.0",
     "grunt-bumper": "~1.0.2",
+    "grunt-cli": "^0.1.13",
     "grunt-concat-sourcemap": "0.4.x",
     "grunt-contrib-clean": "0.6.x",
     "grunt-contrib-concat": "0.5.x",
@@ -27,7 +29,9 @@
     "matchdep": "0.3.x"
   },
   "scripts": {
-    "test": "grunt test"
+    "grunt": "grunt",
+    "bower": "bower",
+    "test": "npm run grunt test"
   },
   "repository": {
     "type": "git",
