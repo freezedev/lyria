@@ -1,5 +1,11 @@
-define(['jquery', '../achievement', '../template/engine', '../template/list', '../localization'], function($, Achievement, TemplateEngine, templateList, Localization) {
+define(['require'], function(require) {
   'use strict';
+
+  var $ = require('jquery');
+  var Achievement = require('../achievement');
+  var TemplateEngine = require('../template/engine');
+  var templateList = require('../template/list');
+  var Localization = require('../localization');
 
   var achievementStore = {};
 
