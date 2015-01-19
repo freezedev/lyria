@@ -1,4 +1,12 @@
-define(['root', 'mixedice', 'jquery', 'eventmap', '../scene', '../viewport'], function(root, mixedice, $, EventMap, Scene, Viewport) {'use strict';
+define(['require'], function(require) {'use strict';
+
+  var root = require('root');
+  var mixedice = require('mixedice');
+  var $ = require('jquery');
+  var EventMap = require('eventmap');
+  var Scene = require('../scene');
+  var Viewport = require('../viewport');
+
   /**
    * @module lyria/scene/director
    * @requires root
