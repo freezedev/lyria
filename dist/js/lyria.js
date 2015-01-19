@@ -84,8 +84,14 @@ define('lyria/achievement', ['clamp'], function(clamp) {
 
 });
 
-define('lyria/achievement/manager', ['jquery', '../achievement', '../template/engine', '../template/list', '../localization'], function($, Achievement, TemplateEngine, templateList, Localization) {
+define('lyria/achievement/manager', ['require'], function(require) {
   'use strict';
+
+  var $ = require('jquery');
+  var Achievement = require('../achievement');
+  var TemplateEngine = require('../template/engine');
+  var templateList = require('../template/list');
+  var Localization = require('../localization');
 
   var achievementStore = {};
 
@@ -1034,65 +1040,6 @@ define('random', function() {
     return root;
   });
 })(this);
-/*
-* object.watch polyfill
-*
-* 2012-04-03
-*
-* By Eli Grey, http://eligrey.com
-* Public Domain.
-* NO WARRANTY EXPRESSED OR IMPLIED. USE AT YOUR OWN RISK.
-*/
-
-(function(Object) {
-  'use strict';
-  
-  // object.watch
-  if (!Object.prototype.watch) {
-    Object.defineProperty(Object.prototype, "watch", {
-      enumerable: false,
-      configurable: true,
-      writable: false,
-      value: function(prop, handler) {
-        var oldval = this[prop], newval = oldval, getter = function() {
-          return newval;
-        }, setter = function(val) {
-          oldval = newval;
-          newval = handler.call(this, prop, oldval, val);
-          return newval;
-        };
-  
-        if (
-        delete this[prop]) {// can't watch constants
-          Object.defineProperty(this, prop, {
-            get: getter,
-            set: setter,
-            enumerable: true,
-            configurable: true
-          });
-        }
-      }
-    });
-  }
-  
-  // object.unwatch
-  if (!Object.prototype.unwatch) {
-    Object.defineProperty(Object.prototype, "unwatch", {
-      enumerable: false,
-      configurable: true,
-      writable: false,
-      value: function(prop) {
-        var val = this[prop];
-        delete this[prop];
-        // remove accessors
-        this[prop] = val;
-      }
-    });
-  }
-})(Object);
-
-
-define('lyria/core/watch', function() {  });
 define('lyria/game', ['eventmap', 'mixedice', 'fullscreen', 'jquery', 'gameboard/loop', './viewport', './scene/director', './preloader', './world', './checkpoints'], function(EventMap, mixedice, fullscreen, $, Loop, Viewport, Director, Preloader, World, Checkpoints) {'use strict';
 
   /**
@@ -1503,83 +1450,9 @@ define('lyria/localization', ['./language', './template/string', './mixin/langua
 
   return Localization;
 });
-define('lyria/log', ['root'], function(root) {
+define('lyria/log', ['root', 'gameboard/log'], function(root, Log) {
   'use strict';
-  /**
-   * @module lyria/log
-   * @requires root
-   */
   
-  /**
-   * @class
-   * @alias module:lyria/log
-   */
-  var Log = (function() {
-
-    var Log = {};
-
-    Log.connector = null;
-
-    Log.plugins = {};
-
-    Log.plugins.console = {
-      e: function() {
-        if (root.console && root.console.error) {
-          return root.console.error.apply(console, arguments);
-        }
-      },
-      w: function() {
-        if (root.console && root.console.warn) {
-          return root.console.warn.apply(console, arguments);
-        }
-      },
-      i: function() {
-        if (root.console && root.console.info) {
-          return root.console.info.apply(console, arguments);
-        }
-      },
-      d: function() {
-        if (root.console && root.console.log) {
-          return root.console.log.apply(console, arguments);
-        }
-      },
-      v: function() {
-        if (root.console && root.console.log) {
-          return root.console.log.apply(console, arguments);
-        }
-      }
-    };
-
-    Log.connector = Log.plugins.console;
-
-    Log.logLevelMap = {
-      'error': ['e'],
-      'warn': ['w', 'e'],
-      'info': ['i', 'w', 'e'],
-      'debug': ['d', 'i', 'w', 'e'],
-      'verbose': ['v', 'd', 'i', 'w', 'e']
-    };
-
-    Log.logLevel = 'verbose';
-
-    var logFunctions = ['v', 'd', 'i', 'w', 'e'];
-
-    for (var i = 0, j = logFunctions.length; i < j; i++) {
-
-      (function(iterator) {
-        Log[iterator] = function() {
-          if (Log.logLevelMap[Log.logLevel].indexOf(iterator) >= 0) {
-            Log.connector[iterator].apply(this, arguments);
-          }
-        };        
-      })(logFunctions[i]);
-      
-    }
-
-    return Log;
-
-  })();
-
   // Map shorthand functions to Log.i
   root.log = root.out = Log.i;
   
@@ -2070,7 +1943,15 @@ define('lyria/resource', ['path'], function(Path) {
   
   return Resource;
 }); 
-define('lyria/scene/director', ['root', 'mixedice', 'jquery', 'eventmap', '../scene', '../viewport'], function(root, mixedice, $, EventMap, Scene, Viewport) {'use strict';
+define('lyria/scene/director', ['require'], function(require) {'use strict';
+
+  var root = require('root');
+  var mixedice = require('mixedice');
+  var $ = require('jquery');
+  var EventMap = require('eventmap');
+  var Scene = require('../scene');
+  var Viewport = require('../viewport');
+
   /**
    * @module lyria/scene/director
    * @requires root
@@ -2307,7 +2188,15 @@ define('lyria/scene/director', ['root', 'mixedice', 'jquery', 'eventmap', '../sc
 
   })();
 }); 
-define('lyria/scene', ['jquery', 'mixedice', 'nexttick', './component', './gameobject', './log', './localization'], function($, mixedice, nextTick, Component, GameObject, Log, Localization) {'use strict';
+define('lyria/scene', ['require'], function(require) {'use strict';
+
+  var $ = require('jquery');
+  var mixedice = require('mixedice');
+  var nextTick = require('nexttick');
+  var Component = require('./component');
+  var GameObject = require('./gameobject');
+  var Log = require('./log');
+  var Localization = require('./localization');
 
   /**
    * @module lyria/scene
