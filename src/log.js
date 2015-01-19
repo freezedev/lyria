@@ -1,4 +1,4 @@
-define(['root', 'gemabord/log'], function(root, Log) {
+define(['root', 'gameboard/log'], function(root, Log) {
   'use strict';
   
   // Map shorthand functions to Log.i
