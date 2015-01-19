@@ -25,9 +25,9 @@
     "handlebars": "~1.1.2",
     "jquery": "~2.1.0",
     "modernizr": "~2.8.3",
-    "eventmap": "~1.3.0",
+    "eventmap": "~1.4.0",
     "mixedice": "~0.5.1",
-    "gameboard": "~0.1.0"
+    "gameboard": "0.2.0-alpha6"
   },
   "devDependencies": {
     "mocha": "~1.21.0",
