@@ -155,7 +155,7 @@ define(['root', 'mixedice', 'jquery', './resource', './log', 'eventmap'], functi
 
       var loadingProgress = function() {
 
-        var percentLoaded = 100;
+        var percentLoaded = 1;
 
         if (currentProgress !== totalSize) {
           percentLoaded = currentProgress / totalSize;
