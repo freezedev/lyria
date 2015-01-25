@@ -81,7 +81,10 @@ define(['root', 'jquery'], function(root, $) {'use strict';
   Audio.prototype.stop = function() {
     this.options.loop = 1;
     this.audio.pause();
-    this.audio.currentTime = 0;
+    // reset currentTime if it was already set
+    if (this.audio.currentTime) {
+      this.audio.currentTime = 0;
+    }
   };
 
   /**

@@ -48,5 +48,8 @@
     "bower",
     "scene"
   ],
-  "license": "UNLICENSE"
+  "license": "UNLICENSE",
+  "resolutions": {
+    "eventmap": "~1.4.0"
+  }
 }

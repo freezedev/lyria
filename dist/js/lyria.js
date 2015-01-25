@@ -320,13 +320,16 @@ define('lyria/audio', ['root', 'jquery'], function(root, $) {'use strict';
   };
 
   /**
+   * Create a new html audio object managed by lyria
+   *
    * @class
    * @alias module:lyria/audio
    *
    * @param {Object} options
-   * @param {String} options.id
-   * @param {String[]} options.paths
-   * @param {Number} options.volume Volume between 0..1
+   * @param {String} options.id - unique identifier for this audio file
+   * @param {String[]} options.paths -  paths with different file types of the same audio file (fallback if browser doesnt support one)
+   * @param {Number} options.volume - volume between 0..1
+   * @param {Number} options.loop - -1 if unlimited, else 0 if no looping and a positive number for n loops
    */
   var Audio = function(options) {
     options = $.extend({
@@ -355,7 +358,7 @@ define('lyria/audio', ['root', 'jquery'], function(root, $) {'use strict';
 
   /**
    *
-   * @param {String} loop amount of loops this song should be played (-1 if unlimited) 
+   * @param {Number} loop - amount of loops this song should be played (-1 if unlimited)
    */
   Audio.prototype.play = function(loop) {
     // reset currentTime to 0 if already played
@@ -379,17 +382,23 @@ define('lyria/audio', ['root', 'jquery'], function(root, $) {'use strict';
     this.audio.pause();
   };
 
+  /**
+   * Stop audio
+   */
   Audio.prototype.stop = function() {
     this.options.loop = 1;
     this.audio.pause();
-    this.audio.currentTime = 0;
+    // reset currentTime if it was already set
+    if (this.audio.currentTime) {
+      this.audio.currentTime = 0;
+    }
   };
 
   /**
    * Sets or gets properties of the audio object
    *
-   * @param {Object} prop
-   * @param {Object} value (optional)
+   * @param {String} prop -  property to set or get
+   * @param {*} [value] -  set value if passed
    */
   Audio.prototype.attr = function(prop, value) {
     switch (prop) {
@@ -447,13 +456,13 @@ define('lyria/audio/manager', ['jquery', 'clamp', '../log', '../audio', 'mixedic
   });
 
   /**
-   *
+   * Add a new sound file to be manager by lyria
    * @param {Object} options
-   * @param {String} options.type ['music', 'sound']
-   * @param {String} options id
-   * @param {Boolean} options loop
-   * @param {Number} options volume
-   * @param {Array} options paths paths to audio file with defined fallbacks
+   * @param {String} options.type - ['music', 'sound']
+   * @param {String} options id - unique identifier for this audio file
+   * @param {Boolean} options.loop - -1 if unlimited, else 0 if no looping and a positive number for n loops
+   * @param {Number} options.volume - volume between 0..1
+   * @param {Array} options.paths - paths to audio file with defined fallbacks
    *
    */
   AudioManager.prototype.add = function(options) {
@@ -1782,7 +1791,7 @@ define('lyria/preloader', ['root', 'mixedice', 'jquery', './resource', './log', 
 
       var loadingProgress = function() {
 
-        var percentLoaded = 100;
+        var percentLoaded = 1;
 
         if (currentProgress !== totalSize) {
           percentLoaded = currentProgress / totalSize;
