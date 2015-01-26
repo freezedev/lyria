@@ -13,13 +13,16 @@ define(['root', 'jquery'], function(root, $) {'use strict';
   };
 
   /**
+   * Create a new html audio object managed by lyria
+   *
    * @class
    * @alias module:lyria/audio
    *
    * @param {Object} options
-   * @param {String} options.id
-   * @param {String[]} options.paths
-   * @param {Number} options.volume Volume between 0..1
+   * @param {String} options.id - unique identifier for this audio file
+   * @param {String[]} options.paths -  paths with different file types of the same audio file (fallback if browser doesnt support one)
+   * @param {Number} options.volume - volume between 0..1
+   * @param {Number} options.loop - -1 if unlimited, else 0 if no looping and a positive number for n loops
    */
   var Audio = function(options) {
     options = $.extend({
@@ -48,7 +51,7 @@ define(['root', 'jquery'], function(root, $) {'use strict';
 
   /**
    *
-   * @param {String} loop amount of loops this song should be played (-1 if unlimited) 
+   * @param {Number} loop - amount of loops this song should be played (-1 if unlimited)
    */
   Audio.prototype.play = function(loop) {
     // reset currentTime to 0 if already played
@@ -72,17 +75,23 @@ define(['root', 'jquery'], function(root, $) {'use strict';
     this.audio.pause();
   };
 
+  /**
+   * Stop audio
+   */
   Audio.prototype.stop = function() {
     this.options.loop = 1;
     this.audio.pause();
-    this.audio.currentTime = 0;
+    // reset currentTime if it was already set
+    if (this.audio.currentTime) {
+      this.audio.currentTime = 0;
+    }
   };
 
   /**
    * Sets or gets properties of the audio object
    *
-   * @param {Object} prop
-   * @param {Object} value (optional)
+   * @param {String} prop -  property to set or get
+   * @param {*} [value] -  set value if passed
    */
   Audio.prototype.attr = function(prop, value) {
     switch (prop) {

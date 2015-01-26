@@ -27,7 +27,7 @@
     "modernizr": "~2.8.3",
     "eventmap": "~1.4.0",
     "mixedice": "~0.5.1",
-    "gameboard": "0.2.0-alpha6"
+    "gameboard": "0.2.0-alpha7"
   },
   "devDependencies": {
     "mocha": "~1.21.0",
@@ -48,5 +48,8 @@
     "bower",
     "scene"
   ],
-  "license": "UNLICENSE"
+  "license": "UNLICENSE",
+  "resolutions": {
+    "eventmap": "~1.4.0"
+  }
 }

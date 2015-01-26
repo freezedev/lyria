@@ -20,13 +20,13 @@ define(['jquery', 'clamp', '../log', '../audio', 'mixedice', 'eventmap'], functi
   });
 
   /**
-   *
+   * Add a new sound file to be manager by lyria
    * @param {Object} options
-   * @param {String} options.type ['music', 'sound']
-   * @param {String} options id
-   * @param {Boolean} options loop
-   * @param {Number} options volume
-   * @param {Array} options paths paths to audio file with defined fallbacks
+   * @param {String} options.type - ['music', 'sound']
+   * @param {String} options id - unique identifier for this audio file
+   * @param {Boolean} options.loop - -1 if unlimited, else 0 if no looping and a positive number for n loops
+   * @param {Number} options.volume - volume between 0..1
+   * @param {Array} options.paths - paths to audio file with defined fallbacks
    *
    */
   AudioManager.prototype.add = function(options) {
