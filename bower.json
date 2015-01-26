@@ -1,6 +1,6 @@
 {
   "name": "lyria",
-  "version": "0.3.0-alpha2",
+  "version": "0.3.0-alpha3",
   "main": [
     "dist/js/lyria.js",
     "dist/css/lyria.css"
