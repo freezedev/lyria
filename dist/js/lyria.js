@@ -2407,6 +2407,9 @@ define('lyria/scene', ['require'], function(require) {'use strict';
         }
 
         context.modules = modules;
+        context.require = function(name) {
+          return modules[name];
+        };
 
         try {
           var success = sceneFunction.apply(context, [context, modules]);
