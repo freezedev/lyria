@@ -101,7 +101,10 @@ define(['require'], function(require) {'use strict';
       this.children = this.children || {};
       this.children.gameObjects = {};
       this.children.prefabs = {};
-      
+
+      // Input reference
+      this.input = Input;
+
       // Set Id
       this.id = this.data.id || self.name;
 
