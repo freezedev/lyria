@@ -2206,6 +2206,7 @@ define('lyria/scene', ['require'], function(require) {'use strict';
   var GameObject = require('./gameobject');
   var Log = require('./log');
   var Localization = require('./localization');
+  var Input = require('gameboard/input');
 
   /**
    * @module lyria/scene
@@ -2299,7 +2300,10 @@ define('lyria/scene', ['require'], function(require) {'use strict';
       this.children = this.children || {};
       this.children.gameObjects = {};
       this.children.prefabs = {};
-      
+
+      // Input reference
+      this.input = Input;
+
       // Set Id
       this.id = this.data.id || self.name;
 
