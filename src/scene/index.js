@@ -7,6 +7,7 @@ define(['require'], function(require) {'use strict';
   var GameObject = require('./gameobject');
   var Log = require('./log');
   var Localization = require('./localization');
+  var Input = require('gameboard/input');
 
   /**
    * @module lyria/scene
