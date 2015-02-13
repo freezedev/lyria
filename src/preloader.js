@@ -1,10 +1,9 @@
-define(['root', 'mixedice', 'jquery', './resource', './log', 'eventmap'], function(root, mixedice, $, Resource, Log, EventMap) {'use strict';
+define(['root', 'mixedice', 'jquery', './log', 'eventmap'], function(root, mixedice, $, Log, EventMap) {'use strict';
   /**
    * @module lyria/preloader
    * @requires root
    * @requires mixedice
    * @requires jquery
-   * @requires lyria/resource
    * @requires lyria/log
    * @requires eventmap
    */
