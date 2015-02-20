@@ -4,7 +4,7 @@ Lyria
 [![Dependency Status](https://david-dm.org/freezedev/lyria.png)](https://david-dm.org/freezedev/lyria)
 [![devDependency Status](https://david-dm.org/freezedev/lyria/dev-status.png)](https://david-dm.org/freezedev/lyria#info=devDependencies)
 
-Lyria is a jQuery game framework.
+Lyria is a jQuery game framework. It's more of a game framework for web developers than a game framework for game developers.
 
 The Lyria template can be found here: https://github.com/freezedev/lyria-template
 
@@ -17,6 +17,9 @@ If you have Bower installed, simply do:
 If you want to save lyria in your `bower.json` file, use `bower install lyria --save`.
 
 If you have Yeoman installed, you can actually just type `yo lyria` in the terminal when inside an empty folder. This will automatically get the lyria template and get you started.
+
+Getting started
+---------------
 
 
 What does it look like?
@@ -132,11 +135,11 @@ If the page is opened with a browser in a language that is not supported (i.e. n
 Of course, this only a simple example of what you can do with scenes. You can also add partials, helper functions and directly bind events to elements.
 
 
-How do I get started?
----------------------
+Philosophy
+----------
+Lyria is game framework which intends to be for web developers wanting to do games and applying their web development knowledge to the process.
 
-You are already half-way there. Either download the latest stable version, the current development version if you are feeling adventurous or clone this repository.  
-Head on over to the [wiki](https://github.com/freezedev/lyria/wiki) to have step by step instructions on how to use this framework.
+Why jQuery? Why DOM? Lyria was created in 2010, when using DOM was the best option for creating games if you wanted to target as many devices possible. jQuery was in there for good measure and speeding up the development of the library.
 
 
 License
