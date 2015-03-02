@@ -1,4 +1,4 @@
-define(['eventmap', 'mixedice', 'fullscreen', 'jquery', 'gameboard/loop', './viewport', './scene/director', './preloader', './world', './checkpoints'], function(EventMap, mixedice, fullscreen, $, Loop, Viewport, Director, Preloader, World, Checkpoints) {'use strict';
+define(['eventmap', 'mixedice', 'fullscreen', 'jquery', 'gamebox/loop', './viewport', './scene/director', './preloader', './world', './checkpoints'], function(EventMap, mixedice, fullscreen, $, Loop, Viewport, Director, Preloader, World, Checkpoints) {'use strict';
 
   /**
    * @module lyria/game
@@ -6,7 +6,7 @@ define(['eventmap', 'mixedice', 'fullscreen', 'jquery', 'gameboard/loop', './vie
    * @requires mixedice
    * @requires fullscreen
    * @requires jquery
-   * @requires gameboard/loop
+   * @requires gamebox/loop
    * @requires lyria/viewport
    * @requires lyria/scene/director
    * @requires lyria/preloader
