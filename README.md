@@ -3,6 +3,7 @@ Lyria
 [![Build Status](https://travis-ci.org/freezedev/lyria.png?branch=master)](https://travis-ci.org/freezedev/lyria)
 [![Dependency Status](https://david-dm.org/freezedev/lyria.png)](https://david-dm.org/freezedev/lyria)
 [![devDependency Status](https://david-dm.org/freezedev/lyria/dev-status.png)](https://david-dm.org/freezedev/lyria#info=devDependencies)
+[![bitHound Score](https://www.bithound.io/freezedev/lyria/badges/score.svg)](https://www.bithound.io/freezedev/lyria)
 
 Lyria is a jQuery game framework. It's more of a game framework for web developers than a game framework for game developers.
 
@@ -17,9 +18,6 @@ If you have Bower installed, simply do:
 If you want to save lyria in your `bower.json` file, use `bower install lyria --save`.
 
 If you have Yeoman installed, you can actually just type `yo lyria` in the terminal when inside an empty folder. This will automatically get the lyria template and get you started.
-
-Getting started
----------------
 
 
 What does it look like?
@@ -134,7 +132,6 @@ If the page is opened with a browser in a language that is not supported (i.e. n
 
 Of course, this only a simple example of what you can do with scenes. You can also add partials, helper functions and directly bind events to elements.
 
-
 Philosophy
 ----------
 Lyria is game framework which intends to be for web developers wanting to do games and applying their web development knowledge to the process.
@@ -156,4 +153,3 @@ What does Lyria mean?
 
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/freezedev/lyria/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
