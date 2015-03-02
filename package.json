@@ -35,6 +35,7 @@
     "grunt-templater": "0.0.6",
     "matchdep": "0.3.x"
   },
+  "main": "dist/js/lyria.js",
   "scripts": {
     "grunt": "grunt",
     "bower": "bower",
